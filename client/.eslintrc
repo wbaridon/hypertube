@@ -1,0 +1,42 @@
+  {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "airbnb"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+      }
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "globals": {
+      "VERSION": true,
+      "HTMLTITLE": true,
+      "GOOGLE_API_KEY": true,
+      "AWS_CLOUDFRONT": true
+    },
+    "rules": {
+      "no-console": "off",
+      "no-trailing-spaces": "error",
+      "import/no-extraneous-dependencies": "[error, { devDependencies: true }]",
+      "global-require": "off",
+      "max-len": "off",
+      "import/no-dynamic-require": "off",
+      "arrow-body-style": "off"
+    },
+    "settings": {
+      "import/resolver": {
+        "webpack": {
+          "config": "./webpack.config.js"
+        }
+      }
+    }
+  }

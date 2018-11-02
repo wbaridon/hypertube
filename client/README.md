@@ -1,44 +1,47 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# React Boilerplate
+## SRC
+### index.jsx
+index.jsx is the entry for our app, it is what will be injected into the .html file that **Webpack** generates, it is better to keep this one simple.
+### index.html
+This file will be used as a template for the generated html file of the website, which **webpack** takes care of.
+### app.jsx
+this is where the root of our app lives, where we apply wrappers(things that propagate props to all components that need them), initiate connections to **DB**s, start **service workers**, **routers**, **internalisation**, **theming** and whatever else we need.
+### i18n/{lang}.js
+JS files containing the keys: values for translated values in our app.
+### components/routing/current-route.jsx
+this is where the routing is handled, for a specific url, we display a specific component. **TODO** implement authenticated routes
+### components/home/home.jsx
+a simple test component for the default route
+## BABEL
+Babel is a compiler for JS that makes modern code transpile into older versions of Javascript
+### .babelrc
+The "env" preset lets use use all modern js, and takes away the responsibility of specifying which we are using.
+the "react" preset makes babel understand React code so it doesn't freak out when it parses it.
+## ESLINT
+This is the equivalent of the Norminette at 42, it can be annoying, but it's generally trying to do the right thing. You can disable it for a line `// eslint-disable-line
+or for a block
+```
+/* eslint-disable */
+{
+    // code
+}
+/* eslint-enable */
+```
+### .eslintrc
+The extends section specifies that we are using the recommended settings, some settings related to React, settings related to imports, and the whole AIRBNB config files(which are generally accepted as a good config when writing React)
+#### .eslintrc.env .eslintrc.globals
+The env section specifies certain environment variables that we have access to, so that it doesn't consider them as underfined, same goes for globals...
+#### .eslintrc.rules
+These are the rules I've modified myself, we can change them depending on what we need.
+## SERVER.js
+Probably going to remove this for this project.
+### tsconfig.json
+Just something to shut up Visual studio code about lack of typing...
+## WEBPACK
+Webpack is a bundling tool, I use it to take all my sources, and compile a **compatible, zipped, and pruned** JS file to the client.
+### webpack.config.js
+This configuration file is used for both webpack development build and prod build, it parses all sources.
+### webpack.dev.js
+This might be vestigial, since we're going to use another server client than (Webpack dev server) which is usually configured here...
+### webpack.prod.js
+This config is used when building the production output, it specifies how to name and compress files, and how to seperate code chunks(for browser caching)

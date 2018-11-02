@@ -1,25 +1,62 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-scripts": "2.1.0"
-  },
+  "name": "hypertube",
+  "version": "1.0.0",
+  "description": "a 42 project",
+  "main": "index.jsx",
   "scripts": {
-    "start": "PORT=8080 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo 'Need to implement tests'",
+    "start": "webpack-dev-server --config webpack.dev.js --mode development  --env.user=$USER",
+    "build": "webpack --config webpack.prod.js --mode production",
+    "serve": "node server.js",
+    "lint": "eslint"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "author": "guiricha",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/core": "^3.2.2",
+    "@material-ui/icons": "^2.0.3",
+    "flat": "^4.1.0",
+    "react": "^16.4.2",
+    "react-cookie": "^3.0.4",
+    "react-dom": "^16.4.2",
+    "react-intl": "^2.7.0",
+    "react-router-dom": "^4.3.1"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "repository": "https://github.com/lord0gnome/spideysite.git",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^9.0.0",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "compression-webpack-plugin": "^2.0.0",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-import-resolver-webpack": "^0.10.1",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
+    "favicons-webpack-plugin": "0.0.9",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "^4.3.1",
+    "mini-css-extract-plugin": "^0.4.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "prettier": "^1.14.2",
+    "serviceworker-webpack-plugin": "^1.0.1",
+    "style-loader": "^0.22.1",
+    "uglifyjs-webpack-plugin": "^1.3.0",
+    "url-loader": "^1.1.1",
+    "webpack": "^4.16.5",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5",
+    "webpack-merge": "^4.1.4",
+    "webpack-pwa-manifest": "^3.7.1"
+  }
 }
