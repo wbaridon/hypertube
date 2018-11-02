@@ -11,3 +11,10 @@ before(function(done){
     console.log('Connection error:', error);
   });
 });
+
+// Drop the user Table before each test
+beforeEach(function(done){
+  mongoose.connection.collections.users.drop(function(){
+    done();
+  })
+});

@@ -14,3 +14,5 @@ Faire d'abord un `npm i` dans le repertoire client et api <br>
 Si ce n'est pas dèjà fait installer mongodb via `brew install mongodb` <br>
 Pour que la db start automatiquement au login `brew services start mongodb` <br>
 
+## Comment visualiser la DB Mongo ?
+En utilisant Robomongo (Disponible dans le MSC)
