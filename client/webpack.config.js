@@ -49,15 +49,8 @@ module.exports = {
         test: /\.(pdf|jpg|png|gif|svg|ico)$/,
         exclude: /node_modules/,
         use: [
-
           {
             loader: 'file-loader',
-          },
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              disable: true, // webpack@2.x and newer
-            },
           },
         ],
       },
