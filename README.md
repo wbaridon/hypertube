@@ -4,7 +4,7 @@
 Mise a jour de Brew <br>
 `rm -rf $HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew && export PATH=$HOME/.brew/bin:$PATH && brew update && echo "export PATH=$HOME/.brew/bin:$PATH" >> ~/.zshrc`
 
-Installation de node <br>
+Installation de Node (Avec Node Version Manager) <br>
 ```curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | zsh```
 
 *attention, il faut relancer le shell pour que NVM se mette dans le $PATH*
