@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const MovieHistorySchema = new Schema({
+  id: Number
+});
+
 const UserSchema = new Schema({
   email: String,
   login: String,
@@ -8,7 +12,8 @@ const UserSchema = new Schema({
   name: String,
   firstname: String,
   password: String,
-  langue: Number
+  langue: Number,
+  moviesHistory: [MovieHistorySchema]
 });
 
 const User = mongoose.model('user', UserSchema);
