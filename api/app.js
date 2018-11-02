@@ -1,4 +1,6 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const db = require('./config/db');
 const app = express();
 const hostname = 'localhost';
 const port = 3000;
