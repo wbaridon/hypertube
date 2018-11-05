@@ -3,28 +3,33 @@ const userRouter = express.Router();
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const argon2 = require('argon2');
-const User = require('../models/user');
+const UserManager = require('../models/userManager');
 
 userRouter
     .post('/register', urlencodedParser, (req, res) => {
-      var user = new User({
+      var user = {
         email: req.body.email,
         login: req.body.login,
         picture: '', // Voir comment le faire
         name: req.body.name,
         firstname: req.body.firstname,
         password: req.body.password
-      })
+      }
       checkForm(user).then(result => {
         hashPassword(user.password).then(hash => {
           user.password = hash;
+          UserManager.userExist(user.email, user.login).then(userExist => {
+            if (userExist) { res.send({'error': 'Email or login already exist'}) }
+            else {
+              UserManager.createUser(user, callback => {
+                res.send({'success': 'You are now registered'})
+              })
+            }
+          })
         })
       }).catch(error => {
-        // Formulaire incorrect
+        res.send({'error': error})
       })
-      /*user.save().then(function(){
-        console.log('Ajout fait')
-      })*/
     })
 
 function hashPassword(pwd) {
@@ -42,10 +47,10 @@ function checkForm(user) {
     if (user.email && user.login && user.name && user.firstname && user.password) {
       if (user.password.length < 6) { error('Password too short') }
       else {
-        // Manque le check si data pas en db, si chiffre et lettre dans mdp, picture
+        // Manque le check si chiffre et lettre dans mdp, picture
         resolve('Correct Form')
       }
-    } else { error('Empty Fields')}
+    } else { error('Some fields are Empty')}
   })
 }
 
