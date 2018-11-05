@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Button } from '@material-ui/core';
-import { FormattedMessage } from 'react-intl';
+import { Grid } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 const myStyles = {
@@ -14,25 +14,16 @@ class Home extends React.Component {
   constructor() {
     super();
     this.state = {
-      fakestate: '283',
     };
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(fakestate) {
-    this.setState({ fakestate });
   }
 
   render() {
-    const { fakestate } = this.state;
     const { classes } = this.props;
 
     return (
       <Grid container spacing={0} alignItems="center" justify="center">
         <Grid item xs={11} sm={10} md={9}>
-          <FormattedMessage id="example" className={classes.root} />
-          <Button onClick={this.handleClick} label={fakestate}>{fakestate}</Button>
+          <Link to="/register">REGISTER</Link>
         </Grid>
       </Grid>
     );

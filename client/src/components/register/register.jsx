@@ -8,7 +8,6 @@ import {
   Button,
   Grid,
 } from '@material-ui/core';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -19,6 +18,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import handlers from './event-handlers';
 
 const styles = {
+
 };
 
 class Register extends React.Component {
@@ -147,7 +147,6 @@ class Register extends React.Component {
                 fullWidth
                 error={userNameError.length !== 0}
                 id="filled-simple-start-adornment"
-                className={classNames(classes.margin, classes.textField)}
                 variant="filled"
                 label={intl.formatMessage({ id: 'register.userName' })}
                 type="text"
@@ -159,7 +158,6 @@ class Register extends React.Component {
               <TextField
                 fullWidth
                 error={emailError.length !== 0}
-                className={classNames(classes.margin, classes.textField)}
                 variant="filled"
                 label={intl.formatMessage({ id: 'register.email' })}
                 type="email"
@@ -171,7 +169,6 @@ class Register extends React.Component {
               <TextField
                 fullWidth
                 error={firstNameError.length !== 0}
-                className={classNames(classes.margin, classes.textField)}
                 variant="filled"
                 label={intl.formatMessage({ id: 'register.firstName' })}
                 value={firstName}
@@ -182,7 +179,6 @@ class Register extends React.Component {
               <TextField
                 fullWidth
                 error={lastNameError.length !== 0}
-                className={classNames(classes.margin, classes.textField)}
                 variant="filled"
                 label={intl.formatMessage({ id: 'register.lastName' })}
                 value={lastName}
@@ -194,7 +190,6 @@ class Register extends React.Component {
                 fullWidth
                 error={passwordError.length !== 0}
                 id="filled-adornment-password"
-                className={classNames(classes.margin, classes.textField)}
                 variant="filled"
                 type={showPassword ? 'text' : 'password'}
                 label={intl.formatMessage({ id: 'register.password' })}

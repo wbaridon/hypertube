@@ -8,7 +8,7 @@ function CurrentRoute() {
   return (
     <Switch>
       <Route path={Register.url} component={Register} />
-      <Route path={Home.url} component={Home} />
+      <Route exact path={Home.url} component={Home} />
       <Redirect path="*" to={Home.url} />
     </Switch>
   );

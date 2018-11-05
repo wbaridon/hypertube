@@ -5,11 +5,9 @@ import lightBlue from '@material-ui/core/colors/lightBlue';
 import orange from '@material-ui/core/colors/orange';
 import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
-import { createBrowserHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { withCookies, Cookies, CookiesProvider } from 'react-cookie';
-import { Button } from '@material-ui/core';
 import enUS from './i18n/en-US';
 import frFR from './i18n/fr-FR';
 import CurrentRoute from './components/routing/current-route';
@@ -26,7 +24,6 @@ const theme = createMuiTheme({
     useNextVariants: true,
   },
 });
-const history = createBrowserHistory();
 
 addLocaleData([...en, ...fr]);
 
@@ -53,22 +50,18 @@ class App extends React.Component {
     const { locale, messages } = this.state;
 
     return (
-      <Router history={history}>
-        <CookiesProvider>
-          <IntlProvider locale={locale} messages={messages}>
+      <IntlProvider locale={locale} messages={messages}>
+        <BrowserRouter>
+          <CookiesProvider>
             <MuiThemeProvider theme={theme}>
-              <React.Fragment>
-                <Button onClick={this.changeLocale}>{locale}</Button>
-                <CurrentRoute />
-              </React.Fragment>
+              <CurrentRoute />
             </MuiThemeProvider>
-          </IntlProvider>
-        </CookiesProvider>
-      </Router>
+          </CookiesProvider>
+        </BrowserRouter>
+      </IntlProvider>
     );
   }
 }
-
 App.propTypes = {
   cookies: PropTypes.instanceOf(Cookies).isRequired,
 };
