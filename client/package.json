@@ -15,7 +15,9 @@
   "dependencies": {
     "@material-ui/core": "^3.2.2",
     "@material-ui/icons": "^2.0.3",
+    "email-validator": "^2.0.4",
     "flat": "^4.1.0",
+    "lodash.debounce": "^4.0.8",
     "react": "^16.4.2",
     "react-cookie": "^3.0.4",
     "react-dom": "^16.4.2",
@@ -39,6 +41,7 @@
     "eslint-loader": "^2.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-only-warn": "^1.0.1",
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.11.1",
     "file-loader": "^1.1.11",

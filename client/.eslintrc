@@ -1,4 +1,7 @@
   {
+    "plugins": [
+      "only-warn"
+    ],
     "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
@@ -30,7 +33,8 @@
       "global-require": "off",
       "max-len": "off",
       "import/no-dynamic-require": "off",
-      "arrow-body-style": "off"
+      "arrow-body-style": "off",
+      "no-plusplus": "off"
     },
     "settings": {
       "import/resolver": {
