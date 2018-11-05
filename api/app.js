@@ -7,7 +7,7 @@ const port = 3000;
 
 const userRouter = require('./routes/userRouter');
 
-app.use('/User', userRouter);
+app.use('/user', userRouter);
 
 app.get('/', function (req, res) {
   res.send('Hello world!');

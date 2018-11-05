@@ -4,6 +4,8 @@
   "description": "API Hypertube",
   "main": "app.js",
   "dependencies": {
+    "argon2": "^0.19.3",
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mocha": "^5.2.0",
     "mongoose": "^5.3.8"
