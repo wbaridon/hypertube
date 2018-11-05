@@ -3,29 +3,29 @@ const userRouter = express.Router();
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const argon2 = require('argon2');
-const User = require('../models/user');
 const UserManager = require('../models/userManager');
 
 userRouter
     .post('/register', urlencodedParser, (req, res) => {
-      var user = new User({
+      var user = {
         email: req.body.email,
         login: req.body.login,
         picture: '', // Voir comment le faire
         name: req.body.name,
         firstname: req.body.firstname,
         password: req.body.password
-      })
+      }
       checkForm(user).then(result => {
         hashPassword(user.password).then(hash => {
           user.password = hash;
           UserManager.userExist(user.email, user.login).then(userExist => {
             if (userExist) { res.send({'error': 'Email or login already exist'}) }
-            else { console.log('inscription a faire')}
+            else {
+              UserManager.createUser(user, callback => {
+                res.send({'success': 'You are now registered'})
+              })
+            }
           })
-          /*user.save().then(function(){
-            console.log('Ajout fait')
-          })*/
         })
       }).catch(error => {
         res.send({'error': error})
