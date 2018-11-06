@@ -19,3 +19,10 @@ Pour que la db start automatiquement au login `brew services start mongodb` <br>
 
 ## Comment visualiser la DB Mongo ?
 En utilisant Robomongo (Disponible dans le MSC)
+
+## Lancer l'api
+`npm start` depuis le dossier api et laisser tourner le serveur
+
+## Auth 42
+Envoyer a /oauth/register/42 la data `clientCode` en format json
+Renvoi ensuite les data de l'user au front

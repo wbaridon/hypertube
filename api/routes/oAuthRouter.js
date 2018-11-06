@@ -12,20 +12,32 @@ const credentials = {
     tokenPath: '/oauth/token'
    }
 };
-
 oAuthRouter
    .get('/register/42', async (req, res) => {
      const oauth2 = require('simple-oauth2').create(credentials);
-     const tokenConfig = {};
+     const tokenConfig = {
+       code: req.body.clientCode,
+       redirect_uri: 'http://localhost:8080'
+     };
      try {
-      const result =  await oauth2.clientCredentials.getToken(tokenConfig);
+      const result =  await oauth2.authorizationCode.getToken(tokenConfig);
       const accessToken = oauth2.accessToken.create(result);
       console.log(accessToken)
       const token = accessToken.token.access_token
       console.log(token)
-      axios.get('https://api.intra.42.fr/v2/cursus', { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-        console.log(response.data)
-      })
+      axios.get('https://api.intra.42.fr/v2/me', { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
+        console.log(response.data.email)
+        var user = {
+          email: response.data.email,
+          login: response.data.login,
+          picture: response.data.image_url, // Voir comment le faire
+          name: response.data.last_name,
+          firstname: response.data.first_name,
+          password: '',
+        }
+        res.send(user)
+        console.log(user)
+      }).catch ()
     } catch (error) { console.log('Access Token Error', error.message); }
    })
    .get('/test', (req, res) => {
