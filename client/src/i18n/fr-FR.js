@@ -14,6 +14,9 @@ const frFR = {
     passwordLengthTooShort: 'Trop court',
     passwordLengthTooLong: 'Trop long',
     submit: 'Envoyer',
+    profilePicture: 'Changer',
+    addImage: 'Charger une image',
+    registerWith42: '42 Auth',
   },
 };
 

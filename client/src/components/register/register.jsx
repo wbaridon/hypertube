@@ -6,7 +6,9 @@ import {
   CardActions,
   CardMedia,
   Button,
+  ButtonBase,
   Grid,
+  Typography,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,18 +16,30 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import AddPhotoAlternate from '@material-ui/icons/AddPhotoAlternate';
+import RotateRight from '@material-ui/icons/RotateRight';
+import RotateLeft from '@material-ui/icons/RotateLeft';
 import { intlShape, injectIntl } from 'react-intl';
+import * as qs from 'query-string';
+import { withRouter } from 'react-router-dom';
 import handlers from './event-handlers';
+import {
+  rotateClockwise,
+  rotateCounterClockwise,
+  flip,
+  handleImageAdd,
+} from './image-handle-functions';
+import styles from './styles';
 
-const styles = {
-
-};
 
 class Register extends React.Component {
   constructor() {
     super();
     this.state = {
       image: null,
+      imageFile: null,
+      rotation: 0,
+      imageError: '',
       userName: '',
       userNameError: [],
       firstName: '',
@@ -40,11 +54,30 @@ class Register extends React.Component {
     };
 
     this.reader = new FileReader();
-    this.handleImageAdd = this.handleImageAdd.bind(this);
     this.mergeErrors = this.mergeErrors.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.rotateCounterClockwise = rotateCounterClockwise.bind(this);
+    this.rotateClockwise = rotateClockwise.bind(this);
+    this.handleImageAdd = handleImageAdd.bind(this);
+    this.flip = flip.bind(this);
+  }
+
+  componentDidMount() {
+    const { history } = this.props;
+    if (history.location.search) {
+      const { code } = qs.parse(history.location.search, { ignoreQueryPrefix: true });
+      console.log(code);
+      fetch('http://localhost:3000/oauth/register/42', {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          'Content-Type': 'application/json;',
+        },
+        body: JSON.stringify({ clientCode: code }), // body data type must match "Content-Type" header
+      })
+        .then(response => console.log(response.json())); // parses response to JSON)
+    }
   }
 
   mergeErrors(errors) {
@@ -54,7 +87,7 @@ class Register extends React.Component {
       if (index === 0) {
         ret = `${ret}${intl.formatMessage({ id: error })}`;
       } else {
-        ret = `${intl.formatMessage({ id: error })}, ${ret}`;
+        ret = `${intl.formatMessage({ id: error })} - ${ret}`;
       }
     });
     return ret;
@@ -66,18 +99,13 @@ class Register extends React.Component {
     this.setState({ [field]: event.target.value, [fieldError]: err });
   }
 
-  handleImageAdd(image) {
-    if (image.type.match(/image\/*/)) {
-      this.reader.onload = (event) => {
-        this.setState({ image: event.target.result });
-      };
-      this.reader.readAsDataURL(image);
-    }
-  }
-
   handleClickShowPassword() {
     const { showPassword } = this.state;
     this.setState({ showPassword: !showPassword });
+  }
+
+  registerWith42() {
+
   }
 
   handleSubmit() {
@@ -88,6 +116,7 @@ class Register extends React.Component {
       lastName, lastNameError,
       email, emailError,
       password, passwordError,
+      image,
     } = this.state;
 
     if (userName === '' || userNameError.length !== 0) {
@@ -100,22 +129,12 @@ class Register extends React.Component {
       willSend = false;
     } else if (password === '' || passwordError.length !== 0) {
       willSend = false;
+    } else if (!image) {
+      willSend = false;
     }
-    console.log(willSend);
-    console.log({
-      userName,
-      email,
-      firstName,
-      lastName,
-      password,
-    });
-    return ({
-      userName,
-      email,
-      firstName,
-      lastName,
-      password,
-    });
+    if (willSend) {
+      // do sending
+    }
   }
 
   render() {
@@ -127,6 +146,7 @@ class Register extends React.Component {
       lastName, lastNameError,
       email, emailError,
       password, passwordError, showPassword,
+      imageError,
     } = this.state;
     return (
       <Grid container alignItems="center" justify="center">
@@ -134,10 +154,56 @@ class Register extends React.Component {
           <Card className={classes.card}>
             <CardMedia src="squelch">
               {
-                image ? <img src={image} alt="Alt text" width={256} />
+                image
+                  ? (
+                    <React.Fragment>
+                      <ButtonBase
+                        focusRipple
+                        className={classes.image}
+                        focusVisibleClassName={classes.focusVisible}
+                        component="label"
+                        style={{
+                          width: '100%',
+                        }}
+                      >
+                        <input onChange={e => this.handleImageAdd(e.target.files[0])} style={{ display: 'none' }} type="file" />
+                        <span
+                          className={classes.imageSrc}
+                          style={{
+                            backgroundImage: `url(${image})`,
+                          }}
+                        />
+                        <span className={classes.imageBackdrop} />
+                        <span className={classes.imageButton}>
+                          <Typography
+                            component="span"
+                            variant="subtitle1"
+                            color="inherit"
+                            className={classes.imageTitle}
+                          >
+                            {intl.formatMessage({ id: 'register.profilePicture' })}
+                            <span className={classes.imageMarked} />
+                          </Typography>
+                        </span>
+                      </ButtonBase>
+                      <div style={{ display: 'flex' }}>
+                        <IconButton onClick={this.rotateCounterClockwise} aria-label="Rotate CCW">
+                          <RotateLeft />
+                        </IconButton>
+                        <IconButton onClick={this.flip} aria-label="Rotate CCW">
+                          <RotateLeft />
+                        </IconButton>
+                        <IconButton onClick={this.rotateClockwise} aria-label="Rotate CW">
+                          <RotateRight />
+                        </IconButton>
+                      </div>
+                    </React.Fragment>
+                  )
                   : (
-                    <Button component="label" label="add image">
+                    <Button component="label" label="add image" className={classes.photoButton}>
                       <input onChange={e => this.handleImageAdd(e.target.files[0])} style={{ display: 'none' }} type="file" />
+                      <AddPhotoAlternate />
+                      <Typography>{`${intl.formatMessage({ id: 'register.addImage' })}${imageError}`}</Typography>
                     </Button>
                   )
               }
@@ -212,6 +278,9 @@ class Register extends React.Component {
             </CardContent>
             <CardActions>
               <Button variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
+              <Button href="https://api.intra.42.fr/oauth/authorize?client_id=5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fregister&response_type=code" variant="contained">
+                {intl.formatMessage({ id: 'register.registerWith42' })}
+              </Button>
             </CardActions>
           </Card>
         </Grid>
@@ -223,7 +292,8 @@ class Register extends React.Component {
 Register.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 Register.url = '/register';
-export default injectIntl(withStyles(styles)(Register));
+export default withRouter(injectIntl(withStyles(styles)(Register)));

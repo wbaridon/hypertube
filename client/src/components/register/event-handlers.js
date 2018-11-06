@@ -31,6 +31,9 @@ const handlers = {
     if (textError(firstname)) {
       errors.push('register.notNumberOrLetter');
     }
+    if (firstname === 'guillaum!') {
+      errors.push('guillaume is a bad name');
+    }
     return (errors);
   },
   lastName: (lastname) => {

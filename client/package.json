@@ -18,6 +18,8 @@
     "email-validator": "^2.0.4",
     "flat": "^4.1.0",
     "lodash.debounce": "^4.0.8",
+    "piexifjs": "^1.0.4",
+    "query-string": "^6.2.0",
     "react": "^16.4.2",
     "react-cookie": "^3.0.4",
     "react-dom": "^16.4.2",

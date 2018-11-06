@@ -1,7 +1,7 @@
 # React Boilerplate
 ## SRC
 ### index.jsx
-index.jsx is the entry for our app, it is what will be injected into the .html file that **Webpack** generates, it is better to keep this one simple.
+index.jsx is the entry for our app, it is what will be injected into the .html file that **Webpack** generates using our template index.html file, it is better to keep this one simple.
 ### index.html
 This file will be used as a template for the generated html file of the website, which **webpack** takes care of.
 ### app.jsx
@@ -12,6 +12,8 @@ JS files containing the keys: values for translated values in our app.
 this is where the routing is handled, for a specific url, we display a specific component. **TODO** implement authenticated routes
 ### components/home/home.jsx
 a simple test component for the default route
+### components/register/register.jsx
+A component to handle registration, it could be a page, or just a small pop-up, or thing to the side of the screen. (for now it has its own url)
 ## BABEL
 Babel is a compiler for JS that makes modern code transpile into older versions of Javascript
 ### .babelrc
@@ -36,7 +38,7 @@ These are the rules I've modified myself, we can change them depending on what w
 ## SERVER.js
 Probably going to remove this for this project.
 ### tsconfig.json
-Just something to shut up Visual studio code about lack of typing...
+Just something to shut up Visual studio code about lack of typing for js...
 ## WEBPACK
 Webpack is a bundling tool, I use it to take all my sources, and compile a **compatible, zipped, and pruned** JS file to the client.
 ### webpack.config.js

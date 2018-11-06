@@ -22,8 +22,8 @@ class Home extends React.Component {
 
     return (
       <Grid container spacing={0} alignItems="center" justify="center">
-        <Grid item xs={11} sm={10} md={9}>
-          <Link to="/register">REGISTER</Link>
+        <Grid item>
+          <Link to="/register" className={classes.root}>REGISTER</Link>
         </Grid>
       </Grid>
     );
