@@ -16,6 +16,7 @@ const credentials = {
 };
 oAuthRouter
    .post('/register/42', urlencodedParser, async (req, res) => {
+     console.log(req.body)
      const oauth2 = require('simple-oauth2').create(credentials);
      const tokenConfig = {
        code: req.body.clientCode,
@@ -38,6 +39,7 @@ oAuthRouter
       })
     } catch (error) { console.log('Access Token Error', error.message); }
    })
+  /* Implemantation de la strategie google lire https://developers.google.com/identity/protocols/OpenIDConnect
 https://accounts.google.com/o/oauth2/v2/auth
    const credentialsGoogle = {
      client: {
@@ -71,5 +73,5 @@ https://accounts.google.com/o/oauth2/v2/auth
         res.send(user)
       })
     } catch (error) { console.log('Access Token Error', error.message); }
-   })
+  }) */
 module.exports = oAuthRouter;

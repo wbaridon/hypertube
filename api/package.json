@@ -7,9 +7,11 @@
     "argon2": "^0.19.3",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "mocha": "^5.2.0",
     "mongoose": "^5.3.8",
+    "morgan": "^1.9.1",
     "oauth": "^0.9.15",
     "simple-oauth2": "^2.2.1"
   },
