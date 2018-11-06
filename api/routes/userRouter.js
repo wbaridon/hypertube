@@ -1,7 +1,7 @@
 const express = require('express');
 const userRouter = express.Router();
 const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({ extended: true });
 const argon2 = require('argon2');
 const UserManager = require('../models/userManager');
 
