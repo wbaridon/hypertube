@@ -12,12 +12,12 @@ function rotateCounterClockwise() {
   } else if (rotation === 6) {
     rotation = 1;
   } else if (rotation === 2) {
-    rotation = 7;
-  } else if (rotation === 7) {
-    rotation = 4;
-  } else if (rotation === 4) {
     rotation = 5;
   } else if (rotation === 5) {
+    rotation = 4;
+  } else if (rotation === 4) {
+    rotation = 7;
+  } else if (rotation === 7) {
     rotation = 2;
   }
   this.setState({ rotation }, () => this.handleImageAdd(imageFile));
@@ -35,12 +35,12 @@ function rotateClockwise() {
   } else if (rotation === 3) {
     rotation = 8;
   } else if (rotation === 2) {
-    rotation = 5;
-  } else if (rotation === 5) {
-    rotation = 4;
-  } else if (rotation === 4) {
     rotation = 7;
   } else if (rotation === 7) {
+    rotation = 4;
+  } else if (rotation === 4) {
+    rotation = 5;
+  } else if (rotation === 5) {
     rotation = 2;
   }
   this.setState({ rotation }, () => this.handleImageAdd(imageFile));
