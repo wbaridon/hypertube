@@ -21,6 +21,7 @@ import RotateRight from '@material-ui/icons/RotateRight';
 import RotateLeft from '@material-ui/icons/RotateLeft';
 import { intlShape, injectIntl } from 'react-intl';
 import * as qs from 'query-string';
+import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import handlers from './event-handlers';
 import {
@@ -38,7 +39,7 @@ class Register extends React.Component {
     this.state = {
       image: null,
       imageFile: null,
-      rotation: 0,
+      rotation: 1,
       imageError: '',
       userName: '',
       userNameError: [],
@@ -68,15 +69,13 @@ class Register extends React.Component {
     const { history } = this.props;
     if (history.location.search) {
       const { code } = qs.parse(history.location.search, { ignoreQueryPrefix: true });
-      console.log(code);
-      fetch('http://localhost:3000/oauth/register/42', {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-          'Content-Type': 'application/json;',
+      Axios({
+        method: 'post',
+        url: 'http://localhost:3000/oauth/register/42',
+        data: {
+          clientCode: code,
         },
-        body: JSON.stringify({ clientCode: code }), // body data type must match "Content-Type" header
-      })
-        .then(response => console.log(response.json())); // parses response to JSON)
+      });
     }
   }
 
