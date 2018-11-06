@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const db = require('./config/db');
 const app = express();
 const hostname = 'localhost';
 const port = 3000;
+
+app.use(cors())
 
 const userRouter = require('./routes/userRouter');
 const oAuthRouter = require('./routes/oAuthRouter');
