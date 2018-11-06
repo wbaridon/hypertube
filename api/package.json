@@ -5,10 +5,13 @@
   "main": "app.js",
   "dependencies": {
     "argon2": "^0.19.3",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mocha": "^5.2.0",
-    "mongoose": "^5.3.8"
+    "mongoose": "^5.3.8",
+    "oauth": "^0.9.15",
+    "simple-oauth2": "^2.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"

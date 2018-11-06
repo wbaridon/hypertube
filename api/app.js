@@ -6,8 +6,10 @@ const hostname = 'localhost';
 const port = 3000;
 
 const userRouter = require('./routes/userRouter');
+const oAuthRouter = require('./routes/oAuthRouter');
 
 app.use('/user', userRouter);
+app.use('/oAuth', oAuthRouter);
 
 app.get('/', function (req, res) {
   res.send('Hello world!');
