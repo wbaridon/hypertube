@@ -13,47 +13,38 @@ const credentials = {
    }
 };
 oAuthRouter
-   .get('/register/42', async (req, res) => {
+   .post('/register/42', async (req, res) => {
      const oauth2 = require('simple-oauth2').create(credentials);
      const tokenConfig = {
        code: req.body.clientCode,
        redirect_uri: 'http://localhost:8080'
      };
      try {
-      const result =  await oauth2.authorizationCode.getToken(tokenConfig);
-      const accessToken = oauth2.accessToken.create(result);
-      console.log(accessToken)
-      const token = accessToken.token.access_token
-      console.log(token)
-      axios.get('https://api.intra.42.fr/v2/me', { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-        console.log(response.data.email)
+       const result =  await oauth2.authorizationCode.getToken(tokenConfig);
+       const accessToken = oauth2.accessToken.create(result);
+       const token = accessToken.token.access_token
+       axios.get('https://api.intra.42.fr/v2/me', { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
         var user = {
           email: response.data.email,
           login: response.data.login,
-          picture: response.data.image_url, // Voir comment le faire
+          picture: response.data.image_url,
           name: response.data.last_name,
           firstname: response.data.first_name,
           password: '',
         }
         res.send(user)
-        console.log(user)
-      }).catch ()
+      })
     } catch (error) { console.log('Access Token Error', error.message); }
    })
-   .get('/test', (req, res) => {
-     const host = 'https://api.intra.42.fr/';
-     const authPath = 'oauth/authorize';
-     const client = credentials.client;
-     console.log('enter')
-     axios.get(`${host}${authPath}?client_id=${client.id}&scope=public&response_type=code&state=matchatest&redirect_uri=http://localhost:3000/oauth/test2`)
-     .then(response => {
-       console.log(response.data)
-     }).catch (error => console.log(error))
-   })
-   .get('/test2', (req, res) => {
-     console.log('arrive')
-     console.log(req.query)
-   })
 
-
+   const credentialsGoogle = {
+     client: {
+       id: '796040540786-mcs3ojd9c07558mkatt5m1j185pol941.apps.googleusercontent.com',
+       secret: 'S5_yCT_BnFVr5v9qM9Av9g6m'
+      },
+      auth: {
+       tokenHost: 'https://api.intra.42.fr',
+       tokenPath: '/oauth/token'
+      }
+   };
 module.exports = oAuthRouter;
