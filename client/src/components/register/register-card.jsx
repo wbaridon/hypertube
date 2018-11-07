@@ -36,6 +36,10 @@ import {
 } from './image-handle-functions';
 import styles from './styles';
 
+function handleDragOver(evt) {
+  evt.stopPropagation();
+  evt.preventDefault();
+}
 
 class RegisterCard extends React.Component {
   constructor() {
@@ -71,9 +75,13 @@ class RegisterCard extends React.Component {
     this.handleImageAdd = handleImageAdd.bind(this);
     this.flip = flip.bind(this);
     this.offsetY = offsetY.bind(this);
+    this.handleImageAddWrapper = this.handleImageAddWrapper.bind(this);
   }
 
   componentDidMount() {
+    const dropZone = document.getElementById('root');
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('drop', event => this.handleImageAddWrapper(event), false);
     const { history } = this.props;
     if (history.location.search) {
       const { code } = qs.parse(history.location.search, { ignoreQueryPrefix: true });
@@ -87,6 +95,9 @@ class RegisterCard extends React.Component {
     }
   }
 
+  handleImageAddWrapper(event) {
+    this.handleImageAdd(event.dataTransfer.files[0], event);
+  }
 
   mergeErrors(errors) {
     const { intl } = this.props;
@@ -184,7 +195,7 @@ class RegisterCard extends React.Component {
     } = this.state;
     return (
       <Card className={classes.card}>
-        <CardMedia src="squelch">
+        <CardMedia src="squelch" id="dragAndDrop">
           {
             image.rawData
               ? (

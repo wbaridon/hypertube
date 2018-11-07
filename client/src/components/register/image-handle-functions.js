@@ -93,7 +93,14 @@ function dataURItoBlob(dataURI) {
   return new Blob([ia], { type: mimeString });
 }
 
-function handleImageAdd(rawImage) {
+function handleImageAdd(rawImage, event = null) {
+  if (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+  if (!rawImage.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
+    return;
+  }
   const reader = new FileReader();
   const { image } = this.state;
   image.inputFile = rawImage;
