@@ -29,7 +29,7 @@ class Video extends React.Component {
 }
 
 Video.propTypes = {
-
+  classes: PropTypes.shape({}).isRequired,
 };
 
 Video.url = '/video';
