@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
 const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
 const UserManager = require('../models/userManager');
 
 userRouter
@@ -49,7 +50,6 @@ userRouter
             } else { res.send({'error': 'Invalid password or login'})}
           })
         })
-      //  argon2.verify()
       } else { res.send({'error': 'Empty password or login'}) }
     })
 
