@@ -19,6 +19,9 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import AddPhotoAlternate from '@material-ui/icons/AddPhotoAlternate';
 import RotateRight from '@material-ui/icons/RotateRight';
 import RotateLeft from '@material-ui/icons/RotateLeft';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
+import Flip from '@material-ui/icons/Flip';
 import { intlShape, injectIntl } from 'react-intl';
 import * as qs from 'query-string';
 import Axios from 'axios';
@@ -39,6 +42,8 @@ class Register extends React.Component {
     this.state = {
       image: null,
       imageFile: null,
+      imageOffset: 0,
+      widthGreater: true,
       rotation: 1,
       imageError: '',
       userName: '',
@@ -63,6 +68,7 @@ class Register extends React.Component {
     this.rotateClockwise = rotateClockwise.bind(this);
     this.handleImageAdd = handleImageAdd.bind(this);
     this.flip = flip.bind(this);
+    this.offsetY = this.offsetY.bind(this);
   }
 
   componentDidMount() {
@@ -77,6 +83,12 @@ class Register extends React.Component {
         },
       });
     }
+  }
+
+  offsetY(amount) {
+    const { imageOffset, imageFile } = this.state;
+    this.setState({ imageOffset: imageOffset + amount }, () => this.handleImageAdd(imageFile));
+    console.log(imageOffset + amount);
   }
 
   mergeErrors(errors) {
@@ -101,10 +113,6 @@ class Register extends React.Component {
   handleClickShowPassword() {
     const { showPassword } = this.state;
     this.setState({ showPassword: !showPassword });
-  }
-
-  registerWith42() {
-
   }
 
   handleSubmit() {
@@ -147,6 +155,8 @@ class Register extends React.Component {
       email, emailError,
       password, passwordError, showPassword,
       imageError,
+      rotation,
+      widthGreater,
     } = this.state;
     return (
       <Grid container alignItems="center" justify="center">
@@ -178,21 +188,34 @@ class Register extends React.Component {
                           <Typography
                             component="span"
                             variant="subtitle1"
-                            color="inherit"
+                            color="primary"
                             className={classes.imageTitle}
                           >
                             {intl.formatMessage({ id: 'register.profilePicture' })}
-                            <span className={classes.imageMarked} />
                           </Typography>
                         </span>
                       </ButtonBase>
-                      <div style={{ display: 'flex' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <IconButton onClick={this.rotateCounterClockwise} aria-label="Rotate CCW">
                           <RotateLeft />
                         </IconButton>
-                        <IconButton onClick={this.flip} aria-label="Rotate CCW">
-                          <RotateLeft />
+                        {(widthGreater && rotation <= 4) || (!widthGreater && rotation > 4) ? null
+                          : (
+                            <IconButton onClick={() => this.offsetY(-10)} aria-label="offset down">
+                              <ArrowDropDown />
+                            </IconButton>
+                          )
+                        }
+                        <IconButton onClick={this.flip} aria-label="Flip">
+                          <Flip />
                         </IconButton>
+                        {(widthGreater && rotation <= 4) || (!widthGreater && rotation > 4) ? null
+                          : (
+                            <IconButton onClick={() => this.offsetY(10)} aria-label="offset up">
+                              <ArrowDropUp />
+                            </IconButton>
+                          )
+                        }
                         <IconButton onClick={this.rotateClockwise} aria-label="Rotate CW">
                           <RotateRight />
                         </IconButton>

@@ -15,7 +15,8 @@ const styles = theme => ({
         opacity: 0,
       },
       '& $imageTitle': {
-        border: '4px solid currentColor',
+        border: '1px solid currentColor',
+        backgroundColor: '#ffffffff',
       },
     },
   },
@@ -54,16 +55,9 @@ const styles = theme => ({
   },
   imageTitle: {
     position: 'relative',
-    top: 130,
-  },
-  imageMarked: {
-    height: 3,
-    width: 18,
-    backgroundColor: theme.palette.common.white,
-    position: 'absolute',
-    bottom: -2,
-    left: 'calc(50% - 9px)',
-    transition: theme.transitions.create('opacity'),
+    top: 136,
+    padding: '3px 50px 5px 50px',
+    transition: '0.5s',
   },
   photoButton: {
     width: '100%',

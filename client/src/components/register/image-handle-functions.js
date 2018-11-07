@@ -72,6 +72,7 @@ function flip() {
 function handleImageAdd(image) {
   this.setState({ imageFile: image });
   let { rotation } = this.state;
+  let { imageOffset } = this.state;
   if (!image) {
     return;
   }
@@ -92,8 +93,10 @@ function handleImageAdd(image) {
 
         img.width *= scale; // 608
         img.height *= scale; // 550
+        console.log(img.width, img.height);
         const orientation = rotation || exif['0th'][piexif.ImageIFD.Orientation];
-        this.setState({ rotation: orientation });
+        this.setState({ rotation: orientation, widthGreater: img.width >= img.height });
+        console.log(orientation);
         const canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
@@ -143,11 +146,18 @@ function handleImageAdd(image) {
           y = -canvas.width;
           ctx.scale(-1, -1);
         }
-        ctx.drawImage(img, x, y, img.width, img.height);
+        let imageYoffset = imageOffset;
+        let imageXoffset = imageOffset;
+        if (img.width > img.height) {
+          imageYoffset = 0;
+        } else {
+          imageXoffset = 0;
+        }
+        ctx.drawImage(img, x + imageXoffset, y + imageYoffset, img.width, img.height);
         ctx.restore();
 
         const dataURL = canvas.toDataURL('image/jpeg', 1.0);
-        this.setState({ image: dataURL });
+        this.setState({ image: dataURL, imageYoffset });
       };
       img.src = e.target.result;
     };
