@@ -149,14 +149,16 @@ class RegisterCard extends React.Component {
       console.log(key, formData[key]);
       form.append(key, formData[key]);
     });
-    image.inputFile = dataURItoBlob(image.rawData);
+    if (image.inputFile) {
+      image.inputFile = dataURItoBlob(image.rawData);
+    }
     form.append('image', image.inputFile);
     if (willSend) {
       Axios({
         method: 'post',
-        url: 'http://localhost:3000/oauth/register',
+        url: 'http://localhost:3000/user/register',
         data: formData,
-        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        config: { headers: { 'Content-Type': 'multipart/form-data' } },
       })
         .then((response) => {
           // handle success

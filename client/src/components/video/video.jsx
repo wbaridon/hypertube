@@ -18,7 +18,7 @@ class Video extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div>je te laisse me demander si tu as des questions</div>
+      <div className={classes.class}>je te laisse me demander si tu as des questions</div>
       // <video id='myVideo' src="blob:null/edf9ee49-30da-4ba7-ac98-a596c1c7f8a8" width="1280px" height="720px" controls="">
       //   {/* <source /> */}
       // </video>
@@ -27,7 +27,7 @@ class Video extends React.Component {
 }
 
 Video.propTypes = {
-
+  classes: PropTypes.shape({}).isRequired,
 };
 
 Video.url = '/video';

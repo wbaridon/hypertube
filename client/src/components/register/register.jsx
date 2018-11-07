@@ -11,15 +11,17 @@ const styles = {};
 class Register extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      fake: 42,
+    };
   }
 
   render() {
-    const { } = this.props;
-    const { } = this.state;
+    const { fake } = this.state;
     return (
       <Grid container direction="row" justify="space-around" wrap="nowrap">
         <Grid item>
+          {fake}
           <RegisterCard />
         </Grid>
       </Grid>
