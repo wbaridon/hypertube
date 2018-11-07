@@ -133,6 +133,7 @@ class Register extends React.Component {
     }
     if (willSend) {
       // do sending
+      console.log(image);
     }
   }
 

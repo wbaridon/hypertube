@@ -68,15 +68,25 @@ function flip() {
   const { imageFile } = this.state;
   this.setState({ rotation }, () => this.handleImageAdd(imageFile));
 }
+function handleNonJpg(image) {
+  this.setState({ imageFile: image });
+
+}
+
 function handleImageAdd(image) {
   this.setState({ imageFile: image });
-  const { rotation } = this.state;
+  let { rotation } = this.state;
   if (!image) {
     return;
   }
-  if (image.type.match(/image\/(?:jpg|jpeg)/)) {
+  let exif;
+  if (image.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
     this.reader.onload = (e) => {
-      const exif = piexif.load(e.target.result);
+      if (image.type.match(/image\/(?:jpg|jpeg)/)) {
+        exif = piexif.load(e.target.result);
+      } else {
+        rotation = rotation !== 0 ? rotation : 1;
+      }
       const img = new Image();
       img.onload = () => {
         const scaleWidth = 310 / img.width;
