@@ -120,8 +120,8 @@ function handleImageAdd(rawImage, event = null) {
       }
       const img = new Image();
       img.onload = () => {
-        const scaleWidth = 310 / img.width;
-        const scaleHeight = 310 / img.height;
+        const scaleWidth = 620 / img.width;
+        const scaleHeight = 620 / img.height;
 
         const scale = Math.max(scaleWidth, scaleHeight);
 
