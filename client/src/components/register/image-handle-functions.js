@@ -68,10 +68,6 @@ function flip() {
   const { imageFile } = this.state;
   this.setState({ rotation }, () => this.handleImageAdd(imageFile));
 }
-function handleNonJpg(image) {
-  this.setState({ imageFile: image });
-
-}
 
 function handleImageAdd(image) {
   this.setState({ imageFile: image });
