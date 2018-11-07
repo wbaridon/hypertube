@@ -150,8 +150,14 @@ function handleImageAdd(image) {
         let imageXoffset = imageOffset;
         if (img.width > img.height) {
           imageYoffset = 0;
+          if (orientation <= 4) {
+            imageXoffset = 0;
+          }
         } else {
           imageXoffset = 0;
+          if (orientation > 4) {
+            imageYoffset = 0;
+          }
         }
         ctx.drawImage(img, x + imageXoffset, y + imageYoffset, img.width, img.height);
         ctx.restore();

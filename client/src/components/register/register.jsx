@@ -188,7 +188,7 @@ class Register extends React.Component {
                           <Typography
                             component="span"
                             variant="subtitle1"
-                            color="primary"
+                            color="error"
                             className={classes.imageTitle}
                           >
                             {intl.formatMessage({ id: 'register.profilePicture' })}
