@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('./user');
 
-module.exports.loginExist = function (login) {
+module.exports.getUser = function (login) {
   return new Promise ((resolve, reject) => {
     User.findOne({'login': login}).then(function(result){
       resolve(result)

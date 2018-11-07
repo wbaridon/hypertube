@@ -7,6 +7,7 @@ const UserManager = require('../models/userManager');
 
 userRouter
     .post('/register', urlencodedParser, (req, res) => {
+      console.log(req.body)
       var user = {
         email: req.body.email,
         login: req.body.login,
@@ -30,6 +31,26 @@ userRouter
       }).catch(error => {
         res.send({'error': error})
       })
+    })
+    .post('/login', (req, res) => {
+      const user = {
+        "login": req.body.login,
+        "password": req.body.password
+      }
+      const appData = {}
+      if (user.login && user.password) {
+        UserManager.getUser(user.login).then(getResult => {
+          argon2.verify(getResult.password, user.password).then(match => {
+            if (match) {
+              token = jwt.sign(user, 'HypertubeSecretKey', { expiresIn: '1d'});
+              appData.error = 0;
+              appData["token"] = token;
+              res.status(200).json(appData);
+            } else { res.send({'error': 'Invalid password or login'})}
+          })
+        })
+      //  argon2.verify()
+      } else { res.send({'error': 'Empty password or login'}) }
     })
 
 function hashPassword(pwd) {
