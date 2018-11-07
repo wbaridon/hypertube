@@ -1,88 +1,94 @@
 import piexif from 'piexifjs';
 
 function rotateCounterClockwise() {
-  let { rotation } = this.state;
-  const { imageFile } = this.state;
-  if (rotation === 1) {
-    rotation = 8;
-  } else if (rotation === 8) {
-    rotation = 3;
-  } else if (rotation === 3) {
-    rotation = 6;
-  } else if (rotation === 6) {
-    rotation = 1;
-  } else if (rotation === 2) {
-    rotation = 5;
-  } else if (rotation === 5) {
-    rotation = 4;
-  } else if (rotation === 4) {
-    rotation = 7;
-  } else if (rotation === 7) {
-    rotation = 2;
+  const { image } = this.state;
+  let { orientation } = image;
+  if (orientation === 1) {
+    orientation = 8;
+  } else if (orientation === 8) {
+    orientation = 3;
+  } else if (orientation === 3) {
+    orientation = 6;
+  } else if (orientation === 6) {
+    orientation = 1;
+  } else if (orientation === 2) {
+    orientation = 5;
+  } else if (orientation === 5) {
+    orientation = 4;
+  } else if (orientation === 4) {
+    orientation = 7;
+  } else if (orientation === 7) {
+    orientation = 2;
   }
-  this.setState({ rotation }, () => this.handleImageAdd(imageFile));
+  image.orientation = orientation;
+  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
 }
 
 function rotateClockwise() {
-  let { rotation } = this.state;
-  const { imageFile } = this.state;
-  if (rotation === 8) {
-    rotation = 1;
-  } else if (rotation === 1) {
-    rotation = 6;
-  } else if (rotation === 6) {
-    rotation = 3;
-  } else if (rotation === 3) {
-    rotation = 8;
-  } else if (rotation === 2) {
-    rotation = 7;
-  } else if (rotation === 7) {
-    rotation = 4;
-  } else if (rotation === 4) {
-    rotation = 5;
-  } else if (rotation === 5) {
-    rotation = 2;
+  const { image } = this.state;
+  let { orientation } = image;
+  if (orientation === 8) {
+    orientation = 1;
+  } else if (orientation === 1) {
+    orientation = 6;
+  } else if (orientation === 6) {
+    orientation = 3;
+  } else if (orientation === 3) {
+    orientation = 8;
+  } else if (orientation === 2) {
+    orientation = 7;
+  } else if (orientation === 7) {
+    orientation = 4;
+  } else if (orientation === 4) {
+    orientation = 5;
+  } else if (orientation === 5) {
+    orientation = 2;
   }
-  this.setState({ rotation }, () => this.handleImageAdd(imageFile));
+  image.orientation = orientation;
+  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
 }
 
 function flip() {
-  let { rotation } = this.state;
-  if (rotation === 1) {
-    rotation = 2;
-  } else if (rotation === 2) {
-    rotation = 1;
-  } else if (rotation === 8) {
-    rotation = 7;
-  } else if (rotation === 7) {
-    rotation = 8;
-  } else if (rotation === 6) {
-    rotation = 5;
-  } else if (rotation === 5) {
-    rotation = 6;
-  } else if (rotation === 3) {
-    rotation = 4;
-  } else if (rotation === 4) {
-    rotation = 3;
+  const { image } = this.state;
+  let { orientation } = image;
+  if (orientation === 1) {
+    orientation = 2;
+  } else if (orientation === 2) {
+    orientation = 1;
+  } else if (orientation === 8) {
+    orientation = 7;
+  } else if (orientation === 7) {
+    orientation = 8;
+  } else if (orientation === 6) {
+    orientation = 5;
+  } else if (orientation === 5) {
+    orientation = 6;
+  } else if (orientation === 3) {
+    orientation = 4;
+  } else if (orientation === 4) {
+    orientation = 3;
   }
-  const { imageFile } = this.state;
-  this.setState({ rotation }, () => this.handleImageAdd(imageFile));
+  image.orientation = orientation;
+  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
 }
 
-function handleImageAdd(image) {
-  this.setState({ imageFile: image });
-  let { rotation } = this.state;
-  let { imageOffset } = this.state;
-  if (!image) {
+function handleImageAdd(rawImage) {
+  const reader = new FileReader();
+  const { image } = this.state;
+  image.inputFile = rawImage;
+  this.setState({ image });
+  let { orientation } = image;
+  const { verticalOffset } = image;
+  if (!rawImage) {
     return;
   }
   let exif;
-  if (image.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
-    this.reader.onload = (e) => {
-      if (image.type.match(/image\/(?:jpg|jpeg)/)) {
+  if (rawImage.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
+    reader.onload = (e) => {
+      if (rawImage.type.match(/image\/(?:jpg|jpeg)/)) {
         exif = piexif.load(e.target.result);
       } else {
-        rotation = rotation !== 0 ? rotation : 1;
+        orientation = orientation !== 0 ? orientation : 1;
       }
       const img = new Image();
       img.onload = () => {
@@ -93,10 +99,10 @@ function handleImageAdd(image) {
 
         img.width *= scale; // 608
         img.height *= scale; // 550
-        console.log(img.width, img.height);
-        const orientation = rotation || exif['0th'][piexif.ImageIFD.Orientation];
-        this.setState({ rotation: orientation, widthGreater: img.width >= img.height });
-        console.log(orientation);
+        orientation = orientation || exif['0th'][piexif.ImageIFD.Orientation];
+        image.orientation = orientation;
+        image.isLandscape = img.width >= img.height;
+        this.setState({ image });
         const canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
@@ -146,8 +152,8 @@ function handleImageAdd(image) {
           y = -canvas.width;
           ctx.scale(-1, -1);
         }
-        let imageYoffset = imageOffset;
-        let imageXoffset = imageOffset;
+        let imageYoffset = verticalOffset;
+        let imageXoffset = verticalOffset;
         if (img.width > img.height) {
           imageYoffset = 0;
           if (orientation <= 4) {
@@ -163,17 +169,24 @@ function handleImageAdd(image) {
         ctx.restore();
 
         const dataURL = canvas.toDataURL('image/jpeg', 1.0);
-        this.setState({ image: dataURL, imageYoffset });
+        image.rawData = dataURL;
+        image.verticalOffset = verticalOffset;
+        this.setState({ image });
       };
       img.src = e.target.result;
     };
-    this.reader.readAsDataURL(image);
+    reader.readAsDataURL(rawImage);
   }
 }
-
+function offsetY(amount) {
+  const { image } = this.state;
+  image.verticalOffset += amount;
+  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
+}
 export {
   rotateClockwise,
   rotateCounterClockwise,
   flip,
   handleImageAdd,
+  offsetY,
 };

@@ -4,6 +4,7 @@ const flatten = require('flat');
 
 const frFR = {
   register: {
+    title: 'INSCRIPTION',
     notNumberOrLetter: 'Mauvais charactere',
     emailBadFormat: 'Mauvais format de mail',
     userName: 'Nom d\'Utilisateur',
