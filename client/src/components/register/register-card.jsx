@@ -32,6 +32,7 @@ import {
   flip,
   handleImageAdd,
   offsetY,
+  dataURItoBlob,
 } from './image-handle-functions';
 import styles from './styles';
 
@@ -111,7 +112,8 @@ class RegisterCard extends React.Component {
     this.setState({ showPassword: !showPassword });
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     let willSend = true;
     const {
       userName, userNameError,
@@ -135,10 +137,37 @@ class RegisterCard extends React.Component {
     } else if (!image.rawData) {
       willSend = false;
     }
+    const formData = {
+      userName,
+      firstName,
+      lastName,
+      email,
+      password,
+    };
+    const form = new FormData();
+    Object.keys(formData).forEach((key) => {
+      console.log(key, formData[key]);
+      form.append(key, formData[key]);
+    });
+    image.inputFile = dataURItoBlob(image.rawData);
+    form.append('image', image.inputFile);
     if (willSend) {
-      // do sending
+      Axios({
+        method: 'post',
+        url: 'http://localhost:3000/oauth/register',
+        data: formData,
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+      })
+        .then((response) => {
+          // handle success
+          console.log(response);
+        })
+        .catch((response) => {
+          // handle error
+          console.log(response);
+        });
     }
-    console.log(image.rawData);
+    console.log(form);
   }
 
   render() {
@@ -222,80 +251,82 @@ class RegisterCard extends React.Component {
               )
           }
         </CardMedia>
-        <CardContent>
-          <TextField
-            fullWidth
-            error={userNameError.length !== 0}
-            id="filled-simple-start-adornment"
-            variant="filled"
-            label={intl.formatMessage({ id: 'register.userName' })}
-            type="text"
-            value={userName}
-            onChange={e => this.handleChange('userName', e)}
-            helperText={userNameError.length ? this.mergeErrors(userNameError) : ' '}
-          />
-          <br />
-          <TextField
-            fullWidth
-            error={emailError.length !== 0}
-            variant="filled"
-            label={intl.formatMessage({ id: 'register.email' })}
-            type="email"
-            value={email}
-            onChange={e => this.handleChange('email', e)}
-            helperText={emailError.length ? this.mergeErrors(emailError) : ' '}
-          />
-          <br />
-          <TextField
-            fullWidth
-            error={firstNameError.length !== 0}
-            variant="filled"
-            label={intl.formatMessage({ id: 'register.firstName' })}
-            value={firstName}
-            onChange={e => this.handleChange('firstName', e)}
-            helperText={firstNameError.length ? this.mergeErrors(firstNameError) : ' '}
-          />
-          <br />
-          <TextField
-            fullWidth
-            error={lastNameError.length !== 0}
-            variant="filled"
-            label={intl.formatMessage({ id: 'register.lastName' })}
-            value={lastName}
-            onChange={e => this.handleChange('lastName', e)}
-            helperText={lastNameError.length ? this.mergeErrors(lastNameError) : ' '}
-          />
-          <br />
-          <TextField
-            fullWidth
-            error={passwordError.length !== 0}
-            id="filled-adornment-password"
-            variant="filled"
-            type={showPassword ? 'text' : 'password'}
-            label={intl.formatMessage({ id: 'register.password' })}
-            value={password}
-            onChange={e => this.handleChange('password', e)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment variant="filled" position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    onClick={this.handleClickShowPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
-          />
-        </CardContent>
-        <CardActions>
-          <Button variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
-          <Button href="https://api.intra.42.fr/oauth/authorize?client_id=5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fregister&response_type=code" variant="contained">
-            {intl.formatMessage({ id: 'register.registerWith42' })}
-          </Button>
-        </CardActions>
+        <form action="" encType="multipart/form-data" onSubmit={e => this.handleSubmit(e)}>
+          <CardContent>
+            <TextField
+              fullWidth
+              error={userNameError.length !== 0}
+              id="filled-simple-start-adornment"
+              variant="filled"
+              label={intl.formatMessage({ id: 'register.userName' })}
+              type="text"
+              value={userName}
+              onChange={e => this.handleChange('userName', e)}
+              helperText={userNameError.length ? this.mergeErrors(userNameError) : ' '}
+            />
+            <br />
+            <TextField
+              fullWidth
+              error={emailError.length !== 0}
+              variant="filled"
+              label={intl.formatMessage({ id: 'register.email' })}
+              type="email"
+              value={email}
+              onChange={e => this.handleChange('email', e)}
+              helperText={emailError.length ? this.mergeErrors(emailError) : ' '}
+            />
+            <br />
+            <TextField
+              fullWidth
+              error={firstNameError.length !== 0}
+              variant="filled"
+              label={intl.formatMessage({ id: 'register.firstName' })}
+              value={firstName}
+              onChange={e => this.handleChange('firstName', e)}
+              helperText={firstNameError.length ? this.mergeErrors(firstNameError) : ' '}
+            />
+            <br />
+            <TextField
+              fullWidth
+              error={lastNameError.length !== 0}
+              variant="filled"
+              label={intl.formatMessage({ id: 'register.lastName' })}
+              value={lastName}
+              onChange={e => this.handleChange('lastName', e)}
+              helperText={lastNameError.length ? this.mergeErrors(lastNameError) : ' '}
+            />
+            <br />
+            <TextField
+              fullWidth
+              error={passwordError.length !== 0}
+              id="filled-adornment-password"
+              variant="filled"
+              type={showPassword ? 'text' : 'password'}
+              label={intl.formatMessage({ id: 'register.password' })}
+              value={password}
+              onChange={e => this.handleChange('password', e)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment variant="filled" position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
+            />
+          </CardContent>
+          <CardActions>
+            <Button type="submit" variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
+            <Button href="https://api.intra.42.fr/oauth/authorize?client_id=5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fregister&response_type=code" variant="contained">
+              {intl.formatMessage({ id: 'register.registerWith42' })}
+            </Button>
+          </CardActions>
+        </form>
       </Card>
     );
   }
