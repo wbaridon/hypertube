@@ -38,20 +38,26 @@ userRouter
         "login": req.body.login,
         "password": req.body.password
       }
-      const appData = {}
       if (user.login && user.password) {
         UserManager.getUser(user.login).then(getResult => {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
-              token = jwt.sign(user, 'HypertubeSecretKey', { expiresIn: '1d'});
-              appData.error = 0;
-              appData["token"] = token;
-              res.status(200).json(appData);
+              setToken(user).then(appData => { res.status(200).json(appData); })
             } else { res.send({'error': 'Invalid password or login'})}
           })
         })
       } else { res.send({'error': 'Empty password or login'}) }
     })
+
+function setToken(user) {
+  return new Promise ((resolve, error) => {
+    const appData = {}
+    const token = jwt.sign(user, 'HypertubeSecretKey', { expiresIn: '1d'});
+    appData.error = 0;
+    appData["token"] = token;
+    resolve(appData);
+  })
+}
 
 function hashPassword(pwd) {
   return new Promise ((resolve, error) => {
