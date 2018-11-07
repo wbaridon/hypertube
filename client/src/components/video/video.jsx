@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -15,13 +15,15 @@ class Video extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
     return (
-      <div className={classes.class}>je te laisse me demander si tu as des questions</div>
-      // <video id='myVideo' src="blob:null/edf9ee49-30da-4ba7-ac98-a596c1c7f8a8" width="1280px" height="720px" controls="">
-      //   {/* <source /> */}
-      // </video>
+      <React.Fragment>
+        <video id="videoPlayer" width="1280px" height="720px" controls>
+          <track kind="captions" />
+          <source src="http://localhost:3000/video" type="video/mp4" />
+        </video>
+      </React.Fragment>
     );
   }
 }
