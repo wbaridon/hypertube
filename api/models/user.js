@@ -7,12 +7,12 @@ const MovieHistorySchema = new Schema({
 
 const UserSchema = new Schema({
   email: String,
-  login: String,
+  userName: String,
   picture: String,
-  name: String,
-  firstname: String,
+  lastName: String,
+  firstName: String,
   password: String,
-  langue: Number,
+  locale: String,
   moviesHistory: [MovieHistorySchema]
 });
 

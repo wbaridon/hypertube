@@ -12,17 +12,17 @@ userRouter
       console.log(req.body)
       var user = {
         "email": req.body.email,
-        "login": req.body.login,
+        "userName": req.body.userName,
         "picture": '', // Voir comment le faire
-        "name": req.body.name,
-        "firstname": req.body.firstname,
+        "lastName": req.body.lastName,
+        "firstName": req.body.firstName,
         "password": req.body.password
       }
       checkForm(user).then(result => {
         hashPassword(user.password).then(hash => {
           user.password = hash;
-          UserManager.userExist(user.email, user.login).then(userExist => {
-            if (userExist) { res.send({'error': 'Email or login already exist'}) }
+          UserManager.userExist(user.email, user.userName).then(userExist => {
+            if (userExist) { res.send({'error': 'Email or User name already exist'}) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
             else {
               UserManager.createUser(user, callback => {
                 res.send({'success': 'You are now registered'})
@@ -36,11 +36,11 @@ userRouter
     })
     .post('/login', (req, res) => {
       const user = {
-        "login": req.body.login,
+        "userName": req.body.userName,
         "password": req.body.password
       }
-      if (user.login && user.password) {
-        UserManager.getUser(user.login).then(getResult => {
+      if (user.userName && user.password) {
+        UserManager.getUser(user.userName).then(getResult => {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
               setToken(user).then(appData => { res.status(200).json(appData); })
@@ -51,13 +51,13 @@ userRouter
     })
     .post('/getUser', (req, res) => {
       // Reçoit un login et retourne les infos public de ce dernier
-      let login = req.body.login;
-      UserManager.getUser(login).then(getResult => {
+      let userName = req.body.userName;
+      UserManager.getUser(userName).then(getResult => {
         const user = {
-          "login": getResult.login,
+          "userName": getResult.userName,
           "picture": getResult.picture,
-          "name": getResult.name,
-          "firstname": getResult.firstname
+          "lastName": getResult.lastName,
+          "firstName": getResult.firstName
         }
         res.send(user)
       })
@@ -85,13 +85,13 @@ function hashPassword(pwd) {
 
 function checkForm(user) {
   return new Promise ((resolve, error) => {
-    if (user.email && user.login && user.name && user.firstname && user.password) {
+    if (user.email && user.userName && user.lastName && user.firstName && user.password) {
       if (user.password.length < 6) { error('Password too short') }
       else {
         // Manque le check si chiffre et lettre dans mdp, picture
         resolve('Correct Form')
       }
-    } else { error('Some fields are Empty')}
+    } else { error('Some fields are Empty')} // Des erreurs plus explicites c'est toujours bien, pour savoir quel variable est le probleme!
   })
 }
 

@@ -6,20 +6,20 @@ describe('Deleting Database records', function (){
   beforeEach(function(done){
     user = new User({
       email: 'wbaridon@student.42.fr',
-      login: 'wbaridon',
+      userName: 'wbaridon',
       picture: 'test.jpg',
-      name: 'Baridon',
-      firstname: 'Wenceslas',
+      lastName: 'Baridon',
+      firstName: 'Wenceslas',
       password: 'test',
-      langue: 0
+      locale: 'en'
     });
     user.save().then(function(){
       done();
     })
   })
   it('Delete one record from User', function(done){
-    User.findOneAndDelete({name: 'Baridon'}).then(function(){
-      User.findOne({name: 'Baridon'}).then(function(result){
+    User.findOneAndDelete({lastName: 'Baridon'}).then(function(){
+      User.findOne({lastName: 'Baridon'}).then(function(result){
         assert(result === null);
         done();
       })

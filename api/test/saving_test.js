@@ -5,12 +5,12 @@ describe('Saving Database records', function (){
   it('Save a record into User', function(done){
     var user = new User({
       email: 'wbaridon@student.42.fr',
-      login: 'wbaridon',
+      userName: 'wbaridon',
       picture: 'test.jpg',
-      name: 'Baridon',
-      firstname: 'Wenceslas',
+      LastName: 'Baridon',
+      firstName: 'Wenceslas',
       password: 'test',
-      langue: 0
+      locale: 'en'
     });
     user.save().then(function(){
       assert(user.isNew === false);

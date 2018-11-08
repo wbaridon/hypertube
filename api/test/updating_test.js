@@ -6,21 +6,21 @@ describe('Updating Database records', function (){
   beforeEach(function(done){
     user = new User({
       email: 'wbaridon@student.42.fr',
-      login: 'wbaridon',
+      userName: 'wbaridon',
       picture: 'test.jpg',
-      name: 'Baridon',
-      firstname: 'Wenceslas',
+      lastName: 'Baridon',
+      firstName: 'Wenceslas',
       password: 'test',
-      langue: 0
+      locale: 'en'
     });
     user.save().then(function(){
       done();
     })
   })
   it('Update one record from User', function(done){
-    User.findOneAndUpdate({name: 'Baridon'}, {name: 'Grain'}).then(function(){
+    User.findOneAndUpdate({lastName: 'Baridon'}, {lastName: 'Grain'}).then(function(){
       User.findOne({_id: user._id}).then(function(result){
-        assert(result.name === 'Grain');
+        assert(result.lastName === 'Grain');
         done();
       })
     })
