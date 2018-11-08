@@ -19,10 +19,11 @@ module.exports.createUser = function (data, callback) {
   var user = new User({
     email: data.email,
     userName: data.userName,
-    picture: '', // Voir comment le faire
+    picture: data.picture, // Voir comment le faire
     lastName: data.lastName,
     firstName: data.firstName,
-    password: data.password
+    password: data.password,
+    locale: data.locale
   })
   user.save().then(function(){
     callback()

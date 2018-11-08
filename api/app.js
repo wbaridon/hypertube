@@ -16,6 +16,7 @@ app.use(cors());
 const userRouter = require('./routes/userRouter');
 const oAuthRouter = require('./routes/oAuthRouter');
 
+app.use(express.static('assets'))
 app.use('/user', userRouter);
 app.use('/oAuth', oAuthRouter);
 

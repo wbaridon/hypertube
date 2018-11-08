@@ -1,43 +1,57 @@
 const express = require('express');
 const userRouter = express.Router();
-const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({ extended: true });
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const crypto = require('crypto');
+const storage = multer.diskStorage({
+  destination: './assets/images/',
+  filename: function (req, file, callback) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      if (err) return callback(err);
+      str = file.mimetype
+      callback(null, `${raw.toString('hex')}.${str.slice(6)}`)
+    })
+  }
+})
+const upload = multer({storage:storage});
+
 const UserManager = require('../models/userManager');
 
 userRouter
-    .post('/register', urlencodedParser, (req, res) => {
-      console.log('Entre dans register')
-      console.log(req.body)
-      var user = {
-        "email": req.body.email,
-        "userName": req.body.userName,
-        "picture": '', // Voir comment le faire
-        "lastName": req.body.lastName,
-        "firstName": req.body.firstName,
-        "password": req.body.password
-      }
-      checkForm(user).then(result => {
-        hashPassword(user.password).then(hash => {
-          user.password = hash;
-          UserManager.userExist(user.email, user.userName).then(userExist => {
-            if (userExist) { res.send({'error': 'Email or User name already exist'}) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
-            else {
-              UserManager.createUser(user, callback => {
-                res.send({'success': 'You are now registered'})
-              })
-            }
+    .post('/register', upload.single('image'), (req, res, next) => {
+      console.log(req.file)
+      if (req.file) {
+        var user = {
+          email: req.body.email,
+          userName: req.body.userName,
+          picture: req.file.filename,
+          lastName: req.body.lastName,
+          firstName: req.body.firstName,
+          password: req.body.password,
+          locale: req.body.locale
+        }
+        checkForm(user).then(result => {
+          hashPassword(user.password).then(hash => {
+            user.password = hash;
+            UserManager.userExist(user.email, user.userName).then(userExist => {
+              if (userExist) { res.send({'error': 'Email or User name already exist'}) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
+              else {
+                UserManager.createUser(user, callback => {
+                  res.send({'success': 'You are now registered'})
+                })
+              }
+            })
           })
+        }).catch(error => {
+          res.send({'error': error})
         })
-      }).catch(error => {
-        res.send({'error': error})
-      })
+      } else { res.send({'error': 'We have a problem with your picture'})}
     })
     .post('/login', (req, res) => {
       const user = {
-        "userName": req.body.userName,
-        "password": req.body.password
+        userName: req.body.userName,
+        password: req.body.password
       }
       if (user.userName && user.password) {
         UserManager.getUser(user.userName).then(getResult => {
@@ -54,10 +68,10 @@ userRouter
       let userName = req.body.userName;
       UserManager.getUser(userName).then(getResult => {
         const user = {
-          "userName": getResult.userName,
-          "picture": getResult.picture,
-          "lastName": getResult.lastName,
-          "firstName": getResult.firstName
+          userName: getResult.userName,
+          picture: getResult.picture,
+          lastName: getResult.lastName,
+          firstName: getResult.firstName
         }
         res.send(user)
       })
