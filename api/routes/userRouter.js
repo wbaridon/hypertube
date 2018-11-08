@@ -50,8 +50,8 @@ userRouter
     })
     .post('/login', (req, res) => {
       const user = {
-        "userName": req.body.userName,
-        "password": req.body.password
+        userName: req.body.userName,
+        password: req.body.password
       }
       if (user.userName && user.password) {
         UserManager.getUser(user.userName).then(getResult => {
@@ -68,10 +68,10 @@ userRouter
       let userName = req.body.userName;
       UserManager.getUser(userName).then(getResult => {
         const user = {
-          "userName": getResult.userName,
-          "picture": getResult.picture,
-          "lastName": getResult.lastName,
-          "firstName": getResult.firstName
+          userName: getResult.userName,
+          picture: getResult.picture,
+          lastName: getResult.lastName,
+          firstName: getResult.firstName
         }
         res.send(user)
       })
