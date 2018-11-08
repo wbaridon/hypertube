@@ -31,7 +31,6 @@ userRouter
           password: req.body.password,
           locale: req.body.locale
         }
-        console.log(user)
         checkForm(user).then(result => {
           hashPassword(user.password).then(hash => {
             user.password = hash;
@@ -47,7 +46,7 @@ userRouter
         }).catch(error => {
           res.send({'error': error})
         })
-      }
+      } else { res.send({'error': 'We have a problem with your picture'})}
     })
     .post('/login', (req, res) => {
       const user = {
