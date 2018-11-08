@@ -8,14 +8,6 @@ module.exports.getUser = function (login) {
     })
   })
 }
-module.exports.emailExist = function (email) {
-  return new Promise ((resolve, reject) => {
-    User.findOne({'email': email}).then(function(result){
-      resolve(result)
-    })
-  })
-}
-
 module.exports.userExist = function (email, login) {
   return new Promise ((resolve, reject) => {
     User.findOne({$or: [{'email': email}, {'login': login}]}).then(function(result){
@@ -23,7 +15,6 @@ module.exports.userExist = function (email, login) {
     })
   })
 }
-
 module.exports.createUser = function (data, callback) {
   var user = new User({
     email: data.email,
@@ -36,4 +27,7 @@ module.exports.createUser = function (data, callback) {
   user.save().then(function(){
     callback()
   })
+}
+module.exports.updateUser = function (user, callback) {
+  // Voir sur mongo comment faire
 }

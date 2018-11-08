@@ -8,14 +8,15 @@ const UserManager = require('../models/userManager');
 
 userRouter
     .post('/register', urlencodedParser, (req, res) => {
+      console.log('Entre dans register')
       console.log(req.body)
       var user = {
-        email: req.body.email,
-        login: req.body.login,
-        picture: '', // Voir comment le faire
-        name: req.body.name,
-        firstname: req.body.firstname,
-        password: req.body.password
+        "email": req.body.email,
+        "login": req.body.login,
+        "picture": '', // Voir comment le faire
+        "name": req.body.name,
+        "firstname": req.body.firstname,
+        "password": req.body.password
       }
       checkForm(user).then(result => {
         hashPassword(user.password).then(hash => {
@@ -47,6 +48,19 @@ userRouter
           })
         })
       } else { res.send({'error': 'Empty password or login'}) }
+    })
+    .post('/getUser', (req, res) => {
+      // Reçoit un login et retourne les infos public de ce dernier
+      let login = req.body.login;
+      UserManager.getUser(login).then(getResult => {
+        const user = {
+          "login": getResult.login,
+          "picture": getResult.picture,
+          "name": getResult.name,
+          "firstname": getResult.firstname
+        }
+        res.send(user)
+      })
     })
 
 function setToken(user) {
