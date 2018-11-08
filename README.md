@@ -26,3 +26,6 @@ En utilisant Robomongo (Disponible dans le MSC)
 ## Auth 42
 Envoyer a /oauth/register/42 la data `clientCode` en format json
 Renvoi ensuite les data de l'user au front
+
+## Liste de nos bonus
+- Auth par Twitter,Github,Google,42,Normal (2 mini // a confirmer)
