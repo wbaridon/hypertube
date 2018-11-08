@@ -25,7 +25,10 @@
     "react-cookie": "^3.0.4",
     "react-dom": "^16.4.2",
     "react-intl": "^2.7.0",
-    "react-router-dom": "^4.3.1"
+    "react-redux": "^5.1.0",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "repository": "https://github.com/lord0gnome/spideysite.git",
   "devDependencies": {

@@ -6,11 +6,15 @@ import orange from '@material-ui/core/colors/orange';
 import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
 import { BrowserRouter } from 'react-router-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { withCookies, Cookies, CookiesProvider } from 'react-cookie';
 import enUS from './i18n/en-US';
 import frFR from './i18n/fr-FR';
 import CurrentRoute from './components/routing/current-route';
+import rootReducer from './reducers/index';
 
 const theme = createMuiTheme({
   palette: {
@@ -26,6 +30,7 @@ const theme = createMuiTheme({
 });
 
 addLocaleData([...en, ...fr]);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 class App extends React.Component {
   constructor(props) {
@@ -50,15 +55,17 @@ class App extends React.Component {
     const { locale, messages } = this.state;
 
     return (
-      <IntlProvider locale={locale} messages={messages}>
-        <BrowserRouter>
-          <CookiesProvider>
-            <MuiThemeProvider theme={theme}>
-              <CurrentRoute />
-            </MuiThemeProvider>
-          </CookiesProvider>
-        </BrowserRouter>
-      </IntlProvider>
+      <Provider store={store}>
+        <IntlProvider locale={locale} messages={messages}>
+          <BrowserRouter>
+            <CookiesProvider>
+              <MuiThemeProvider theme={theme}>
+                <CurrentRoute />
+              </MuiThemeProvider>
+            </CookiesProvider>
+          </BrowserRouter>
+        </IntlProvider>
+      </Provider>
     );
   }
 }

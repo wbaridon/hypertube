@@ -98,7 +98,7 @@ function handleImageAdd(rawImage, event = null) {
     event.stopPropagation();
     event.preventDefault();
   }
-  if (!rawImage.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
+  if (!rawImage || !rawImage.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
     return;
   }
   const reader = new FileReader();
@@ -107,9 +107,7 @@ function handleImageAdd(rawImage, event = null) {
   this.setState({ image });
   let { orientation } = image;
   const { verticalOffset } = image;
-  if (!rawImage) {
-    return;
-  }
+
   let exif;
   if (rawImage.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
     reader.onload = (e) => {

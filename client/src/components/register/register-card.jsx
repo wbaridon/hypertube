@@ -8,6 +8,7 @@ import {
   Button,
   ButtonBase,
   Typography,
+  Switch,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -53,6 +54,7 @@ class RegisterCard extends React.Component {
         orientation: 1,
         error: '',
       },
+      locale: 'en',
       userName: '',
       userNameError: [],
       firstName: '',
@@ -76,6 +78,7 @@ class RegisterCard extends React.Component {
     this.flip = flip.bind(this);
     this.offsetY = offsetY.bind(this);
     this.handleImageAddWrapper = this.handleImageAddWrapper.bind(this);
+    this.toggleLocale = this.toggleLocale.bind(this);
   }
 
   componentDidMount() {
@@ -123,6 +126,17 @@ class RegisterCard extends React.Component {
     this.setState({ showPassword: !showPassword });
   }
 
+  toggleLocale() {
+    let { locale } = this.state;
+
+    if (locale === 'en') {
+      locale = 'fr';
+    } else {
+      locale = 'en';
+    }
+    this.setState({ locale });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     let willSend = true;
@@ -132,6 +146,7 @@ class RegisterCard extends React.Component {
       lastName, lastNameError,
       email, emailError,
       password, passwordError,
+      locale,
       image,
     } = this.state;
 
@@ -154,6 +169,7 @@ class RegisterCard extends React.Component {
       lastName,
       email,
       password,
+      locale,
     };
     const form = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -192,6 +208,7 @@ class RegisterCard extends React.Component {
       lastName, lastNameError,
       email, emailError,
       password, passwordError, showPassword,
+      locale,
     } = this.state;
     return (
       <Card className={classes.card}>
@@ -332,6 +349,7 @@ class RegisterCard extends React.Component {
               }}
               helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
             />
+            <Switch checked={locale === 'en'} onChange={this.toggleLocale} />
           </CardContent>
           <CardActions>
             <Button type="submit" variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
