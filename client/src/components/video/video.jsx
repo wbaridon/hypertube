@@ -19,9 +19,7 @@ class Video extends React.Component {
 
     return (
       <React.Fragment>
-        <video id="videoPlayer" width="1280px" height="720px" controls>
-          <track kind="captions" />
-          <source src="http://localhost:3000/video" type="video/mp4" />
+        <video id="videoPlayer" src="http://localhost:3000/videos/music.mp4" width="1280px" height="720px" controls>
         </video>
       </React.Fragment>
     );
