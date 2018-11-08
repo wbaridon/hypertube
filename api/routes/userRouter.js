@@ -20,31 +20,34 @@ const UserManager = require('../models/userManager');
 
 userRouter
     .post('/register', upload.single('image'), (req, res, next) => {
-    console.log(req.file)
-      console.log(req.body)
-      var user = {
-        "email": req.body.email,
-        "userName": req.body.userName,
-        "picture": '', // Voir comment le faire
-        "lastName": req.body.lastName,
-        "firstName": req.body.firstName,
-        "password": req.body.password
-      }
-      checkForm(user).then(result => {
-        hashPassword(user.password).then(hash => {
-          user.password = hash;
-          UserManager.userExist(user.email, user.userName).then(userExist => {
-            if (userExist) { res.send({'error': 'Email or User name already exist'}) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
-            else {
-              UserManager.createUser(user, callback => {
-                res.send({'success': 'You are now registered'})
-              })
-            }
+      console.log(req.file)
+      if (req.file) {
+        var user = {
+          email: req.body.email,
+          userName: req.body.userName,
+          picture: req.file.filename,
+          lastName: req.body.lastName,
+          firstName: req.body.firstName,
+          password: req.body.password,
+          locale: req.body.locale
+        }
+        console.log(user)
+        checkForm(user).then(result => {
+          hashPassword(user.password).then(hash => {
+            user.password = hash;
+            UserManager.userExist(user.email, user.userName).then(userExist => {
+              if (userExist) { res.send({'error': 'Email or User name already exist'}) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
+              else {
+                UserManager.createUser(user, callback => {
+                  res.send({'success': 'You are now registered'})
+                })
+              }
+            })
           })
+        }).catch(error => {
+          res.send({'error': error})
         })
-      }).catch(error => {
-        res.send({'error': error})
-      })
+      }
     })
     .post('/login', (req, res) => {
       const user = {
