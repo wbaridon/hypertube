@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { setLocale } from './set-locale';
+import locale from './locale';
 
 export default combineReducers({
-  setLocale,
+  locale,
 });

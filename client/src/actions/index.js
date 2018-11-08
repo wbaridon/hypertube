@@ -1,3 +1,4 @@
-import changeLocale from './locale';
-
-export default changeLocale;
+export const setLocale = locale => ({
+  type: 'SET_LOCALE',
+  locale,
+});
