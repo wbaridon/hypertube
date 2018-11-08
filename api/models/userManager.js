@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 const User = require('./user');
 
-module.exports.getUser = function (login) {
+module.exports.getUser = function (userName) {
   return new Promise ((resolve, reject) => {
-    User.findOne({'login': login}).then(function(result){
+    User.findOne({'userName': userName}).then(function(result){
       resolve(result)
     })
   })
 }
-module.exports.userExist = function (email, login) {
+module.exports.userExist = function (email, userName) {
   return new Promise ((resolve, reject) => {
-    User.findOne({$or: [{'email': email}, {'login': login}]}).then(function(result){
+    User.findOne({$or: [{'email': email}, {'userName': userName}]}).then(function(result){
       resolve(result)
     })
   })
