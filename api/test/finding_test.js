@@ -6,20 +6,20 @@ describe('Finding Database records', function (){
   beforeEach(function(done){
     user = new User({
       email: 'wbaridon@student.42.fr',
-      login: 'wbaridon',
+      userName: 'wbaridon',
       picture: 'test.jpg',
-      name: 'Baridon',
-      firstname: 'Wenceslas',
+      lastName: 'Baridon',
+      firstName: 'Wenceslas',
       password: 'test',
-      langue: 0
+      locale: 'en'
     });
     user.save().then(function(){
       done();
     })
   })
   it('Find one record from User', function(done){
-    User.findOne({name: 'Baridon'}).then(function(result){
-      assert(result.name === 'Baridon')
+    User.findOne({lastName: 'Baridon'}).then(function(result){
+      assert(result.lastName === 'Baridon')
       done();
     })
   });

@@ -10,11 +10,11 @@ describe('Nesting records', function(){
   });
   it('Create an user with one movie seen', function(done){
     var user = new User({
-      name: 'Baridon',
+      LastName: 'Baridon',
       moviesHistory: [{id: 1}]
     })
     user.save().then(function(){
-      User.findOne({name: 'Baridon'}).then(function(record){
+      User.findOne({lastName: 'Baridon'}).then(function(record){
         assert(record.moviesHistory.length === 1)
         done();
       })
@@ -22,14 +22,14 @@ describe('Nesting records', function(){
   });
   it('Add a movie seen to an user', function(done){
     var user = new User({
-      name: 'Baridon',
+      lastName: 'Baridon',
       moviesHistory: [{id: 1}]
     })
     user.save().then(function(){
-      User.findOne({name: 'Baridon'}).then(function(record){
+      User.findOne({lastName: 'Baridon'}).then(function(record){
         record.moviesHistory.push({id: 2});
         record.save().then(function(){
-          User.findOne({name: 'Baridon'}).then(result => {
+          User.findOne({lastName: 'Baridon'}).then(result => {
             assert(result.moviesHistory.length === 2);
             done();
           })

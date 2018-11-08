@@ -18,10 +18,10 @@ module.exports.userExist = function (email, login) {
 module.exports.createUser = function (data, callback) {
   var user = new User({
     email: data.email,
-    login: data.login,
+    userName: data.userName,
     picture: '', // Voir comment le faire
-    name: data.name,
-    firstname: data.firstname,
+    lastName: data.lastName,
+    firstName: data.firstName,
     password: data.password
   })
   user.save().then(function(){
