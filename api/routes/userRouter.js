@@ -1,14 +1,26 @@
 const express = require('express');
 const userRouter = express.Router();
-const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({ extended: true });
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const crypto = require('crypto');
+const storage = multer.diskStorage({
+  destination: './assets/images/',
+  filename: function (req, file, callback) {
+    crypto.pseudoRandomBytes(16, function (err, raw) {
+      if (err) return callback(err);
+      str = file.mimetype
+      callback(null, `${raw.toString('hex')}.${str.slice(6)}`)
+    })
+  }
+})
+const upload = multer({storage:storage});
+
 const UserManager = require('../models/userManager');
 
 userRouter
-    .post('/register', urlencodedParser, (req, res) => {
-      console.log('Entre dans register')
+    .post('/register', upload.single('image'), (req, res, next) => {
+    console.log(req.file)
       console.log(req.body)
       var user = {
         "email": req.body.email,
