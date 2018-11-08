@@ -184,7 +184,7 @@ class RegisterCard extends React.Component {
       Axios({
         method: 'post',
         url: 'http://localhost:3000/user/register',
-        data: formData,
+        data: form,
         config: { headers: { 'Content-Type': 'multipart/form-data' } },
       })
         .then((response) => {
