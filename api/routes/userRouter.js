@@ -35,7 +35,7 @@ userRouter
           hashPassword(user.password).then(hash => {
             user.password = hash;
             UserManager.userExist(user.email, user.userName).then(userExist => {
-              if (userExist) { res.send({'error': 'Email or User name already exist'}) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
+              if (userExist) { res.status(400).json({ error: 'registration.userAlreadyRegistered' }) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
               else {
                 UserManager.createUser(user, callback => {
                   res.send({'success': 'You are now registered'})
