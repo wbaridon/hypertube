@@ -145,7 +145,6 @@ class RegisterCard extends React.Component {
       password, passwordError, showPassword,
       locale,
     } = this.state;
-    console.log(registerError);
     return (
       <Card className={classes.card}>
         <CardMedia src="squelch" id="dragAndDrop">
@@ -217,7 +216,7 @@ class RegisterCard extends React.Component {
               )
           }
         </CardMedia>
-        <form action="" encType="multipart/form-data" onSubmit={e => this.handleSubmit(e)}>
+        <form action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
               fullWidth
@@ -226,6 +225,7 @@ class RegisterCard extends React.Component {
               variant="filled"
               label={intl.formatMessage({ id: 'register.userName' })}
               type="text"
+              name="username"
               value={userName}
               onChange={e => this.handleChange('userName', e)}
               helperText={userNameError.length ? this.mergeErrors(userNameError) : ' '}
@@ -304,7 +304,7 @@ RegisterCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
   history: PropTypes.shape({}).isRequired,
-  registerUserHandler: PropTypes.func.isRequired,
+  registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
   registerError: PropTypes.shape({}).isRequired,
 };
 

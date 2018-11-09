@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Grid } from '@material-ui/core';
 import { loginUser } from '../../actions/index';
 import LoginCard from './login-card';
-import { Grid } from '@material-ui/core';
 
 const mapDispatchToProps = (dispatch) => {
   return ({
@@ -37,7 +37,10 @@ class Login extends React.Component {
     this.setState({ currentUser });
   }
 
-  handleLogin() {
+  handleLogin(e) {
+    if (e) {
+      e.preventDefault();
+    }
     const { logIn } = this.props;
     const { currentUser } = this.state;
     logIn(currentUser);
@@ -54,7 +57,6 @@ class Login extends React.Component {
       </Grid>
     );
   }
-
 }
 
 Login.propTypes = {

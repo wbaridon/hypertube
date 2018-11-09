@@ -21,39 +21,48 @@ const styles = {
   },
 };
 
-function LoginCard({ parentLoginHandle, parentStateChange, currentUser, intl, classes }) {
+function LoginCard({
+  parentLoginHandle,
+  parentStateChange,
+  currentUser,
+  intl,
+  classes,
+}) {
   return (
     <Card className={classes.card}>
-      <CardContent>
-        <TextField
-          fullWidth
-          id="filled-simple-start-adornment"
-          variant="filled"
-          label={intl.formatMessage({ id: 'login.userName' })}
-          type="text"
-          value={currentUser.userName}
-          onChange={e => parentStateChange('userName', e.target.value)}
-        />
-        <br />
-        <TextField
-          fullWidth
-          id="filled-adornment-password"
-          variant="filled"
-          type="password"
-          label={intl.formatMessage({ id: 'login.password' })}
-          value={currentUser.password}
-          onChange={e => parentStateChange('password', e.target.value)}
-        />
-      </CardContent>
-      <CardActions>
-        <Button onClick={parentLoginHandle}>
-          {(
-            <Typography>
-              <FormattedMessage id="login.loginButton" />
-            </Typography>
-          )}
-        </Button>
-      </CardActions>
+      <form action="" onSubmit={e => parentLoginHandle(e)}>
+        <CardContent>
+          <TextField
+            fullWidth
+            id="filled-simple-start-adornment"
+            variant="filled"
+            label={intl.formatMessage({ id: 'login.userName' })}
+            type="text"
+            name="username"
+            value={currentUser.userName}
+            onChange={e => parentStateChange('userName', e.target.value)}
+          />
+          <br />
+          <TextField
+            fullWidth
+            id="filled-adornment-password"
+            variant="filled"
+            type="password"
+            label={intl.formatMessage({ id: 'login.password' })}
+            value={currentUser.password}
+            onChange={e => parentStateChange('password', e.target.value)}
+          />
+        </CardContent>
+        <CardActions>
+          <Button type="submit" onClick={parentLoginHandle}>
+            {(
+              <Typography>
+                <FormattedMessage id="login.loginButton" />
+              </Typography>
+            )}
+          </Button>
+        </CardActions>
+      </form>
     </Card>
   );
 }

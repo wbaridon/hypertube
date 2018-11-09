@@ -111,7 +111,6 @@ export function handleSubmit(e) {
   };
   const form = new FormData();
   Object.keys(formData).forEach((key) => {
-    console.log(key, formData[key]);
     form.append(key, formData[key]);
   });
   if (image.inputFile) {
