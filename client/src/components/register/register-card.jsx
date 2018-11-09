@@ -10,6 +10,7 @@ import {
   Typography,
   Switch,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -26,21 +27,33 @@ import { intlShape, injectIntl } from 'react-intl';
 import * as qs from 'query-string';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import handlers from './event-handlers';
+import handlers, { handleSubmit, toggleLocale, handleClickShowPassword } from './event-handlers';
 import {
   rotateClockwise,
   rotateCounterClockwise,
   flip,
   handleImageAdd,
   offsetY,
-  dataURItoBlob,
 } from './image-handle-functions';
 import styles from './styles';
+import { registerUser } from '../../actions/index';
 
 function handleDragOver(evt) {
   evt.stopPropagation();
   evt.preventDefault();
 }
+
+const mapStateToProps = (state) => {
+  return ({
+    registerError: state.registerUser.error,
+  });
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return ({
+    registerUserHandler: form => dispatch(registerUser(form)),
+  });
+};
 
 class RegisterCard extends React.Component {
   constructor() {
@@ -68,17 +81,17 @@ class RegisterCard extends React.Component {
       showPassword: false,
     };
 
-    this.mergeErrors = this.mergeErrors.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClickShowPassword = handleClickShowPassword.bind(this);
+    this.handleSubmit = handleSubmit.bind(this);
     this.rotateCounterClockwise = rotateCounterClockwise.bind(this);
     this.rotateClockwise = rotateClockwise.bind(this);
     this.handleImageAdd = handleImageAdd.bind(this);
     this.flip = flip.bind(this);
     this.offsetY = offsetY.bind(this);
     this.handleImageAddWrapper = this.handleImageAddWrapper.bind(this);
-    this.toggleLocale = this.toggleLocale.bind(this);
+    this.toggleLocale = toggleLocale.bind(this);
+    this.mergeErrors = this.mergeErrors.bind(this);
   }
 
   componentDidMount() {
@@ -96,10 +109,6 @@ class RegisterCard extends React.Component {
         },
       });
     }
-  }
-
-  handleImageAddWrapper(event) {
-    this.handleImageAdd(event.dataTransfer.files[0], event);
   }
 
   mergeErrors(errors) {
@@ -121,86 +130,12 @@ class RegisterCard extends React.Component {
     this.setState({ [field]: event.target.value, [fieldError]: err });
   }
 
-  handleClickShowPassword() {
-    const { showPassword } = this.state;
-    this.setState({ showPassword: !showPassword });
-  }
-
-  toggleLocale() {
-    let { locale } = this.state;
-
-    if (locale === 'en') {
-      locale = 'fr';
-    } else {
-      locale = 'en';
-    }
-    this.setState({ locale });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    let willSend = true;
-    const {
-      userName, userNameError,
-      firstName, firstNameError,
-      lastName, lastNameError,
-      email, emailError,
-      password, passwordError,
-      locale,
-      image,
-    } = this.state;
-
-    if (userName === '' || userNameError.length !== 0) {
-      willSend = false;
-    } else if (email === '' || emailError.length !== 0) {
-      willSend = false;
-    } else if (firstName === '' || firstNameError.length !== 0) {
-      willSend = false;
-    } else if (lastName === '' || lastNameError.length !== 0) {
-      willSend = false;
-    } else if (password === '' || passwordError.length !== 0) {
-      willSend = false;
-    } else if (!image.rawData) {
-      willSend = false;
-    }
-    const formData = {
-      userName,
-      firstName,
-      lastName,
-      email,
-      password,
-      locale,
-    };
-    const form = new FormData();
-    Object.keys(formData).forEach((key) => {
-      console.log(key, formData[key]);
-      form.append(key, formData[key]);
-    });
-    if (image.inputFile) {
-      image.inputFile = dataURItoBlob(image.rawData);
-    }
-    form.append('image', image.inputFile);
-    if (willSend) {
-      Axios({
-        method: 'post',
-        url: 'http://localhost:3000/user/register',
-        data: form,
-        config: { headers: { 'Content-Type': 'multipart/form-data' } },
-      })
-        .then((response) => {
-          // handle success
-          console.log(response);
-        })
-        .catch((response) => {
-          // handle error
-          console.log(response);
-        });
-    }
-    console.log(form);
+  handleImageAddWrapper(event) {
+    this.handleImageAdd(event.dataTransfer.files[0], event);
   }
 
   render() {
-    const { classes, intl } = this.props;
+    const { classes, intl, registerError } = this.props;
     const {
       image,
       userName, userNameError,
@@ -210,6 +145,7 @@ class RegisterCard extends React.Component {
       password, passwordError, showPassword,
       locale,
     } = this.state;
+    console.log(registerError);
     return (
       <Card className={classes.card}>
         <CardMedia src="squelch" id="dragAndDrop">
@@ -350,6 +286,7 @@ class RegisterCard extends React.Component {
               helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
             />
             <Switch checked={locale === 'en'} onChange={this.toggleLocale} />
+            {registerError.error !== undefined ? <Typography>{registerError.error}</Typography> : null}
           </CardContent>
           <CardActions>
             <Button type="submit" variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
@@ -367,6 +304,8 @@ RegisterCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
   history: PropTypes.shape({}).isRequired,
+  registerUserHandler: PropTypes.func.isRequired,
+  registerError: PropTypes.shape({}).isRequired,
 };
 
-export default withRouter(injectIntl(withStyles(styles)(RegisterCard)));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(withStyles(styles)(RegisterCard))));

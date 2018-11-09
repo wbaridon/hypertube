@@ -1,4 +1,5 @@
 import * as EmailValidator from 'email-validator';
+import { dataURItoBlob } from './image-handle-functions';
 
 const textError = (string) => {
   let error = false;
@@ -52,6 +53,72 @@ const handlers = {
     }
     return (errors);
   },
+
 };
+
+export function handleClickShowPassword() {
+  const { showPassword } = this.state;
+  this.setState({ showPassword: !showPassword });
+}
+
+export function toggleLocale() {
+  let { locale } = this.state;
+
+  if (locale === 'en') {
+    locale = 'fr';
+  } else {
+    locale = 'en';
+  }
+  this.setState({ locale });
+}
+
+export function handleSubmit(e) {
+  e.preventDefault();
+  let willSend = true;
+  const {
+    userName, userNameError,
+    firstName, firstNameError,
+    lastName, lastNameError,
+    email, emailError,
+    password, passwordError,
+    locale,
+    image,
+  } = this.state;
+  const { registerUserHandler } = this.props;
+
+  if (userName === '' || userNameError.length !== 0) {
+    willSend = false;
+  } else if (email === '' || emailError.length !== 0) {
+    willSend = false;
+  } else if (firstName === '' || firstNameError.length !== 0) {
+    willSend = false;
+  } else if (lastName === '' || lastNameError.length !== 0) {
+    willSend = false;
+  } else if (password === '' || passwordError.length !== 0) {
+    willSend = false;
+  } else if (!image.rawData) {
+    willSend = false;
+  }
+  const formData = {
+    userName,
+    firstName,
+    lastName,
+    email,
+    password,
+    locale,
+  };
+  const form = new FormData();
+  Object.keys(formData).forEach((key) => {
+    console.log(key, formData[key]);
+    form.append(key, formData[key]);
+  });
+  if (image.inputFile) {
+    image.inputFile = dataURItoBlob(image.rawData);
+  }
+  form.append('image', image.inputFile);
+  if (willSend) {
+    registerUserHandler(form);
+  }
+}
 
 export default handlers;

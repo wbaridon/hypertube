@@ -29,6 +29,7 @@
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
+    "redux-minimal-code-async-actions": "^1.0.5",
     "redux-thunk": "^2.3.0"
   },
   "repository": "https://github.com/lord0gnome/spideysite.git",

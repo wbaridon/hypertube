@@ -16,6 +16,7 @@ class Video extends React.Component {
 
   render() {
     // const { classes } = this.props;
+    /* eslint-disable */
 
     return (
       <React.Fragment>
@@ -25,6 +26,7 @@ class Video extends React.Component {
     );
   }
 }
+/* eslint-enable */
 
 Video.propTypes = {
   classes: PropTypes.shape({}).isRequired,

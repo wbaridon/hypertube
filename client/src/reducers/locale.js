@@ -1,10 +1,3 @@
-const locale = (state = 'en', action) => {
-  switch (action.type) {
-    case 'SET_LOCALE':
-      return action.locale;
-    default:
-      return state;
-  }
-};
+import { SET_LOCALE, REGISTER_USER } from '../actions/action-types';
 
 export default locale;

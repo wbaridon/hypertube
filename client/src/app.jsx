@@ -7,12 +7,10 @@ import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
 import { BrowserRouter } from 'react-router-dom';
 import { IntlProvider, addLocaleData } from 'react-intl';
-import { withCookies, Cookies, CookiesProvider } from 'react-cookie';
 import { connect } from 'react-redux';
 import enUS from './i18n/en-US';
 import frFR from './i18n/fr-FR';
 import CurrentRoute from './components/routing/current-route';
-import { setLocale } from './actions/index';
 
 const theme = createMuiTheme({
   palette: {
@@ -35,7 +33,6 @@ function mapStateToProps(state) {
 
 function App({ locale }) {
   const messages = locale === 'fr' ? frFR : enUS;
-  console.log(locale);
 
   return (
     <IntlProvider locale={locale} messages={messages}>
