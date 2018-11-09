@@ -69,8 +69,23 @@ function getUserFrom(provider, token) {
 function getCredentials(provider, credentials) {
   return new Promise ((resolve, reject) => {
    if (provider === 'gitHub') { gitHubCredentials(credentials).then(credentials => resolve(credentials)) }
+   else if (provider === 'twitter') { twitterCredentials(credentials).then(credentials => resolve (credentials)) }
    else if (provider === '42') { resolve(credentials) }
   })
+}
+
+function twitterCredentials(credentials) {
+  return new Promise ((resolve, reject) => {
+    credentials.client = {
+      id: 'DuPzbiO2zGT18nD4j1WhDG77j ',
+      secret: 'rbrCtZxNuwYxDMFAs4MqWuOEZm04JHJFNfP6VF75IGmxHCGRah',
+    }
+    credentials.auth = {
+     tokenHost: 'https://api.twitter.com',
+     tokenPath: '/oauth2/token'
+    }
+     resolve(credentials)
+    })
 }
 
 function gitHubCredentials(credentials) {
