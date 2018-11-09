@@ -98,6 +98,8 @@ export function handleSubmit(e) {
     willSend = false;
   } else if (!image.rawData) {
     willSend = false;
+    image.error = 'SHIT';
+    this.setState({ image });
   }
   const formData = {
     userName,

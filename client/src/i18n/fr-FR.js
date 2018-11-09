@@ -3,6 +3,12 @@ const flatten = require('flat');
 
 
 const frFR = {
+  login: {
+    userName: 'Nom d\'Utilisateur',
+    email: 'Email',
+    password: 'Mot de Passe',
+    loginButton: 'Se Connecter',
+  },
   register: {
     title: 'INSCRIPTION',
     notNumberOrLetter: 'Mauvais charactere',
@@ -18,6 +24,7 @@ const frFR = {
     profilePicture: 'Changer',
     addImage: 'Charger une image',
     registerWith42: '42 Auth',
+    userAlreadyRegistered: 'A user with that username or email already exists...',
   },
 };
 

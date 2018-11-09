@@ -4,17 +4,11 @@ import {
   Grid, Button,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import RegisterCard from './register-card';
-import { setLocale } from '../../actions/index';
 
 const styles = {};
 
-const mapDispatchToProps = (dispatch) => {
-  return ({
-    changeLocale: () => dispatch(setLocale('fr')),
-  });
-};
 
 class Register extends React.Component {
   constructor() {
@@ -24,12 +18,11 @@ class Register extends React.Component {
   }
 
   render() {
-    const { changeLocale } = this.props;
     return (
       <Grid container direction="row" justify="space-around" wrap="nowrap">
         <Grid item>
-          <Button onClick={changeLocale}>
-            Toggle locale
+          <Button component={Link} to="/login">
+            LOGIN
           </Button>
           <RegisterCard />
         </Grid>
@@ -41,8 +34,7 @@ class Register extends React.Component {
 Register.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   history: PropTypes.shape({}).isRequired,
-  changeLocale: PropTypes.func.isRequired,
 };
 
 Register.url = '/register';
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Register));
+export default withStyles(styles)(Register);

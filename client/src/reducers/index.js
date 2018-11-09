@@ -4,7 +4,7 @@ import {
   generateSuccessActionTypeName,
   generateErrorActionTypeName,
 } from 'redux-minimal-code-async-actions';
-import { SET_LOCALE, REGISTER_USER } from '../actions/action-types';
+import { SET_LOCALE, REGISTER_USER, LOGIN_USER } from '../actions/action-types';
 
 const locale = (state = 'en', action) => {
   switch (action.type) {
@@ -48,7 +48,35 @@ const registerUser = (state = defaultUserState, action) => {
   }
 };
 
+const loginUser = (state = defaultUserState, action) => {
+  switch (action.type) {
+    case LOGIN_USER:
+      return state;
+    case generateInProgressActionTypeName(LOGIN_USER):
+      return {
+        ...state,
+        loading: true,
+      };
+    case generateSuccessActionTypeName(LOGIN_USER):
+      return {
+        ...state,
+        loading: false,
+        response: action,
+      };
+    case generateErrorActionTypeName(LOGIN_USER):
+      return {
+        ...state,
+        error: action.err.response.data,
+        loading: false,
+        response: null,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   locale,
   registerUser,
+  loginUser,
 });
