@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
 import { BrowserRouter } from 'react-router-dom';
@@ -67,8 +68,10 @@ function App({ locale, darkThemeBool }) {
     <IntlProvider locale={locale} messages={messages}>
       <BrowserRouter>
         <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
-          <Header />
-          <CurrentRoute />
+          <CssBaseline>
+            <Header />
+            <CurrentRoute />
+          </CssBaseline>
         </MuiThemeProvider>
       </BrowserRouter>
     </IntlProvider>

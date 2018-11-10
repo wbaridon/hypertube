@@ -19,9 +19,6 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-body {
-    margin: 0px;
-}
 ::-webkit-scrollbar { 
   display: none; 
 }
