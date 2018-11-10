@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import lightBlue from '@material-ui/core/colors/lightBlue';
-import orange from '@material-ui/core/colors/orange';
 import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
 import { BrowserRouter } from 'react-router-dom';
@@ -15,30 +13,60 @@ import Header from './components/header/header';
 
 const theme = createMuiTheme({
   palette: {
-    primary: lightBlue,
-    secondary: orange,
-  },
-  status: {
-    danger: 'orange',
+    primary: {
+      light: '#39796b',
+      main: '#004d40',
+      dark: '#00251a',
+    },
+    secondary: {
+      light: '#bc477b',
+      main: '#880e4f',
+      dark: '#560027',
+    },
   },
   typography: {
     useNextVariants: true,
   },
 });
 
+const darkTheme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      light: '#39796b',
+      main: '#004d40',
+      dark: '#00251a',
+    },
+    secondary: {
+      light: '#bc477b',
+      main: '#880e4f',
+      dark: '#560027',
+    },
+  },
+  typography: {
+    useNextVariants: true,
+  },
+});
+
+
 addLocaleData([...en, ...fr]);
 
 function mapStateToProps(state) {
-  return { locale: state.locale };
+  return {
+    locale: state.locale,
+    darkThemeBool: state.toggleDarkTheme,
+  };
 }
 
-function App({ locale }) {
+function App({ locale, darkThemeBool }) {
   const messages = locale === 'fr' ? frFR : enUS;
 
+  const root = document.documentElement;
+  root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
   return (
     <IntlProvider locale={locale} messages={messages}>
       <BrowserRouter>
-        <MuiThemeProvider theme={theme}>
+        <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
           <Header />
           <CurrentRoute />
         </MuiThemeProvider>
@@ -48,6 +76,7 @@ function App({ locale }) {
 }
 App.propTypes = {
   locale: PropTypes.string.isRequired,
+  darkThemeBool: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(App);

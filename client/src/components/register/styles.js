@@ -69,5 +69,9 @@ const styles = theme => ({
   flexFinish: {
     flexGrow: 1,
   },
+  fixAutoComplete: {
+    boxShadow: `inset 0 0 0px 9999px ${theme.palette.background.paper} !important`,
+    color: `${theme.palette.getContrastText(theme.palette.background.paper)} !important`,
+  },
 });
 export default styles;

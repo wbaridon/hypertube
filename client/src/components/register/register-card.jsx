@@ -219,12 +219,14 @@ class RegisterCard extends React.Component {
         <form action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
+              inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={userNameError.length !== 0}
               id="filled-simple-start-adornment"
               variant="filled"
               label={intl.formatMessage({ id: 'register.userName' })}
               type="text"
+              autoComplete="username"
               name="username"
               value={userName}
               onChange={e => this.handleChange('userName', e)}
@@ -232,6 +234,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={emailError.length !== 0}
               variant="filled"
@@ -244,6 +247,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={firstNameError.length !== 0}
               variant="filled"
@@ -255,6 +259,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={lastNameError.length !== 0}
               variant="filled"
@@ -266,6 +271,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              autoComplete="current-password"
               fullWidth
               error={passwordError.length !== 0}
               id="filled-adornment-password"
@@ -275,6 +281,7 @@ class RegisterCard extends React.Component {
               value={password}
               onChange={e => this.handleChange('password', e)}
               InputProps={{
+                className: classes.fixAutoComplete,
                 endAdornment: (
                   <InputAdornment variant="filled" position="end">
                     <IconButton

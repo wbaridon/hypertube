@@ -4,7 +4,21 @@ import {
   generateSuccessActionTypeName,
   generateErrorActionTypeName,
 } from 'redux-minimal-code-async-actions';
-import { SET_LOCALE, REGISTER_USER, LOGIN_USER } from '../actions/action-types';
+import {
+  SET_LOCALE,
+  REGISTER_USER,
+  LOGIN_USER,
+  TOGGLE_DARK_THEME,
+} from '../actions/action-types';
+
+const toggleDarkTheme = (state = false, action) => {
+  switch (action.type) {
+    case TOGGLE_DARK_THEME:
+      return !state;
+    default:
+      return state;
+  }
+};
 
 const locale = (state = 'en', action) => {
   switch (action.type) {
@@ -106,4 +120,5 @@ export default combineReducers({
   locale,
   registerUser,
   loginUser,
+  toggleDarkTheme,
 });

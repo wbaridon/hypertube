@@ -4,17 +4,29 @@ import {
   AppBar,
   Toolbar,
   IconButton,
+  TextField,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { connect } from 'react-redux';
 import Login from '../login/login';
+import { toggleDarkTheme } from '../../actions';
 
-const styles = {
-  grow: {
-    flexGrow: 1,
-  },
+const styles = (theme) => {
+  console.log(theme);
+  return ({
+    grow: {
+      flexGrow: 1,
+    },
+    inputColor: {
+      color: theme.palette.getContrastText(theme.palette.primary.main),
+    },
+  });
 };
 
+const mapDispatchToProps = dispatch => ({
+  toggleDarkThemeHandler: () => dispatch(toggleDarkTheme()),
+});
 
 class Header extends React.Component {
   constructor() {
@@ -25,15 +37,18 @@ class Header extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, toggleDarkThemeHandler } = this.props;
     return (
       <AppBar position="static">
         <Toolbar>
-          <IconButton id="clickMe">
+          <IconButton>
             <AccountCircle />
           </IconButton>
           <div className={classes.grow} />
           <Login />
+          <IconButton onClick={toggleDarkThemeHandler}>
+            <AccountCircle />
+          </IconButton>
         </Toolbar>
       </AppBar>
     );
@@ -42,6 +57,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  toggleDarkThemeHandler: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(Header);
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Header));
