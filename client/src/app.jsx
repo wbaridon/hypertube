@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import enUS from './i18n/en-US';
 import frFR from './i18n/fr-FR';
 import CurrentRoute from './components/routing/current-route';
+import Header from './components/header/header';
 
 const theme = createMuiTheme({
   palette: {
@@ -38,6 +39,7 @@ function App({ locale }) {
     <IntlProvider locale={locale} messages={messages}>
       <BrowserRouter>
         <MuiThemeProvider theme={theme}>
+          <Header />
           <CurrentRoute />
         </MuiThemeProvider>
       </BrowserRouter>

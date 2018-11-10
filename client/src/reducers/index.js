@@ -75,6 +75,33 @@ const loginUser = (state = defaultUserState, action) => {
   }
 };
 
+const logoutUser = (state = defaultUserState, action) => {
+  switch (action.type) {
+    case LOGOUT_USER:
+      return state;
+    case generateInProgressActionTypeName(LOGOUT_USER):
+      return {
+        ...state,
+        loading: true,
+      };
+    case generateSuccessActionTypeName(LOGOUT_USER):
+      return {
+        ...state,
+        loading: false,
+        response: action,
+      };
+    case generateErrorActionTypeName(LOGOUT_USER):
+      return {
+        ...state,
+        error: action.err.response.data,
+        loading: false,
+        response: null,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   locale,
   registerUser,

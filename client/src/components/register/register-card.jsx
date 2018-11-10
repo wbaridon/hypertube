@@ -237,6 +237,7 @@ class RegisterCard extends React.Component {
               variant="filled"
               label={intl.formatMessage({ id: 'register.email' })}
               type="email"
+              name="email"
               value={email}
               onChange={e => this.handleChange('email', e)}
               helperText={emailError.length ? this.mergeErrors(emailError) : ' '}
@@ -248,6 +249,7 @@ class RegisterCard extends React.Component {
               variant="filled"
               label={intl.formatMessage({ id: 'register.firstName' })}
               value={firstName}
+              name="firstname"
               onChange={e => this.handleChange('firstName', e)}
               helperText={firstNameError.length ? this.mergeErrors(firstNameError) : ' '}
             />
@@ -258,6 +260,7 @@ class RegisterCard extends React.Component {
               variant="filled"
               label={intl.formatMessage({ id: 'register.lastName' })}
               value={lastName}
+              name="lastname"
               onChange={e => this.handleChange('lastName', e)}
               helperText={lastNameError.length ? this.mergeErrors(lastNameError) : ' '}
             />

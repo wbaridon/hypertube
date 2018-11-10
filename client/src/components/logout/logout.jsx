@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loginUser } from '../../actions/index';
-import LoginCard from './login-card';
+import { Grid } from '@material-ui/core';
+import { logoutUser } from '../../actions/index';
+import LogoutCard from './logout-card';
 
 const mapDispatchToProps = (dispatch) => {
   return ({
-    logIn: user => dispatch(loginUser(user)),
+    logOut: user => dispatch(logoutUser(user)),
   });
 };
 
@@ -16,7 +17,7 @@ const mapStateToProps = (state) => {
   });
 };
 
-class Login extends React.Component {
+class Logout extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -25,7 +26,7 @@ class Login extends React.Component {
         password: '',
       },
     };
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);
   }
 
@@ -36,7 +37,7 @@ class Login extends React.Component {
     this.setState({ currentUser });
   }
 
-  handleLogin(e) {
+  handleLogout(e) {
     if (e) {
       e.preventDefault();
     }
@@ -49,13 +50,18 @@ class Login extends React.Component {
     const { currentUser } = this.state;
 
     return (
-      <LoginCard currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
+      <Grid container direction="row" justify="space-around" wrap="nowrap">
+        <Grid item>
+          <LogoutCard currentUser={currentUser} parentLogoutHandle={this.handleLogout} parentStateChange={this.handleStateChange} />
+        </Grid>
+      </Grid>
     );
   }
 }
 
-Login.propTypes = {
+Logout.propTypes = {
   logIn: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+Logout.url = '/login';
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);
