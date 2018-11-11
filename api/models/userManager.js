@@ -29,6 +29,9 @@ module.exports.createUser = function (data, callback) {
     callback()
   })
 }
-module.exports.updateUser = function (user, callback) {
-  // Voir sur mongo comment faire
+module.exports.updateUser = function (field, value, newUser) {
+  return new Promise ((resolve, reject) => {
+    User.findOneAndUpdate({field: value}, newUser)
+    .then(function(){ resolve() })
+  })
 }

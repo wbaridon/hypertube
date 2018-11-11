@@ -79,10 +79,24 @@ userRouter
         res.send(user)
       })
     })
+    .post('/updateUser', (req, res) => {
+      decodeToken(req.body.token).then(token => {
+        // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update
+        let user = {
+          email: req.body.email
+        }
+        UserManager.updateUser('userName', token.user, user).then(result => {
+        /*  console.log('ici '+ result)
+          res.send(result)*
+          // Bug dans update recherche d'un fix */ 
+        })
+      }).catch(err => res.send({error: 'token.invalidToken'}))
+
+    })
 
 function setToken(user) {
   return new Promise ((resolve, error) => {
-    const token = jwt.sign(user, 'HypertubeSecretKey', { expiresIn: '1d'});
+    const token = jwt.sign({user: user.userName}, 'HypertubeSecretKey', { expiresIn: '1d'});
     resolve(token);
   })
 }
