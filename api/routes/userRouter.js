@@ -38,7 +38,7 @@ userRouter
               if (userExist) { res.status(400).json({ error: 'registration.userAlreadyRegistered' }) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
               else {
                 UserManager.createUser(user, callback => {
-                  res.send({'success': 'You are now registered'})
+                  res.send({success: 'registration.success'})
                 })
               }
             })
@@ -46,7 +46,7 @@ userRouter
         }).catch(error => {
           res.send({'error': error})
         })
-      } else { res.send({'error': 'We have a problem with your picture'})}
+      } else { res.send({error: 'registration.undefinedPictureIssue'})}
     })
     .post('/login', (req, res) => {
       const user = {
@@ -55,13 +55,15 @@ userRouter
       }
       if (user.userName && user.password) {
         UserManager.getUser(user.userName).then(getResult => {
-          argon2.verify(getResult.password, user.password).then(match => {
-            if (match) {
-              setToken(user).then(appData => { res.status(200).json(appData); })
-            } else { res.send({'error': 'Invalid password or login'})}
-          })
+          if (getResult) {
+            argon2.verify(getResult.password, user.password).then(match => {
+              if (match) {
+                setToken(user).then(appData => { res.status(200).json(appData); })
+              } else { res.send({error: 'login.invalidPasswordOrLogin'})}
+            })
+          } else { res.send({error: 'login.noUser'})}
         })
-      } else { res.send({'error': 'Empty password or login'}) }
+      } else { res.send({error: 'login.emptyPasswordOrLogin'}) }
     })
     .post('/getUser', (req, res) => {
       // Reçoit un login et retourne les infos public de ce dernier
@@ -100,12 +102,12 @@ function hashPassword(pwd) {
 function checkForm(user) {
   return new Promise ((resolve, error) => {
     if (user.email && user.userName && user.lastName && user.firstName && user.password) {
-      if (user.password.length < 6) { error('Password too short') }
+      if (user.password.length < 6) { error('registration.passwordTooShort') }
       else {
         // Manque le check si chiffre et lettre dans mdp, picture
-        resolve('Correct Form')
+        resolve('registration.correctForm')
       }
-    } else { error('Some fields are Empty')} // Des erreurs plus explicites c'est toujours bien, pour savoir quel variable est le probleme!
+    } else { error('registration.emptyFields')} // Des erreurs plus explicites c'est toujours bien, pour savoir quel variable est le probleme!
   })
 }
 

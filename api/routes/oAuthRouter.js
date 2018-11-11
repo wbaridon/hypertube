@@ -15,6 +15,7 @@ const credentials = {
     tokenPath: '/oauth/token'
    }
 };
+// Je propose que l'on laisse Google API de cote pour le moment.
 // twitter, github, google, 42, et inscription normal
 // Link pour github https://github.com/login/oauth/authorize?scope=user&client_id=ca9256d31baf98f55288
 oAuthRouter
