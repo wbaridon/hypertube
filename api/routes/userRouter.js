@@ -58,7 +58,8 @@ userRouter
           if (getResult) {
             argon2.verify(getResult.password, user.password).then(match => {
               if (match) {
-                setToken(user).then(appData => { res.status(200).json(appData); })
+                console.log(getResult)
+                setToken(user).then(token=> { res.send({token, locale: getResult.locale}); })
               } else { res.send({error: 'login.invalidPasswordOrLogin'})}
             })
           } else { res.send({error: 'login.noUser'})}
@@ -81,11 +82,8 @@ userRouter
 
 function setToken(user) {
   return new Promise ((resolve, error) => {
-    const appData = {}
     const token = jwt.sign(user, 'HypertubeSecretKey', { expiresIn: '1d'});
-    appData.error = 0;
-    appData["token"] = token;
-    resolve(appData);
+    resolve(token);
   })
 }
 
