@@ -87,6 +87,15 @@ function setToken(user) {
   })
 }
 
+function decodeToken(token) {
+  return new Promise ((resolve, reject) => {
+    jwt.verify(token, 'HypertubeSecretKey', function (err, decoded) {
+      if (err) { reject('token.invalidToken') }
+      else { resolve(decoded) }
+    })
+  })
+}
+
 function hashPassword(pwd) {
   return new Promise ((resolve, error) => {
     argon2.hash(pwd).then(hash => {
