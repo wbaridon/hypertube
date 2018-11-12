@@ -24,8 +24,6 @@ import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
 import { intlShape, injectIntl } from 'react-intl';
-import * as qs from 'query-string';
-import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import handlers, { handleSubmit, toggleLocale, handleClickShowPassword } from './event-handlers';
 import {
@@ -56,8 +54,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class RegisterCard extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log(props.provider, props.code);
     this.state = {
       image: {
         rawData: null,
@@ -98,17 +97,6 @@ class RegisterCard extends React.Component {
     const dropZone = document.getElementById('root');
     dropZone.addEventListener('dragover', handleDragOver, false);
     dropZone.addEventListener('drop', event => this.handleImageAddWrapper(event), false);
-    const { history } = this.props;
-    if (history.location.search) {
-      const { code } = qs.parse(history.location.search, { ignoreQueryPrefix: true });
-      Axios({
-        method: 'post',
-        url: 'http://localhost:3000/oauth/register/42',
-        data: {
-          clientCode: code,
-        },
-      });
-    }
   }
 
   mergeErrors(errors) {
@@ -313,9 +301,10 @@ class RegisterCard extends React.Component {
 RegisterCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
-  history: PropTypes.shape({}).isRequired,
   registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
   registerError: PropTypes.shape({}).isRequired,
+  provider: PropTypes.string.isRequired,
+  code: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(withStyles(styles)(RegisterCard))));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withStyles(styles)(RegisterCard)));
