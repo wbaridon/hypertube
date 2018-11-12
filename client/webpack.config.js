@@ -61,6 +61,7 @@ module.exports = {
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(require('./package.json').version),
       HTMLTITLE: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).htmlTitle),
+      TIMEOUT_API: 5000,
     }),
     new HtmlWebPackPlugin({
       template: path.resolve(srcDir, 'index.html'),

@@ -24,7 +24,8 @@
       "VERSION": true,
       "HTMLTITLE": true,
       "GOOGLE_API_KEY": true,
-      "AWS_CLOUDFRONT": true
+      "AWS_CLOUDFRONT": true,
+      "TIMEOUT_API": true
     },
     "rules": {
       "no-console": "off",

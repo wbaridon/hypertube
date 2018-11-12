@@ -8,5 +8,6 @@ export default function loginUserAPI(user) {
       userName: user.userName,
       password: user.password,
     },
+    timeout: TIMEOUT_API,
   });
 }

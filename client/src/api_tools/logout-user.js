@@ -7,5 +7,6 @@ export default function logoutUserAPI(user) {
     data: {
       userName: user.userName,
     },
+    timeout: TIMEOUT_API,
   });
 }
