@@ -20,6 +20,9 @@ oAuthRouter
   .post('/register', (req, res) => {
     getToken(req.body.provider, req.url, req.body.clientCode, credentials)
     .then(token => {
+      // Renvoi en front de l'user pour remplir les champs manquant,
+      // Faire une verif avant si le compte existe pas deja ou apres sur la route normal ?
+      // Et en front on validera les informations ensuite.. On ne doit pas pouvoir modifier le login et mail
       getUserFrom(req.body.provider, token).then(user => res.send(user))
     }).catch(error => res.send(error))
   })
