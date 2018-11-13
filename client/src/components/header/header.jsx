@@ -4,13 +4,12 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  TextField,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { connect } from 'react-redux';
+import { toggleDarkTheme } from 'Actions/index';
 import Login from '../login/login';
-import { toggleDarkTheme } from '../../actions';
 
 const styles = (theme) => {
   console.log(theme);

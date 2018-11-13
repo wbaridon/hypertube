@@ -15,7 +15,9 @@ module.exports = {
   resolve: {
     extensions: ['.css', '.jsx', '.js', '.json'],
     alias: {
-      FoodCards: path.resolve(__dirname, 'src/components/food-category/food-cards'),
+      Actions: path.resolve(__dirname, 'src/redux/actions'),
+      Reducers: path.resolve(__dirname, 'src/redux/reducers'),
+      API: path.resolve(__dirname, 'src/api_tools'),
     },
   },
   module: {

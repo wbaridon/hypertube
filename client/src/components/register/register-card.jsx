@@ -23,8 +23,8 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
+import { registerUser } from 'Actions/index';
 import { intlShape, injectIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
 import handlers, { handleSubmit, toggleLocale, handleClickShowPassword } from './event-handlers';
 import {
   rotateClockwise,
@@ -34,7 +34,6 @@ import {
   offsetY,
 } from './image-handle-functions';
 import styles from './styles';
-import { registerUser } from '../../actions/index';
 
 function handleDragOver(evt) {
   evt.stopPropagation();

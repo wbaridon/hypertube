@@ -6,9 +6,9 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { asyncActionsMiddleware } from 'redux-minimal-code-async-actions';
+import rootReducer from 'Reducers/index';
 import App from './app';
 import './index.css';
-import rootReducer from './reducers/index';
 
 if ('serviceWorker' in navigator) {
   runtime.register();

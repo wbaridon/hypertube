@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loginUser } from '../../actions/index';
+import { loginUser } from 'Actions/index';
 import LoginCard from './login-card';
 
 const mapDispatchToProps = (dispatch) => {
