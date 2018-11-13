@@ -88,7 +88,7 @@ userRouter
         UserManager.updateUser('userName', token.user, user).then(result => {
         /*  console.log('ici '+ result)
           res.send(result)*
-          // Bug dans update recherche d'un fix */ 
+          // Bug dans update recherche d'un fix */
         })
       }).catch(err => res.send({error: 'token.invalidToken'}))
 
