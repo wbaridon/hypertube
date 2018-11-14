@@ -30,8 +30,8 @@ const locale = (state = 'en', action) => {
 };
 
 const defaultUserState = {
-  loading: false,
   response: null,
+  loginState: 'dormant',
   error: {},
 };
 
@@ -42,19 +42,16 @@ const registerUser = (state = defaultUserState, action) => {
     case generateInProgressActionTypeName(REGISTER_USER):
       return {
         ...state,
-        loading: true,
       };
     case generateSuccessActionTypeName(REGISTER_USER):
       return {
         ...state,
-        loading: false,
         response: action,
       };
     case generateErrorActionTypeName(REGISTER_USER):
       return {
         ...state,
         error: action.err.response.data,
-        loading: false,
         response: null,
       };
     default:
@@ -69,19 +66,19 @@ const loginUser = (state = defaultUserState, action) => {
     case generateInProgressActionTypeName(LOGIN_USER):
       return {
         ...state,
-        loading: true,
+        loginState: action.type,
       };
     case generateSuccessActionTypeName(LOGIN_USER):
       return {
         ...state,
-        loading: false,
+        loginState: action.type,
         response: action,
       };
     case generateErrorActionTypeName(LOGIN_USER):
       return {
         ...state,
         error: action.err,
-        loading: false,
+        loginState: action.type,
         response: null,
       };
     default:

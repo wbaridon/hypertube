@@ -7,12 +7,12 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Highlight from '@material-ui/icons/Highlight';
 import { connect } from 'react-redux';
 import { toggleDarkTheme } from 'Actions/index';
 import Login from '../login/login';
 
 const styles = (theme) => {
-  console.log(theme);
   return ({
     grow: {
       flexGrow: 1,
@@ -46,7 +46,7 @@ class Header extends React.Component {
           <div className={classes.grow} />
           <Login />
           <IconButton onClick={toggleDarkThemeHandler}>
-            <AccountCircle />
+            <Highlight />
           </IconButton>
         </Toolbar>
       </AppBar>
