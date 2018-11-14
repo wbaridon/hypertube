@@ -6,6 +6,7 @@ import en from 'react-intl/locale-data/en';
 import fr from 'react-intl/locale-data/fr';
 import { BrowserRouter } from 'react-router-dom';
 import { IntlProvider, addLocaleData } from 'react-intl';
+import { SnackbarProvider } from 'notistack';
 import { connect } from 'react-redux';
 import enUS from './i18n/en-US';
 import frFR from './i18n/fr-FR';
@@ -65,16 +66,18 @@ function App({ locale, darkThemeBool }) {
   const root = document.documentElement;
   root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
   return (
-    <IntlProvider locale={locale} messages={messages}>
-      <BrowserRouter>
-        <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
-          <CssBaseline>
-            <Header />
-            <CurrentRoute />
-          </CssBaseline>
-        </MuiThemeProvider>
-      </BrowserRouter>
-    </IntlProvider>
+    <SnackbarProvider>
+      <IntlProvider locale={locale} messages={messages}>
+        <BrowserRouter>
+          <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
+            <CssBaseline>
+              <Header />
+              <CurrentRoute />
+            </CssBaseline>
+          </MuiThemeProvider>
+        </BrowserRouter>
+      </IntlProvider>
+    </SnackbarProvider>
   );
 }
 App.propTypes = {

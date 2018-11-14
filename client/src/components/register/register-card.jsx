@@ -55,7 +55,6 @@ const mapDispatchToProps = (dispatch) => {
 class RegisterCard extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.provider, props.code);
     this.state = {
       image: {
         rawData: null,
@@ -302,8 +301,13 @@ RegisterCard.propTypes = {
   intl: intlShape.isRequired,
   registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
   registerError: PropTypes.shape({}).isRequired,
-  provider: PropTypes.string.isRequired,
-  code: PropTypes.string.isRequired,
+  provider: PropTypes.string,
+  code: PropTypes.string,
+};
+
+RegisterCard.defaultProps = {
+  provider: '',
+  code: '',
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withStyles(styles)(RegisterCard)));
