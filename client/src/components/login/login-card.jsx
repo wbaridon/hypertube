@@ -47,6 +47,7 @@ function LoginCard({
     <form action="" onSubmit={e => parentLoginHandle(e)}>
       <MuiThemeProvider theme={theme}>
         <TextField
+          className="loginInputs"
           InputProps={{ disableUnderline: true }}
           autoComplete="username"
           label={intl.formatMessage({ id: 'login.userName' })}
@@ -55,6 +56,7 @@ function LoginCard({
           onChange={e => parentStateChange('userName', e.target.value)}
         />
         <TextField
+          className="loginInputs"
           InputProps={{ disableUnderline: true }}
           autoComplete="current-password"
           type="password"

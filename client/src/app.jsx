@@ -64,7 +64,12 @@ function App({ locale, darkThemeBool }) {
   const messages = locale === 'fr' ? frFR : enUS;
 
   const root = document.documentElement;
+  console.log(theme.palette.getContrastText(theme.palette.background.paper));
   root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
+  root.style.setProperty('--autocomplete-background-color', darkThemeBool ? darkTheme.palette.background.paper : theme.palette.background.paper);
+  root.style.setProperty('--autocomplete-primary-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.primary.main) : theme.palette.getContrastText(theme.palette.primary.main));
+  root.style.setProperty('--autocomplete-primary-background-color', darkThemeBool ? darkTheme.palette.primary.main : theme.palette.primary.main);
+  console.log(darkThemeBool);
   return (
     <SnackbarProvider>
       <IntlProvider locale={locale} messages={messages}>

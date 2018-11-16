@@ -6,6 +6,7 @@ import { Typography } from '@material-ui/core';
 import { loginUser } from 'Actions/index';
 import { withTheme } from '@material-ui/core/styles';
 import LoginCard from './login-card';
+import './autocomplete-fix.css';
 
 const mapDispatchToProps = (dispatch) => {
   return ({

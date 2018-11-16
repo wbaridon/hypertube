@@ -1,0 +1,15 @@
+.registerInputs input:-webkit-autofill,
+.registerInputs input:-webkit-autofill:hover,
+.registerInputs input:-webkit-autofill:focus,
+.registerInputs textarea:-webkit-autofill,
+.registerInputs textarea:-webkit-autofill:hover,
+.registerInputs textarea:-webkit-autofill:focus,
+.registerInputs select:-webkit-autofill,
+.registerInputs select:-webkit-autofill:hover,
+.registerInputs select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--autocomplete-color);
+  caret-color: var(--autocomplete-color);
+  -webkit-box-shadow: 0 0 0px 1000px var(--autocomplete-background-color) inset;
+  box-shadow: 0 0 0px 1000px var(--autocomplete-background-color) inset;
+  transition: background-color 5000s ease-in-out 0s !important;
+}

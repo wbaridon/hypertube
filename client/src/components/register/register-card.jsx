@@ -205,6 +205,7 @@ class RegisterCard extends React.Component {
         <form action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
+              className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={userNameError.length !== 0}
@@ -220,6 +221,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={emailError.length !== 0}
@@ -233,6 +235,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={firstNameError.length !== 0}
@@ -245,6 +248,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
               error={lastNameError.length !== 0}
@@ -257,6 +261,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              className="registerInputs"
               autoComplete="current-password"
               fullWidth
               error={passwordError.length !== 0}

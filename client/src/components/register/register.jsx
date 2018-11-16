@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import * as qs from 'query-string';
 import RegisterCard from './register-card';
+import './autocomplete-fix.css';
 
 const styles = {};
 
