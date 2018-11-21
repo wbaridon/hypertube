@@ -10,7 +10,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Highlight from '@material-ui/icons/Highlight';
 import { connect } from 'react-redux';
 import { toggleDarkTheme } from 'Actions/index';
+import { NavLink } from 'react-router-dom';
 import Login from '../login/login';
+
 
 const styles = (theme) => {
   return ({
@@ -39,6 +41,15 @@ class Header extends React.Component {
     const { classes, toggleDarkThemeHandler } = this.props;
     return (
       <AppBar position="static">
+        <nav className="nav-wrapper black darken-3">
+          <div className="container">
+            <ul className="right">
+              <li><NavLink to="/">Home</NavLink></li>
+              <li><NavLink to="/video">Video</NavLink></li>
+              <li><NavLink to="/register">Register</NavLink></li>
+            </ul>
+          </div>
+        </nav>
         <Toolbar>
           <IconButton>
             <AccountCircle />
