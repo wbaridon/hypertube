@@ -30,7 +30,7 @@ class Movie extends React.Component {
       return (
         <Card>
           <Typography>
-            src: {item.images.poster}
+            {`src: ${item.images.poster}`}
           </Typography>
           <CardMedia
             image={item.images.poster}
