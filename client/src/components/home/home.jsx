@@ -2,8 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import createTypography from '@material-ui/core/styles/createTypography';
 
 const myStyles = {
   root: {
@@ -20,9 +22,10 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('https://tv-v2.api-fetch.website/movies/1?order=1&sort=last%20added')
+    axios.get('https://tv-v2.api-fetch.website/movies/1')
       .then(res => {
         console.log(res.data);
+
         this.setState({
           items: res.data.slice(0, 50),
         });
@@ -32,30 +35,24 @@ class Home extends React.Component {
   render() {
     const { items } = this.state;
     const itemList = items.length ? (
-      items.map(item => {
+      items.map((item) => {
         return (
-          <div className="post card" key={item._id}>
-            <div className="card-content">
-              <span className="card-title">{item.title}</span>
+          <Grid item key={item._id}>
+            <Grid>
               <Link to={"/movie/" + item.imdb_id} >
                 <img src={item.images.poster} alt="" />
               </Link>
-            </div>
-          </div>
+            </Grid>
+          </Grid>
         );
       })
     ) : (
-      <div className="center">No items yet</div>
+      <Typography>No items yet</Typography>
     );
     return (
-      <div>
-        <div className="container">
-          <h4 className="center">Home</h4>
-          <Grid container spacing={40}>
-            {itemList}
-          </Grid>
-        </div>
-      </div>
+      <Grid container spacing={32}>
+        {itemList}
+      </Grid>
     );
     // const { classes } = this.props;
   }
