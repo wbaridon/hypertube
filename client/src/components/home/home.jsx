@@ -23,9 +23,8 @@ class Home extends React.Component {
 
   componentDidMount() {
     axios.get('https://tv-v2.api-fetch.website/movies/1')
-      .then(res => {
+      .then((res) => {
         console.log(res.data);
-
         this.setState({
           items: res.data.slice(0, 50),
         });
@@ -39,7 +38,7 @@ class Home extends React.Component {
         return (
           <Grid item key={item._id}>
             <Grid>
-              <Link to={"/movie/" + item.imdb_id} >
+              <Link to={`/movie/${item.imdb_id}`}>
                 <img src={item.images.poster} alt="" />
               </Link>
             </Grid>
@@ -50,7 +49,7 @@ class Home extends React.Component {
       <Typography>No items yet</Typography>
     );
     return (
-      <Grid container spacing={32}>
+      <Grid container direction="row" spacing={0} justify="space-around" alignItems="center">
         {itemList}
       </Grid>
     );

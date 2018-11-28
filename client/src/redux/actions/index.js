@@ -5,6 +5,7 @@ import {
   REGISTER_USER,
   LOGIN_USER,
   TOGGLE_DARK_THEME,
+  GET_MOVIES,
 } from './action-types';
 
 

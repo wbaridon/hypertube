@@ -71,7 +71,7 @@ class Login extends React.Component {
       return (<Typography>LOADING</Typography>);
     }
     if (loginState === 'LOGIN_USER_SUCCESS') {
-      return (<Typography color="textPrimary">{`Hello ${currentUser.userName}!`}</Typography>);
+      return (<Typography>{`Hello ${currentUser.userName}!`}</Typography>);
     }
     return (<LoginCard currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />);
   }

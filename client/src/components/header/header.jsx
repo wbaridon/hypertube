@@ -8,8 +8,9 @@ import {
   createMuiTheme,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import Home from '@material-ui/icons/Home';
 import Highlight from '@material-ui/icons/Highlight';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toggleDarkTheme } from 'Actions/index';
 import Login from '../login/login';
@@ -24,7 +25,7 @@ const theme = createMuiTheme({
     },
     secondary: {
       light: '#ffffff',
-      main: '#ffffff',
+      main: '#000000',
       dark: '#ffffff',
       contrastText: '#ffffff',
     },
@@ -49,6 +50,10 @@ const mapDispatchToProps = dispatch => ({
   toggleDarkThemeHandler: () => dispatch(toggleDarkTheme()),
 });
 
+const mapStateToProps = state => ({
+  toggleDarkThemeBool: state.toggleDarkTheme,
+});
+
 class Header extends React.Component {
   constructor() {
     super();
@@ -58,17 +63,17 @@ class Header extends React.Component {
   }
 
   render() {
-    const { classes, toggleDarkThemeHandler } = this.props;
+    const { classes, toggleDarkThemeHandler, toggleDarkThemeBool } = this.props;
     return (
       <AppBar position="static">
         <MuiThemeProvider theme={theme}>
           <Toolbar>
-            <IconButton>
-              <AccountCircle />
+            <IconButton component={Link} to="/" color="primary">
+              <Home />
             </IconButton>
             <div className={classes.grow} />
             <Login />
-            <IconButton onClick={toggleDarkThemeHandler}>
+            <IconButton color={toggleDarkThemeBool ? 'secondary' : 'primary'} onClick={toggleDarkThemeHandler}>
               <Highlight />
             </IconButton>
           </Toolbar>
@@ -81,6 +86,7 @@ class Header extends React.Component {
 Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   toggleDarkThemeHandler: PropTypes.func.isRequired,
+  toggleDarkThemeBool: PropTypes.bool.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Header));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));
