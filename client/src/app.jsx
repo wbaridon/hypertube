@@ -56,7 +56,7 @@ addLocaleData([...en, ...fr]);
 function mapStateToProps(state) {
   return {
     locale: state.locale,
-    darkThemeBool: state.toggleDarkTheme,
+    darkThemeBool: state.darkTheme,
   };
 }
 

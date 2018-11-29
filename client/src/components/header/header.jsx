@@ -51,7 +51,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  toggleDarkThemeBool: state.toggleDarkTheme,
+  darkThemeBool: state.darkTheme,
 });
 
 class Header extends React.Component {
@@ -63,7 +63,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { classes, toggleDarkThemeHandler, toggleDarkThemeBool } = this.props;
+    const { classes, toggleDarkThemeHandler, darkThemeBool } = this.props;
     return (
       <AppBar position="static">
         <MuiThemeProvider theme={theme}>
@@ -73,7 +73,7 @@ class Header extends React.Component {
             </IconButton>
             <div className={classes.grow} />
             <Login />
-            <IconButton color={toggleDarkThemeBool ? 'secondary' : 'primary'} onClick={toggleDarkThemeHandler}>
+            <IconButton color={darkThemeBool ? 'secondary' : 'primary'} onClick={toggleDarkThemeHandler}>
               <Highlight />
             </IconButton>
           </Toolbar>
@@ -86,7 +86,7 @@ class Header extends React.Component {
 Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   toggleDarkThemeHandler: PropTypes.func.isRequired,
-  toggleDarkThemeBool: PropTypes.bool.isRequired,
+  darkThemeBool: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

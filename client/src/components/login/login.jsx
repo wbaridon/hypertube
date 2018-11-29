@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return ({
-    loginState: state.loginUser.loginState,
+    loginState: state.user.loginState,
   });
 };
 

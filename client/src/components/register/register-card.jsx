@@ -42,7 +42,7 @@ function handleDragOver(evt) {
 
 const mapStateToProps = (state) => {
   return ({
-    registerError: state.registerUser.error,
+    registerError: state.user.error,
   });
 };
 
@@ -92,9 +92,14 @@ class RegisterCard extends React.Component {
   }
 
   componentDidMount() {
-    const dropZone = document.getElementById('root');
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', event => this.handleImageAddWrapper(event), false);
+    this.dropZone = document.getElementById('root');
+    this.dropZone.addEventListener('dragover', handleDragOver, false);
+    this.dropZone.addEventListener('drop', event => this.handleImageAddWrapper(event), false);
+  }
+
+  componentWillUnmount = () => {
+    this.dropZone.removeEventListener('dragover', handleDragOver);
+    this.dropZone.removeEventListener('drop', event => this.handleImageAddWrapper(event));
   }
 
   mergeErrors(errors) {
