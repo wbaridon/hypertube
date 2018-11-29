@@ -14,95 +14,111 @@ const storage = multer.diskStorage({
     })
   }
 })
-const upload = multer({storage:storage});
+const upload = multer({ storage: storage });
 
 const UserManager = require('../models/userManager');
 
 userRouter
-    .post('/register', upload.single('image'), (req, res, next) => {
-      console.log(req.file)
-      if (req.file) {
-        var user = {
-          email: req.body.email,
-          userName: req.body.userName,
-          picture: req.file.filename,
-          lastName: req.body.lastName,
-          firstName: req.body.firstName,
-          password: req.body.password,
-          locale: req.body.locale
-        }
-        checkForm(user).then(result => {
-          hashPassword(user.password).then(hash => {
-            user.password = hash;
-            UserManager.userExist(user.email, user.userName).then(userExist => {
-              if (userExist) { res.status(400).json({ error: 'registration.userAlreadyRegistered' }) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
-              else {
-                UserManager.createUser(user, callback => {
-                  res.send({success: 'registration.success'})
-                })
-              }
-            })
-          })
-        }).catch(error => {
-          res.send({'error': error})
-        })
-      } else { res.send({error: 'registration.undefinedPictureIssue'})}
-    })
-    .post('/login', (req, res) => {
-      const user = {
+  .post('/register', upload.single('image'), (req, res, next) => {
+    console.log(req.file)
+    if (req.file) {
+      var user = {
+        email: req.body.email,
         userName: req.body.userName,
-        password: req.body.password
+        picture: req.file.filename,
+        lastName: req.body.lastName,
+        firstName: req.body.firstName,
+        password: req.body.password,
+        locale: req.body.locale
       }
-      if (user.userName && user.password) {
-        UserManager.getUser(user.userName).then(getResult => {
-          if (getResult) {
-            argon2.verify(getResult.password, user.password).then(match => {
-              if (match) {
-                console.log(getResult)
-                setToken(user).then(token=> { res.send({token, locale: getResult.locale}); })
-              } else { res.send({error: 'login.invalidPasswordOrLogin'})}
-            })
-          } else { res.send({error: 'login.noUser'})}
+      checkForm(user).then(result => {
+        hashPassword(user.password).then(hash => {
+          user.password = hash;
+          UserManager.userExist(user.email, user.userName).then(userExist => {
+            if (userExist) { res.status(400).json({ error: 'registration.userAlreadyRegistered' }) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
+            else {
+              UserManager.createUser(user, callback => {
+                res.send({ success: 'registration.success' })
+              })
+            }
+          })
         })
-      } else { res.send({error: 'login.emptyPasswordOrLogin'}) }
+      }).catch(error => {
+        res.send({ 'error': error })
+      })
+    } else { res.send({ error: 'registration.undefinedPictureIssue' }) }
+  })
+  .post('/login', (req, res) => {
+    const user = {
+      userName: req.body.userName,
+      password: req.body.password
+    }
+    if (user.userName && user.password) {
+      UserManager.getUser(user.userName).then(getResult => {
+        if (getResult) {
+          argon2.verify(getResult.password, user.password).then(match => {
+            if (match) {
+              console.log(getResult)
+              setToken(user).then(token => { res.send({ token, locale: getResult.locale }); })
+            } else { res.send({ error: 'login.invalidPasswordOrLogin' }) }
+          })
+        } else { res.send({ error: 'login.noUser' }) }
+      })
+    } else { res.send({ error: 'login.emptyPasswordOrLogin' }) }
+  })
+  .post('/getUser', (req, res) => {
+    // Reçoit un login et retourne les infos public de ce dernier
+    let userName = req.body.userName;
+    UserManager.getUser(userName).then(getResult => {
+      const user = {
+        userName: getResult.userName,
+        picture: getResult.picture,
+        lastName: getResult.lastName,
+        firstName: getResult.firstName,
+      }
+      res.send(user)
     })
-    .post('/getUser', (req, res) => {
-      // Reçoit un login et retourne les infos public de ce dernier
-      let userName = req.body.userName;
-      UserManager.getUser(userName).then(getResult => {
+  })
+  .post('/getUserPrivate', (req, res) => {
+    decodeToken(req.body.token).then(token => {
+      console.log(token);
+      UserManager.getUser(token.user).then(getResult => {
         const user = {
+          email: getResult.email,
           userName: getResult.userName,
           picture: getResult.picture,
           lastName: getResult.lastName,
-          firstName: getResult.firstName
+          firstName: getResult.firstName,
+          locale: getResult.locale,
         }
         res.send(user)
       })
     })
-    .post('/updateUser', (req, res) => {
-      decodeToken(req.body.token).then(token => {
-        // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update
-        let user = {
-          email: req.body.email
-        }
-        UserManager.updateUser('userName', token.user, user).then(result => {
+  })
+  .post('/updateUser', (req, res) => {
+    decodeToken(req.body.token).then(token => {
+      // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update
+      let user = {
+        email: req.body.email
+      }
+      UserManager.updateUser('userName', token.user, user).then(result => {
         /*  console.log('ici '+ result)
           res.send(result)*
           // Bug dans update recherche d'un fix */
-        })
-      }).catch(err => res.send({error: 'token.invalidToken'}))
+      })
+    }).catch(err => res.send({ error: 'token.invalidToken' }))
 
-    })
+  })
 
 function setToken(user) {
-  return new Promise ((resolve, error) => {
-    const token = jwt.sign({user: user.userName}, 'HypertubeSecretKey', { expiresIn: '1d'});
+  return new Promise((resolve, error) => {
+    const token = jwt.sign({ user: user.userName }, 'HypertubeSecretKey', { expiresIn: '1d' });
     resolve(token);
   })
 }
 
 function decodeToken(token) {
-  return new Promise ((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     jwt.verify(token, 'HypertubeSecretKey', function (err, decoded) {
       if (err) { reject('token.invalidToken') }
       else { resolve(decoded) }
@@ -111,7 +127,7 @@ function decodeToken(token) {
 }
 
 function hashPassword(pwd) {
-  return new Promise ((resolve, error) => {
+  return new Promise((resolve, error) => {
     argon2.hash(pwd).then(hash => {
       resolve(hash);
     }).catch(err => {
@@ -121,14 +137,14 @@ function hashPassword(pwd) {
 }
 
 function checkForm(user) {
-  return new Promise ((resolve, error) => {
+  return new Promise((resolve, error) => {
     if (user.email && user.userName && user.lastName && user.firstName && user.password) {
       if (user.password.length < 6) { error('registration.passwordTooShort') }
       else {
         // Manque le check si chiffre et lettre dans mdp, picture
         resolve('registration.correctForm')
       }
-    } else { error('registration.emptyFields')} // Des erreurs plus explicites c'est toujours bien, pour savoir quel variable est le probleme!
+    } else { error('registration.emptyFields') } // Des erreurs plus explicites c'est toujours bien, pour savoir quel variable est le probleme!
   })
 }
 
