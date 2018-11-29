@@ -3,5 +3,5 @@
     "env",
     "react"
   ],
-  "plugins": ["transform-es2015-destructuring", "transform-object-rest-spread"]
+  "plugins": ["transform-es2015-destructuring", "transform-object-rest-spread", "babel-plugin-transform-class-properties"]
 }
