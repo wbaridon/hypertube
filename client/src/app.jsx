@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { SnackbarProvider } from 'notistack';
 import { connect } from 'react-redux';
+import { checkUserInCookie } from 'Actions';
 import enUS from './i18n/en-US';
 import frFR from './i18n/fr-FR';
 import CurrentRoute from './components/routing/current-route';
@@ -57,12 +58,25 @@ function mapStateToProps(state) {
   return {
     locale: state.locale,
     darkThemeBool: state.darkTheme,
+    user: state.user,
   };
 }
+function mapDispatchToProps(dispatch) {
+  return ({
+    checkUser: () => dispatch(checkUserInCookie(document.cookie)),
+  });
+}
 
-function App({ locale, darkThemeBool }) {
+function App({
+  locale,
+  darkThemeBool,
+  checkUser,
+  user,
+}) {
   const messages = locale === 'fr' ? frFR : enUS;
-
+  if (user.token === null) {
+    checkUser();
+  }
   const root = document.documentElement;
   console.log(theme.palette.getContrastText(theme.palette.background.paper));
   root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
@@ -88,6 +102,8 @@ function App({ locale, darkThemeBool }) {
 App.propTypes = {
   locale: PropTypes.string.isRequired,
   darkThemeBool: PropTypes.bool.isRequired,
+  checkUser: PropTypes.func.isRequired,
+  user: PropTypes.shape({}).isRequired,
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
