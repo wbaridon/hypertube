@@ -1,5 +1,4 @@
 import registerUserAPI from 'API/register-user';
-import loginUserAPI from 'API/login-user';
 import logoutUserAPI from 'API/logout-user';
 import userInfoPrivateAPI from 'API/user-info-private';
 import {
@@ -12,7 +11,7 @@ import {
   CHECK_USER_IN_COOKIE,
   LOGOUT_USER,
 } from './action-types';
-
+import { loginUser } from './user';
 
 export const getUserInfoPrivate = token => ({
   type: GET_USER_INFO_PRIVATE,
@@ -49,9 +48,10 @@ export const registerUser = user => ({
   params: [user],
 });
 
-export const loginUser = user => ({
-  type: LOGIN_USER,
-  async: true,
-  httpMethodToInvoke: loginUserAPI,
-  params: [user],
-});
+export { loginUser };
+// export const loginUser = user => ({
+//   type: LOGIN_USER,
+//   async: true,
+//   httpMethodToInvoke: loginUserAPI,
+//   params: [user],
+// });

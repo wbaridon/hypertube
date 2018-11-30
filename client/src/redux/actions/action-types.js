@@ -1,6 +1,9 @@
 export const SET_LOCALE = 'SET_LOCALE';
 export const REGISTER_USER = 'REGISTER_USER';
-export const LOGIN_USER = 'LOGIN_USER';
+export const LOGIN = 'LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const POPULATE_USER = 'POPULATE_USER';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const GET_USER_INFO_PRIVATE = 'GET_USER_INFO_PRIVATE';
 export const CHECK_USER_IN_COOKIE = 'CHECK_USER_IN_COOKIE';
 export const LOGOUT_USER = 'LOGOUT_USER';

@@ -4,17 +4,12 @@ import { connect } from 'react-redux';
 import { getUserInfoPrivate } from 'Actions';
 
 class Settings extends Component {
-  componentDidMount = () => {
-    const { getUser, token } = this.props;
-    getUser(token);
-  }
-
   render() {
     const { user } = this.props;
     console.log(user);
     return (
       <div>
-        {user.email}
+        {user.data.email}
       </div>
     );
   }

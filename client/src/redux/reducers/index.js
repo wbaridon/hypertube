@@ -12,7 +12,9 @@ import {
   TOGGLE_DARK_THEME,
   CHECK_USER_IN_COOKIE,
   GET_USER_INFO_PRIVATE,
+  POPULATE_USER,
 } from '../actions/action-types';
+import userLogin from './user-login';
 
 function readCookie(name, cookieString) {
   var nameEQ = name + "=";
@@ -48,7 +50,7 @@ const defaultUserState = {
   lastAction: '',
   data: {},
   error: {},
-  token: null,
+  token: '',
 };
 
 const user = (state = defaultUserState, action) => {
@@ -94,34 +96,18 @@ const user = (state = defaultUserState, action) => {
         error: action.err.response.data,
         lastAction: action.type,
       };
-    case LOGIN_USER:
-      return state;
-    case generateInProgressActionTypeName(LOGIN_USER):
-      return {
-        ...state,
-        loggedIn: 'pending',
-        lastAction: action.type,
-      };
-    case generateSuccessActionTypeName(LOGIN_USER):
-      return {
-        ...state,
-        loggedIn: 'true',
-        data: action.data,
-        token: action.data.token,
-        lastAction: action.type,
-      };
-    case generateErrorActionTypeName(LOGIN_USER):
-      return {
-        ...state,
-        error: action.err,
-        response: {},
-        lastAction: action.type,
-      };
     case CHECK_USER_IN_COOKIE:
       return {
         ...state,
         token: readCookie('userToken', action.cookie),
         lastAction: action.type,
+      };
+    case POPULATE_USER:
+      return {
+        ...state,
+        lastAction: action.type,
+        loggedIn: 'true',
+        data: action.data,
       };
     case GET_USER_INFO_PRIVATE:
       return {
@@ -156,4 +142,5 @@ export default combineReducers({
   locale,
   user,
   darkTheme,
+  userLogin,
 });

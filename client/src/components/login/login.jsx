@@ -3,25 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { Typography } from '@material-ui/core';
-import { loginUser } from 'Actions/index';
+import {
+  loginUser,
+  getUserInfoPrivate,
+} from 'Actions/index';
 import { withTheme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import LoginCard from './login-card';
 import './autocomplete-fix.css';
 
-function createCookie(name, value, days) {
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    var expires = "; expires=" + date.toGMTString();
-  }
-  else var expires = "";
-  document.cookie = name + "=" + value + expires + "; path=/";
-}
-
 const mapDispatchToProps = (dispatch) => {
   return ({
     logIn: user => dispatch(loginUser(user)),
+    getUser: token => dispatch(getUserInfoPrivate(token)),
   });
 };
 
@@ -29,6 +23,7 @@ const mapStateToProps = (state) => {
   return ({
     loggedIn: state.user.loggedIn,
     user: state.user,
+    token: state.user.token,
     lastAction: state.user.lastAction,
   });
 };
@@ -41,25 +36,12 @@ class Login extends React.Component {
         userName: '',
         password: '',
       },
-      user: props.user,
     };
+    if (props.token !== '' && props.loggedIn !== 'true') {
+      props.getUser(props.token);
+    }
     this.handleLogin = this.handleLogin.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const { user, enqueueSnackbar, lastAction } = props;
-
-    if (lastAction !== state.lastAction) {
-      if (lastAction === 'LOGIN_USER_ERROR') {
-        enqueueSnackbar('Login Error!', { variant: 'error' });
-      } else if (lastAction === 'LOGIN_USER_SUCCESS') {
-        enqueueSnackbar('Login Success!', { variant: 'success' });
-        createCookie('userToken', user.token, 7);
-      }
-      return ({ user });
-    }
-    return null;
   }
 
   handleStateChange(key, value) {
@@ -79,9 +61,12 @@ class Login extends React.Component {
   }
 
   render() {
-    const { loggedIn, lastAction } = this.props;
+    const {
+      loggedIn,
+      lastAction,
+      user,
+    } = this.props;
     const { currentUser } = this.state;
-    const { user } = this.state;
 
     if (lastAction === 'LOGIN_USER_IN_PROGRESS') {
       return (<Typography>LOADING</Typography>);
@@ -101,7 +86,9 @@ class Login extends React.Component {
 
 Login.propTypes = {
   logIn: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
   user: PropTypes.shape({}).isRequired,
+  token: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired, // eslint-disable-line
   theme: PropTypes.shape({
     palette: PropTypes.shape({
