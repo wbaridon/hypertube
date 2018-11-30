@@ -10,6 +10,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
 import Highlight from '@material-ui/icons/Highlight';
+import Settings from '@material-ui/icons/Settings';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { toggleDarkTheme } from 'Actions/index';
@@ -75,6 +76,9 @@ class Header extends React.Component {
             <Login />
             <IconButton color={darkThemeBool ? 'secondary' : 'primary'} onClick={toggleDarkThemeHandler}>
               <Highlight />
+            </IconButton>
+            <IconButton component={Link} to="/settings">
+              <Settings />
             </IconButton>
           </Toolbar>
         </MuiThemeProvider>
