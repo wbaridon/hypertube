@@ -10,7 +10,20 @@ import {
   LOGIN_USER,
   LOGOUT_USER,
   TOGGLE_DARK_THEME,
+  CHECK_USER_IN_COOKIE,
+  GET_USER_INFO_PRIVATE,
 } from '../actions/action-types';
+
+function readCookie(name, cookieString) {
+  var nameEQ = name + "=";
+  var ca = cookieString.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return undefined;
+}
 
 const darkTheme = (state = false, action) => {
   switch (action.type) {
@@ -31,8 +44,9 @@ const locale = (state = 'en', action) => {
 };
 
 const defaultUserState = {
-  response: null,
-  loginState: 'dormant',
+  loggedIn: 'false',
+  lastAction: '',
+  data: {},
   error: {},
   token: null,
 };
@@ -43,113 +57,100 @@ const user = (state = defaultUserState, action) => {
       return state;
     case generateInProgressActionTypeName(LOGOUT_USER):
       return {
+        lastAction: action.type,
+        loggedIn: 'pending',
         ...state,
       };
     case generateSuccessActionTypeName(LOGOUT_USER):
       return {
         ...state,
+        lastAction: action.type,
+        loggedIn: 'false',
         response: action,
       };
     case generateErrorActionTypeName(LOGOUT_USER):
       return {
         ...state,
+        lastAction: action.type,
         error: action.err.response.data,
-        response: null,
+        response: {},
       };
     case REGISTER_USER:
       return state;
     case generateInProgressActionTypeName(REGISTER_USER):
       return {
         ...state,
+        lastAction: action.type,
       };
     case generateSuccessActionTypeName(REGISTER_USER):
       return {
         ...state,
         response: action,
+        lastAction: action.type,
       };
     case generateErrorActionTypeName(REGISTER_USER):
       return {
         ...state,
         error: action.err.response.data,
-        response: null,
+        lastAction: action.type,
       };
     case LOGIN_USER:
       return state;
     case generateInProgressActionTypeName(LOGIN_USER):
       return {
         ...state,
-        loginState: action.type,
+        loggedIn: 'pending',
+        lastAction: action.type,
       };
     case generateSuccessActionTypeName(LOGIN_USER):
       return {
         ...state,
-        loginState: action.type,
-        response: action,
+        loggedIn: 'true',
+        data: action.data,
         token: action.data.token,
+        lastAction: action.type,
       };
     case generateErrorActionTypeName(LOGIN_USER):
       return {
         ...state,
         error: action.err,
-        loginState: action.type,
+        response: {},
+        lastAction: action.type,
+      };
+    case CHECK_USER_IN_COOKIE:
+      return {
+        ...state,
+        token: readCookie('userToken', action.cookie),
+        lastAction: action.type,
+      };
+    case GET_USER_INFO_PRIVATE:
+      return {
+        ...state,
+        lastAction: action.type,
+      };
+    case generateInProgressActionTypeName(GET_USER_INFO_PRIVATE):
+      return {
+        ...state,
+        lastAction: action.type,
+      };
+    case generateSuccessActionTypeName(GET_USER_INFO_PRIVATE):
+      return {
+        ...state,
+        loggedIn: 'true',
+        data: action.data,
+        lastAction: action.type,
+      };
+    case generateErrorActionTypeName(GET_USER_INFO_PRIVATE):
+      return {
+        ...state,
+        error: action.err.response.data,
         response: null,
+        lastAction: action.type,
       };
     default:
       return state;
   }
 };
-
-// const registerUser = (state = defaultUserState, action) => {
-//   switch (action.type) {
-//     case REGISTER_USER:
-//       return state;
-//     case generateInProgressActionTypeName(REGISTER_USER):
-//       return {
-//         ...state,
-//       };
-//     case generateSuccessActionTypeName(REGISTER_USER):
-//       return {
-//         ...state,
-//         response: action,
-//       };
-//     case generateErrorActionTypeName(REGISTER_USER):
-//       return {
-//         ...state,
-//         error: action.err.response.data,
-//         response: null,
-//       };
-//     default:
-//       return state;
-//   }
-// };
-
-// const loginUser = (state = defaultUserState, action) => {
-//   switch (action.type) {
-//     case LOGIN_USER:
-//       return state;
-//     case generateInProgressActionTypeName(LOGIN_USER):
-//       return {
-//         ...state,
-//         loginState: action.type,
-//       };
-//     case generateSuccessActionTypeName(LOGIN_USER):
-//       return {
-//         ...state,
-//         loginState: action.type,
-//         response: action,
-//         token: action.data.token,
-//       };
-//     case generateErrorActionTypeName(LOGIN_USER):
-//       return {
-//         ...state,
-//         error: action.err,
-//         loginState: action.type,
-//         response: null,
-//       };
-//     default:
-//       return state;
-//   }
-// };
 
 export default combineReducers({
   locale,

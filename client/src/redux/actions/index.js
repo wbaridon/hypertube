@@ -1,15 +1,30 @@
 import registerUserAPI from 'API/register-user';
 import loginUserAPI from 'API/login-user';
 import logoutUserAPI from 'API/logout-user';
+import userInfoPrivateAPI from 'API/user-info-private';
 import {
   SET_LOCALE,
   REGISTER_USER,
   LOGIN_USER,
+  GET_USER_INFO_PRIVATE,
   TOGGLE_DARK_THEME,
   GET_MOVIES,
+  CHECK_USER_IN_COOKIE,
   LOGOUT_USER,
 } from './action-types';
 
+
+export const getUserInfoPrivate = token => ({
+  type: GET_USER_INFO_PRIVATE,
+  async: true,
+  httpMethodToInvoke: userInfoPrivateAPI,
+  params: [token],
+});
+
+export const checkUserInCookie = cookie => ({
+  type: CHECK_USER_IN_COOKIE,
+  cookie,
+});
 
 export const logoutUser = () => ({
   type: LOGOUT_USER,
