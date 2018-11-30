@@ -93,7 +93,7 @@ userRouter
         }
         res.send(user)
       })
-    })
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/updateUser', (req, res) => {
     decodeToken(req.body.token).then(token => {
