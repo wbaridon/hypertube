@@ -5,7 +5,6 @@ import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import createTypography from '@material-ui/core/styles/createTypography';
 
 const myStyles = {
   root: {
@@ -36,6 +35,7 @@ class Home extends React.Component {
     const itemList = items.length ? (
       items.map((item) => {
         return (
+          // eslint-disable-next-line no-underscore-dangle
           <Grid item key={item._id}>
             <Grid>
               <Link to={`/movie/${item.imdb_id}`}>

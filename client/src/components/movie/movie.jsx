@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Typography } from '@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -13,9 +14,9 @@ class Movie extends React.Component {
   }
 
   componentDidMount() {
-    const id = this.props.match.params.id_movie;
-    console.log(id);
-    axios.get(`https://tv-v2.api-fetch.website/movie/${id}`)
+    const { match } = this.props;
+    console.log(match.params.id_movie);
+    axios.get(`https://tv-v2.api-fetch.website/movie/${match.params.id_movie}`)
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -36,15 +37,15 @@ class Movie extends React.Component {
             image={item.images.poster}
           />
           <Typography>
-            title: {item.title}
+            {`title: ${item.title}`}
           </Typography>
           <Typography>
-            Genres: {item.genres}
+            {`Genres: ${item.genres}`}
           </Typography>
           <Typography>
-            Synopsis: {item.synopsis}
+            {`Synopsis: ${item.synopsis}`}
           </Typography>
-          <img src={item.images.poster}/>
+          <img src={item.images.poster} alt="poster" />
         </Card>
       );
     }
@@ -53,5 +54,15 @@ class Movie extends React.Component {
     );
   }
 }
+
+Movie.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id_movie: PropTypes.number.isRequired,
+    }).isRequired,
+
+  }).isRequired,
+};
+
 Movie.url = '/movie/:id_movie';
 export default Movie;

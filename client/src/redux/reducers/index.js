@@ -6,25 +6,24 @@ import {
 } from 'redux-minimal-code-async-actions';
 import {
   SET_LOCALE,
-  REGISTER_USER,
-  LOGIN_USER,
   LOGOUT_USER,
   TOGGLE_DARK_THEME,
   CHECK_USER_IN_COOKIE,
   GET_USER_INFO_PRIVATE,
   POPULATE_USER,
 } from '../actions/action-types';
-import userLogin from './user-login';
+import loginUser from './login-user';
+import registerUser from './register-user';
 
 function readCookie(name, cookieString) {
-  var nameEQ = name + "=";
-  var ca = cookieString.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  const nameEQ = `${name}=`;
+  const ca = cookieString.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
   }
-  return undefined;
+  return '';
 }
 
 const darkTheme = (state = false, action) => {
@@ -56,44 +55,8 @@ const defaultUserState = {
 const user = (state = defaultUserState, action) => {
   switch (action.type) {
     case LOGOUT_USER:
-      return state;
-    case generateInProgressActionTypeName(LOGOUT_USER):
       return {
-        lastAction: action.type,
-        loggedIn: 'pending',
-        ...state,
-      };
-    case generateSuccessActionTypeName(LOGOUT_USER):
-      return {
-        ...state,
-        lastAction: action.type,
-        loggedIn: 'false',
-        response: action,
-      };
-    case generateErrorActionTypeName(LOGOUT_USER):
-      return {
-        ...state,
-        lastAction: action.type,
-        error: action.err.response.data,
-        response: {},
-      };
-    case REGISTER_USER:
-      return state;
-    case generateInProgressActionTypeName(REGISTER_USER):
-      return {
-        ...state,
-        lastAction: action.type,
-      };
-    case generateSuccessActionTypeName(REGISTER_USER):
-      return {
-        ...state,
-        response: action,
-        lastAction: action.type,
-      };
-    case generateErrorActionTypeName(REGISTER_USER):
-      return {
-        ...state,
-        error: action.err.response.data,
+        ...defaultUserState,
         lastAction: action.type,
       };
     case CHECK_USER_IN_COOKIE:
@@ -142,5 +105,6 @@ export default combineReducers({
   locale,
   user,
   darkTheme,
-  userLogin,
+  loginUser,
+  registerUser,
 });

@@ -11,9 +11,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
 import Highlight from '@material-ui/icons/Highlight';
 import Settings from '@material-ui/icons/Settings';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { toggleDarkTheme } from 'Actions/index';
+import {
+  toggleDarkTheme,
+  logoutUser,
+} from 'Actions/index';
 import Login from '../login/login';
 
 const theme = createMuiTheme({
@@ -49,10 +53,12 @@ const styles = {
 
 const mapDispatchToProps = dispatch => ({
   toggleDarkThemeHandler: () => dispatch(toggleDarkTheme()),
+  logout: () => dispatch(logoutUser()),
 });
 
 const mapStateToProps = state => ({
   darkThemeBool: state.darkTheme,
+  loggedIn: state.user.loggedIn,
 });
 
 class Header extends React.Component {
@@ -64,7 +70,13 @@ class Header extends React.Component {
   }
 
   render() {
-    const { classes, toggleDarkThemeHandler, darkThemeBool } = this.props;
+    const {
+      classes,
+      toggleDarkThemeHandler,
+      darkThemeBool,
+      loggedIn,
+      logout,
+    } = this.props;
     return (
       <AppBar position="static">
         <MuiThemeProvider theme={theme}>
@@ -77,9 +89,19 @@ class Header extends React.Component {
             <IconButton color={darkThemeBool ? 'secondary' : 'primary'} onClick={toggleDarkThemeHandler}>
               <Highlight />
             </IconButton>
-            <IconButton component={Link} to="/settings">
-              <Settings />
-            </IconButton>
+            {
+              loggedIn === 'true'
+                ? (
+                  <React.Fragment>
+                    <IconButton component={Link} to="/settings">
+                      <Settings />
+                    </IconButton>
+                    <IconButton onClick={logout}>
+                      <ExitToApp />
+                    </IconButton>
+                  </React.Fragment>
+                )
+                : null}
           </Toolbar>
         </MuiThemeProvider>
       </AppBar>
@@ -91,6 +113,8 @@ Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   toggleDarkThemeHandler: PropTypes.func.isRequired,
   darkThemeBool: PropTypes.bool.isRequired,
+  loggedIn: PropTypes.string.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

@@ -1,5 +1,7 @@
 export const SET_LOCALE = 'SET_LOCALE';
-export const REGISTER_USER = 'REGISTER_USER';
+export const REGISTER = 'REGISTER';
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const POPULATE_USER = 'POPULATE_USER';

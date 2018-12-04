@@ -9,7 +9,7 @@ const defaultLoginState = {
   error: {},
 };
 
-export default function userLogin(state = defaultLoginState, action) {
+export default function loginUser(state = defaultLoginState, action) {
   switch (action.type) {
     case LOGIN:
       return state;
