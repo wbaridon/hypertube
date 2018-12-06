@@ -8,6 +8,7 @@ import {
   getUserInfoPrivate,
 } from 'Actions/index';
 import { withTheme } from '@material-ui/core/styles';
+import { injectIntl, intlShape } from 'react-intl';
 import Avatar from '@material-ui/core/Avatar';
 import LoginCard from './login-card';
 import './autocomplete-fix.css';
@@ -65,6 +66,7 @@ class Login extends React.Component {
       loggedIn,
       lastAction,
       user,
+      intl,
     } = this.props;
     const { currentUser } = this.state;
 
@@ -80,7 +82,7 @@ class Login extends React.Component {
           <Avatar src={`http://localhost:3000/images/${user.data.picture}`} />
         </React.Fragment>);
     }
-    return (<LoginCard currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />);
+    return (<LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />);
   }
 }
 
@@ -100,6 +102,7 @@ Login.propTypes = {
   }).isRequired,
   loggedIn: PropTypes.string.isRequired,
   lastAction: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withTheme()(withSnackbar(connect(mapStateToProps, mapDispatchToProps)(Login)));
+export default injectIntl(withTheme()(withSnackbar(connect(mapStateToProps, mapDispatchToProps)(Login))));

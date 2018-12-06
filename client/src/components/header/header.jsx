@@ -6,6 +6,7 @@ import {
   IconButton,
   MuiThemeProvider,
   createMuiTheme,
+  Typography,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Home from '@material-ui/icons/Home';
@@ -17,6 +18,7 @@ import { connect } from 'react-redux';
 import {
   toggleDarkTheme,
   logoutUser,
+  setLocale,
 } from 'Actions/index';
 import Login from '../login/login';
 
@@ -54,11 +56,12 @@ const styles = {
 const mapDispatchToProps = dispatch => ({
   toggleDarkThemeHandler: () => dispatch(toggleDarkTheme()),
   logout: () => dispatch(logoutUser()),
+  changeLocale: locale => dispatch(setLocale(locale)),
 });
 
 const mapStateToProps = state => ({
   darkThemeBool: state.darkTheme,
-  loggedIn: state.user.loggedIn,
+  locale: state.locale,
 });
 
 class Header extends React.Component {
@@ -76,6 +79,8 @@ class Header extends React.Component {
       darkThemeBool,
       loggedIn,
       logout,
+      changeLocale,
+      locale,
     } = this.props;
     return (
       <AppBar position="static">
@@ -97,11 +102,18 @@ class Header extends React.Component {
                       <Settings />
                     </IconButton>
                     <IconButton onClick={logout}>
-                      <ExitToApp />
+                      <Typography>
+                        {locale}
+                      </Typography>
                     </IconButton>
                   </React.Fragment>
                 )
                 : null}
+            <IconButton onClick={() => changeLocale(locale === 'en' ? 'fr' : 'en')}>
+              <Typography>
+                {locale}
+              </Typography>
+            </IconButton>
           </Toolbar>
         </MuiThemeProvider>
       </AppBar>
@@ -113,8 +125,9 @@ Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   toggleDarkThemeHandler: PropTypes.func.isRequired,
   darkThemeBool: PropTypes.bool.isRequired,
-  loggedIn: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
+  changeLocale: PropTypes.func.isRequired,
+  locale: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

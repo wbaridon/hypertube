@@ -40,12 +40,6 @@ function handleDragOver(evt) {
   evt.preventDefault();
 }
 
-const mapStateToProps = (state) => {
-  return ({
-    registerError: state.user.error,
-  });
-};
-
 const mapDispatchToProps = (dispatch) => {
   return ({
     registerUserHandler: form => dispatch(registerUser(form)),
@@ -126,7 +120,7 @@ class RegisterCard extends React.Component {
   }
 
   render() {
-    const { classes, intl, registerError } = this.props;
+    const { classes, intl } = this.props;
     const {
       image,
       userName, userNameError,
@@ -292,7 +286,6 @@ class RegisterCard extends React.Component {
               helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
             />
             <Switch checked={locale === 'en'} onChange={this.toggleLocale} />
-            {registerError.error !== undefined ? <Typography>{registerError.error}</Typography> : null}
           </CardContent>
           <CardActions>
             <Button type="submit" variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
@@ -310,7 +303,6 @@ RegisterCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
   registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
-  registerError: PropTypes.shape({}).isRequired,
   provider: PropTypes.string,
   code: PropTypes.string,
 };
@@ -320,4 +312,4 @@ RegisterCard.defaultProps = {
   code: '',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withStyles(styles)(RegisterCard)));
+export default injectIntl(connect(null, mapDispatchToProps)(withStyles(styles)(RegisterCard)));

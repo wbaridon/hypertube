@@ -7,7 +7,6 @@ import {
 } from '@material-ui/core';
 import {
   FormattedMessage,
-  injectIntl,
   intlShape,
 } from 'react-intl';
 
@@ -60,4 +59,4 @@ LoginCard.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(LoginCard);
+export default LoginCard;

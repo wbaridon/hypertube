@@ -6,8 +6,10 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import rootReducer from 'Reducers/index';
-import App from './app';
 import './index.css';
+
+import AppWrapper from './app-wrapper';
+
 
 if ('serviceWorker' in navigator) {
   runtime.register();
@@ -19,6 +21,6 @@ console.log(`Rendering ${process.env.NODE_ENV} version of ${HTMLTITLE} at versio
 
 ReactDOM.render((
   <Provider store={store}>
-    <App />
+    <AppWrapper />
   </Provider>
 ), document.getElementById('root'));

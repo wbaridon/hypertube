@@ -26,6 +26,10 @@ const enUS = {
     registerWith42: '42 Auth',
     userAlreadyRegistered: 'A user with that username or email already exists...',
   },
+  error: {
+    'Network Error': 'Failed to connect to API',
+    
+  },
 };
 
 export default flatten(enUS);
