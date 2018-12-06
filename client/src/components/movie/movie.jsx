@@ -58,7 +58,7 @@ class Movie extends React.Component {
 Movie.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id_movie: PropTypes.number.isRequired,
+      id_movie: PropTypes.string.isRequired,
     }).isRequired,
 
   }).isRequired,
