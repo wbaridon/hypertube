@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
-import { asyncActionsMiddleware } from 'redux-minimal-code-async-actions';
 import rootReducer from 'Reducers/index';
 import App from './app';
 import './index.css';
@@ -14,7 +13,7 @@ if ('serviceWorker' in navigator) {
   runtime.register();
 }
 
-const store = createStore(rootReducer, applyMiddleware(thunk, logger, asyncActionsMiddleware));
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
 console.log(`Rendering ${process.env.NODE_ENV} version of ${HTMLTITLE} at version ${VERSION}`);
 
