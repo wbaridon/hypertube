@@ -68,35 +68,53 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-function App({
-  darkThemeBool,
-  checkUser,
-  user,
-  token,
-  getUserPrivate,
-  lastAction,
-}) {
-  if (!user.data && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
-    checkUser();
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {};
   }
-  if (!user.data && token !== '' && lastAction !== 'GET_USER_INFO_PRIVATE') {
-    getUserPrivate(token);
+
+  static getDerivedStateFromProps(nextProps) {
+    const {
+      user,
+      token,
+      lastAction,
+      checkUser,
+      getUserPrivate,
+    } = nextProps;
+    if (!user.data && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
+      checkUser();
+    }
+    if (!user.data && token !== '' && lastAction !== 'GET_USER_INFO_PRIVATE') {
+      getUserPrivate(token);
+    }
+    return null;
   }
-  const root = document.documentElement;
-  root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
-  root.style.setProperty('--autocomplete-background-color', darkThemeBool ? darkTheme.palette.background.paper : theme.palette.background.paper);
-  root.style.setProperty('--autocomplete-primary-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.primary.main) : theme.palette.getContrastText(theme.palette.primary.main));
-  root.style.setProperty('--autocomplete-primary-background-color', darkThemeBool ? darkTheme.palette.primary.main : theme.palette.primary.main);
-  return (
-    <BrowserRouter>
-      <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
-        <CssBaseline>
-          <Header />
-          <CurrentRoute />
-        </CssBaseline>
-      </MuiThemeProvider>
-    </BrowserRouter>
-  );
+
+  render() {
+    const { darkThemeBool,
+      checkUser,
+      user,
+      token,
+      getUserPrivate,
+      lastAction,
+    } = this.props;
+    const root = document.documentElement;
+    root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
+    root.style.setProperty('--autocomplete-background-color', darkThemeBool ? darkTheme.palette.background.paper : theme.palette.background.paper);
+    root.style.setProperty('--autocomplete-primary-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.primary.main) : theme.palette.getContrastText(theme.palette.primary.main));
+    root.style.setProperty('--autocomplete-primary-background-color', darkThemeBool ? darkTheme.palette.primary.main : theme.palette.primary.main);
+    return (
+      <BrowserRouter>
+        <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
+          <CssBaseline>
+            <Header />
+            <CurrentRoute />
+          </CssBaseline>
+        </MuiThemeProvider>
+      </BrowserRouter>
+    );
+  }
 }
 App.propTypes = {
   darkThemeBool: PropTypes.bool.isRequired,

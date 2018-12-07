@@ -16,21 +16,21 @@ const handlers = {
   userName: (username) => {
     const errors = [];
     if (textError(username)) {
-      errors.push('register.notNumberOrLetter');
+      errors.push('register.error.notNumberOrLetter');
     }
     return (errors);
   },
   email: (email) => {
     const errors = [];
     if (!EmailValidator.validate(email) && email !== '') {
-      errors.push('register.emailBadFormat');
+      errors.push('register.error.emailBadFormat');
     }
     return (errors);
   },
   firstName: (firstname) => {
     const errors = [];
     if (textError(firstname)) {
-      errors.push('register.notNumberOrLetter');
+      errors.push('register.error.notNumberOrLetter');
     }
     if (firstname === 'guillaum!') {
       errors.push('guillaume is a bad name');
@@ -40,16 +40,16 @@ const handlers = {
   lastName: (lastname) => {
     const errors = [];
     if (textError(lastname)) {
-      errors.push('register.notNumberOrLetter');
+      errors.push('register.error.notNumberOrLetter');
     }
     return (errors);
   },
   password: (password) => {
     const errors = [];
     if (password.length < 6) {
-      errors.push('register.passwordLengthTooShort');
+      errors.push('register.error.passwordLengthTooShort');
     } else if (password.length > 16) {
-      errors.push('register.passwordLengthTooLong');
+      errors.push('register.error.passwordLengthTooLong');
     }
     return (errors);
   },
@@ -72,6 +72,17 @@ export function toggleLocale() {
   this.setState({ locale });
 }
 
+export function toggleTheme() {
+  let { darkTheme } = this.state;
+
+  if (darkTheme) {
+    darkTheme = false;
+  } else {
+    darkTheme = true;
+  }
+  this.setState({ darkTheme });
+}
+
 export function handleSubmit(e) {
   e.preventDefault();
   let willSend = true;
@@ -82,25 +93,47 @@ export function handleSubmit(e) {
     email, emailError,
     password, passwordError,
     locale,
+    darkTheme,
     image,
   } = this.state;
   const { registerUserHandler } = this.props;
 
-  if (userName === '' || userNameError.length !== 0) {
-    willSend = false;
-  } else if (email === '' || emailError.length !== 0) {
-    willSend = false;
-  } else if (firstName === '' || firstNameError.length !== 0) {
-    willSend = false;
-  } else if (lastName === '' || lastNameError.length !== 0) {
-    willSend = false;
-  } else if (password === '' || passwordError.length !== 0) {
-    willSend = false;
-  } else if (!image.rawData) {
-    willSend = false;
-    image.error = 'SHIT';
-    this.setState({ image });
+  if (userName === '') {
+    userNameError.push('register.error.noUserName');
+  } if (email === '') {
+    emailError.push('register.error.noEmail');
+  } if (firstName === '') {
+    firstNameError.push('register.error.noFirstName');
+  } if (lastName === '') {
+    lastNameError.push('register.error.noLastName');
+  } if (password === '') {
+    passwordError.push('register.error.noPasswordName');
+  } if (!image.rawData) {
+    image.error = 'register.error.missingImage';
   }
+  if (image.error.length !== 0
+    || userNameError.length !== 0
+    || emailError.length !== 0
+    || firstNameError.length !== 0
+    || lastNameError.length !== 0
+    || passwordError.length !== 0) {
+    willSend = false;
+    this.setState({
+      userNameError,
+      emailError,
+      firstNameError,
+      lastNameError,
+      passwordError,
+      image,
+    });
+  }
+  console.log(
+    userNameError,
+    emailError,
+    firstNameError,
+    lastNameError,
+    passwordError,
+    image.error);
   const formData = {
     userName,
     firstName,
@@ -108,6 +141,7 @@ export function handleSubmit(e) {
     email,
     password,
     locale,
+    darkTheme,
   };
   const form = new FormData();
   Object.keys(formData).forEach((key) => {

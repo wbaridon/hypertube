@@ -25,7 +25,12 @@ import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
 import { registerUser } from 'Actions/index';
 import { intlShape, injectIntl } from 'react-intl';
-import handlers, { handleSubmit, toggleLocale, handleClickShowPassword } from './event-handlers';
+import handlers, {
+  handleSubmit,
+  toggleLocale,
+  toggleTheme,
+  handleClickShowPassword,
+} from './event-handlers';
 import {
   rotateClockwise,
   rotateCounterClockwise,
@@ -59,6 +64,7 @@ class RegisterCard extends React.Component {
         error: '',
       },
       locale: 'en',
+      darkTheme: false,
       userName: '',
       userNameError: [],
       firstName: '',
@@ -82,6 +88,7 @@ class RegisterCard extends React.Component {
     this.offsetY = offsetY.bind(this);
     this.handleImageAddWrapper = this.handleImageAddWrapper.bind(this);
     this.toggleLocale = toggleLocale.bind(this);
+    this.toggleTheme = toggleTheme.bind(this);
     this.mergeErrors = this.mergeErrors.bind(this);
   }
 
@@ -129,6 +136,7 @@ class RegisterCard extends React.Component {
       email, emailError,
       password, passwordError, showPassword,
       locale,
+      darkTheme,
     } = this.state;
     return (
       <Card className={classes.card}>
@@ -196,7 +204,7 @@ class RegisterCard extends React.Component {
                 <Button component="label" label="add image" className={classes.photoButton}>
                   <input onChange={e => this.handleImageAdd(e.target.files[0])} style={{ display: 'none' }} type="file" />
                   <AddPhotoAlternate />
-                  <Typography>{`${intl.formatMessage({ id: 'register.addImage' })}${image.error}`}</Typography>
+                  <Typography color={!image.error ? 'default' : 'error'}>{`${intl.formatMessage({ id: image.error ? image.error : 'register.addImage' })}`}</Typography>
                 </Button>
               )
           }
@@ -286,6 +294,9 @@ class RegisterCard extends React.Component {
               helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
             />
             <Switch checked={locale === 'en'} onChange={this.toggleLocale} />
+            <Typography>{locale}</Typography>
+            <Switch checked={darkTheme} onChange={this.toggleTheme} />
+            <Typography>{darkTheme ? 'dark' : 'light'}</Typography>
           </CardContent>
           <CardActions>
             <Button type="submit" variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
