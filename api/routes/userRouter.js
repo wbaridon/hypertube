@@ -59,7 +59,6 @@ userRouter
         if (getResult) {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
-              console.log(getResult)
               setToken(user).then(token => { res.send({ token, locale: getResult.locale }); })
             } else { res.send({ error: 'login.invalidPasswordOrLogin' }) }
           })
@@ -127,7 +126,13 @@ function decodeToken(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, 'HypertubeSecretKey', function (err, decoded) {
       if (err) { reject('token.invalidToken') }
-      else { resolve(decoded) }
+      else {
+        // Rajouter ici le controle du blacklistage ip et renvoyer le resolve si pas blackliste
+      /*  BlackListManager.get(token).then(getResult => {
+          console.log(getResult)
+        })*/
+        resolve(decoded)
+      }
     })
   })
 }
