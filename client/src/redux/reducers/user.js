@@ -10,7 +10,6 @@ import {
   GET_USER_INFO_PRIVATE,
   GET_USER_INFO_PRIVATE_SUCCESS,
   GET_USER_INFO_PRIVATE_ERROR,
-  POPULATE_USER,
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   REGISTER,
@@ -106,6 +105,7 @@ export default function user(state = defaultUserState, action) {
         ...state,
         lastAction: action.type,
         error: action.error,
+        token: deleteCookie('userToken'),
       };
     case REGISTER:
       return state;

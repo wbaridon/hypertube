@@ -65,7 +65,7 @@ class Login extends React.Component {
       return (
         <React.Fragment>
           <Typography>
-            {`Hello ${user.data.firstName} ${user.data.lastName}!`}
+            {`${user.data.firstName} ${user.data.lastName}!`}
           </Typography>
           <Avatar src={`${BACKEND}images/${user.data.picture}`} />
         </React.Fragment>);

@@ -3,13 +3,7 @@ import {
   LOGIN,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
-  POPULATE_USER,
 } from './action-types';
-
-export const populateUser = response => ({
-  type: POPULATE_USER,
-  data: response.data,
-});
 
 export const loginUserStart = () => ({
   type: LOGIN,
