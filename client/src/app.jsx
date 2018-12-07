@@ -103,7 +103,7 @@ App.propTypes = {
   token: PropTypes.string.isRequired,
   user: PropTypes.shape({}).isRequired,
   checkUser: PropTypes.func.isRequired,
-  getUserPrivate: PropTypes.shape({}).isRequired,
+  getUserPrivate: PropTypes.func.isRequired,
   lastAction: PropTypes.string.isRequired,
 };
 
