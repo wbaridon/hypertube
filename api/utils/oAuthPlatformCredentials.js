@@ -1,7 +1,7 @@
 function twitterCredentials(credentials) {
   return new Promise ((resolve, reject) => {
     credentials.client = {
-      id: 'DuPzbiO2zGT18nD4j1WhDG77j ',
+      id: 'DuPzbiO2zGT18nD4j1WhDG77j',
       secret: 'rbrCtZxNuwYxDMFAs4MqWuOEZm04JHJFNfP6VF75IGmxHCGRah',
     }
     credentials.auth = {
