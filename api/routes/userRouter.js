@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const UserManager = require('../models/userManager');
+const BlackListManager = require('../models/blackListManager');
 
 userRouter
   .post('/register', upload.single('image'), (req, res, next) => {
@@ -65,6 +66,11 @@ userRouter
         } else { res.send({ error: 'login.noUser' }) }
       })
     } else { res.send({ error: 'login.emptyPasswordOrLogin' }) }
+  })
+  .post('/logout', (req, res) => {
+    BlackListManager.add(req.body, callback => {
+      res.send({success: 'logout.tokenDestroy'})
+    })
   })
   .post('/getUser', (req, res) => {
     // Reçoit un login et retourne les infos public de ce dernier
