@@ -107,7 +107,7 @@ export function handleSubmit(e) {
   } if (lastName === '') {
     lastNameError.push('register.error.noLastName');
   } if (password === '') {
-    passwordError.push('register.error.noPasswordName');
+    passwordError.push('register.error.noPassword');
   } if (!image.rawData) {
     image.error = 'register.error.missingImage';
   }
