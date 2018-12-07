@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withSnackbar } from 'notistack';
 import { Typography } from '@material-ui/core';
 import {
   loginUser,
@@ -22,10 +21,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return ({
-    loggedIn: state.user.loggedIn,
     user: state.user,
-    token: state.user.token,
-    lastAction: state.user.lastAction,
   });
 };
 
@@ -38,9 +34,6 @@ class Login extends React.Component {
         password: '',
       },
     };
-    if (props.token !== '' && props.loggedIn !== 'true') {
-      props.getUser(props.token);
-    }
     this.handleLogin = this.handleLogin.bind(this);
     this.handleStateChange = this.handleStateChange.bind(this);
   }
@@ -63,23 +56,18 @@ class Login extends React.Component {
 
   render() {
     const {
-      loggedIn,
-      lastAction,
       user,
       intl,
     } = this.props;
     const { currentUser } = this.state;
 
-    if (lastAction === 'LOGIN_USER_IN_PROGRESS') {
-      return (<Typography>LOADING</Typography>);
-    }
-    if (loggedIn === 'true') {
+    if (user.data) {
       return (
         <React.Fragment>
           <Typography>
             {`Hello ${user.data.firstName} ${user.data.lastName}!`}
           </Typography>
-          <Avatar src={`http://localhost:3000/images/${user.data.picture}`} />
+          <Avatar src={`${BACKEND}images/${user.data.picture}`} />
         </React.Fragment>);
     }
     return (<LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />);
@@ -88,10 +76,7 @@ class Login extends React.Component {
 
 Login.propTypes = {
   logIn: PropTypes.func.isRequired,
-  getUser: PropTypes.func.isRequired,
   user: PropTypes.shape({}).isRequired,
-  token: PropTypes.string.isRequired,
-  enqueueSnackbar: PropTypes.func.isRequired, // eslint-disable-line
   theme: PropTypes.shape({
     palette: PropTypes.shape({
       primary: PropTypes.shape({
@@ -100,9 +85,7 @@ Login.propTypes = {
       getContrastText: PropTypes.func.isRequired,
     }).isRequired,
   }).isRequired,
-  loggedIn: PropTypes.string.isRequired,
-  lastAction: PropTypes.string.isRequired,
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(withTheme()(withSnackbar(connect(mapStateToProps, mapDispatchToProps)(Login))));
+export default injectIntl(withTheme()(connect(mapStateToProps, mapDispatchToProps)(Login)));

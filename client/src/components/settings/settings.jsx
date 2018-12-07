@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUserInfoPrivate } from 'Actions';
+import { Typography } from '@material-ui/core';
 
 class Settings extends Component {
+  componentDidMount() {
+
+  }
+
   render() {
     const { user } = this.props;
     console.log(user);
     return (
-      <div>
-        {user.data.email}
-      </div>
+      <Typography>
+        {user.data ? user.data.email : 'no USER'}
+      </Typography>
     );
   }
 }
@@ -19,8 +23,6 @@ class Settings extends Component {
 Settings.url = '/settings';
 Settings.propTypes = {
   user: PropTypes.shape({}).isRequired,
-  getUser: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -28,8 +30,5 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getUser: token => dispatch(getUserInfoPrivate(token)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, null)(Settings);

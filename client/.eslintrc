@@ -26,7 +26,8 @@
       "GOOGLE_API_KEY": true,
       "AWS_CLOUDFRONT": true,
       "TIMEOUT_API": true,
-      "AUTH42": true
+      "AUTH42": true,
+      "BACKEND": true
     },
     "rules": {
       "no-console": "off",

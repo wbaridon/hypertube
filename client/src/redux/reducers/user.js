@@ -2,8 +2,11 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOGIN,
-  LOGOUT_USER,
+  LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
   CHECK_USER_IN_COOKIE,
+  DELETE_USER_FROM_COOKIE,
   GET_USER_INFO_PRIVATE,
   GET_USER_INFO_PRIVATE_SUCCESS,
   GET_USER_INFO_PRIVATE_ERROR,
@@ -18,6 +21,7 @@ const defaultUserState = {
   data: null,
   error: null,
   registerData: null,
+  token: '',
   lastAction: '',
 };
 
@@ -32,6 +36,16 @@ function readCookie(name, cookieString) {
   return '';
 }
 
+function setCookie(name, value, days) {
+  const d = new Date();
+  d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * days);
+  document.cookie = `${name}=${value};path=/;expires=${d.toGMTString()}`;
+}
+function deleteCookie(name) {
+  setCookie(name, '', -1);
+  return '';
+}
+
 export default function user(state = defaultUserState, action) {
   switch (action.type) {
     case LOGIN:
@@ -40,7 +54,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        user: action.result,
+        token: action.result.token,
       };
     case LOGIN_ERROR:
       return {
@@ -48,10 +62,21 @@ export default function user(state = defaultUserState, action) {
         lastAction: action.type,
         error: action.error,
       };
-    case LOGOUT_USER:
+    case LOGOUT:
+      return {
+        ...state,
+        lastAction: action.type,
+      };
+    case LOGOUT_SUCCESS:
       return {
         ...defaultUserState,
         lastAction: action.type,
+      };
+    case LOGOUT_ERROR:
+      return {
+        ...state,
+        lastAction: action.type,
+        error: action.error,
       };
     case CHECK_USER_IN_COOKIE:
       return {
@@ -59,12 +84,11 @@ export default function user(state = defaultUserState, action) {
         token: readCookie('userToken', action.cookie),
         lastAction: action.type,
       };
-    case POPULATE_USER:
+    case DELETE_USER_FROM_COOKIE:
       return {
         ...state,
+        token: deleteCookie('userToken'),
         lastAction: action.type,
-        loggedIn: 'true',
-        data: action.data,
       };
     case GET_USER_INFO_PRIVATE:
       return {

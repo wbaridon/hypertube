@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter } from 'react-router-dom';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import {
   checkUserInCookie,
+  getUserInfoPrivate,
 } from 'Actions';
-
 import CurrentRoute from './components/routing/current-route';
 import Header from './components/header/header';
 
@@ -54,20 +54,34 @@ function mapStateToProps(state) {
   return {
     locale: state.locale,
     darkThemeBool: state.darkTheme,
+    user: state.user,
     token: state.user.token,
+    lastAction: state.user.lastAction,
     error: state.user.error,
   };
 }
 function mapDispatchToProps(dispatch) {
   return ({
     checkUser: () => dispatch(checkUserInCookie(document.cookie)),
+    getUserPrivate: token => dispatch(getUserInfoPrivate(token)),
   });
 }
 
 
 function App({
   darkThemeBool,
+  checkUser,
+  user,
+  token,
+  getUserPrivate,
+  lastAction,
 }) {
+  if (!user.data && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
+    checkUser();
+  }
+  if (!user.data && token !== '' && lastAction !== 'GET_USER_INFO_PRIVATE') {
+    getUserPrivate(token);
+  }
   const root = document.documentElement;
   root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
   root.style.setProperty('--autocomplete-background-color', darkThemeBool ? darkTheme.palette.background.paper : theme.palette.background.paper);
@@ -86,6 +100,11 @@ function App({
 }
 App.propTypes = {
   darkThemeBool: PropTypes.bool.isRequired,
+  token: PropTypes.string.isRequired,
+  user: PropTypes.shape({}).isRequired,
+  checkUser: PropTypes.func.isRequired,
+  getUserPrivate: PropTypes.shape({}).isRequired,
+  lastAction: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl((withSnackbar((App)))));

@@ -28,7 +28,6 @@ const enUS = {
   },
   error: {
     'Network Error': 'Failed to connect to API',
-    
   },
 };
 

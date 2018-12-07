@@ -18,7 +18,8 @@ class Video extends React.Component {
   componentDidMount() {
     Axios.get('http://localhost:3000/videos/music.mp4', {
 
-    }).then(() => {
+    }).then((response) => {
+      console.log(response);
       // Define video & audio formats
       const audioFormat = 'audio/mp4; codecs=mp4a.40.2';
       const videoFormat = 'video/mp4; codecs=avc1.64001e';
