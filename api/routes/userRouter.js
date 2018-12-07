@@ -39,15 +39,15 @@ userRouter
             if (userExist) { res.status(400).json({ error: 'registration.userAlreadyRegistered' }) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
             else {
               UserManager.createUser(user, callback => {
-                res.send({ success: 'registration.success' })
+                res.status(200).send({ success: 'registration.success' })
               })
             }
           })
         })
       }).catch(error => {
-        res.send({ 'error': error })
+        res.status(400).send({ 'error': error })
       })
-    } else { res.send({ error: 'registration.undefinedPictureIssue' }) }
+    } else { res.status(400).send({ error: 'registration.undefinedPictureIssue' }) }
   })
   .post('/login', (req, res) => {
     const user = {
@@ -60,15 +60,15 @@ userRouter
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
               setToken(user).then(token => { res.send({ token, locale: getResult.locale }); })
-            } else { res.send({ error: 'login.invalidPasswordOrLogin' }) }
+            } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
           })
-        } else { res.send({ error: 'login.noUser' }) }
+        } else { res.status(400).send({ error: 'login.noUser' }) }
       })
-    } else { res.send({ error: 'login.emptyPasswordOrLogin' }) }
+    } else { res.status(400).send({ error: 'login.emptyPasswordOrLogin' }) }
   })
   .post('/logout', (req, res) => {
     BlackListManager.add(req.body, callback => {
-      res.send({success: 'logout.tokenDestroy'})
+      res.status(200).send({success: 'logout.tokenDestroy'})
     })
   })
   .post('/getUser', (req, res) => {
