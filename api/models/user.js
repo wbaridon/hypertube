@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   firstName: String,
   password: String,
   locale: String,
+  darkTheme: Boolean,
   moviesHistory: [MovieHistorySchema]
 });
 
