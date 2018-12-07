@@ -289,7 +289,7 @@ class RegisterCard extends React.Component {
           </CardContent>
           <CardActions>
             <Button type="submit" variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
-            <Button href="https://api.intra.42.fr/oauth/authorize?client_id=5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fregister&response_type=code" variant="contained">
+            <Button href={AUTH42} variant="contained">
               {intl.formatMessage({ id: 'register.registerWith42' })}
             </Button>
           </CardActions>

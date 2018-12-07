@@ -1,3 +1,6 @@
 {
-  "htmlTitle": "Hypertube"
+  "htmlTitle": "Hypertube",
+  "oAuth": {
+    "fortytwo": "https://api.intra.42.fr/oauth/authorize?client_id=5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fregister%2F42&response_type=code"
+  }
 }
