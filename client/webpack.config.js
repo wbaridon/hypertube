@@ -65,6 +65,7 @@ module.exports = {
       VERSION: JSON.stringify(require('./package.json').version),
       HTMLTITLE: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).htmlTitle),
       AUTH42: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.fortytwo),
+      AUTHGITHUB: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.github),
       BACKEND: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).BACKEND),
       TIMEOUT_API: 5000,
     }),

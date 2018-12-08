@@ -27,6 +27,7 @@
       "AWS_CLOUDFRONT": true,
       "TIMEOUT_API": true,
       "AUTH42": true,
+      "AUTHGITHUB": true,
       "BACKEND": true
     },
     "rules": {

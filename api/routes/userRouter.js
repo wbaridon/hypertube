@@ -30,13 +30,14 @@ userRouter
         lastName: req.body.lastName,
         firstName: req.body.firstName,
         password: req.body.password,
-        locale: req.body.locale
+        locale: req.body.locale,
+        darkTheme: req.body.darkTheme
       }
       checkForm(user).then(result => {
         hashPassword(user.password).then(hash => {
           user.password = hash;
           UserManager.userExist(user.email, user.userName).then(userExist => {
-            if (userExist) { res.status(400).json({ error: 'registration.userAlreadyRegistered' }) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
+            if (userExist) { res.status(400).send({ error: 'registration.userAlreadyRegistered' }) }
             else {
               UserManager.createUser(user, callback => {
                 res.status(200).send({ success: 'registration.success' })

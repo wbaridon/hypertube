@@ -20,6 +20,7 @@ const frFR = {
     profilePicture: 'Changer',
     addImage: 'Charger une image',
     registerWith42: '42 Auth',
+    registerWithGithub: 'GitHub Auth',
     error: {
       userAlreadyRegistered: 'Un utilisateur avec ce nom d\'utilisateur existe deja...',
       passwordLengthTooLong: 'Trop long',

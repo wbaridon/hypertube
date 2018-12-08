@@ -303,6 +303,9 @@ class RegisterCard extends React.Component {
             <Button href={AUTH42} variant="contained">
               {intl.formatMessage({ id: 'register.registerWith42' })}
             </Button>
+            <Button href={AUTHGITHUB} variant="contained">
+              {intl.formatMessage({ id: 'register.registerWithGithub'})}
+            </Button>
           </CardActions>
         </form>
       </Card>
