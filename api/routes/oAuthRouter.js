@@ -5,27 +5,18 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const axios = require('axios');
 const platformCredentials = require('../utils/oAuthPlatformCredentials');
 
-// 42 credentials by default
-const credentials = {
-  client: {
-    id: '5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd',
-    secret: 'a8d824a530c12a814fa79c5427feacdb37e58e9b6d740d443833dd94db3e1fac'
-   },
-   auth: {
-    tokenHost: 'https://api.intra.42.fr',
-    tokenPath: '/oauth/token'
-   }
-};
-
 oAuthRouter
   .post('/register', (req, res) => {
-    getToken(req.body.provider, req.url, req.body.clientCode, credentials)
-    .then(token => {
-      // Renvoi en front de l'user pour remplir les champs manquant,
-      // Faire une verif avant si le compte existe pas deja ou apres sur la route normal ?
-      // Et en front on validera les informations ensuite.. On ne doit pas pouvoir modifier le login et mail
-      getUserFrom(req.body.provider, token).then(user => res.send(user))
-    }).catch(error => res.send(error))
+    getCredentials(req.body.provider).then(credentials => {
+      getToken(req.body.provider, req.url, req.body.clientCode, credentials)
+      .then(token => {
+
+        // Renvoi en front de l'user pour remplir les champs manquant,
+        // Faire une verif avant si le compte existe pas deja ou apres sur la route normal ?
+        // Et en front on validera les informations ensuite.. On ne doit pas pouvoir modifier le login et mail
+        getUserFrom(req.body.provider, token).then(user => res.send(user))
+      }).catch(error => res.send(error))
+    })
   })
   .post('/login', (req, res) => {
     getToken(req.body.provider, req.url, req.body.clientCode, credentials)
@@ -67,6 +58,7 @@ function getUserFrom(provider, token) {
          firstname: '',
          password: '',
        }
+       // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
        resolve(user)
      })
    } else {
@@ -86,11 +78,11 @@ function getUserFrom(provider, token) {
   })
 }
 
-function getCredentials(provider, credentials) {
+function getCredentials(provider) {
   return new Promise ((resolve, reject) => {
-   if (provider === 'gitHub') { platformCredentials.gitHub(credentials).then(credentials => resolve(credentials)) }
-   else if (provider === 'twitter') { platformCredentials.twitter(credentials).then(credentials => resolve (credentials)) }
-   else if (provider === '42') { resolve(credentials) }
+   if (provider === 'github') { platformCredentials.gitHub().then(credentials => resolve(credentials)) }
+   else if (provider === 'twitter') { platformCredentials.twitter().then(credentials => resolve (credentials)) }
+   else if (provider === '42') { platformCredentials.fortytwo().then(credentials => resolve (credentials)) }
   })
 }
 
