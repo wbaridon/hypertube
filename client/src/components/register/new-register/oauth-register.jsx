@@ -13,14 +13,23 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
+function splitNames(names) {
+  return names.split(' ');
+}
+
 class OauthRegister extends Component {
   constructor(props) {
     super(props);
+    let fn = props.registerData.firstName;
+    let ln = props.registerData.lastName;
+    if (props.registerData.firstName === '') {
+      [fn, ln] = ln.split(' ');
+    }
     this.state = {
       userName: props.registerData.userName,
       email: props.registerData.email,
-      firstName: props.registerData.firstName,
-      lastName: props.registerData.lastName,
+      firstName: fn,
+      lastName: ln,
       image: null,
     };
 

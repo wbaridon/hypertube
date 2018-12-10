@@ -22,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return ({
     user: state.user,
+    lastAction: state.lastAction,
   });
 };
 
@@ -58,6 +59,7 @@ class Login extends React.Component {
     const {
       user,
       intl,
+      lastAction,
     } = this.props;
     const { currentUser } = this.state;
 
@@ -69,6 +71,8 @@ class Login extends React.Component {
           </Typography>
           <Avatar src={`${BACKEND}images/${user.data.picture}`} />
         </React.Fragment>);
+    } if (lastAction === 'LOGIN_USER') {
+      return (<div>LOEDING</div>);
     }
     return (<LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />);
   }
@@ -86,6 +90,7 @@ Login.propTypes = {
     }).isRequired,
   }).isRequired,
   intl: intlShape.isRequired,
+  lastAction: PropTypes.string.isRequired,
 };
 
 export default injectIntl(withTheme()(connect(mapStateToProps, mapDispatchToProps)(Login)));

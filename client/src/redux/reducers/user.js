@@ -55,7 +55,10 @@ function deleteCookie(name) {
 export default function user(state = defaultUserState, action) {
   switch (action.type) {
     case LOGIN:
-      return state;
+      return {
+        ...state,
+        lastAction: action.type,
+      };
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -66,7 +69,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        error: action.error.response.data.error,
+        error: action.error.response ? action.error.response.data.error : action.error.message,
       };
     case LOGOUT:
       return {
@@ -111,11 +114,14 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        error: action.error.response.data.error,
+        error: action.error.response ? action.error.response.data.error : action.error.message,
         token: deleteCookie('userToken'),
       };
     case REGISTER:
-      return state;
+      return {
+        ...state,
+        lastAction: action.type,
+      };
     case REGISTER_SUCCESS:
       return {
         ...state,
@@ -129,7 +135,10 @@ export default function user(state = defaultUserState, action) {
         error: action.error.response.data.error,
       };
     case REGISTER_OAUTH:
-      return state;
+      return {
+        ...state,
+        lastAction: action.type,
+      };
     case REGISTER_OAUTH_SUCCESS:
       return {
         ...state,
@@ -147,7 +156,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        error: action.error.response.data.error,
+        error: action.error.response ? action.error.response.data.error : action.error.message,
         registerData: {
           exists: false,
         },
