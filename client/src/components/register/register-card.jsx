@@ -49,6 +49,12 @@ function handleDragOver(evt) {
   evt.preventDefault();
 }
 
+const mapStateToProps = (state) => {
+  return ({
+    registerData: state.user.registerData,
+  });
+};
+
 const mapDispatchToProps = (dispatch) => {
   return ({
     registerUserHandler: form => dispatch(registerUser(form)),
@@ -82,6 +88,7 @@ class RegisterCard extends React.Component {
       password: '',
       passwordError: [],
       showPassword: false,
+      provided: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -99,13 +106,14 @@ class RegisterCard extends React.Component {
   }
 
   componentDidMount() {
-    const { provider, code, registerUserOauthHandler } = this.props;
+    const { provider, code, registerUserOauthHandler, registerData } = this.props;
     this.dropZone = document.getElementById('root');
     this.dropZone.addEventListener('dragover', handleDragOver, false);
     this.dropZone.addEventListener('drop', event => this.handleImageAddWrapper(event), false);
     console.log(provider, code);
     if (provider !== 'register' && code !== '') {
       registerUserOauthHandler(provider, code);
+      this.setState({ provided: true });
     }
   }
 
@@ -137,6 +145,20 @@ class RegisterCard extends React.Component {
     this.handleImageAdd(event.dataTransfer.files[0], event);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { registerData } = nextProps;
+    if (prevState.provided) {
+      return ({
+        userName: registerData.login,
+        firstName: registerData.firstname,
+        lastName: registerData.name,
+        email: registerData.email,
+        password: '',
+      });
+    }
+    return null;
+  }
+
   render() {
     const { classes, intl } = this.props;
     const {
@@ -148,6 +170,7 @@ class RegisterCard extends React.Component {
       password, passwordError, showPassword,
       locale,
       darkTheme,
+      provided,
     } = this.state;
     return (
       <Card className={classes.card}>
@@ -223,6 +246,7 @@ class RegisterCard extends React.Component {
         <form action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
+              InputLabelProps={{ shrink: provided || userName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -239,6 +263,8 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || email !== '' }}
+              disabled={provided}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -253,6 +279,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || firstName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -266,6 +293,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || lastName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -279,6 +307,8 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || password !== '' }}
+              disabled={provided}
               className="registerInputs"
               autoComplete="current-password"
               fullWidth
@@ -294,6 +324,7 @@ class RegisterCard extends React.Component {
                 endAdornment: (
                   <InputAdornment variant="filled" position="end">
                     <IconButton
+                      disabled={provided}
                       aria-label="Toggle password visibility"
                       onClick={this.handleClickShowPassword}
                     >
@@ -332,6 +363,7 @@ RegisterCard.propTypes = {
   provider: PropTypes.string,
   code: PropTypes.string,
   setErrorHandler: PropTypes.func.isRequired,
+  registerData: PropTypes.shape({}).isRequired,
 };
 
 RegisterCard.defaultProps = {
@@ -339,4 +371,4 @@ RegisterCard.defaultProps = {
   code: '',
 };
 
-export default injectIntl(connect(null, mapDispatchToProps)(withStyles(styles)(RegisterCard)));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RegisterCard)));

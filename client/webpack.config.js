@@ -67,7 +67,7 @@ module.exports = {
       AUTH42: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.fortytwo),
       AUTHGITHUB: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.github),
       BACKEND: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).BACKEND),
-      TIMEOUT_API: 5000,
+      TIMEOUT_API: 8000,
     }),
     new HtmlWebPackPlugin({
       template: path.resolve(srcDir, 'index.html'),

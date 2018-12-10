@@ -24,7 +24,9 @@ const defaultUserState = {
   user: null,
   data: null,
   error: null,
-  registerData: null,
+  registerData: {
+    exists: false,
+  },
   token: '',
   lastAction: '',
 };
@@ -118,7 +120,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        registerData: action.result,
+        data: action.result,
       };
     case REGISTER_ERROR:
       return {
@@ -132,13 +134,23 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        registerData: action.result,
+        registerData: {
+          email: action.result.email,
+          userName: action.result.login,
+          imageUrl: action.result.picture,
+          firstName: action.result.firstname,
+          lastName: action.result.name,
+          exists: true,
+        },
       };
     case REGISTER_OAUTH_ERROR:
       return {
         ...state,
         lastAction: action.type,
-        error: action.result,
+        error: action.error.response.data.error,
+        registerData: {
+          exists: false,
+        },
       };
     case SET_ERROR:
       return {

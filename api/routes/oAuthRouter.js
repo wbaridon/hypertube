@@ -15,7 +15,7 @@ oAuthRouter
         // Faire une verif avant si le compte existe pas deja ou apres sur la route normal ?
         // Et en front on validera les informations ensuite.. On ne doit pas pouvoir modifier le login et mail
         getUserFrom(req.body.provider, token).then(user => res.send(user))
-      }).catch(error => res.send(error))
+      }).catch(error => res.status(400).send(error))
     })
   })
   .post('/login', (req, res) => {
@@ -26,7 +26,7 @@ oAuthRouter
         // Il faut renvoyer un token jwt par rapport au compte ou le token oauth ?
          res.send('non fonctionnel')
        );
-    }).catch(error => res.send(error))
+    }).catch(error => res.status(400).send(error))
   })
 
 function getToken(provider, path, clientCode, credentials) {
@@ -41,7 +41,7 @@ function getToken(provider, path, clientCode, credentials) {
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
          resolve(token);
-       }).catch (error => { reject({'error': 'Access Token Error'}); })
+       }).catch (error => { reject({'error': 'registerOauth.accessTokenError'}); })
     });
   });
 }
