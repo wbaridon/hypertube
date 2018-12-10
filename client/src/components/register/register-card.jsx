@@ -23,7 +23,7 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
-import { registerUser } from 'Actions/index';
+import { registerUser, registerUserOauth } from 'Actions/index';
 import { intlShape, injectIntl } from 'react-intl';
 import handlers, {
   handleSubmit,
@@ -48,6 +48,7 @@ function handleDragOver(evt) {
 const mapDispatchToProps = (dispatch) => {
   return ({
     registerUserHandler: form => dispatch(registerUser(form)),
+    registerUserOauthHandler: (provider, code) => dispatch(registerUserOauth(provider, code)),
   });
 };
 
@@ -93,9 +94,14 @@ class RegisterCard extends React.Component {
   }
 
   componentDidMount() {
+    const { provider, code, registerUserOauthHandler } = this.props;
     this.dropZone = document.getElementById('root');
     this.dropZone.addEventListener('dragover', handleDragOver, false);
     this.dropZone.addEventListener('drop', event => this.handleImageAddWrapper(event), false);
+    console.log(provider, code);
+    if (provider !== 'register' && code !== '') {
+      registerUserOauthHandler(provider, code);
+    }
   }
 
   componentWillUnmount = () => {
@@ -304,7 +310,7 @@ class RegisterCard extends React.Component {
               {intl.formatMessage({ id: 'register.registerWith42' })}
             </Button>
             <Button href={AUTHGITHUB} variant="contained">
-              {intl.formatMessage({ id: 'register.registerWithGithub'})}
+              {intl.formatMessage({ id: 'register.registerWithGithub' })}
             </Button>
           </CardActions>
         </form>
@@ -317,6 +323,7 @@ RegisterCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
   registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
+  registerUserOauthHandler: PropTypes.func.isRequired,
   provider: PropTypes.string,
   code: PropTypes.string,
 };

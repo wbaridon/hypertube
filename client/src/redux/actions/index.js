@@ -7,7 +7,9 @@ import {
 import { loginUser } from './login-user';
 import { logoutUser } from './logout-user';
 import { registerUser } from './register-user';
+import { registerUserOauth } from './register-user-oauth';
 import { getUserInfoPrivate } from './get-user-info-private';
+
 
 export const checkUserInCookie = cookie => ({
   type: CHECK_USER_IN_COOKIE,
@@ -31,5 +33,6 @@ export {
   loginUser,
   logoutUser,
   registerUser,
+  registerUserOauth,
   getUserInfoPrivate,
 };

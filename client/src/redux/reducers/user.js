@@ -13,6 +13,9 @@ import {
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   REGISTER,
+  REGISTER_OAUTH,
+  REGISTER_OAUTH_SUCCESS,
+  REGISTER_OAUTH_ERROR,
 } from 'Actions/action-types';
 
 const defaultUserState = {
@@ -120,6 +123,20 @@ export default function user(state = defaultUserState, action) {
         ...state,
         lastAction: action.type,
         error: action.error,
+      };
+    case REGISTER_OAUTH:
+      return state;
+    case REGISTER_OAUTH_SUCCESS:
+      return {
+        ...state,
+        lastAction: action.type,
+        registerData: action.result,
+      };
+    case REGISTER_OAUTH_ERROR:
+      return {
+        ...state,
+        lastAction: action.type,
+        error: action.result,
       };
     default:
       return state;

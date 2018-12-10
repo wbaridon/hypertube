@@ -110,7 +110,7 @@ export function handleSubmit(e) {
     passwordError.push('register.error.noPassword');
   } if (!image.rawData) {
     image.error = 'register.error.missingImage';
-  }
+  } else { image.error = ''; }
   if (image.error.length !== 0
     || userNameError.length !== 0
     || emailError.length !== 0
@@ -133,7 +133,8 @@ export function handleSubmit(e) {
     firstNameError,
     lastNameError,
     passwordError,
-    image.error);
+    image.error,
+  );
   const formData = {
     userName,
     firstName,
