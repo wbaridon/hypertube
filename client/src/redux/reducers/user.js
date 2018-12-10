@@ -16,6 +16,8 @@ import {
   REGISTER_OAUTH,
   REGISTER_OAUTH_SUCCESS,
   REGISTER_OAUTH_ERROR,
+  SET_ERROR,
+  CLEAR_ERROR,
 } from 'Actions/action-types';
 
 const defaultUserState = {
@@ -62,7 +64,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        error: action.error,
+        error: action.error.response.data.error,
       };
     case LOGOUT:
       return {
@@ -78,7 +80,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        error: action.error,
+        error: action.error.response.data.error,
       };
     case CHECK_USER_IN_COOKIE:
       return {
@@ -107,7 +109,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        error: action.error,
+        error: action.error.response.data.error,
         token: deleteCookie('userToken'),
       };
     case REGISTER:
@@ -122,7 +124,7 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         lastAction: action.type,
-        error: action.error,
+        error: action.error.response.data.error,
       };
     case REGISTER_OAUTH:
       return state;
@@ -137,6 +139,16 @@ export default function user(state = defaultUserState, action) {
         ...state,
         lastAction: action.type,
         error: action.result,
+      };
+    case SET_ERROR:
+      return {
+        ...state,
+        error: action.error,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: null,
       };
     default:
       return state;

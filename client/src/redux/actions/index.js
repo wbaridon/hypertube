@@ -3,6 +3,8 @@ import {
   TOGGLE_DARK_THEME,
   CHECK_USER_IN_COOKIE,
   DELETE_USER_FROM_COOKIE,
+  SET_ERROR,
+  CLEAR_ERROR,
 } from './action-types';
 import { loginUser } from './login-user';
 import { logoutUser } from './logout-user';
@@ -28,6 +30,15 @@ export const setLocale = locale => ({
   type: SET_LOCALE,
   locale,
 });
+
+export const clearError = () => ({
+  type: CLEAR_ERROR,
+});
+
+export const setError = error => ({
+  type: SET_ERROR,
+  error,
+})
 
 export {
   loginUser,

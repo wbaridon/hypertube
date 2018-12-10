@@ -33,6 +33,7 @@ const frFR = {
       noLastName: 'Entrez votre nom de famille',
       noPassword: 'Enter un mot de passe valide',
       missingImage: 'Chargez une photo valide',
+      formInvalid: 'Noubliez rien SVP',
     },
   },
   error: {

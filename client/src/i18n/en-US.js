@@ -33,6 +33,7 @@ const enUS = {
       noLastName: 'Please enter your last name',
       noPassword: 'Enter a valid password',
       missingImage: 'Please upload a valid image',
+      formInvalid: 'Please do not forget anything',
     },
   },
   error: {

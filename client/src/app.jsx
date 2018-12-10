@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter } from 'react-router-dom';
-import { injectIntl } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import {
   checkUserInCookie,
   getUserInfoPrivate,
+  clearError,
 } from 'Actions';
 import CurrentRoute from './components/routing/current-route';
 import Header from './components/header/header';
@@ -64,23 +65,32 @@ function mapDispatchToProps(dispatch) {
   return ({
     checkUser: () => dispatch(checkUserInCookie(document.cookie)),
     getUserPrivate: token => dispatch(getUserInfoPrivate(token)),
+    clearErrorHandler: () => dispatch(clearError()),
   });
 }
 
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      lastAction: props.lastAction,
+      enqueueSnackbar: props.enqueueSnackbar,
+    };
   }
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const prevLastAction = prevState.lastAction;
+    const { enqueueSnackbar } = prevState;
     const {
       user,
       token,
       lastAction,
       checkUser,
       getUserPrivate,
+      error,
+      clearErrorHandler,
+      intl,
     } = nextProps;
     if (!user.data && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
       checkUser();
@@ -88,17 +98,15 @@ class App extends React.Component {
     if (!user.data && token !== '' && lastAction !== 'GET_USER_INFO_PRIVATE') {
       getUserPrivate(token);
     }
+    if (error) {
+      enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
+      clearErrorHandler();
+    }
     return null;
   }
 
   render() {
-    const { darkThemeBool,
-      checkUser,
-      user,
-      token,
-      getUserPrivate,
-      lastAction,
-    } = this.props;
+    const { darkThemeBool } = this.props;
     const root = document.documentElement;
     root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
     root.style.setProperty('--autocomplete-background-color', darkThemeBool ? darkTheme.palette.background.paper : theme.palette.background.paper);
@@ -118,11 +126,19 @@ class App extends React.Component {
 }
 App.propTypes = {
   darkThemeBool: PropTypes.bool.isRequired,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired, // eslint-disable-line
   user: PropTypes.shape({}).isRequired,
-  checkUser: PropTypes.func.isRequired,
-  getUserPrivate: PropTypes.func.isRequired,
-  lastAction: PropTypes.string.isRequired,
+  checkUser: PropTypes.func.isRequired, // eslint-disable-line
+  getUserPrivate: PropTypes.func.isRequired, // eslint-disable-line
+  lastAction: PropTypes.string.isRequired, // eslint-disable-line
+  enqueueSnackbar: PropTypes.func.isRequired,
+  clearErrorHandler: PropTypes.func.isRequired, // eslint-disable-line
+  intl: intlShape.isRequired, // eslint-disable-line
+  error: PropTypes.string, // eslint-disable-line
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl((withSnackbar((App)))));
+App.defaultProps = {
+  error: '',
+};
+
+export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(((App)))));

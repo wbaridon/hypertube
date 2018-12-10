@@ -23,7 +23,11 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
-import { registerUser, registerUserOauth } from 'Actions/index';
+import {
+  registerUser,
+  registerUserOauth,
+  setError,
+} from 'Actions/index';
 import { intlShape, injectIntl } from 'react-intl';
 import handlers, {
   handleSubmit,
@@ -49,6 +53,7 @@ const mapDispatchToProps = (dispatch) => {
   return ({
     registerUserHandler: form => dispatch(registerUser(form)),
     registerUserOauthHandler: (provider, code) => dispatch(registerUserOauth(provider, code)),
+    setErrorHandler: error => dispatch(setError(error)),
   });
 };
 
@@ -326,6 +331,7 @@ RegisterCard.propTypes = {
   registerUserOauthHandler: PropTypes.func.isRequired,
   provider: PropTypes.string,
   code: PropTypes.string,
+  setErrorHandler: PropTypes.func.isRequired,
 };
 
 RegisterCard.defaultProps = {
