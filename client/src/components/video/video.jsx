@@ -16,50 +16,41 @@ class Video extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get('http://localhost:3000/videos/music.mp4', {
+    var vidElement = document.getElementById('videoPlayer');
 
-    }).then(() => {
-      // Define video & audio formats
-      const audioFormat = 'audio/mp4; codecs=mp4a.40.2';
-      const videoFormat = 'video/mp4; codecs=avc1.64001e';
+    if (window.MediaSource) {
+      var mediaSource = new MediaSource();
+      vidElement.src = URL.createObjectURL(mediaSource);
+      mediaSource.addEventListener('sourceopen', sourceOpen);
+    } else {
+      console.log("The Media Source Extensions API is not supported.")
+    }
 
-      function sourceOpen() {
-        const mediaSource = this;
-        const audioSourceBuffer = mediaSource.addSourceBuffer(audioFormat);
-        const videoSourceBuffer = mediaSource.addSourceBuffer(videoFormat);
-        fetch('http://localhost:3000/videos/music.mp4').then((response) => {
-        // The data has to be a JavaScript ArrayBuffer
+    function sourceOpen(e) {
+      console.log("coucou");
+      URL.revokeObjectURL(vidElement.src);
+      var mime = 'video/mp4; codecs="avc1.64000d,mp4a.40.2"';
+      var mediaSource = e.target;
+      var sourceBuffer = mediaSource.addSourceBuffer(mime);
+      var videoUrl = 'http://localhost:3000/videos/music.mp4';
+      fetch(videoUrl)
+        .then(function(response) {
           return response.arrayBuffer();
-        }).then((audioData) => {
-          audioSourceBuffer.appendBuffer(audioData);
+        }).then(function(arrayBuffer) {
+          sourceBuffer.addEventListener('updateend', function(e) {
+            if (!sourceBuffer.updating && mediaSource.readyState === 'open') {
+              mediaSource.endOfStream();
+            }
+          });
+          sourceBuffer.appendBuffer(arrayBuffer);
         });
-        fetch('http://localhost:3000/videos/music.mp4').then((response) => {
-        // The data has to be a JavaScript ArrayBuffer
-          return response.arrayBuffer();
-        }).then((videoData) => {
-          videoSourceBuffer.appendBuffer(videoData);
-        });
-      }
-
-      if ('MediaSource' in window && MediaSource.isTypeSupported(audioFormat) && MediaSource.isTypeSupported(videoFormat)) {
-        const myMediaSource = new MediaSource();
-        const url = URL.createObjectURL(myMediaSource);
-        const videoTag = document.getElementById('videoPlayer');
-        videoTag.src = url;
-        console.log(myMediaSource.readyState);
-        myMediaSource.addEventListener('sourceopen', sourceOpen);
-      } else {
-        console.error('woops...');
-      }
-    });
+    }
   }
 
   render() {
     return (
       <React.Fragment>
-        <video id="videoPlayer" src="http://localhost:3000/videos/music.mp4" width="1280px" height="720px" controls>
-          <track kind="captions" />
-        </video>
+        <video id="videoPlayer" width="1280px" height="720px" controls />
       </React.Fragment>
     );
   }
