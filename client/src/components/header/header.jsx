@@ -62,6 +62,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   darkThemeBool: state.darkTheme,
   locale: state.locale,
+  user: state.user,
 });
 
 class Header extends React.Component {
@@ -77,7 +78,7 @@ class Header extends React.Component {
       classes,
       toggleDarkThemeHandler,
       darkThemeBool,
-      loggedIn,
+      user,
       logout,
       changeLocale,
       locale,
@@ -95,16 +96,14 @@ class Header extends React.Component {
               <Highlight />
             </IconButton>
             {
-              loggedIn === 'true'
+              user.data !== null
                 ? (
                   <React.Fragment>
                     <IconButton component={Link} to="/settings">
                       <Settings />
                     </IconButton>
                     <IconButton onClick={logout}>
-                      <Typography>
-                        {locale}
-                      </Typography>
+                      <ExitToApp />
                     </IconButton>
                   </React.Fragment>
                 )
@@ -128,6 +127,7 @@ Header.propTypes = {
   logout: PropTypes.func.isRequired,
   changeLocale: PropTypes.func.isRequired,
   locale: PropTypes.string.isRequired,
+  user: PropTypes.shape({}).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

@@ -1,16 +1,9 @@
 import loginUserAPI from 'API/login-user';
-import userInfoPrivateAPI from 'API/user-info-private';
 import {
   LOGIN,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
-  POPULATE_USER,
 } from './action-types';
-
-export const populateUser = response => ({
-  type: POPULATE_USER,
-  data: response.data,
-});
 
 export const loginUserStart = () => ({
   type: LOGIN,
@@ -44,12 +37,7 @@ export const loginUser = (user) => {
       .then(
         (result) => {
           createCookie('userToken', result.data.token, 7);
-          userInfoPrivateAPI(result.data.token)
-            .then(
-              data => dispatch(populateUser(data)),
-              error => dispatch(loginUserError(error)),
-            );
-          dispatch(loginUserSuccess(result));
+          dispatch(loginUserSuccess(result.data));
         },
         error => dispatch(loginUserError(error)),
       );

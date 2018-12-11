@@ -1,28 +1,25 @@
-import registerUserAPI from 'API/register-user';
-import logoutUserAPI from 'API/logout-user';
-import userInfoPrivateAPI from 'API/user-info-private';
 import {
   SET_LOCALE,
-  REGISTER_USER,
-  GET_USER_INFO_PRIVATE,
   TOGGLE_DARK_THEME,
-  GET_MOVIES,
   CHECK_USER_IN_COOKIE,
+  DELETE_USER_FROM_COOKIE,
+  SET_ERROR,
+  CLEAR_ERROR,
 } from './action-types';
 import { loginUser } from './login-user';
 import { logoutUser } from './logout-user';
 import { registerUser } from './register-user';
+import { registerUserOauth } from './register-user-oauth';
+import { getUserInfoPrivate } from './get-user-info-private';
 
-export const getUserInfoPrivate = token => ({
-  type: GET_USER_INFO_PRIVATE,
-  async: true,
-  httpMethodToInvoke: userInfoPrivateAPI,
-  params: [token],
-});
 
 export const checkUserInCookie = cookie => ({
   type: CHECK_USER_IN_COOKIE,
   cookie,
+});
+
+export const deleteUserFromCookie = () => ({
+  type: DELETE_USER_FROM_COOKIE,
 });
 
 export const toggleDarkTheme = () => ({
@@ -34,8 +31,19 @@ export const setLocale = locale => ({
   locale,
 });
 
+export const clearError = () => ({
+  type: CLEAR_ERROR,
+});
+
+export const setError = error => ({
+  type: SET_ERROR,
+  error,
+})
+
 export {
   loginUser,
   logoutUser,
   registerUser,
+  registerUserOauth,
+  getUserInfoPrivate,
 };

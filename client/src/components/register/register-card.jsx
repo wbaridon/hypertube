@@ -23,9 +23,18 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
-import { registerUser } from 'Actions/index';
+import {
+  registerUser,
+  registerUserOauth,
+  setError,
+} from 'Actions/index';
 import { intlShape, injectIntl } from 'react-intl';
-import handlers, { handleSubmit, toggleLocale, handleClickShowPassword } from './event-handlers';
+import handlers, {
+  handleSubmit,
+  toggleLocale,
+  toggleTheme,
+  handleClickShowPassword,
+} from './event-handlers';
 import {
   rotateClockwise,
   rotateCounterClockwise,
@@ -40,9 +49,17 @@ function handleDragOver(evt) {
   evt.preventDefault();
 }
 
+const mapStateToProps = (state) => {
+  return ({
+    registerData: state.user.registerData,
+  });
+};
+
 const mapDispatchToProps = (dispatch) => {
   return ({
     registerUserHandler: form => dispatch(registerUser(form)),
+    registerUserOauthHandler: (provider, code) => dispatch(registerUserOauth(provider, code)),
+    setErrorHandler: error => dispatch(setError(error)),
   });
 };
 
@@ -59,6 +76,7 @@ class RegisterCard extends React.Component {
         error: '',
       },
       locale: 'en',
+      darkTheme: false,
       userName: '',
       userNameError: [],
       firstName: '',
@@ -70,6 +88,7 @@ class RegisterCard extends React.Component {
       password: '',
       passwordError: [],
       showPassword: false,
+      provided: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -82,13 +101,20 @@ class RegisterCard extends React.Component {
     this.offsetY = offsetY.bind(this);
     this.handleImageAddWrapper = this.handleImageAddWrapper.bind(this);
     this.toggleLocale = toggleLocale.bind(this);
+    this.toggleTheme = toggleTheme.bind(this);
     this.mergeErrors = this.mergeErrors.bind(this);
   }
 
   componentDidMount() {
+    const { provider, code, registerUserOauthHandler, registerData } = this.props;
     this.dropZone = document.getElementById('root');
     this.dropZone.addEventListener('dragover', handleDragOver, false);
     this.dropZone.addEventListener('drop', event => this.handleImageAddWrapper(event), false);
+    console.log(provider, code);
+    if (provider !== 'register' && code !== '') {
+      registerUserOauthHandler(provider, code);
+      this.setState({ provided: true });
+    }
   }
 
   componentWillUnmount = () => {
@@ -119,6 +145,20 @@ class RegisterCard extends React.Component {
     this.handleImageAdd(event.dataTransfer.files[0], event);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { registerData } = nextProps;
+    if (prevState.provided) {
+      return ({
+        userName: registerData.login,
+        firstName: registerData.firstname,
+        lastName: registerData.name,
+        email: registerData.email,
+        password: '',
+      });
+    }
+    return null;
+  }
+
   render() {
     const { classes, intl } = this.props;
     const {
@@ -129,6 +169,8 @@ class RegisterCard extends React.Component {
       email, emailError,
       password, passwordError, showPassword,
       locale,
+      darkTheme,
+      provided,
     } = this.state;
     return (
       <Card className={classes.card}>
@@ -196,7 +238,7 @@ class RegisterCard extends React.Component {
                 <Button component="label" label="add image" className={classes.photoButton}>
                   <input onChange={e => this.handleImageAdd(e.target.files[0])} style={{ display: 'none' }} type="file" />
                   <AddPhotoAlternate />
-                  <Typography>{`${intl.formatMessage({ id: 'register.addImage' })}${image.error}`}</Typography>
+                  <Typography color={!image.error ? 'default' : 'error'}>{`${intl.formatMessage({ id: image.error ? image.error : 'register.addImage' })}`}</Typography>
                 </Button>
               )
           }
@@ -204,6 +246,7 @@ class RegisterCard extends React.Component {
         <form action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
+              InputLabelProps={{ shrink: provided || userName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -220,6 +263,8 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || email !== '' }}
+              disabled={provided}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -234,6 +279,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || firstName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -247,6 +293,7 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || lastName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -260,6 +307,8 @@ class RegisterCard extends React.Component {
             />
             <br />
             <TextField
+              InputLabelProps={{ shrink: provided || password !== '' }}
+              disabled={provided}
               className="registerInputs"
               autoComplete="current-password"
               fullWidth
@@ -275,6 +324,7 @@ class RegisterCard extends React.Component {
                 endAdornment: (
                   <InputAdornment variant="filled" position="end">
                     <IconButton
+                      disabled={provided}
                       aria-label="Toggle password visibility"
                       onClick={this.handleClickShowPassword}
                     >
@@ -286,11 +336,17 @@ class RegisterCard extends React.Component {
               helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
             />
             <Switch checked={locale === 'en'} onChange={this.toggleLocale} />
+            <Typography>{locale}</Typography>
+            <Switch checked={darkTheme} onChange={this.toggleTheme} />
+            <Typography>{darkTheme ? 'dark' : 'light'}</Typography>
           </CardContent>
           <CardActions>
             <Button type="submit" variant="contained" onClick={this.handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
             <Button href={AUTH42} variant="contained">
               {intl.formatMessage({ id: 'register.registerWith42' })}
+            </Button>
+            <Button href={AUTHGITHUB} variant="contained">
+              {intl.formatMessage({ id: 'register.registerWithGithub' })}
             </Button>
           </CardActions>
         </form>
@@ -303,8 +359,11 @@ RegisterCard.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
   registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
+  registerUserOauthHandler: PropTypes.func.isRequired,
   provider: PropTypes.string,
   code: PropTypes.string,
+  setErrorHandler: PropTypes.func.isRequired,
+  registerData: PropTypes.shape({}).isRequired,
 };
 
 RegisterCard.defaultProps = {
@@ -312,4 +371,4 @@ RegisterCard.defaultProps = {
   code: '',
 };
 
-export default injectIntl(connect(null, mapDispatchToProps)(withStyles(styles)(RegisterCard)));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RegisterCard)));

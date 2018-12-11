@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../home/home';
-import Register from '../register/register';
+import Register from '../register/new-register/new-register';
 import Video from '../video/video';
 import Movie from '../movie/movie';
 import Settings from '../settings/settings';

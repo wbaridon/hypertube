@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const UserManager = require('../models/userManager');
+const BlackListManager = require('../models/blackListManager');
 
 userRouter
   .post('/register', upload.single('image'), (req, res, next) => {
@@ -29,24 +30,25 @@ userRouter
         lastName: req.body.lastName,
         firstName: req.body.firstName,
         password: req.body.password,
-        locale: req.body.locale
+        locale: req.body.locale,
+        darkTheme: req.body.darkTheme
       }
       checkForm(user).then(result => {
         hashPassword(user.password).then(hash => {
           user.password = hash;
           UserManager.userExist(user.email, user.userName).then(userExist => {
-            if (userExist) { res.status(400).json({ error: 'registration.userAlreadyRegistered' }) } // changer l'erreur a un id de traduction ex: 'api.errors.alreadyExists'
+            if (userExist) { res.status(400).send({ error: 'registration.userAlreadyRegistered' }) }
             else {
               UserManager.createUser(user, callback => {
-                res.send({ success: 'registration.success' })
+                res.status(200).send({ success: 'registration.success' })
               })
             }
           })
         })
       }).catch(error => {
-        res.send({ 'error': error })
+        res.status(400).send({ 'error': error })
       })
-    } else { res.send({ error: 'registration.undefinedPictureIssue' }) }
+    } else { res.status(400).send({ error: 'registration.undefinedPictureIssue' }) }
   })
   .post('/login', (req, res) => {
     const user = {
@@ -58,13 +60,17 @@ userRouter
         if (getResult) {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
-              console.log(getResult)
               setToken(user).then(token => { res.send({ token, locale: getResult.locale }); })
-            } else { res.send({ error: 'login.invalidPasswordOrLogin' }) }
+            } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
           })
-        } else { res.send({ error: 'login.noUser' }) }
+        } else { res.status(400).send({ error: 'login.noUser' }) }
       })
-    } else { res.send({ error: 'login.emptyPasswordOrLogin' }) }
+    } else { res.status(400).send({ error: 'login.emptyPasswordOrLogin' }) }
+  })
+  .post('/logout', (req, res) => {
+    BlackListManager.add(req.body, callback => {
+      res.status(200).send({success: 'logout.tokenDestroy'})
+    })
   })
   .post('/getUser', (req, res) => {
     // Reçoit un login et retourne les infos public de ce dernier
@@ -121,7 +127,13 @@ function decodeToken(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, 'HypertubeSecretKey', function (err, decoded) {
       if (err) { reject('token.invalidToken') }
-      else { resolve(decoded) }
+      else {
+        // Rajouter ici le controle du blacklistage ip et renvoyer le resolve si pas blackliste
+      /*  BlackListManager.get(token).then(getResult => {
+          console.log(getResult)
+        })*/
+        resolve(decoded)
+      }
     })
   })
 }

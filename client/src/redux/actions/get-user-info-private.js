@@ -24,7 +24,7 @@ export const getUserInfoPrivate = (token) => {
     dispatch(getUserInfoPrivateStart());
     return userInfoPrivateAPI(token)
       .then(
-        data => dispatch(getUserInfoPrivateSuccess(data)),
+        response => dispatch(getUserInfoPrivateSuccess(response.data)),
         error => dispatch(getUserInfoPrivateError(error)),
       );
   };
