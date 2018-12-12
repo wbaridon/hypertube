@@ -12,7 +12,7 @@ function resetPassword(req, res) {
     } else if (req.body.email && req.body.login) { // BEFORE MAIL
         beforeMail(res, req.body.email, req.body.login)
     }
-  }
+  })
 }
 
 passwordHash = (pass, callback) => {
