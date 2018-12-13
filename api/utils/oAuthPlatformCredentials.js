@@ -27,6 +27,23 @@ function gitHubCredentials() {
      resolve(credentials)
     })
 }
+
+function googleCredentials() {
+  return new Promise ((resolve, reject) => {
+    const credentials = {
+      client: {
+        id: '796040540786-mcs3ojd9c07558mkatt5m1j185pol941.apps.googleusercontent.com',
+        secret: 'S5_yCT_BnFVr5v9qM9Av9g6m'
+      },
+      auth: {
+       tokenHost: 'https://www.googleapis.com',
+       tokenPath: '/oauth2/v4/token'
+      }
+    }
+     resolve(credentials)
+    })
+}
+
 function fortytwoCredentials() {
   return new Promise ((resolve, reject) => {
    const credentials = {
