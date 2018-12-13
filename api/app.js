@@ -15,9 +15,11 @@ app.use(cors());
 
 const userRouter = require('./routes/userRouter');
 const oAuthRouter = require('./routes/oAuthRouter');
+const libraryRouter = require('./routes/libraryRouter');
 
 app.use(express.static('assets'))
 app.use('/user', userRouter);
+app.use('/library', libraryRouter);
 app.use('/oAuth', oAuthRouter);
 
 app.get('/', function (req, res) {
