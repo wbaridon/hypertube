@@ -38,7 +38,7 @@ export const clearError = () => ({
 export const setError = error => ({
   type: SET_ERROR,
   error,
-})
+});
 
 export {
   loginUser,
