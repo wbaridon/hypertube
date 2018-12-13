@@ -18,6 +18,7 @@ const upload = multer({ storage: storage });
 
 const UserManager = require('../models/userManager');
 const BlackListManager = require('../models/blackListManager');
+const resetPassword = require('../utils/resetPassword');
 
 userRouter
   .post('/register', upload.single('image'), (req, res, next) => {
@@ -114,6 +115,12 @@ userRouter
       })
     }).catch(err => res.send({ error: 'token.invalidToken' }))
 
+  })
+  .post('/resetPassword', (req, res) => {
+    resetPassword(req, res).then(ret => {
+      if (ret.status === 0) { res.status(400).send(ret.error) }
+      else { res.status(200).send(ret.success) }
+    })
   })
 
 function setToken(user) {
