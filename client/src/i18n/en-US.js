@@ -21,6 +21,7 @@ const enUS = {
     addImage: 'Add Photo',
     registerWith42: '42 Auth',
     registerWithGithub: 'GitHub Auth',
+    registerWithGoogle: 'Google Auth',
     error: {
       userAlreadyRegistered: 'A user with that username or email already exists...',
       passwordLengthTooLong: 'Too long',

@@ -28,6 +28,7 @@
       "TIMEOUT_API": true,
       "AUTH42": true,
       "AUTHGITHUB": true,
+      "AUTHGOOGLE": true,
       "BACKEND": true
     },
     "rules": {
