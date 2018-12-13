@@ -79,9 +79,9 @@ module.exports = {
       entry: path.join(__dirname, 'src/sw.js'),
     }),
     new WebpackPwaManifest({
-      name: 'Pizza altaglia',
-      short_name: 'Pizza',
-      description: 'Information for pizza',
+      name: 'Sanaryens',
+      short_name: 'Sanaryens',
+      description: '*not* a pirate site',
       theme_color: '#0070a0',
       background_color: '#000fff',
       crossorigin: null, // can be null, use-credentials or anonymous
