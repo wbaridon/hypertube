@@ -98,15 +98,15 @@ export function handleSubmit(e) {
   } = this.state;
   const { registerUserHandler, setErrorHandler } = this.props;
 
-  if (userName === '') {
+  if (userName === '' && userNameError.length === 0) {
     userNameError.push('register.error.noUserName');
-  } if (email === '') {
+  } if (email === '' && emailError.length === 0) {
     emailError.push('register.error.noEmail');
-  } if (firstName === '') {
+  } if (firstName === '' && firstNameError.length === 0) {
     firstNameError.push('register.error.noFirstName');
-  } if (lastName === '') {
+  } if (lastName === '' && lastNameError.length === 0) {
     lastNameError.push('register.error.noLastName');
-  } if (password === '') {
+  } if (password === '' && passwordError.length === 0) {
     passwordError.push('register.error.noPassword');
   } if (!image.rawData) {
     image.error = 'register.error.missingImage';

@@ -164,11 +164,13 @@ export default function user(state = defaultUserState, action) {
     case SET_ERROR:
       return {
         ...state,
+        lastAction: action.type,
         error: action.error,
       };
     case CLEAR_ERROR:
       return {
         ...state,
+        lastAction: action.type,
         error: null,
       };
     default:

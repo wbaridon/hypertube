@@ -13,6 +13,7 @@ import Home from '@material-ui/icons/Home';
 import Highlight from '@material-ui/icons/Highlight';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
+import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -92,9 +93,7 @@ class Header extends React.Component {
             </IconButton>
             <div className={classes.grow} />
             <Login />
-            <IconButton color={darkThemeBool ? 'secondary' : 'primary'} onClick={toggleDarkThemeHandler}>
-              <Highlight />
-            </IconButton>
+
             {
               user.data !== null
                 ? (
@@ -108,6 +107,12 @@ class Header extends React.Component {
                   </React.Fragment>
                 )
                 : null}
+            <IconButton color={darkThemeBool ? 'secondary' : 'primary'} onClick={toggleDarkThemeHandler}>
+              <Highlight />
+            </IconButton>
+            <IconButton component={Link} to="/register/">
+              <SupervisedUserCircle />
+            </IconButton>
             <IconButton onClick={() => changeLocale(locale === 'en' ? 'fr' : 'en')}>
               <Typography>
                 {locale}
