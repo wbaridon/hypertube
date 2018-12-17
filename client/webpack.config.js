@@ -6,7 +6,7 @@ const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 const srcDir = 'src';
 module.exports = {
-  entry: path.resolve(__dirname, srcDir, 'index.jsx'),
+  entry: ['babel-polyfill', path.resolve(__dirname, srcDir, 'index.jsx')],
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'distribution'),

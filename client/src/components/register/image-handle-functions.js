@@ -1,5 +1,21 @@
 import piexif from 'piexifjs';
 
+function getDataUri(url, callback) {
+  const image = new Image();
+
+  image.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+    canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+
+    canvas.getContext('2d').drawImage(this, 0, 0);
+
+    callback(canvas.toDataURL('image/jpeg', 1.0));
+  };
+
+  image.src = url;
+}
+
 function rotateCounterClockwise() {
   const { image } = this.state;
   let { orientation } = image;
@@ -70,6 +86,11 @@ function flip() {
   }
   image.orientation = orientation;
   this.setState({ image }, () => this.handleImageAdd(image.inputFile));
+}
+
+function blobToFile(theBlob, fileName) {
+  const ret = new File([theBlob], fileName, { type: 'image/jpeg' });
+  return ret;
 }
 
 function dataURItoBlob(dataURI) {
@@ -196,6 +217,7 @@ function handleImageAdd(rawImage, event = null) {
       const dataURL = canvas.toDataURL('image/jpeg', 1.0);
       image.rawData = dataURL;
       image.verticalOffset = verticalOffset;
+      console.log(image);
       this.setState({ image });
     };
     img.src = e.target.result;
@@ -215,4 +237,5 @@ export {
   handleImageAdd,
   offsetY,
   dataURItoBlob,
+  getDataUri,
 };

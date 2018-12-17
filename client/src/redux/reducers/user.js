@@ -10,6 +10,7 @@ import {
   GET_USER_INFO_PRIVATE,
   GET_USER_INFO_PRIVATE_SUCCESS,
   GET_USER_INFO_PRIVATE_ERROR,
+  CLEAR_REGISTER_DATA,
   REGISTER_SUCCESS,
   REGISTER_ERROR,
   REGISTER,
@@ -150,6 +151,13 @@ export default function user(state = defaultUserState, action) {
           firstName: action.result.firstname,
           lastName: action.result.name,
           exists: true,
+        },
+      };
+    case CLEAR_REGISTER_DATA:
+      return {
+        ...state,
+        registerData: {
+          exists: false,
         },
       };
     case REGISTER_OAUTH_ERROR:

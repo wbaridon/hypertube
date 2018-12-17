@@ -3,6 +3,7 @@ import {
   TOGGLE_DARK_THEME,
   CHECK_USER_IN_COOKIE,
   DELETE_USER_FROM_COOKIE,
+  CLEAR_REGISTER_DATA,
   SET_ERROR,
   CLEAR_ERROR,
 } from './action-types';
@@ -38,6 +39,10 @@ export const clearError = () => ({
 export const setError = error => ({
   type: SET_ERROR,
   error,
+});
+
+export const clearRegisterData = () => ({
+  type: CLEAR_REGISTER_DATA,
 });
 
 export {

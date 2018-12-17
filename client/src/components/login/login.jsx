@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return ({
     user: state.user,
-    lastAction: state.lastAction,
+    lastAction: state.user.lastAction,
   });
 };
 
