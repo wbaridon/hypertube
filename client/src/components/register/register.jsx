@@ -21,10 +21,19 @@ function getProvider(url) {
 class Register extends React.Component {
   constructor(props) {
     super(props);
-    const { code } = qs.parse(props.location.search, { ignoreQueryPrefix: true });
+    const provider = getProvider(props.location.pathname);
+    let providerCode;
+    console.log(props);
+    if (provider === 'google') {
+      providerCode = qs.parse(props.location.hash);
+    } else if (provider === 'github' || provider === '42') {
+      providerCode = qs.parse(props.location.search, { ignoreQueryPrefix: true }).code;
+    } else {
+      providerCode = null;
+    }
     this.state = {
-      provider: getProvider(props.location.pathname),
-      code,
+      provider,
+      code: providerCode,
     };
   }
 
@@ -45,6 +54,7 @@ Register.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
     search: PropTypes.string.isRequired,
+    hash: PropTypes.string.isRequired,
   }).isRequired,
 };
 

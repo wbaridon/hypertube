@@ -97,7 +97,7 @@ class RegisterCard extends React.Component {
   }
 
   componentDidUpdate = async () => {
-    const { registerData, clearRegisterDataHandler } = this.props;
+    const { registerData, clearRegisterDataHandler, provider } = this.props;
     const { registerDataCleared } = this.state;
     if (registerData.exists && !registerDataCleared) {
       try {
@@ -111,10 +111,14 @@ class RegisterCard extends React.Component {
           timeout: TIMEOUT_API,
         });
         this.handleImageAdd(img.data);
+        let { firstName, lastName } = registerData;
+        if (provider === 'github') {
+          [firstName, lastName] = lastName.split(' ');
+        }
         this.setState({
           userName: registerData.userName,
-          firstName: registerData.firstName,
-          lastName: registerData.lastName,
+          firstName,
+          lastName,
           email: registerData.email,
           password: '',
         }, () => clearRegisterDataHandler());

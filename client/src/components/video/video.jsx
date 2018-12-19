@@ -23,15 +23,7 @@ class Video extends React.Component {
     return (
       <React.Fragment>
         <video id="videoPlayer" controls muted>
-          <source src={Axios({
-            method: 'get',
-            url: 'http://localhost:3000/video',
-            params: {
-              videoHash,
-            },
-            timeout: TIMEOUT_API,
-          })}
-          />
+          <source src={`http://localhost:3000/video?videoHash=${videoHash}`} />
           <track kind="captions" default />
         </video>
       </React.Fragment>
