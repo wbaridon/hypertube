@@ -95,6 +95,7 @@ export function handleSubmit(e) {
     locale,
     darkTheme,
     image,
+    provided,
   } = this.state;
   const { registerUserHandler, setErrorHandler } = this.props;
 
@@ -106,7 +107,7 @@ export function handleSubmit(e) {
     firstNameError.push('register.error.noFirstName');
   } if (lastName === '' && lastNameError.length === 0) {
     lastNameError.push('register.error.noLastName');
-  } if (password === '' && passwordError.length === 0) {
+  } if (password === '' && passwordError.length === 0 && !provided) {
     passwordError.push('register.error.noPassword');
   } if (!image.rawData) {
     image.error = 'register.error.missingImage';

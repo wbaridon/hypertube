@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import {
   registerUser,
   registerUserOauth,
@@ -26,6 +27,10 @@ import RegisterCardDumb from './register-card-dumb';
 const mapStateToProps = (state) => {
   return ({
     registerData: state.user.registerData,
+    lastAction: state.user.lastAction,
+    loading: state.user.loading,
+    success: state.user.success,
+    provided: state.user.provided,
   });
 };
 
@@ -50,6 +55,7 @@ class RegisterCard extends React.Component {
         orientation: 1,
         error: '',
       },
+      registerDataCleared: false,
       locale: 'en',
       darkTheme: false,
       userName: '',
@@ -63,7 +69,6 @@ class RegisterCard extends React.Component {
       password: '',
       passwordError: [],
       showPassword: false,
-      provided: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -88,14 +93,17 @@ class RegisterCard extends React.Component {
     console.log(provider, code);
     if (provider !== 'register' && code !== '') {
       registerUserOauthHandler(provider, code);
-      this.setState({ provided: true });
     }
   }
 
   componentDidUpdate = async () => {
     const { registerData, clearRegisterDataHandler } = this.props;
-    if (registerData.exists) {
+    const { registerDataCleared } = this.state;
+    if (registerData.exists && !registerDataCleared) {
       try {
+        this.setState({
+          registerDataCleared: true,
+        });
         const img = await Axios({
           method: 'get',
           responseType: 'blob',
@@ -109,8 +117,7 @@ class RegisterCard extends React.Component {
           lastName: registerData.lastName,
           email: registerData.email,
           password: '',
-        });
-        clearRegisterDataHandler();
+        }, () => clearRegisterDataHandler());
       } catch (e) {
         console.log(e);
       }
@@ -137,37 +144,42 @@ class RegisterCard extends React.Component {
       password, passwordError, showPassword,
       locale,
       darkTheme,
-      provided,
     } = this.state;
-    return (
-      <RegisterCardDumb
-        image={image}
-        userName={userName}
-        userNameError={userNameError}
-        firstName={firstName}
-        firstNameError={firstNameError}
-        lastName={lastName}
-        lastNameError={lastNameError}
-        email={email}
-        emailError={emailError}
-        password={password}
-        passwordError={passwordError}
-        locale={locale}
-        darkTheme={darkTheme}
-        showPassword={showPassword}
-        provided={provided}
-        handleChange={this.handleChange}
-        handleClickShowPassword={this.handleClickShowPassword}
-        handleSubmit={this.handleSubmit}
-        toggleLocale={this.toggleLocale}
-        toggleTheme={this.toggleTheme}
-        handleImageAddWrapper={this.handleImageAddWrapper}
-        handleImageAdd={this.handleImageAdd}
-        flip={this.flip}
-        rotateClockwise={this.rotateClockwise}
-        rotateCounterClockwise={this.rotateCounterClockwise}
-        offsetY={this.offsetY}
-      />
+    const { loading, success, provided } = this.props;
+    if (loading) {
+      return (<div>loading</div>);
+    }
+    if (success) {
+      return (<Redirect to="/settings" />)
+    }
+    return (<RegisterCardDumb
+      image={image}
+      userName={userName}
+      userNameError={userNameError}
+      firstName={firstName}
+      firstNameError={firstNameError}
+      lastName={lastName}
+      lastNameError={lastNameError}
+      email={email}
+      emailError={emailError}
+      password={password}
+      passwordError={passwordError}
+      locale={locale}
+      darkTheme={darkTheme}
+      showPassword={showPassword}
+      provided={provided}
+      handleChange={this.handleChange}
+      handleClickShowPassword={this.handleClickShowPassword}
+      handleSubmit={this.handleSubmit}
+      toggleLocale={this.toggleLocale}
+      toggleTheme={this.toggleTheme}
+      handleImageAddWrapper={this.handleImageAddWrapper}
+      handleImageAdd={this.handleImageAdd}
+      flip={this.flip}
+      rotateClockwise={this.rotateClockwise}
+      rotateCounterClockwise={this.rotateCounterClockwise}
+      offsetY={this.offsetY}
+    />
     );
   }
 }
@@ -179,6 +191,9 @@ RegisterCard.propTypes = {
   code: PropTypes.string,
   setErrorHandler: PropTypes.func.isRequired, // eslint-disable-line
   registerData: PropTypes.shape({}).isRequired,
+  loading: PropTypes.bool.isRequired,
+  success: PropTypes.bool.isRequired,
+  provided: PropTypes.bool.isRequired,
 };
 
 RegisterCard.defaultProps = {

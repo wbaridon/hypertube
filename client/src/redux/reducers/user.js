@@ -25,6 +25,9 @@ const defaultUserState = {
   user: null,
   data: null,
   error: null,
+  loading: false,
+  success: false,
+  provided: false,
   registerData: {
     exists: false,
   },
@@ -121,28 +124,37 @@ export default function user(state = defaultUserState, action) {
     case REGISTER:
       return {
         ...state,
+        loading: true,
+        success: false,
         lastAction: action.type,
       };
     case REGISTER_SUCCESS:
       return {
         ...state,
+        loading: false,
+        success: true,
         lastAction: action.type,
         data: action.result,
       };
     case REGISTER_ERROR:
       return {
         ...state,
+        loading: false,
+        success: false,
         lastAction: action.type,
         error: action.error.response.data.error,
       };
     case REGISTER_OAUTH:
       return {
         ...state,
+        loading: true,
         lastAction: action.type,
       };
     case REGISTER_OAUTH_SUCCESS:
       return {
         ...state,
+        loading: false,
+        provided: true,
         lastAction: action.type,
         registerData: {
           email: action.result.email,
@@ -163,6 +175,7 @@ export default function user(state = defaultUserState, action) {
     case REGISTER_OAUTH_ERROR:
       return {
         ...state,
+        loading: false,
         lastAction: action.type,
         error: action.error.response ? action.error.response.data.error : action.error.message,
         registerData: {
