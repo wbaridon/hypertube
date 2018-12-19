@@ -37,6 +37,7 @@ app.get('/video', function(req, res) {
   // Make usable magnet link
   const torrent_magnet = 'magnet:?xt=urn:btih:' + torrent_hash;
 
+
   // Using torrent_stream
   var engine = torrentStream(torrent_magnet);
 
@@ -87,7 +88,6 @@ app.get('/video', function(req, res) {
           }
           res.writeHead(206, head)
         }
-
         // Pipe what was returned so far
         stream.pipe(res)
       } else if (fileFormat === '.mp4' || fileFormat === '.mkv') {
@@ -96,15 +96,16 @@ app.get('/video', function(req, res) {
             'Content-Length': fileSize,
             'Content-Type': 'video/mp4',
           }
+          res.writeHead(200, head)
         }
         else if (fileFormat === '.mkv') { // Is an mkv file
           const head = {
             'Content-Length': fileSize,
             'Content-Type': 'video/webm',
           }
+          res.writeHead(200, head)
         }
-        res.writeHead(200, head)
-        fs.createReadStream(path).pipe(res)
+        // fs.createReadStream(file.path).pipe(res)
     }
   });
 
