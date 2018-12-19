@@ -32,7 +32,7 @@ app.get('/video', function(req, res) {
 
   // Get hash of torrent
   // const torrent_hash = '3D1E3C092836AF4F3C21C38C09E1F5550E137A32'; // New Work Minute
-  const torrent_hash = "87a5d49da7d3dbc2643071b27c459a5d33d798ad"; // American Monster Episode
+  const torrent_hash = req.query.videoHash; // American Monster Episode
 
   // Make usable magnet link
   const torrent_magnet = 'magnet:?xt=urn:btih:' + torrent_hash;
