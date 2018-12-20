@@ -59,6 +59,7 @@ function mapStateToProps(state) {
     token: state.user.token,
     lastAction: state.user.lastAction,
     error: state.user.error,
+    tokenValid: state.user.tokenValid,
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -79,7 +80,7 @@ class App extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  componentDidUpdate = (prevProps, prevState) => {
     const prevLastAction = prevState.lastAction;
     const { enqueueSnackbar } = prevState;
     const {
@@ -91,19 +92,46 @@ class App extends React.Component {
       error,
       clearErrorHandler,
       intl,
-    } = nextProps;
-    if (!user.data && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
+      tokenValid,
+    } = this.props;
+    if ((!user.data || (user.data && !user.data.firstName)) && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
       checkUser();
     }
-    if (!user.data && token !== '' && lastAction !== 'GET_USER_INFO_PRIVATE') {
+    if ((!user.data || (user.data && !user.data.firstName)) && tokenValid && lastAction !== 'GET_USER_INFO_PRIVATE') {
       getUserPrivate(token);
     }
     if (error) {
       enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
       clearErrorHandler();
     }
-    return null;
   }
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   const prevLastAction = prevState.lastAction;
+  //   const { enqueueSnackbar } = prevState;
+  //   const {
+  //     user,
+  //     token,
+  //     lastAction,
+  //     checkUser,
+  //     getUserPrivate,
+  //     error,
+  //     clearErrorHandler,
+  //     intl,
+  //     tokenValid,
+  //   } = nextProps;
+  //   if ((!user.data || (user.data && !user.data.firstName)) && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
+  //     checkUser();
+  //   }
+  //   if ((!user.data || (user.data && !user.data.firstName)) && tokenValid) {
+  //     getUserPrivate(token);
+  //   }
+  //   if (error) {
+  //     enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
+  //     clearErrorHandler();
+  //   }
+  //   return null;
+  // }
 
   render() {
     const { darkThemeBool } = this.props;
@@ -135,6 +163,7 @@ App.propTypes = {
   clearErrorHandler: PropTypes.func.isRequired, // eslint-disable-line
   intl: intlShape.isRequired, // eslint-disable-line
   error: PropTypes.string, // eslint-disable-line
+  tokenValid: PropTypes.bool.isRequired,
 };
 
 App.defaultProps = {

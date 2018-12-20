@@ -7,7 +7,8 @@ import {
   registerUserOauth,
   setError,
   clearRegisterData,
-} from 'Actions/index';
+  loginUser,
+} from 'Actions';
 import Axios from 'axios';
 import handlers, {
   handleSubmit,
@@ -37,6 +38,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return ({
     registerUserHandler: form => dispatch(registerUser(form)),
+    loginUserHandler: user => dispatch(loginUser(user)),
     clearRegisterDataHandler: () => dispatch(clearRegisterData()),
     registerUserOauthHandler: (provider, code) => dispatch(registerUserOauth(provider, code)),
     setErrorHandler: error => dispatch(setError(error)),
@@ -97,8 +99,18 @@ class RegisterCard extends React.Component {
   }
 
   componentDidUpdate = async () => {
-    const { registerData, clearRegisterDataHandler, provider } = this.props;
+    const {
+      registerData,
+      clearRegisterDataHandler,
+      provider,
+      success,
+    } = this.props;
     const { registerDataCleared } = this.state;
+    if (success) {
+      const { userName, password } = this.state;
+      const { loginUserHandler } = this.props;
+      loginUserHandler({ userName, password });
+    }
     if (registerData.exists && !registerDataCleared) {
       try {
         this.setState({
@@ -154,7 +166,7 @@ class RegisterCard extends React.Component {
       return (<div>loading</div>);
     }
     if (success) {
-      return (<Redirect to="/settings" />)
+      return (<Redirect to="/settings" />);
     }
     return (<RegisterCardDumb
       image={image}

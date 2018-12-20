@@ -95,7 +95,7 @@ class Header extends React.Component {
             <Login />
 
             {
-              user.data !== null
+              user.data && user.data.firstName
                 ? (
                   <React.Fragment>
                     <IconButton component={Link} to="/settings">

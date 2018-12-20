@@ -28,6 +28,7 @@ const defaultUserState = {
   loading: false,
   success: false,
   provided: false,
+  tokenValid: false,
   registerData: {
     exists: false,
   },
@@ -61,6 +62,7 @@ export default function user(state = defaultUserState, action) {
     case LOGIN:
       return {
         ...state,
+        loading: true,
         lastAction: action.type,
       };
     case LOGIN_SUCCESS:
@@ -68,11 +70,14 @@ export default function user(state = defaultUserState, action) {
         ...state,
         lastAction: action.type,
         token: action.result.token,
+        tokenValid: true,
       };
     case LOGIN_ERROR:
       return {
         ...state,
         lastAction: action.type,
+        loading: false,
+        success: false,
         error: action.error.response ? action.error.response.data.error : action.error.message,
       };
     case LOGOUT:
@@ -113,6 +118,7 @@ export default function user(state = defaultUserState, action) {
         ...state,
         lastAction: action.type,
         data: action.data,
+        tokenValid: true,
       };
     case GET_USER_INFO_PRIVATE_ERROR:
       return {
@@ -120,6 +126,7 @@ export default function user(state = defaultUserState, action) {
         lastAction: action.type,
         error: action.error.response ? action.error.response.data.error : action.error.message,
         token: deleteCookie('userToken'),
+        tokenValid: false,
       };
     case REGISTER:
       return {

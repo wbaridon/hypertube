@@ -23,6 +23,7 @@ const mapStateToProps = (state) => {
   return ({
     user: state.user,
     lastAction: state.user.lastAction,
+    loading: state.user.loading,
   });
 };
 
@@ -59,11 +60,11 @@ class Login extends React.Component {
     const {
       user,
       intl,
-      lastAction,
+      loading,
     } = this.props;
     const { currentUser } = this.state;
 
-    if (user.data) {
+    if (user.data && user.data.firstName) {
       return (
         <React.Fragment>
           <Typography>
@@ -71,7 +72,7 @@ class Login extends React.Component {
           </Typography>
           <Avatar src={`${BACKEND}images/${user.data.picture}`} />
         </React.Fragment>);
-    } if (lastAction === 'LOGIN_USER') {
+    } if (loading) {
       return (<div>LOEDING</div>);
     }
     return (<LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />);
