@@ -3,7 +3,10 @@ import {
   SET_LOCALE,
   TOGGLE_DARK_THEME,
 } from '../actions/action-types';
-import user from './user';
+import loginUser from './login-user';
+import user from './current-user';
+import registerUser from './register-user';
+import notifications from './notifications';
 
 const darkTheme = (state = false, action) => {
   switch (action.type) {
@@ -26,5 +29,8 @@ const locale = (state = 'en', action) => {
 export default combineReducers({
   locale,
   user,
+  loginUser,
+  registerUser,
   darkTheme,
+  notifications,
 });

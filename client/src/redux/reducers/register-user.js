@@ -70,6 +70,7 @@ export default function registerUser(state = defaultRegisterState, action) {
         ...state,
         loading: false,
         success: false,
+        provided: false,
         registerData: {
           exists: false,
         },

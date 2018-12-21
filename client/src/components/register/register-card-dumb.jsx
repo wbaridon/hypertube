@@ -22,11 +22,6 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
-import {
-  registerUser,
-  registerUserOauth,
-  setError,
-} from 'Actions/index';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
 

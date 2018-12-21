@@ -31,20 +31,19 @@ export const loginUserSuccess = () => ({
 export const postLoginUserSuccess = (result) => {
   return (dispatch) => {
     dispatch(loginUserSuccess());
-    return dispatch(getUserInfoPrivate(result.data.token)
-      .then(
-        data => dispatch(setUser(data)),
-        error => dispatch(setError(error)),
-      ));
+    return dispatch(getUserInfoPrivate(result.token));
   };
 };
 
+export const loginUserErrorAction = () => ({
+  type: LOGIN_ERROR,
+});
+
 export const loginUserError = (error) => {
   return (dispatch) => {
-    dispatch(setError(error));
-    return {
-      type: LOGIN_ERROR,
-    };
+    const errorString = error.message;
+    dispatch(setError(errorString));
+    return dispatch(loginUserErrorAction());
   };
 };
 

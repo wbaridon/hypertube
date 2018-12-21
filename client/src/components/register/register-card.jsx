@@ -27,11 +27,10 @@ import RegisterCardDumb from './register-card-dumb';
 
 const mapStateToProps = (state) => {
   return ({
-    registerData: state.user.registerData,
-    lastAction: state.user.lastAction,
-    loading: state.user.loading,
-    success: state.user.success,
-    provided: state.user.provided,
+    registerData: state.registerUser.registerData,
+    loading: state.registerUser.loading,
+    success: state.registerUser.success,
+    provided: state.registerUser.provided,
   });
 };
 

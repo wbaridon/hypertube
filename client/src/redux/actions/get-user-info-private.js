@@ -4,6 +4,7 @@ import {
   GET_USER_INFO_PRIVATE_SUCCESS,
   GET_USER_INFO_PRIVATE_ERROR,
 } from './action-types';
+import { setUser } from '.';
 
 export const getUserInfoPrivateStart = () => ({
   type: GET_USER_INFO_PRIVATE,
@@ -24,7 +25,10 @@ export const getUserInfoPrivate = (token) => {
     dispatch(getUserInfoPrivateStart());
     return userInfoPrivateAPI(token)
       .then(
-        response => dispatch(getUserInfoPrivateSuccess(response.data)),
+        (response) => {
+          dispatch(getUserInfoPrivateSuccess(response.data));
+          dispatch(setUser(response.data));
+        },
         error => dispatch(getUserInfoPrivateError(error)),
       );
   };

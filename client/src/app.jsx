@@ -56,10 +56,7 @@ function mapStateToProps(state) {
     locale: state.locale,
     darkThemeBool: state.darkTheme,
     user: state.user,
-    token: state.user.token,
-    lastAction: state.user.lastAction,
-    error: state.user.error,
-    tokenValid: state.user.tokenValid,
+    error: state.notifications.error,
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -72,66 +69,34 @@ function mapDispatchToProps(dispatch) {
 
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      lastAction: props.lastAction,
-      enqueueSnackbar: props.enqueueSnackbar,
-    };
-  }
-
-  componentDidUpdate = (prevProps, prevState) => {
-    const prevLastAction = prevState.lastAction;
-    const { enqueueSnackbar } = prevState;
+  componentDidMount = () => {
     const {
       user,
-      token,
-      lastAction,
       checkUser,
-      getUserPrivate,
-      error,
-      clearErrorHandler,
-      intl,
-      tokenValid,
     } = this.props;
-    if ((!user.data || (user.data && !user.data.firstName)) && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
+    if (!user.data && !user.dataFetched) {
       checkUser();
     }
-    if ((!user.data || (user.data && !user.data.firstName)) && tokenValid && lastAction !== 'GET_USER_INFO_PRIVATE') {
-      getUserPrivate(token);
-    }
+  }
+
+  componentDidUpdate = () => {
+    const {
+      error,
+      enqueueSnackbar,
+      intl,
+      clearErrorHandler,
+      user,
+      getUserPrivate,
+    } = this.props;
     if (error) {
       enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
       clearErrorHandler();
     }
+    if (!user.data && user.tokenValid && user.tokenFetched) {
+      getUserPrivate(user.token);
+    }
   }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   const prevLastAction = prevState.lastAction;
-  //   const { enqueueSnackbar } = prevState;
-  //   const {
-  //     user,
-  //     token,
-  //     lastAction,
-  //     checkUser,
-  //     getUserPrivate,
-  //     error,
-  //     clearErrorHandler,
-  //     intl,
-  //     tokenValid,
-  //   } = nextProps;
-  //   if ((!user.data || (user.data && !user.data.firstName)) && token === '' && lastAction !== 'CHECK_USER_IN_COOKIE') {
-  //     checkUser();
-  //   }
-  //   if ((!user.data || (user.data && !user.data.firstName)) && tokenValid) {
-  //     getUserPrivate(token);
-  //   }
-  //   if (error) {
-  //     enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
-  //     clearErrorHandler();
-  //   }
-  //   return null;
-  // }
 
   render() {
     const { darkThemeBool } = this.props;
@@ -154,16 +119,13 @@ class App extends React.Component {
 }
 App.propTypes = {
   darkThemeBool: PropTypes.bool.isRequired,
-  token: PropTypes.string.isRequired, // eslint-disable-line
   user: PropTypes.shape({}).isRequired,
-  checkUser: PropTypes.func.isRequired, // eslint-disable-line
-  getUserPrivate: PropTypes.func.isRequired, // eslint-disable-line
-  lastAction: PropTypes.string.isRequired, // eslint-disable-line
+  checkUser: PropTypes.func.isRequired,
+  getUserPrivate: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  clearErrorHandler: PropTypes.func.isRequired, // eslint-disable-line
-  intl: intlShape.isRequired, // eslint-disable-line
-  error: PropTypes.string, // eslint-disable-line
-  tokenValid: PropTypes.bool.isRequired,
+  clearErrorHandler: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
+  error: PropTypes.string,
 };
 
 App.defaultProps = {

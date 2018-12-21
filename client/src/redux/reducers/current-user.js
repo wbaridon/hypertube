@@ -10,7 +10,8 @@ import {
 
 const defaultUserState = {
   data: null,
-  tokenValid: false,
+  tokenFetched: false,
+  dataFetched: false,
   token: null,
 };
 
@@ -40,11 +41,15 @@ export default function user(state = defaultUserState, action) {
     case SET_USER:
       return {
         ...state,
+        dataFetched: true,
         data: action.data,
       };
+    case CLEAR_USER:
+      return defaultUserState;
     case CHECK_USER_IN_COOKIE:
       return {
         ...state,
+        tokenFetched: true,
         token: readCookie('userToken', action.cookie),
       };
     case DELETE_USER_FROM_COOKIE:

@@ -22,8 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return ({
     user: state.user,
-    lastAction: state.user.lastAction,
-    loading: state.user.loading,
+    loading: state.loginUser.loading,
   });
 };
 
@@ -91,7 +90,7 @@ Login.propTypes = {
     }).isRequired,
   }).isRequired,
   intl: intlShape.isRequired,
-  lastAction: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default injectIntl(withTheme()(connect(mapStateToProps, mapDispatchToProps)(Login)));

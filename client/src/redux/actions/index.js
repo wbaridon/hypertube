@@ -12,6 +12,13 @@ import { logoutUser } from './logout-user';
 import { registerUser } from './register-user';
 import { registerUserOauth } from './register-user-oauth';
 import { getUserInfoPrivate } from './get-user-info-private';
+import { setUser, clearUser } from './current-user';
+import {
+  setError,
+  clearError,
+  setSuccess,
+  clearSuccess,
+} from './notifications';
 
 
 export const checkUserInCookie = cookie => ({
@@ -32,15 +39,6 @@ export const setLocale = locale => ({
   locale,
 });
 
-export const clearError = () => ({
-  type: CLEAR_ERROR,
-});
-
-export const setError = error => ({
-  type: SET_ERROR,
-  error,
-});
-
 export const clearRegisterData = () => ({
   type: CLEAR_REGISTER_DATA,
 });
@@ -51,4 +49,10 @@ export {
   registerUser,
   registerUserOauth,
   getUserInfoPrivate,
+  setUser,
+  clearUser,
+  setError,
+  clearError,
+  setSuccess,
+  clearSuccess,
 };

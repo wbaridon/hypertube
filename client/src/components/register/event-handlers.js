@@ -95,9 +95,12 @@ export function handleSubmit(e) {
     locale,
     darkTheme,
     image,
-    provided,
   } = this.state;
-  const { registerUserHandler, setErrorHandler } = this.props;
+  const {
+    registerUserHandler,
+    setErrorHandler,
+    provided,
+  } = this.props;
 
   if (userName === '' && userNameError.length === 0) {
     userNameError.push('register.error.noUserName');
@@ -117,7 +120,7 @@ export function handleSubmit(e) {
     || emailError.length !== 0
     || firstNameError.length !== 0
     || lastNameError.length !== 0
-    || passwordError.length !== 0) {
+    || (passwordError.length !== 0 && !provided)) {
     willSend = false;
     setErrorHandler('register.error.formInvalid');
     this.setState({
