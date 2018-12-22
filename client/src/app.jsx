@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import {
   checkUserInCookie,
-  getUserInfoPrivate,
   clearError,
+  clearSuccess,
 } from 'Actions';
 import CurrentRoute from './components/routing/current-route';
 import Header from './components/header/header';
@@ -57,12 +57,14 @@ function mapStateToProps(state) {
     darkThemeBool: state.darkTheme,
     user: state.user,
     error: state.notifications.error,
+    success: state.notifications.success,
   };
 }
 function mapDispatchToProps(dispatch) {
   return ({
     checkUser: () => dispatch(checkUserInCookie(document.cookie)),
     clearErrorHandler: () => dispatch(clearError()),
+    clearSuccessHandler: () => dispatch(clearSuccess()),
   });
 }
 
@@ -84,10 +86,16 @@ class App extends React.Component {
       enqueueSnackbar,
       intl,
       clearErrorHandler,
+      clearSuccessHandler,
+      success,
     } = this.props;
     if (error) {
       enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
       clearErrorHandler();
+    }
+    if (success) {
+      enqueueSnackbar(intl.formatMessage({ id: success }), { variant: 'success' });
+      clearSuccessHandler();
     }
   }
 
@@ -115,15 +123,17 @@ App.propTypes = {
   darkThemeBool: PropTypes.bool.isRequired,
   user: PropTypes.shape({}).isRequired,
   checkUser: PropTypes.func.isRequired,
-  getUserPrivate: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   clearErrorHandler: PropTypes.func.isRequired,
+  clearSuccessHandler: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   error: PropTypes.string,
+  success: PropTypes.string,
 };
 
 App.defaultProps = {
   error: '',
+  success: '',
 };
 
 export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(((App)))));

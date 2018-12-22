@@ -23,7 +23,6 @@ class Home extends React.Component {
   componentDidMount() {
     axios.get('https://tv-v2.api-fetch.website/movies/1')
       .then((res) => {
-        console.log(res.data);
         this.setState({
           items: res.data.slice(0, 50),
         });

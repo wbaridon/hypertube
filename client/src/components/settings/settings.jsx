@@ -10,7 +10,6 @@ class Settings extends Component {
 
   render() {
     const { user } = this.props;
-    console.log(user);
     return (
       <Typography>
         {user.data ? user.data.email : 'no USER'}

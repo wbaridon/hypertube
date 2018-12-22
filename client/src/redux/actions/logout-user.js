@@ -1,5 +1,5 @@
 import logoutUserAPI from 'API/logout-user';
-import { deleteUserFromCookie, clearUser } from './index';
+import { deleteUserFromCookieThunk, clearUser } from './index';
 import {
   LOGOUT,
   LOGOUT_SUCCESS,
@@ -23,7 +23,7 @@ export const logoutUserError = error => ({
 export const logoutUser = (token) => {
   return (dispatch) => {
     dispatch(logoutUserStart());
-    dispatch(deleteUserFromCookie());
+    dispatch(deleteUserFromCookieThunk());
     dispatch(clearUser());
     return logoutUserAPI(token)
       .then(

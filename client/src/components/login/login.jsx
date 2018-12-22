@@ -15,7 +15,6 @@ import './autocomplete-fix.css';
 const mapDispatchToProps = (dispatch) => {
   return ({
     logIn: user => dispatch(loginUser(user)),
-    getUser: token => dispatch(getUserInfoPrivate(token)),
   });
 };
 

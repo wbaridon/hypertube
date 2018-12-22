@@ -217,7 +217,6 @@ function handleImageAdd(rawImage, event = null) {
       const dataURL = canvas.toDataURL('image/jpeg', 1.0);
       image.rawData = dataURL;
       image.verticalOffset = verticalOffset;
-      console.log(image);
       this.setState({ image });
     };
     img.src = e.target.result;

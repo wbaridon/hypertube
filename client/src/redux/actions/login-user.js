@@ -7,7 +7,7 @@ import {
 import {
   getUserInfoPrivate,
   setError,
-  setUser,
+  setSuccess,
 } from '.';
 
 function createCookie(name, value, days) {
@@ -28,13 +28,6 @@ export const loginUserSuccess = () => ({
   type: LOGIN_SUCCESS,
 });
 
-export const postLoginUserSuccess = (result) => {
-  return (dispatch) => {
-    dispatch(loginUserSuccess());
-    return dispatch(getUserInfoPrivate(result.token));
-  };
-};
-
 export const loginUserErrorAction = () => ({
   type: LOGIN_ERROR,
 });
@@ -47,6 +40,17 @@ export const loginUserError = (error) => {
   };
 };
 
+export const postLoginUserSuccess = (result) => {
+  return (dispatch) => {
+    return getUserInfoPrivate(result.token, dispatch).then(
+      () => {
+        dispatch(setSuccess('login.success'));
+      },
+      () => dispatch(loginUserError()),
+    );
+  };
+};
+
 export const loginUser = (user) => {
   return (dispatch) => {
     dispatch(loginUserStart());
@@ -54,6 +58,8 @@ export const loginUser = (user) => {
       .then(
         (result) => {
           createCookie('userToken', result.data.token, 7);
+          dispatch(loginUserSuccess());
+
           dispatch(postLoginUserSuccess(result.data));
         },
         error => dispatch(loginUserError(error)),

@@ -29,7 +29,6 @@ const mapStateToProps = (state) => {
   return ({
     registerData: state.registerUser.registerData,
     loading: state.registerUser.loading,
-    success: state.registerUser.success,
     provided: state.registerUser.provided,
   });
 };
@@ -91,7 +90,6 @@ class RegisterCard extends React.Component {
       code,
       registerUserOauthHandler,
     } = this.props;
-    console.log(provider, code);
     if (provider !== 'register' && code !== '') {
       registerUserOauthHandler(provider, code);
     }
@@ -134,7 +132,7 @@ class RegisterCard extends React.Component {
           password: '',
         }, () => clearRegisterDataHandler());
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
   }
@@ -160,12 +158,9 @@ class RegisterCard extends React.Component {
       locale,
       darkTheme,
     } = this.state;
-    const { loading, success, provided } = this.props;
+    const { loading, provided } = this.props;
     if (loading) {
       return (<div>loading</div>);
-    }
-    if (success) {
-      return (<Redirect to="/settings" />);
     }
     return (<RegisterCardDumb
       image={image}

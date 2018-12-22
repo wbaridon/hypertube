@@ -23,7 +23,6 @@ class Register extends React.Component {
     super(props);
     const provider = getProvider(props.location.pathname);
     let providerCode;
-    console.log(props);
     if (provider === 'google') {
       providerCode = qs.parse(props.location.hash);
     } else if (provider === 'github' || provider === '42') {

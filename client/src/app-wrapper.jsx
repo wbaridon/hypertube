@@ -17,7 +17,6 @@ const mapStateToProps = state => ({
 
 function AppWrapper({ locale }) {
   const messages = locale === 'fr' ? frFR : enUS;
-  console.log(locale);
 
   return (
     <SnackbarProvider>

@@ -132,14 +132,6 @@ export function handleSubmit(e) {
       image,
     });
   }
-  console.log(
-    userNameError,
-    emailError,
-    firstNameError,
-    lastNameError,
-    passwordError,
-    image.error,
-  );
   const formData = {
     userName,
     firstName,
