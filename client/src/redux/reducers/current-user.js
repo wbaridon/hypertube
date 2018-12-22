@@ -59,11 +59,13 @@ export default function user(state = defaultUserState, action) {
       };
     case GET_USER_INFO_PRIVATE:
       return {
+        dataFetched: true,
         ...state,
       };
     case GET_USER_INFO_PRIVATE_SUCCESS:
       return {
         ...state,
+        dataFetched: true,
         lastAction: action.type,
         tokenValid: true,
       };

@@ -62,7 +62,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return ({
     checkUser: () => dispatch(checkUserInCookie(document.cookie)),
-    getUserPrivate: token => dispatch(getUserInfoPrivate(token)),
     clearErrorHandler: () => dispatch(clearError()),
   });
 }
@@ -74,7 +73,7 @@ class App extends React.Component {
       user,
       checkUser,
     } = this.props;
-    if (!user.data && !user.dataFetched) {
+    if (!user.token && !user.tokenFetched) {
       checkUser();
     }
   }
@@ -85,15 +84,10 @@ class App extends React.Component {
       enqueueSnackbar,
       intl,
       clearErrorHandler,
-      user,
-      getUserPrivate,
     } = this.props;
     if (error) {
       enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
       clearErrorHandler();
-    }
-    if (!user.data && user.tokenValid && user.tokenFetched) {
-      getUserPrivate(user.token);
     }
   }
 
