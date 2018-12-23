@@ -59,7 +59,6 @@ export const loginUser = (user) => {
         (result) => {
           createCookie('userToken', result.data.token, 7);
           dispatch(loginUserSuccess());
-
           dispatch(postLoginUserSuccess(result.data));
         },
         error => dispatch(loginUserError(error)),
