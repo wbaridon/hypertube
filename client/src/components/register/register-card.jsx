@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import {
   registerUser,
   registerUserOauth,
@@ -29,6 +28,7 @@ const mapStateToProps = (state) => {
   return ({
     registerData: state.registerUser.registerData,
     loading: state.registerUser.loading,
+    success: state.registerUser.success,
     provided: state.registerUser.provided,
   });
 };

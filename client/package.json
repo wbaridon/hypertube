@@ -18,7 +18,6 @@
     "axios": "^0.18.0",
     "email-validator": "^2.0.4",
     "flat": "^4.1.0",
-    "lodash.debounce": "^4.0.8",
     "notistack": "^0.4.0",
     "piexifjs": "^1.0.4",
     "query-string": "^6.2.0",
@@ -29,6 +28,7 @@
     "react-redux": "^5.1.0",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
+    "redux-debounce": "^1.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0"
   },
