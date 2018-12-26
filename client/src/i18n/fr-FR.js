@@ -40,6 +40,9 @@ const frFR = {
   error: {
     'Network Error': 'Impossible de se connecter a l\'API',
   },
+  success: {
+    login: 'Bienvenue !',
+  },
 };
 
 export default flatten(frFR);

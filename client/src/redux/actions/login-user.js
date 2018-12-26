@@ -44,7 +44,7 @@ export const postLoginUserSuccess = (result) => {
   return (dispatch) => {
     return getUserInfoPrivate(result.token, dispatch).then(
       () => {
-        dispatch(setSuccess('login.success'));
+        dispatch(setSuccess('success.login'));
       },
       () => dispatch(loginUserError()),
     );

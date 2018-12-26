@@ -40,6 +40,9 @@ const enUS = {
   error: {
     'Network Error': 'Failed to connect to API',
   },
+  success: {
+    login: 'Successfully logged in!',
+  },
 };
 
 export default flatten(enUS);

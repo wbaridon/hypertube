@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import {
   loginUser,
-  getUserInfoPrivate,
 } from 'Actions/index';
 import { withTheme } from '@material-ui/core/styles';
 import { injectIntl, intlShape } from 'react-intl';
