@@ -85,7 +85,7 @@ class Header extends React.Component {
       locale,
     } = this.props;
     return (
-      <AppBar position="static">
+      <AppBar position="sticky">
         <MuiThemeProvider theme={theme}>
           <Toolbar>
             <IconButton component={Link} to="/" color="primary">

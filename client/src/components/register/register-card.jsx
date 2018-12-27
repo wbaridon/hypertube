@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
 import {
   registerUser,
   registerUserOauth,
@@ -160,7 +161,7 @@ class RegisterCard extends React.Component {
     } = this.state;
     const { loading, provided } = this.props;
     if (loading) {
-      return (<div>loading</div>);
+      return (<CircularProgress />);
     }
     return (<RegisterCardDumb
       image={image}

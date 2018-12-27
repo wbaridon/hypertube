@@ -161,7 +161,6 @@ class RegisterCardDumb extends React.Component {
         <form action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
-              InputLabelProps={{ shrink: provided || userName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -178,7 +177,6 @@ class RegisterCardDumb extends React.Component {
             />
             <br />
             <TextField
-              InputLabelProps={{ shrink: provided || email !== '' }}
               disabled={provided}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
@@ -194,7 +192,6 @@ class RegisterCardDumb extends React.Component {
             />
             <br />
             <TextField
-              InputLabelProps={{ shrink: provided || firstName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -208,7 +205,6 @@ class RegisterCardDumb extends React.Component {
             />
             <br />
             <TextField
-              InputLabelProps={{ shrink: provided || lastName !== '' }}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth

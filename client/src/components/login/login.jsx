@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Typography } from '@material-ui/core';
+import {
+  Typography,
+  CircularProgress,
+} from '@material-ui/core';
 import {
   loginUser,
 } from 'Actions/index';
-import { withTheme } from '@material-ui/core/styles';
 import { injectIntl, intlShape } from 'react-intl';
 import Avatar from '@material-ui/core/Avatar';
 import LoginCard from './login-card';
@@ -70,7 +72,7 @@ class Login extends React.Component {
           <Avatar src={`${BACKEND}images/${user.data.picture}`} />
         </React.Fragment>);
     } if (loading) {
-      return (<div>LOEDING</div>);
+      return (<CircularProgress />);
     }
     return (<LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />);
   }
@@ -79,16 +81,8 @@ class Login extends React.Component {
 Login.propTypes = {
   logIn: PropTypes.func.isRequired,
   user: PropTypes.shape({}).isRequired,
-  theme: PropTypes.shape({
-    palette: PropTypes.shape({
-      primary: PropTypes.shape({
-        main: PropTypes.string.isRequired,
-      }).isRequired,
-      getContrastText: PropTypes.func.isRequired,
-    }).isRequired,
-  }).isRequired,
   intl: intlShape.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
-export default injectIntl(withTheme()(connect(mapStateToProps, mapDispatchToProps)(Login)));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Login));

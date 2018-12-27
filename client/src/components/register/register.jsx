@@ -39,7 +39,7 @@ class Register extends React.Component {
   render() {
     const { provider, code } = this.state;
     return (
-      <Grid container direction="row" justify="space-around" wrap="nowrap">
+      <Grid container direction="column" justify="center" alignItems="center" alignContent="center" wrap="nowrap">
         <Grid item>
           <RegisterCard provider={provider} code={code} />
         </Grid>
