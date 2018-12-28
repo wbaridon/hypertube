@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 import {
   registerUser,
   registerUserOauth,
@@ -102,6 +103,7 @@ class RegisterCard extends React.Component {
       clearRegisterDataHandler,
       provider,
       success,
+      history,
     } = this.props;
     const { registerDataCleared } = this.state;
     if (success) {
@@ -131,7 +133,10 @@ class RegisterCard extends React.Component {
           lastName,
           email: registerData.email,
           password: '',
-        }, () => clearRegisterDataHandler());
+        }, () => {
+          clearRegisterDataHandler();
+          history.push('/register/');
+        });
       } catch (e) {
         console.error(e);
       }
@@ -159,7 +164,10 @@ class RegisterCard extends React.Component {
       locale,
       darkTheme,
     } = this.state;
-    const { loading, provided } = this.props;
+    const {
+      loading,
+      provided,
+    } = this.props;
     if (loading) {
       return (<CircularProgress />);
     }
@@ -205,6 +213,7 @@ RegisterCard.propTypes = {
   loading: PropTypes.bool.isRequired,
   success: PropTypes.bool.isRequired,
   provided: PropTypes.bool.isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 RegisterCard.defaultProps = {
@@ -212,4 +221,4 @@ RegisterCard.defaultProps = {
   code: '',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterCard);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RegisterCard));
