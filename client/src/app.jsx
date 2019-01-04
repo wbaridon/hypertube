@@ -13,6 +13,7 @@ import {
 } from 'Actions';
 import CurrentRoute from './components/routing/current-route';
 import Header from './components/header/header';
+import Footer from './components/header/footer';
 
 const theme = createMuiTheme({
   palette: {
@@ -113,6 +114,7 @@ class App extends React.Component {
           <CssBaseline>
             <Header />
             <CurrentRoute />
+            <Footer />
           </CssBaseline>
         </MuiThemeProvider>
       </BrowserRouter>

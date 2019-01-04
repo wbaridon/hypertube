@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button,
+  IconButton,
   Typography,
   TextField,
 } from '@material-ui/core';
@@ -9,6 +9,7 @@ import {
   FormattedMessage,
   intlShape,
 } from 'react-intl';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 
 
 function LoginCard({
@@ -22,7 +23,6 @@ function LoginCard({
 
       <TextField
         className="loginInputs"
-        InputProps={{ disableUnderline: true }}
         autoComplete="username"
         label={intl.formatMessage({ id: 'login.userName' })}
         type="text"
@@ -31,20 +31,15 @@ function LoginCard({
       />
       <TextField
         className="loginInputs"
-        InputProps={{ disableUnderline: true }}
         autoComplete="current-password"
         type="password"
         label={intl.formatMessage({ id: 'login.password' })}
         value={currentUser.password}
         onChange={e => parentStateChange('password', e.target.value)}
       />
-      <Button style={{ paddingTop: '16px', paddingBottom: '16px' }} type="submit" onClick={parentLoginHandle}>
-        {(
-          <Typography>
-            <FormattedMessage id="login.loginButton" />
-          </Typography>
-        )}
-      </Button>
+      <IconButton type="submit" onClick={parentLoginHandle}>
+        <ChevronRight color="primary" />
+      </IconButton>
     </form>
   );
 }

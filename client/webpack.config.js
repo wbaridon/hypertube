@@ -18,6 +18,7 @@ module.exports = {
       Actions: path.resolve(__dirname, 'src/redux/actions'),
       Reducers: path.resolve(__dirname, 'src/redux/reducers'),
       API: path.resolve(__dirname, 'src/api_tools'),
+      Assets: path.resolve(__dirname, 'src/assets'),
     },
   },
   module: {
