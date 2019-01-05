@@ -9,6 +9,7 @@ import {
   ButtonBase,
   Typography,
   Switch,
+  Avatar,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,8 +23,32 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
+import googleIcon from 'Assets/icons/google.png';
+import githubIcon from 'Assets/icons/github.png';
+import fortytwoIcon from 'Assets/icons/42.png';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
+
+const providers = [
+  {
+    name: 'Google',
+    icon: googleIcon,
+    tooltip: 'register.provider.google',
+    url: AUTHGOOGLE,
+  },
+  {
+    name: 'Github',
+    icon: githubIcon,
+    tooltip: 'register.provider.github',
+    url: AUTHGITHUB,
+  },
+  {
+    name: '42',
+    icon: fortytwoIcon,
+    tooltip: 'register.provider.fortytwo',
+    url: AUTH42,
+  },
+];
 
 function handleDragOver(evt) {
   evt.stopPropagation();
@@ -89,6 +114,11 @@ class RegisterCardDumb extends React.Component {
     } = this.props;
     return (
       <Card className={classes.card}>
+        <CardActions>
+          {providers.map((provider) => {
+            return (<IconButton title={intl.formatMessage({ id: provider.tooltip })} href={provider.url} key={provider.name}><Avatar src={provider.icon} /></IconButton>);
+          })}
+        </CardActions>
         <CardMedia src="squelch" id="dragAndDrop">
           {
             image.rawData
@@ -252,15 +282,6 @@ class RegisterCardDumb extends React.Component {
           </CardContent>
           <CardActions>
             <Button type="submit" variant="contained" onClick={handleSubmit}>{intl.formatMessage({ id: 'register.submit' })}</Button>
-            <Button href={AUTH42} variant="contained">
-              {intl.formatMessage({ id: 'register.registerWith42' })}
-            </Button>
-            <Button href={AUTHGITHUB} variant="contained">
-              {intl.formatMessage({ id: 'register.registerWithGithub' })}
-            </Button>
-            <Button href={AUTHGOOGLE} variant="contained">
-              {intl.formatMessage({ id: 'register.registerWithGoogle' })}
-            </Button>
           </CardActions>
         </form>
       </Card>

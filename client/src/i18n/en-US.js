@@ -8,6 +8,11 @@ const enUS = {
     email: 'Email',
     password: 'Password',
     loginButton: 'Sign In',
+    provider: {
+      google: 'Sign in with Google',
+      github: 'Sign in with Github',
+      fortytwo: 'Sign in with 42',
+    },
   },
   register: {
     title: 'REGISTER',
@@ -19,9 +24,11 @@ const enUS = {
     submit: 'Submit',
     profilePicture: 'Change photo',
     addImage: 'Add Photo',
-    registerWith42: '42 Auth',
-    registerWithGithub: 'GitHub Auth',
-    registerWithGoogle: 'Google Auth',
+    provider: {
+      google: 'Register with Google',
+      github: 'Register with GitHub',
+      fortytwo: 'Register with 42',
+    },
     error: {
       userAlreadyRegistered: 'A user with that username or email already exists...',
       passwordLengthTooLong: 'Too long',

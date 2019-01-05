@@ -6,6 +6,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
+import { intlShape, injectIntl } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -15,7 +16,7 @@ const styles = {
   },
 };
 
-function LoginProviderDumb({ providers, classes }) {
+function LoginProviderDumb({ providers, classes, intl }) {
   return (
     <Grid container direction="column" spacing={0} alignContent="center" alignItems="center">
       <Grid item>
@@ -23,7 +24,7 @@ function LoginProviderDumb({ providers, classes }) {
       </Grid>
       <Grid item>
         {providers.map((provider) => {
-          return (<IconButton title={provider.tooltip} href={provider.url} key={provider.name}><Avatar className={classes.avatar} src={provider.icon} /></IconButton>);
+          return (<IconButton title={intl.formatMessage({ id: provider.tooltip })} href={provider.url} key={provider.name}><Avatar className={classes.avatar} src={provider.icon} /></IconButton>);
         })}
       </Grid>
     </Grid>
@@ -40,6 +41,7 @@ LoginProviderDumb.propTypes = {
     tooltip: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   })).isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default withStyles(styles)(LoginProviderDumb);
+export default injectIntl(withStyles(styles)(LoginProviderDumb));

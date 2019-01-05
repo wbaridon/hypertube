@@ -27,19 +27,19 @@ const providers = [
   {
     name: 'Google',
     icon: googleIcon,
-    tooltip: 'Sign in with Google',
+    tooltip: 'login.provider.google',
     url: AUTHGOOGLE,
   },
   {
     name: 'Github',
     icon: githubIcon,
-    tooltip: 'Sign in with Github',
+    tooltip: 'login.provider.github',
     url: AUTHGITHUB,
   },
   {
     name: '42',
     icon: fortytwoIcon,
-    tooltip: 'Sign in with 42',
+    tooltip: 'login.provider.fortytwo',
     url: AUTH42,
   },
 ];
