@@ -7,7 +7,7 @@ import Register from '../register/register';
 import Video from '../video/video';
 import Movie from '../movie/movie';
 import Settings from '../settings/settings';
-
+import ForgotPassword from '../forgot-password';
 
 const mapStateToProps = state => ({
   authed: state.user.tokenValid,
@@ -42,6 +42,7 @@ function CurrentRoute() {
       <Route path={Video.url} component={Video} />
       <PrivateRoute path={Settings.url} component={Settings} />
       <Route path={Movie.url} component={Movie} />
+      <Route path={ForgotPassword.url} component={ForgotPassword} />
       <Route path={Register.url} component={Register} />
       <Route exact path={Home.url} component={Home} />
       <Redirect path="*" to={Home.url} />
