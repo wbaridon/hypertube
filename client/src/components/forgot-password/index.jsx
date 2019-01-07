@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import ForgotPasswordDumb from './dumb';
+import SendEmail from './send-email';
+import ResetPassword from './reset-password';
 
 class ForgotPassword extends Component {
   constructor() {
@@ -29,13 +30,20 @@ class ForgotPassword extends Component {
       newPasswordRepeat,
     } = this.state;
     return (
-      <ForgotPasswordDumb
-        email={email}
-        login={login}
-        newPassword={newPassword}
-        newPasswordRepeat={newPasswordRepeat}
-        handleFieldChange={this.handleFieldChange}
-      />
+      <div>
+        <SendEmail
+          email={email}
+          login={login}
+          handleFieldChange={this.handleFieldChange}
+          handleSubmit={this.handleSendEmailSubmit}
+        />
+        <ResetPassword
+          newPassword={newPassword}
+          newPasswordRepeat={newPasswordRepeat}
+          handleFieldChange={this.handleFieldChange}
+          handleSubmit={this.handleResetPassword}
+        />
+      </div>
     );
   }
 }
