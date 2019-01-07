@@ -32,7 +32,7 @@ app.get('/video', function(req, res) {
 
   // Get hash of torrent
   // const torrent_hash = '3D1E3C092836AF4F3C21C38C09E1F5550E137A32'; // New Work Minute
-  const torrent_hash = req.query.videoHash; // American Monster Episode
+  const torrent_hash = req.query.videoHash;
 
   // Make usable magnet link
   const torrent_magnet = 'magnet:?xt=urn:btih:' + torrent_hash;
@@ -42,7 +42,6 @@ app.get('/video', function(req, res) {
   var engine = torrentStream(torrent_magnet);
 
   engine.on('ready', function() {
-
     // Iterates for each file linked in torrent
     engine.files.forEach(function(file) {
       console.log('filename:', file.name)
@@ -55,7 +54,7 @@ app.get('/video', function(req, res) {
       const range = req.headers.range
 
       // If yes, and is either .mp4 or .mkv
-      if (range && (fileFormat === '.mp4' || fileFormat === '.mkv')) {
+      if (range && (fileFormat === '.mp4' || fileFormat === '.mkv' || fileFormat === '.avi')) {
         const parts = range.replace(/bytes=/, "").split("-")
         console.log(parts)
         const startByte = parseInt(parts[0], 10)
@@ -88,9 +87,18 @@ app.get('/video', function(req, res) {
           }
           res.writeHead(206, head)
         }
+        else if (fileFormat === '.avi') { // Is an avi file
+          const head = {
+            'Content-Range': `bytes ${startByte}-${endByte}/${fileSize}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': 'video/xmpg2',
+          }
+          res.writeHead(206, head)
+        }
         // Pipe what was returned so far
         stream.pipe(res)
-      } else if (fileFormat === '.mp4' || fileFormat === '.mkv') {
+      } else if (fileFormat === '.mp4' || fileFormat === '.mkv' || fileFormat === '.avi') {
         if (fileFormat === '.mp4') { // Is an mp4 file
           const head = {
             'Content-Length': fileSize,
@@ -105,10 +113,16 @@ app.get('/video', function(req, res) {
           }
           res.writeHead(200, head)
         }
-        // fs.createReadStream(file.path).pipe(res)
+        else if (fileFormat === '.avi') { // Is an avi file
+          const head = {
+            'Content-Length': fileSize,
+            'Content-Type': 'video/xmpg2',
+          }
+          res.writeHead(200, head)
+        }
+        fs.createReadStream(file.path).pipe(res)
     }
   });
-
 })
 
 
