@@ -11,7 +11,6 @@ import {
 } from 'react-intl';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
-
 function LoginCard({
   parentLoginHandle,
   parentStateChange,
@@ -20,7 +19,6 @@ function LoginCard({
 }) {
   return (
     <form action="" onSubmit={e => parentLoginHandle(e)}>
-
       <TextField
         className="loginInputs"
         autoComplete="username"

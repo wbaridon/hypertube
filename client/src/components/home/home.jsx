@@ -11,7 +11,7 @@ const myStyles = {
     width: '52px',
   },
   poster: {
-    maxWidth: 320,
+    maxWidth: 300,
   },
 };
 
