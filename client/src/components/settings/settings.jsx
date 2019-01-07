@@ -1,19 +1,48 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Typography } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
+import { updateUser } from 'Actions/';
 
 class Settings extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      ...props.user,
+    };
+
+    this.handleFieldChange = this.handleFieldChange.bind(this);
+  }
+
+  handleFieldChange(field, value) {
+    this.setState({ [field]: value });
   }
 
   render() {
-    const { user } = this.props;
+    const { handleUpdateUser, token } = this.props;
+    const { email, firstName, lastName } = this.state;
     return (
-      <Typography>
-        {user.data ? user.data.email : 'no USER'}
-      </Typography>
+      <div>
+        <TextField
+          value={email}
+          label="email"
+          onChange={e => this.handleFieldChange('email', e.target.value)}
+        />
+        <TextField
+          value={firstName}
+          label="firstName"
+          onChange={e => this.handleFieldChange('firstName', e.target.value)}
+        />
+        <TextField
+          value={lastName}
+          label="lastName"
+          onChange={e => this.handleFieldChange('lastName', e.target.value)}
+        />
+        <Button onClick={() => handleUpdateUser(token, { email, firstName, lastName })}>
+          UpdateUser(ChangeUsernameToZIZI)
+        </Button>
+      </div>
     );
   }
 }
@@ -21,13 +50,19 @@ class Settings extends Component {
 
 Settings.url = '/settings';
 Settings.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({
+  }).isRequired,
+  handleUpdateUser: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   token: state.user.token,
-  user: state.user,
+  user: state.user.data,
 });
 
+const mapDispatchToProps = dispatch => ({
+  handleUpdateUser: (token, changes) => dispatch(updateUser(token, changes)),
+});
 
-export default connect(mapStateToProps, null)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

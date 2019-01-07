@@ -7,6 +7,7 @@ import loginUser from './login-user';
 import user from './current-user';
 import registerUser from './register-user';
 import notifications from './notifications';
+import updateUser from './update-user';
 
 const darkTheme = (state = false, action) => {
   switch (action.type) {
@@ -33,4 +34,5 @@ export default combineReducers({
   registerUser,
   darkTheme,
   notifications,
+  updateUser,
 });

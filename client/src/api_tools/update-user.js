@@ -1,13 +1,12 @@
 import Axios from 'axios';
 
-export default function updateUserAPI(email, token, changedValues) {
+export default function updateUserAPI(token, changes) {
   return Axios({
     method: 'post',
     url: 'http://localhost:3000/user/updateUser',
     data: {
-      email,
       token,
-      user: changedValues,
+      user: changes,
     },
     timeout: TIMEOUT_API,
   });
