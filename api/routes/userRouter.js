@@ -20,7 +20,12 @@ const UserManager = require('../models/userManager');
 const BlackListManager = require('../models/blackListManager');
 const resetPassword = require('../utils/resetPassword');
 
+const { test } = require('../config/env')
 userRouter
+  .get('/test', function(req,res) {
+    console.log(test)
+    res.send('ok')
+  })
   .post('/register', upload.single('image'), (req, res, next) => {
     console.log(req.file)
     if (req.file) {
