@@ -1,6 +1,7 @@
 api/node_modules
 api/package-lock.json
 api/assets/images
+api/.env
 client/node_modules
 client/package-lock.json
 .DS_Store
