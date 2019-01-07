@@ -39,6 +39,7 @@ const styles = {
   appBar: {
     top: 'auto',
     bottom: 0,
+    // minWidth: 500,
   },
   toolbar: {
   },

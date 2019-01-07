@@ -22,6 +22,16 @@ class ForgotPassword extends Component {
     this.setState({ [field]: value });
   }
 
+  handleResetPasswordSubmit(e) {
+    const { handlePasswordReset } = this.props;
+    e.preventDefault();
+  }
+
+  handleSendEmailSubmit(e) {
+    e.preventDefault();
+    const { handleSendEmail } = this.props;
+  }
+
   render() {
     const {
       email,

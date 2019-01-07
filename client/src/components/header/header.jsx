@@ -8,6 +8,7 @@ import {
   createMuiTheme,
   Typography,
   Grid,
+  withStyles,
 } from '@material-ui/core';
 import Home from '@material-ui/icons/Home';
 import Highlight from '@material-ui/icons/Highlight';
@@ -55,6 +56,12 @@ const mapStateToProps = state => ({
   locale: state.locale,
 });
 
+const styles = {
+  appBar: {
+    // minWidth: 500,
+  },
+};
+
 class Header extends React.Component {
   constructor() {
     super();
@@ -69,9 +76,10 @@ class Header extends React.Component {
       darkThemeBool,
       changeLocale,
       locale,
+      classes,
     } = this.props;
     return (
-      <AppBar position="sticky">
+      <AppBar position="sticky" className={classes.appBar}>
         <MuiThemeProvider theme={theme}>
           <Toolbar>
             <Grid container wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">
@@ -112,4 +120,4 @@ Header.propTypes = {
   locale: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Header)));

@@ -10,7 +10,11 @@ const myStyles = {
   root: {
     width: '52px',
   },
+  poster: {
+    maxWidth: 320,
+  },
 };
+
 
 class Home extends React.Component {
   constructor() {
@@ -24,23 +28,22 @@ class Home extends React.Component {
     axios.get('https://tv-v2.api-fetch.website/movies/1')
       .then((res) => {
         this.setState({
-          items: res.data.slice(0, 50),
+          items: res.data.slice(0, 60),
         });
       });
   }
 
   render() {
     const { items } = this.state;
+    const { classes } = this.props;
     const itemList = items.length ? (
       items.map((item) => {
         return (
           // eslint-disable-next-line no-underscore-dangle
-          <Grid item key={item._id}>
-            <Grid>
-              <Link to={`/movie/${item.imdb_id}`}>
-                <img src={item.images.poster} alt="" />
-              </Link>
-            </Grid>
+          <Grid item key={item._id} className={classes.poster}>
+            <Link to={`/movie/${item.imdb_id}`}>
+              <img className={classes.poster} src={item.images.poster} alt="" />
+            </Link>
           </Grid>
         );
       })
@@ -48,7 +51,7 @@ class Home extends React.Component {
       <Typography>No items yet</Typography>
     );
     return (
-      <Grid container direction="row" spacing={0} justify="space-around" alignItems="center">
+      <Grid container direction="row" spacing={0} justify="space-around" alignItems="center" alignContent="center">
         {itemList}
       </Grid>
     );
