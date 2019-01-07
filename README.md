@@ -29,5 +29,8 @@ Renvoi ensuite les data de l'user au front
 
 ## Liste de nos bonus
 - Auth par Twitter, Github, 42, Normal
+- Auth par Twitter, Github, 42, Facebook, Normal
 - API RESTful
 - Un unique fichier de translation
+- Rotatation et modification de l'image a l'inscription
+- Variable ENV stocke en dehors du code pour + de securite
