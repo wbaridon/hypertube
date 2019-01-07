@@ -10,7 +10,6 @@ class ForgotPassword extends Component {
 
     this.state = {
       email: '',
-      login: '',
       newPassword: '',
       newPasswordRepeat: '',
     };
@@ -35,7 +34,6 @@ class ForgotPassword extends Component {
   render() {
     const {
       email,
-      login,
       newPassword,
       newPasswordRepeat,
     } = this.state;
@@ -43,7 +41,6 @@ class ForgotPassword extends Component {
       <div>
         <SendEmail
           email={email}
-          login={login}
           handleFieldChange={this.handleFieldChange}
           handleSubmit={this.handleSendEmailSubmit}
         />

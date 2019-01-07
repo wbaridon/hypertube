@@ -9,6 +9,8 @@ import { registerUser } from './register-user';
 import { registerUserOauth } from './register-user-oauth';
 import { getUserInfoPrivate } from './get-user-info-private';
 import { setUser, clearUser } from './current-user';
+import { sendEmail } from './send-email';
+import { resetPassword } from './reset-password';
 import {
   checkUserInCookie,
   deleteUserFromCookieThunk,
@@ -47,4 +49,6 @@ export {
   clearSuccess,
   checkUserInCookie,
   deleteUserFromCookieThunk,
+  sendEmail,
+  resetPassword,
 };
