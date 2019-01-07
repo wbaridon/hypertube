@@ -19,10 +19,10 @@ export const resetPasswordError = () => ({
   type: RESET_PASSWORD_ERROR,
 });
 
-export const resetPassword = (form) => {
+export const resetPassword = (newPassword, token) => {
   return (dispatch) => {
     dispatch(resetPasswordStart());
-    return resetPasswordAPI(form)
+    return resetPasswordAPI(newPassword, token)
       .then(
         result => dispatch(resetPasswordSuccess(result)),
         (error) => {

@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { resetPassword, sendEmail } from 'Actions';
+import { connect } from 'react-redux';
 import SendEmail from './send-email';
 import ResetPassword from './reset-password';
+
+
+const mapDispatchToProps = dispatch => ({
+  handlePasswordReset: (newPassword, token) => dispatch(resetPassword(newPassword, token)),
+  handleSendEmail: email => dispatch(sendEmail(email)),
+});
 
 class ForgotPassword extends Component {
   constructor() {
@@ -15,6 +23,8 @@ class ForgotPassword extends Component {
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.handleResetPasswordSubmit = this.handleResetPasswordSubmit.bind(this);
+    this.handleSendEmailSubmit = this.handleSendEmailSubmit.bind(this);
   }
 
   handleFieldChange(field, value) {
@@ -22,13 +32,17 @@ class ForgotPassword extends Component {
   }
 
   handleResetPasswordSubmit(e) {
-    const { handlePasswordReset } = this.props;
     e.preventDefault();
+    const { newPassword } = this.state;
+    const { handlePasswordReset } = this.props;
+    handlePasswordReset(newPassword, null);
   }
 
   handleSendEmailSubmit(e) {
     e.preventDefault();
+    const { email } = this.state;
     const { handleSendEmail } = this.props;
+    handleSendEmail(email);
   }
 
   render() {
@@ -48,7 +62,7 @@ class ForgotPassword extends Component {
           newPassword={newPassword}
           newPasswordRepeat={newPasswordRepeat}
           handleFieldChange={this.handleFieldChange}
-          handleSubmit={this.handleResetPassword}
+          handleSubmit={this.handleResetPasswordSubmit}
         />
       </div>
     );
@@ -57,8 +71,10 @@ class ForgotPassword extends Component {
 
 ForgotPassword.propTypes = {
   history: PropTypes.shape({}).isRequired,
+  handlePasswordReset: PropTypes.func.isRequired,
+  handleSendEmail: PropTypes.func.isRequired,
 };
 
 ForgotPassword.url = '/forgot';
 
-export default withRouter(ForgotPassword);
+export default withRouter(connect(null, mapDispatchToProps)(ForgotPassword));

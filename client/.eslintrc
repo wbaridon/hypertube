@@ -29,6 +29,7 @@
       "AUTH42": true,
       "AUTHGITHUB": true,
       "AUTHGOOGLE": true,
+      "AUTHFACEBOOK": true,
       "BACKEND": true
     },
     "rules": {

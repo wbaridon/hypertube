@@ -94,6 +94,15 @@ class Header extends React.Component {
                     <Login />
                   </Grid>
                   <Grid item>
+                    <IconButton component={Link} to="/forgot">
+                      <Typography>
+                        Forgot Password?
+                      </Typography>
+                      <br />
+                      <SupervisedUserCircle color="primary" />
+                    </IconButton>
+                  </Grid>
+                  <Grid item>
                     <IconButton component={Link} to="/register/">
                       <Typography>
                         Register

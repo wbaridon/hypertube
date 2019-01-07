@@ -9,17 +9,24 @@ function ResetPassword({
   handleSubmit,
 }) {
   return (
-    <div>
-      <TextField value={newPassword} onChange={e => handleFieldChange('newPassword', e.target.value)} />
-      <TextField value={newPasswordRepeat} onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)} />
+    <form action="">
+      <TextField
+        label="new password"
+        value={newPassword}
+        onChange={e => handleFieldChange('newPassword', e.target.value)}
+      />
+      <TextField
+        label="new password again"
+        value={newPasswordRepeat}
+        onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)}
+      />
       <Button type="submit" onClick={handleSubmit}>
         <Typography>
           Submit
         </Typography>
       </Button>
-    </div>
-
-  )
+    </form>
+  );
 }
 
 ResetPassword.propTypes = {

@@ -9,7 +9,11 @@ function SendEmail({
 }) {
   return (
     <form action="" onSubmit={handleSubmit}>
-      <TextField value={email} onChange={e => handleFieldChange('email', e.target.value)} />
+      <TextField
+        label="email"
+        value={email}
+        onChange={e => handleFieldChange('email', e.target.value)}
+      />
       <Button type="submit" onClick={e => handleSubmit(e)}>
         <Typography>
           Submit
