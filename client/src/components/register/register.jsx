@@ -25,7 +25,7 @@ class Register extends React.Component {
     let providerCode;
     if (provider === 'google') {
       providerCode = qs.parse(props.location.hash);
-    } else if (provider === 'github' || provider === '42') {
+    } else if (provider === 'github' || provider === '42' || provider === 'fb') {
       providerCode = qs.parse(props.location.search, { ignoreQueryPrefix: true }).code;
     } else {
       providerCode = null;
@@ -38,6 +38,7 @@ class Register extends React.Component {
 
   render() {
     const { provider, code } = this.state;
+    console.log(provider, code);
     return (
       <Grid container direction="column" justify="center" alignItems="center" alignContent="center" wrap="nowrap">
         <Grid item>

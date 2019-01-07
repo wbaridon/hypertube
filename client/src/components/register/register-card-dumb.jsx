@@ -26,6 +26,7 @@ import Flip from '@material-ui/icons/Flip';
 import googleIcon from 'Assets/icons/google.png';
 import githubIcon from 'Assets/icons/github.png';
 import fortytwoIcon from 'Assets/icons/42.png';
+import facebookIcon from 'Assets/icons/facebook.png';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
 
@@ -47,6 +48,12 @@ const providers = [
     icon: fortytwoIcon,
     tooltip: 'register.provider.fortytwo',
     url: AUTH42,
+  },
+  {
+    name: 'Facebook',
+    icon: facebookIcon,
+    tooltip: 'register.provider.facebook',
+    url: AUTHFACEBOOK,
   },
 ];
 

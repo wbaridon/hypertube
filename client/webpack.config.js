@@ -68,6 +68,7 @@ module.exports = {
       AUTH42: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.fortytwo),
       AUTHGITHUB: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.github),
       AUTHGOOGLE: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.google),
+      AUTHFACEBOOK: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.facebook),
       BACKEND: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).BACKEND),
       TIMEOUT_API: 8000,
     }),
