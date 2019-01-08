@@ -31,8 +31,11 @@ module.exports.createUser = function (data, callback) {
   })
 }
 module.exports.updateUser = function (field, value, newUser) {
+  console.log(field, value, newUser);
   return new Promise ((resolve, reject) => {
-    User.findOneAndUpdate({field: value}, newUser)
-    .then(function(){ resolve() })
+    User.findOneAndUpdate({[field]: value}, newUser)
+    .then(function(result){ resolve(console.log(result)) },
+    (err) => {console.log(err)}
+    )
   })
 }
