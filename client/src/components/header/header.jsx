@@ -7,11 +7,10 @@ import {
   MuiThemeProvider,
   createMuiTheme,
   Typography,
-  Grid,
   withStyles,
 } from '@material-ui/core';
 import Home from '@material-ui/icons/Home';
-import Highlight from '@material-ui/icons/Highlight';
+import Power from '@material-ui/icons/Power';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -21,7 +20,6 @@ import {
   openSidebar,
 } from 'Actions/index';
 import withWidth from '@material-ui/core/withWidth';
-import Login from '../login/login';
 
 const theme = createMuiTheme({
   palette: {
@@ -61,7 +59,9 @@ const mapStateToProps = state => ({
 
 const styles = {
   appBar: {
-    // minWidth: 500,
+  },
+  spacer: {
+    flexGrow: 1,
   },
 };
 
@@ -83,47 +83,14 @@ class Header extends React.Component {
       <AppBar position="sticky" className={classes.appBar}>
         <MuiThemeProvider theme={theme}>
           <Toolbar>
-            <Grid container wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">
-              <Grid item>
-                <IconButton component={Link} to="/" color="primary">
-                  <Home />
-                </IconButton>
-              </Grid>
-              <Grid item>
-                <Grid container direction="row" wrap="nowrap" alignContent="center" alignItems="center">
-                  <Grid item>
-                    <Login />
-                  </Grid>
-                  <Grid item>
-                    <IconButton component={Link} to="/forgot">
-                      <Typography>
-                        Forgot Password?
-                      </Typography>
-                      <br />
-                      <SupervisedUserCircle color="primary" />
-                    </IconButton>
-                  </Grid>
-                  <Grid item>
-                    <IconButton component={Link} to="/register/">
-                      <Typography>
-                        Register
-                      </Typography>
-                      <br />
-                      <SupervisedUserCircle color="primary" />
-                    </IconButton>
-                  </Grid>
-                  <Grid item>
-                    <IconButton onClick={handleOpenSidebar}>
-                      <Typography>
-                        {width}
-                      </Typography>
-                      <br />
-                      <Highlight color="primary" />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+            <IconButton component={Link} to="/" color="primary">
+              <Home />
+            </IconButton>
+            
+            <span className={classes.spacer} />
+            <IconButton onClick={handleOpenSidebar}>
+              <Power color="primary" />
+            </IconButton>
           </Toolbar>
         </MuiThemeProvider>
       </AppBar>

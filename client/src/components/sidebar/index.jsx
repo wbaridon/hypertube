@@ -8,8 +8,11 @@ import {
   List,
   ListItem,
   Divider,
+  IconButton,
 } from '@material-ui/core';
 import { closeSidebar } from 'Actions';
+import { Link } from 'react-router-dom';
+import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Register from '../register/register';
 import Settings from '../settings/settings';
 import Login from '../login/login';
@@ -28,6 +31,13 @@ function Sidebar({
             <List>
               <ListItem>
                 <Login />
+                <IconButton component={Link} to="/forgot">
+                  <Typography>
+                    Forgot Password?
+                  </Typography>
+                  <br />
+                  <SupervisedUserCircle color="primary" />
+                </IconButton>
               </ListItem>
               <Divider />
               <ListItem>
