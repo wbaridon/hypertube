@@ -1,8 +1,8 @@
 :root {
-  --autocomplete-color: #ffffff;
-  --autocomplete-background-color: #000000;
-  --autocomplete-primary-color: #ffffff;
-  --autocomplete-primary-background-color: #000000;
+  --autocomplete-color: #000;
+  --autocomplete-background-color: #fff;
+  --autocomplete-primary-color: #000;
+  --autocomplete-primary-background-color: #fff;
 }
 
 ::-webkit-scrollbar { 

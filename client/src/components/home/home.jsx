@@ -6,14 +6,13 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
-const myStyles = {
-  root: {
-    width: '52px',
-  },
+const myStyles = theme => ({
   poster: {
-    maxWidth: 300,
+    [theme.breakpoints.down(500)]: {
+      maxWidth: '300px',
+    },
   },
-};
+});
 
 
 class Home extends React.Component {

@@ -46,7 +46,7 @@ const sidebar = (state = defaultSidebarState, action) => {
     default:
       return state;
   }
-}
+};
 
 export default combineReducers({
   locale,

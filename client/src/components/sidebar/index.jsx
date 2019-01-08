@@ -12,20 +12,45 @@ import {
 } from '@material-ui/core';
 import { closeSidebar } from 'Actions';
 import { Link } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
+import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
-import Settings from '../settings/settings';
 import Login from '../login/login';
 
+const styles = theme => ({
+  root: {
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '320px',
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '1200px',
+    },
+    [theme.breakpoints.up('lg')]: {
+      maxWidth: '1600px',
+    },
+  },
+});
 
 function Sidebar({
   open,
   handleClose,
   loggedIn,
+  classes,
+  width,
 }) {
   return (
-    <Drawer anchor="right" open={open} onClose={handleClose}>
-      {loggedIn ? <Settings />
+    <Drawer classes={{ paper: classes.root }} anchor="right" open={open} onClose={handleClose}>
+      <Button fullWidth onClick={handleClose}>
+        <Close />
+      </Button>
+      {loggedIn
+        ? (
+          <React.Fragment>
+            <Login />
+          </React.Fragment>
+        )
         : (
           <React.Fragment>
             <List>
@@ -33,9 +58,8 @@ function Sidebar({
                 <Login />
                 <IconButton component={Link} to="/forgot">
                   <Typography>
-                    Forgot Password?
+                    {width}
                   </Typography>
-                  <br />
                   <SupervisedUserCircle color="primary" />
                 </IconButton>
               </ListItem>
@@ -52,9 +76,11 @@ function Sidebar({
 
 
 Sidebar.propTypes = {
+  classes: PropTypes.shape({}).isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
+  width: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -66,4 +92,4 @@ const mapDispatchToProps = dispatch => ({
   handleClose: () => dispatch(closeSidebar()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()((Sidebar))));
