@@ -113,8 +113,10 @@ class App extends React.Component {
         <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
           <CssBaseline>
             <Header />
+             <Header />
             <CurrentRoute />
             <Footer />
+             <Footer />
           </CssBaseline>
         </MuiThemeProvider>
       </BrowserRouter>
