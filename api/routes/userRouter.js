@@ -104,15 +104,10 @@ userRouter
   })
   .post('/updateUser', (req, res) => {
     decodeToken(req.body.token).then(token => {
-      // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update
-      let user = {
-        email: req.body.email
-      }
-      UserManager.updateUser('userName', token.user, user).then(result => {
-        /*  console.log('ici '+ result)
-          res.send(result)*
-          // Bug dans update recherche d'un fix */
-      })
+      // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
+      UserManager.updateUser('userName', token.user, req.body.user).then(result => {
+          res.send(result)
+      }, (error) => {console.log(error)})
     }).catch(err => res.send({ error: 'token.invalidToken' }))
 
   })

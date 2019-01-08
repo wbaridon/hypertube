@@ -92,7 +92,7 @@ class RegisterCard extends React.Component {
       code,
       registerUserOauthHandler,
     } = this.props;
-    if (provider !== 'register' && code !== '') {
+    if (provider !== null && code !== '') {
       registerUserOauthHandler(provider, code);
     }
   }

@@ -21,13 +21,14 @@ function getProvider(url) {
 class Register extends React.Component {
   constructor(props) {
     super(props);
-    const provider = getProvider(props.location.pathname);
+    let provider = getProvider(props.location.pathname);
     let providerCode;
     if (provider === 'google') {
       providerCode = qs.parse(props.location.hash);
     } else if (provider === 'github' || provider === '42' || provider === 'fb') {
       providerCode = qs.parse(props.location.search, { ignoreQueryPrefix: true }).code;
     } else {
+      provider = null;
       providerCode = null;
     }
     this.state = {

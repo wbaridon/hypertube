@@ -22,6 +22,10 @@ import {
   setSuccess,
   clearSuccess,
 } from './notifications';
+import {
+  openSidebar,
+  closeSidebar,
+} from './sidebar';
 
 export const toggleDarkTheme = () => ({
   type: TOGGLE_DARK_THEME,
@@ -53,4 +57,6 @@ export {
   sendEmail,
   resetPassword,
   updateUser,
+  openSidebar,
+  closeSidebar,
 };
