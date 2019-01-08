@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 import {
   SET_LOCALE,
   TOGGLE_DARK_THEME,
+  OPEN_SIDEBAR,
+  CLOSE_SIDEBAR,
 } from '../actions/action-types';
 import loginUser from './login-user';
 import user from './current-user';
@@ -27,6 +29,25 @@ const locale = (state = 'en', action) => {
   }
 };
 
+const defaultSidebarState = {
+  open: false,
+};
+
+const sidebar = (state = defaultSidebarState, action) => {
+  switch (action.type) {
+    case OPEN_SIDEBAR:
+      return {
+        open: true,
+      };
+    case CLOSE_SIDEBAR:
+      return {
+        open: false,
+      };
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   locale,
   user,
@@ -35,4 +56,5 @@ export default combineReducers({
   darkTheme,
   notifications,
   updateUser,
+  sidebar,
 });

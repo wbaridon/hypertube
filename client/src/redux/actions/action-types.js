@@ -37,3 +37,5 @@ export const SET_SUCCESS = 'SET_SUCCESS';
 export const CLEAR_SUCCESS = 'CLEAR_SUCCESS';
 export const SET_USER = 'SET_USER';
 export const CLEAR_USER = 'CLEAR_USER';
+export const OPEN_SIDEBAR = 'OPEN_SIDEBAR';
+export const CLOSE_SIDEBAR = 'CLOSE_SIDEBAR';

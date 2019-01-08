@@ -18,7 +18,9 @@ import { connect } from 'react-redux';
 import {
   toggleDarkTheme,
   setLocale,
+  openSidebar,
 } from 'Actions/index';
+import withWidth from '@material-ui/core/withWidth';
 import Login from '../login/login';
 
 const theme = createMuiTheme({
@@ -49,6 +51,7 @@ const theme = createMuiTheme({
 const mapDispatchToProps = dispatch => ({
   toggleDarkThemeHandler: () => dispatch(toggleDarkTheme()),
   changeLocale: locale => dispatch(setLocale(locale)),
+  handleOpenSidebar: () => dispatch(openSidebar()),
 });
 
 const mapStateToProps = state => ({
@@ -72,11 +75,9 @@ class Header extends React.Component {
 
   render() {
     const {
-      toggleDarkThemeHandler,
-      darkThemeBool,
-      changeLocale,
-      locale,
       classes,
+      handleOpenSidebar,
+      width,
     } = this.props;
     return (
       <AppBar position="sticky" className={classes.appBar}>
@@ -111,6 +112,15 @@ class Header extends React.Component {
                       <SupervisedUserCircle color="primary" />
                     </IconButton>
                   </Grid>
+                  <Grid item>
+                    <IconButton onClick={handleOpenSidebar}>
+                      <Typography>
+                        {width}
+                      </Typography>
+                      <br />
+                      <Highlight color="primary" />
+                    </IconButton>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -127,6 +137,8 @@ Header.propTypes = {
   darkThemeBool: PropTypes.bool.isRequired,
   changeLocale: PropTypes.func.isRequired,
   locale: PropTypes.string.isRequired,
+  handleOpenSidebar: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Header)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()((Header))));

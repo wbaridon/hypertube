@@ -29,18 +29,21 @@ class Settings extends Component {
           label="email"
           onChange={e => this.handleFieldChange('email', e.target.value)}
         />
+        <br />
         <TextField
           value={firstName}
           label="firstName"
           onChange={e => this.handleFieldChange('firstName', e.target.value)}
         />
+        <br />
         <TextField
           value={lastName}
           label="lastName"
           onChange={e => this.handleFieldChange('lastName', e.target.value)}
         />
+        <br />
         <Button onClick={() => handleUpdateUser(token, { email, firstName, lastName })}>
-          UpdateUser(ChangeUsernameToZIZI)
+          UpdateUser
         </Button>
       </div>
     );
