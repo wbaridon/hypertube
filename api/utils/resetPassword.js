@@ -1,6 +1,7 @@
 const argon2 = require('argon2');
 const myhash = require('./hash') ;
 const mail = require('nodemailer');
+const UserManager = require('../models/userManager');
 
 function resetPassword(req, res) {
   return new Promise ((resolve, reject) => {
@@ -9,8 +10,8 @@ function resetPassword(req, res) {
       if (req.body.pass1 === req.body.pass2) {
         afterMail(res, req.body.email, req.body.key, req.body.pass1)
       } else { resolve({status: 0, error: 'password.notCorresponding'}) }
-    } else if (req.body.email && req.body.login) { // BEFORE MAIL
-        beforeMail(res, req.body.email, req.body.login)
+    } else if (req.body.email) { // BEFORE MAIL
+        beforeMail(res, req.body.email)
     }
   })
 }
@@ -29,12 +30,13 @@ sendMail = user => {
 				pass: '42camagru'
 		}
 	})
-	passwordHash(user.timestampPassword + user.password + user.email, hash => {
+  console.log(user)
+	passwordHash(user.locale + user.password + user.email + user.userName, hash => {
 		var mailOptions = {
 			from: 'matchawb@gmail.com',
 			to: user.email,
 			subject: 'Reset de votre mot de passe',
-            text: 'Bonjour , vous avez demande une reinitialisation de votre mot de passe. Veuillez cliquer sur ce lien pour acceder au formulaire de reinitialisation: ' +  global.host + '/login/reset?email=' + user.email + '&key=' + hash
+            text: 'Bonjour , vous avez demande une reinitialisation de votre mot de passe. Veuillez cliquer sur ce lien pour acceder au formulaire de reinitialisation: ' +  global.host + '/forgot?email=' + user.email + '&key=' + hash
         }
 		tunnel.sendMail(mailOptions, function(err, info){
 			if (err) {
@@ -68,22 +70,20 @@ afterMail = (client, email, key, newPW) => {
     })
 }
 
-beforeMail = (client, email, login) => {
-    model.userTimestampPasswordFromEmailLogin(email, login, (err, res) => { //Mail + login existing in DB with associated timestampPassword
-        if (err) throw err;
-        else if (!res[0])
-            client.send("This user doesn't exists");
-        else {
-            let timestamp = Date.now()
-            model.updateUser(res[0].id, "timestampPassword", timestamp)
-            sendMail({
-                timestampPassword: timestamp,
-                password: res[0].password,
-                email: email
-            });
-            client.send('Un email vient de vous etre envoye')
-        }
+beforeMail = (client, email) => {
+    UserManager.getUserByMail(email).then(res => {
+      if (!res)
+        client.send("This user doesn't exists");
+      else {
+        sendMail({
+          email: email,
+          locale: res.locale,
+          userName: res.userName,
+          password: res.password
+         });
+        client.send('Un email vient de vous etre envoye')
+      }
     })
 }
 
-module.exports.resetPassword = resetPassword;
+module.exports.reset= resetPassword;

@@ -8,6 +8,15 @@ module.exports.getUser = function (userName) {
     })
   })
 }
+
+module.exports.getUserByMail = function (email) {
+  return new Promise ((resolve, reject) => {
+    User.findOne({'email': email}).then(function(result){
+      resolve(result)
+    })
+  })
+}
+
 module.exports.userExist = function (email, userName) {
   return new Promise ((resolve, reject) => {
     User.findOne({$or: [{'email': email}, {'userName': userName}]}).then(function(result){

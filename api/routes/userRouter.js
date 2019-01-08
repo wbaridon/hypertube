@@ -112,7 +112,7 @@ userRouter
 
   })
   .post('/resetPassword', (req, res) => {
-    resetPassword(req, res).then(ret => {
+    resetPassword.reset(req, res).then(ret => {
       if (ret.status === 0) { res.status(400).send(ret.error) }
       else { res.status(200).send(ret.success) }
     })

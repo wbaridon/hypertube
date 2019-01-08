@@ -1,4 +1,7 @@
-const { twitterId, twitterSecret, gitHubId, gitHubSecret } = require('../config/env')
+const { twitterId, twitterSecret,
+        gitHubId, gitHubSecret,
+        redditId, redditSecret,
+        gitlabId, gitlabSecret } = require('../config/env')
 
 function twitterCredentials() {
   return new Promise ((resolve, reject) => {
