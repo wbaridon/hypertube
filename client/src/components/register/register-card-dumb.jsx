@@ -34,29 +34,34 @@ const providers = [
   {
     name: 'Google',
     icon: googleIcon,
-    tooltip: 'register.provider.google',
+    tooltip: 'login.provider.google',
     url: AUTHGOOGLE,
   },
   {
     name: 'Github',
     icon: githubIcon,
-    tooltip: 'register.provider.github',
+    tooltip: 'login.provider.github',
     url: AUTHGITHUB,
   },
   {
     name: '42',
     icon: fortytwoIcon,
-    tooltip: 'register.provider.fortytwo',
+    tooltip: 'login.provider.fortytwo',
     url: AUTH42,
   },
   {
-    name: 'Facebook',
-    icon: facebookIcon,
-    tooltip: 'register.provider.facebook',
-    url: AUTHFACEBOOK,
+    name: 'Gitlab',
+    icon: fortytwoIcon,
+    tooltip: 'login.provider.gitlab',
+    url: AUTH42,
+  },
+  {
+    name: 'Reddit',
+    icon: fortytwoIcon,
+    tooltip: 'login.provider.reddit',
+    url: AUTH42,
   },
 ];
-
 function handleDragOver(evt) {
   evt.stopPropagation();
   evt.preventDefault();

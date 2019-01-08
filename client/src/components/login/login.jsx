@@ -42,6 +42,18 @@ const providers = [
     tooltip: 'login.provider.fortytwo',
     url: AUTH42,
   },
+  {
+    name: 'Gitlab',
+    icon: fortytwoIcon,
+    tooltip: 'login.provider.gitlab',
+    url: AUTH42,
+  },
+  {
+    name: 'Reddit',
+    icon: fortytwoIcon,
+    tooltip: 'login.provider.reddit',
+    url: AUTH42,
+  },
 ];
 
 const mapDispatchToProps = (dispatch) => {
