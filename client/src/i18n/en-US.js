@@ -12,6 +12,8 @@ const enUS = {
       google: 'Sign in with Google',
       github: 'Sign in with Github',
       fortytwo: 'Sign in with 42',
+      gitlab: 'Sign in with Gitlab',
+      reddit: 'Sign in with Reddit',
     },
   },
   register: {
@@ -28,6 +30,8 @@ const enUS = {
       google: 'Register with Google',
       github: 'Register with GitHub',
       fortytwo: 'Register with 42',
+      gitlab: 'Register with Gitlab',
+      reddit: 'Register with Reddit',
     },
     error: {
       userAlreadyRegistered: 'A user with that username or email already exists...',

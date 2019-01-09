@@ -69,6 +69,8 @@ module.exports = {
       AUTHGITHUB: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.github),
       AUTHGOOGLE: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.google),
       AUTHFACEBOOK: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.facebook),
+      AUTHGITLAB: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.gitlab),
+      AUTHREDDIT: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.reddit),
       BACKEND: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).BACKEND),
       TIMEOUT_API: 8000,
     }),

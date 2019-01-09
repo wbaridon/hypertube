@@ -14,47 +14,12 @@ import {
 import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
 import Avatar from '@material-ui/core/Avatar';
-import googleIcon from 'Assets/icons/google.png';
-import githubIcon from 'Assets/icons/github.png';
-import fortytwoIcon from 'Assets/icons/42.png';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import LoginProviderDumb from './login-provider-dumb';
 import LoginCard from './login-card';
 import './autocomplete-fix.css';
-
-const providers = [
-  {
-    name: 'Google',
-    icon: googleIcon,
-    tooltip: 'login.provider.google',
-    url: AUTHGOOGLE,
-  },
-  {
-    name: 'Github',
-    icon: githubIcon,
-    tooltip: 'login.provider.github',
-    url: AUTHGITHUB,
-  },
-  {
-    name: '42',
-    icon: fortytwoIcon,
-    tooltip: 'login.provider.fortytwo',
-    url: AUTH42,
-  },
-  {
-    name: 'Gitlab',
-    icon: fortytwoIcon,
-    tooltip: 'login.provider.gitlab',
-    url: AUTH42,
-  },
-  {
-    name: 'Reddit',
-    icon: fortytwoIcon,
-    tooltip: 'login.provider.reddit',
-    url: AUTH42,
-  },
-];
+import Providers from '../providers';
 
 const mapDispatchToProps = (dispatch) => {
   return ({
@@ -134,14 +99,7 @@ class Login extends React.Component {
       return (<CircularProgress />);
     }
     return (
-      <Grid container alignContent="center" alignItems="center" justify="space-around">
-        <Grid item>
-          <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
-        </Grid>
-        <Grid item>
-          <LoginProviderDumb providers={providers} />
-        </Grid>
-      </Grid>
+      <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
     );
   }
 }

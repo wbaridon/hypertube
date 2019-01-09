@@ -30,6 +30,8 @@
       "AUTHGITHUB": true,
       "AUTHGOOGLE": true,
       "AUTHFACEBOOK": true,
+      "AUTHGITLAB": true,
+      "AUTHREDDIT": true,
       "BACKEND": true
     },
     "rules": {

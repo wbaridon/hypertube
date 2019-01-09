@@ -29,39 +29,8 @@ import fortytwoIcon from 'Assets/icons/42.png';
 import facebookIcon from 'Assets/icons/facebook.png';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
+import Providers from '../providers';
 
-const providers = [
-  {
-    name: 'Google',
-    icon: googleIcon,
-    tooltip: 'login.provider.google',
-    url: AUTHGOOGLE,
-  },
-  {
-    name: 'Github',
-    icon: githubIcon,
-    tooltip: 'login.provider.github',
-    url: AUTHGITHUB,
-  },
-  {
-    name: '42',
-    icon: fortytwoIcon,
-    tooltip: 'login.provider.fortytwo',
-    url: AUTH42,
-  },
-  {
-    name: 'Gitlab',
-    icon: fortytwoIcon,
-    tooltip: 'login.provider.gitlab',
-    url: AUTH42,
-  },
-  {
-    name: 'Reddit',
-    icon: fortytwoIcon,
-    tooltip: 'login.provider.reddit',
-    url: AUTH42,
-  },
-];
 function handleDragOver(evt) {
   evt.stopPropagation();
   evt.preventDefault();
@@ -126,11 +95,6 @@ class RegisterCardDumb extends React.Component {
     } = this.props;
     return (
       <Card className={classes.card}>
-        <CardActions>
-          {providers.map((provider) => {
-            return (<IconButton title={intl.formatMessage({ id: provider.tooltip })} href={provider.url} key={provider.name}><Avatar src={provider.icon} /></IconButton>);
-          })}
-        </CardActions>
         <CardMedia src="squelch" id="dragAndDrop">
           {
             image.rawData

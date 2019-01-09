@@ -18,6 +18,7 @@ import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
 import Login from '../login/login';
+import Providers from '../providers';
 
 const styles = theme => ({
   root: {
@@ -55,10 +56,14 @@ function Sidebar({
           <React.Fragment>
             <List>
               <ListItem>
+                <Providers />
+              </ListItem>
+              <Divider />
+              <ListItem>
                 <Login />
                 <IconButton component={Link} to="/forgot">
                   <Typography>
-                    {width}
+                    ForgotPassword
                   </Typography>
                   <SupervisedUserCircle color="primary" />
                 </IconButton>

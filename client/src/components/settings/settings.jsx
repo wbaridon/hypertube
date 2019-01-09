@@ -9,40 +9,34 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      ...props.user,
+      user: props.user,
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
   }
 
   handleFieldChange(field, value) {
-    this.setState({ [field]: value });
+    const { user } = this.state;
+    this.setState({ user: { ...user, [field]: value } });
   }
 
   render() {
     const { handleUpdateUser, token } = this.props;
-    const { email, firstName, lastName } = this.state;
+    const { user } = this.state;
     return (
       <div>
-        <TextField
-          value={email}
-          label="email"
-          onChange={e => this.handleFieldChange('email', e.target.value)}
-        />
-        <br />
-        <TextField
-          value={firstName}
-          label="firstName"
-          onChange={e => this.handleFieldChange('firstName', e.target.value)}
-        />
-        <br />
-        <TextField
-          value={lastName}
-          label="lastName"
-          onChange={e => this.handleFieldChange('lastName', e.target.value)}
-        />
-        <br />
-        <Button onClick={() => handleUpdateUser(token, { email, firstName, lastName })}>
+        {Object.keys(user)
+          .map(key => (
+            <React.Fragment key={key}>
+              <TextField
+                fullWidth
+                value={user[key]}
+                label={key}
+                onChange={e => this.handleFieldChange(key, e.target.value)}
+              />
+              <br />
+            </React.Fragment>))}
+        <Button onClick={() => handleUpdateUser(token, { ...user })}>
           UpdateUser
         </Button>
       </div>
