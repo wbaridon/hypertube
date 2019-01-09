@@ -1,9 +1,10 @@
 const express = require('express');
 const userRouter = express.Router();
 const argon2 = require('argon2');
-const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const crypto = require('crypto');
+const resetPassword = require('../utils/resetPassword');
+const tokenManager = require('../utils/token');
 const storage = multer.diskStorage({
   destination: './assets/images/',
   filename: function (req, file, callback) {
@@ -18,7 +19,6 @@ const upload = multer({ storage: storage });
 
 const UserManager = require('../models/userManager');
 const BlackListManager = require('../models/blackListManager');
-const resetPassword = require('../utils/resetPassword');
 
 userRouter
   .post('/register', upload.single('image'), (req, res, next) => {
@@ -61,7 +61,7 @@ userRouter
         if (getResult) {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
-              setToken(user).then(token => { res.send({ token, locale: getResult.locale }); })
+              tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
           })
         } else { res.status(400).send({ error: 'login.noUser' }) }
@@ -87,22 +87,19 @@ userRouter
     })
   })
   .post('/getUserPrivate', (req, res) => {
-    decodeToken(req.body.token).then(token => {
+    tokenManager.decode(req.body.token).then(token => {
       UserManager.getUser(token.user).then(user => {
-      /*  const user = {
-          email: getResult.email,
-          userName: getResult.userName,
-          picture: getResult.picture,
-          lastName: getResult.lastName,
-          firstName: getResult.firstName,
-          locale: getResult.locale,
-        }*/
-        res.send(user)
+        let newUser = user.toObject();
+        delete newUser.moviesHistory
+        delete newUser.__v
+        delete newUser._id
+        delete newUser.password
+        res.send(newUser)
       })
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/updateUser', (req, res) => {
-    decodeToken(req.body.token).then(token => {
+    tokenManager.decode(req.body.token).then(token => {
       // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
       UserManager.updateUser('userName', token.user, req.body.user).then(result => {
           res.send(result)
@@ -116,28 +113,6 @@ userRouter
       else { res.status(200).send(ret.success) }
     })
   })
-
-function setToken(user) {
-  return new Promise((resolve, error) => {
-    const token = jwt.sign({ user: user.userName }, 'HypertubeSecretKey', { expiresIn: '1d' });
-    resolve(token);
-  })
-}
-
-function decodeToken(token) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, 'HypertubeSecretKey', function (err, decoded) {
-      if (err) { reject('token.invalidToken') }
-      else {
-        // Rajouter ici le controle du blacklistage ip et renvoyer le resolve si pas blackliste
-      /*  BlackListManager.get(token).then(getResult => {
-          console.log(getResult)
-        })*/
-        resolve(decoded)
-      }
-    })
-  })
-}
 
 function hashPassword(pwd) {
   return new Promise((resolve, error) => {
