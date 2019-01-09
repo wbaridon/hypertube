@@ -88,16 +88,15 @@ userRouter
   })
   .post('/getUserPrivate', (req, res) => {
     decodeToken(req.body.token).then(token => {
-      console.log(token);
-      UserManager.getUser(token.user).then(getResult => {
-        const user = {
+      UserManager.getUser(token.user).then(user => {
+      /*  const user = {
           email: getResult.email,
           userName: getResult.userName,
           picture: getResult.picture,
           lastName: getResult.lastName,
           firstName: getResult.firstName,
           locale: getResult.locale,
-        }
+        }*/
         res.send(user)
       })
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
