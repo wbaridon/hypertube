@@ -8,6 +8,7 @@ import Video from '../video/video';
 import Movie from '../movie/movie';
 import Settings from '../settings/settings';
 import ForgotPassword from '../forgot-password';
+import LoadingDots from '../loading-dots';
 
 const mapStateToProps = state => ({
   authed: state.user.tokenValid,
@@ -28,9 +29,8 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
 }) => (<Route
   {...rest}
   render={(props) => {
-
     if (protectedRouteLoading) {
-      return (<div>Loading</div>);
+      return (<LoadingDots />);
     }
     if (!protectedRouteLoading && authed !== true) {
       setErrorHandler();

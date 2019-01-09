@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button, TextField } from '@material-ui/core';
 import { updateUser } from 'Actions/';
+import LoadingDots from '../loading-dots';
 
 class Settings extends Component {
   constructor(props) {
@@ -17,7 +18,10 @@ class Settings extends Component {
 
   handleFieldChange(field, value) {
     const { user } = this.state;
+    const { token, updateFieldHandle } = this.props;
     this.setState({ user: { ...user, [field]: value } });
+    // testvalid
+    updateFieldHandle(field, value, token);
   }
 
   render() {
@@ -50,6 +54,7 @@ Settings.propTypes = {
   user: PropTypes.shape({
   }).isRequired,
   handleUpdateUser: PropTypes.func.isRequired,
+  updateFieldHandle: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
 };
 
@@ -60,6 +65,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   handleUpdateUser: (token, changes) => dispatch(updateUser(token, changes)),
+  updateFieldHandle: (field, value, token) => dispatch(updateUser(token, { [field]: value })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);
