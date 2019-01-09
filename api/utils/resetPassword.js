@@ -30,7 +30,6 @@ sendMail = user => {
 				pass: '42camagru'
 		}
 	})
-  console.log(user)
 	passwordHash(user.locale + user.password + user.email + user.userName, hash => {
 		var mailOptions = {
 			from: 'matchawb@gmail.com',
@@ -47,27 +46,22 @@ sendMail = user => {
 }
 
 afterMail = (client, email, key, newPW) => {
-
-    model.userTimestampPasswordFromEmail(email, (err, res) => { //Mail existing in DB with associated timestampPassword
-        if (err) throw err;
-        else if (res[0].timestampPassword !== 0) {
-            user = res[0];
-            passwordHash(user.timestampPassword + user.password + email, hash => {
-                if (hash === key) {
-                    model.updateUser(res[0].id, "timestampPassword", 0)
-                    argon2.hash(newPW).then(hash => {
-                        model.updateUser(res[0].id, "password", hash)
-                        client.send('Password changed')
-                    })
-                }
-                else
-                  client.send('Hash and key not corresponding')
-            })
+  UserManager.getUserByMail(email).then(user => {
+    if (user) {
+      passwordHash(user.locale + user.password + email + user.userName, hash => {
+        if (hash === key) {
+          argon2.hash(newPW).then(hash => {
+          user.password = hash;
+          UserManager.updateUser('password', hash, user)
+          client.send('Password changed')
+          })
         }
-        else {
-            client.send("No password resetting to do.")
-        }
-    })
+        else
+          client.send('Hash and key not corresponding')
+        })
+    }
+    else { client.send("No password resetting to do.") }
+  })
 }
 
 beforeMail = (client, email) => {
