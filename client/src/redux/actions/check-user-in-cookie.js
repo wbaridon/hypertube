@@ -5,7 +5,7 @@ import {
   DELETE_USER_FROM_COOKIE,
   NO_USER_IN_COOKIE,
 } from './action-types';
-import { getUserInfoPrivate } from '.';
+import { getUserInfoPrivate, protectedRouteFinished } from '.';
 
 function readCookie(name) {
   const nameEQ = `${name}=`;
@@ -63,14 +63,19 @@ export const checkUserInCookie = (cookie) => {
     if (token) {
       getUserInfoPrivate(token, dispatch)
         .then(
-          () => dispatch(checkUserInCookieSuccess(token)),
+          () => {
+            dispatch(checkUserInCookieSuccess(token));
+            dispatch(protectedRouteFinished());
+          },
           () => {
             deleteCookie('userToken');
             dispatch(checkUserInCookieError());
+            dispatch(protectedRouteFinished());
           },
         );
     } else {
       dispatch(noUserInCookie());
+      dispatch(protectedRouteFinished());
     }
   };
 };

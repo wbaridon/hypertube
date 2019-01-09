@@ -11,6 +11,7 @@ import ForgotPassword from '../forgot-password';
 
 const mapStateToProps = state => ({
   authed: state.user.tokenValid,
+  protectedRouteLoading: state.protectedRouteLoading,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -21,17 +22,21 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
   component:
   Component,
   authed,
+  protectedRouteLoading,
   setErrorHandler,
   ...rest
 }) => (<Route
   {...rest}
   render={(props) => {
-    if (!authed) {
-      setErrorHandler();
+
+    if (protectedRouteLoading) {
+      return (<div>Loading</div>);
     }
-    return (authed === true
-      ? <Component {...props} />
-      : <Redirect to="/" />);
+    if (!protectedRouteLoading && authed !== true) {
+      setErrorHandler();
+      return (<Redirect to="/" />);
+    }
+    return (<Component {...props} />);
   }}
 />
 ));

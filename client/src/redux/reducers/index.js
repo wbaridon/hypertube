@@ -4,6 +4,8 @@ import {
   TOGGLE_DARK_THEME,
   OPEN_SIDEBAR,
   CLOSE_SIDEBAR,
+  PROTECTED_ROUTE_LOADING,
+  PROTECTED_ROUTE_FINISHED,
 } from '../actions/action-types';
 import loginUser from './login-user';
 import user from './current-user';
@@ -24,6 +26,17 @@ const locale = (state = 'en', action) => {
   switch (action.type) {
     case SET_LOCALE:
       return action.locale;
+    default:
+      return state;
+  }
+};
+
+const protectedRouteLoading = (state = true, action) => {
+  switch (action.type) {
+    case PROTECTED_ROUTE_LOADING:
+      return true;
+    case PROTECTED_ROUTE_FINISHED:
+      return false;
     default:
       return state;
   }
@@ -57,4 +70,5 @@ export default combineReducers({
   notifications,
   updateUser,
   sidebar,
+  protectedRouteLoading,
 });

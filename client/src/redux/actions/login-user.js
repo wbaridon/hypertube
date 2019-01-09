@@ -8,6 +8,7 @@ import {
   getUserInfoPrivate,
   setError,
   setSuccess,
+  protectedRouteFinished,
 } from '.';
 
 function createCookie(name, value, days) {
@@ -46,8 +47,12 @@ export const postLoginUserSuccess = (result) => {
       () => {
         dispatch(setSuccess('success.login'));
         dispatch(loginUserSuccess());
+        dispatch(protectedRouteFinished());
       },
-      () => dispatch(loginUserError()),
+      () => {
+        dispatch(loginUserError());
+        dispatch(protectedRouteFinished());
+      },
     );
   };
 };

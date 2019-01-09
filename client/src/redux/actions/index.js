@@ -2,6 +2,8 @@ import {
   SET_LOCALE,
   TOGGLE_DARK_THEME,
   CLEAR_REGISTER_DATA,
+  PROTECTED_ROUTE_LOADING,
+  PROTECTED_ROUTE_FINISHED,
 } from './action-types';
 import { loginUser } from './login-user';
 import { logoutUser } from './logout-user';
@@ -38,6 +40,14 @@ export const setLocale = locale => ({
 
 export const clearRegisterData = () => ({
   type: CLEAR_REGISTER_DATA,
+});
+
+export const protectedRouteLoading = () => ({
+  type: PROTECTED_ROUTE_LOADING,
+});
+
+export const protectedRouteFinished = () => ({
+  type: PROTECTED_ROUTE_FINISHED,
 });
 
 export {
