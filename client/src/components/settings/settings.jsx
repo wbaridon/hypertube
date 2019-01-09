@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, TextField } from '@material-ui/core';
-import { updateUser } from 'Actions/';
-import LoadingDots from '../loading-dots';
+import { TextField } from '@material-ui/core';
+import { updateUserField } from 'Actions/';
+import debounce from 'lodash.debounce';
+import ImageChanger from '../image-changer';
 
 class Settings extends Component {
   constructor(props) {
@@ -14,21 +15,21 @@ class Settings extends Component {
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.debounced = debounce((field, value, token) => props.updateFieldHandle(field, value, token), 1500);
   }
 
   handleFieldChange(field, value) {
     const { user } = this.state;
-    const { token, updateFieldHandle } = this.props;
+    const { token } = this.props;
     this.setState({ user: { ...user, [field]: value } });
-    // testvalid
-    updateFieldHandle(field, value, token);
+    this.debounced(field, value, token);
   }
 
   render() {
-    const { handleUpdateUser, token } = this.props;
     const { user } = this.state;
     return (
       <div>
+        <ImageChanger imageUrl={user.picture} />
         {Object.keys(user)
           .map(key => (
             <React.Fragment key={key}>
@@ -40,9 +41,6 @@ class Settings extends Component {
               />
               <br />
             </React.Fragment>))}
-        <Button onClick={() => handleUpdateUser(token, { ...user })}>
-          UpdateUser
-        </Button>
       </div>
     );
   }
@@ -53,19 +51,17 @@ Settings.url = '/settings';
 Settings.propTypes = {
   user: PropTypes.shape({
   }).isRequired,
-  handleUpdateUser: PropTypes.func.isRequired,
   updateFieldHandle: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  token: state.user.token,
+  token: state.user.token ? state.user.token : '',
   user: state.user.data,
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleUpdateUser: (token, changes) => dispatch(updateUser(token, changes)),
-  updateFieldHandle: (field, value, token) => dispatch(updateUser(token, { [field]: value })),
+  updateFieldHandle: (field, value, token) => dispatch(updateUserField(token, field, value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

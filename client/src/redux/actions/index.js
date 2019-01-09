@@ -13,7 +13,7 @@ import { getUserInfoPrivate } from './get-user-info-private';
 import { setUser, clearUser } from './current-user';
 import { sendEmail } from './send-email';
 import { resetPassword } from './reset-password';
-import { updateUser } from './update-user';
+import { updateUserField } from './update-user-field';
 import {
   checkUserInCookie,
   deleteUserFromCookieThunk,
@@ -66,7 +66,7 @@ export {
   deleteUserFromCookieThunk,
   sendEmail,
   resetPassword,
-  updateUser,
+  updateUserField,
   openSidebar,
   closeSidebar,
 };
