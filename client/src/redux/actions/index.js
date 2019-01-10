@@ -14,6 +14,7 @@ import { setUser, clearUser } from './current-user';
 import { sendEmail } from './send-email';
 import { resetPassword } from './reset-password';
 import { updateUserField } from './update-user-field';
+import { updateUserImage } from './update-user-image';
 import {
   checkUserInCookie,
   deleteUserFromCookieThunk,
@@ -67,6 +68,7 @@ export {
   sendEmail,
   resetPassword,
   updateUserField,
+  updateUserImage,
   openSidebar,
   closeSidebar,
 };

@@ -40,7 +40,7 @@ class ImageChanger extends React.Component {
         url: `http://localhost:3000/images/${imageUrl}`,
         timeout: TIMEOUT_API,
       });
-      this.handleImageAdd(img.data);
+      this.handleImageAdd(img.data, false);
     }
   }
 
@@ -63,6 +63,7 @@ class ImageChanger extends React.Component {
 
 ImageChanger.propTypes = {
   imageUrl: PropTypes.string,
+  handleImageChange: PropTypes.func.isRequired, // eslint-disable-line
 };
 
 ImageChanger.defaultProps = {

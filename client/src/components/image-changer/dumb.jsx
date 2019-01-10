@@ -43,7 +43,7 @@ function ImageChangerDumb({
                     width: '100%',
                   }}
                 >
-                  <input onChange={e => handleImageAdd(e.target.files[0], null, true)} style={{ display: 'none' }} type="file" />
+                  <input onChange={e => handleImageAdd(e.target.files[0], true)} style={{ display: 'none' }} type="file" />
                   <span
                     className={classes.imageSrc}
                     style={{
@@ -91,7 +91,7 @@ function ImageChangerDumb({
             )
             : (
               <Button component="label" label="add image" className={classes.photoButton}>
-                <input onChange={e => handleImageAdd(e.target.files[0], null, true)} style={{ display: 'none' }} type="file" />
+                <input onChange={e => handleImageAdd(e.target.files[0], true)} style={{ display: 'none' }} type="file" />
                 <AddPhotoAlternate />
                 <Typography color={!image.error ? 'default' : 'error'}>{`${intl.formatMessage({ id: image.error ? image.error : 'register.addImage' })}`}</Typography>
               </Button>

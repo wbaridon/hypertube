@@ -37,7 +37,7 @@ function rotateCounterClockwise() {
     orientation = 2;
   }
   image.orientation = orientation;
-  this.handleImageAdd(image.inputFile, null, false, image);
+  this.handleImageAdd(image.inputFile, false, image);
 }
 
 function rotateClockwise() {
@@ -61,7 +61,7 @@ function rotateClockwise() {
     orientation = 2;
   }
   image.orientation = orientation;
-  this.handleImageAdd(image.inputFile, null, false, image);
+  this.handleImageAdd(image.inputFile, false, image);
 }
 
 function flip() {
@@ -85,7 +85,7 @@ function flip() {
     orientation = 3;
   }
   image.orientation = orientation;
-  this.handleImageAdd(image.inputFile, null, false, image);
+  this.handleImageAdd(image.inputFile, false, image);
 }
 
 function dataURItoBlob(dataURI) {
@@ -109,16 +109,13 @@ function dataURItoBlob(dataURI) {
   return new Blob([ia], { type: mimeString });
 }
 
-function handleImageAdd(rawImage, event = null, newImage = false, stateImage = null) {
-  if (event) {
-    event.stopPropagation();
-    event.preventDefault();
-  }
+function handleImageAdd(rawImage, newImage = false, stateImage = null) {
   if (!rawImage || !rawImage.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
     return;
   }
   const reader = new FileReader();
   let { image } = this.state;
+  const { handleImageChange } = this.props;
   if (stateImage) {
     image = stateImage;
   }
@@ -223,7 +220,11 @@ function handleImageAdd(rawImage, event = null, newImage = false, stateImage = n
       const dataURL = canvas.toDataURL('image/jpeg', 1.0);
       image.rawData = dataURL;
       image.verticalOffset = verticalOffset;
-      this.setState({ image });
+      this.setState({ image }, () => {
+        if (newImage) {
+          handleImageChange(image);
+        }
+      });
     };
     img.src = e.target.result;
   };
@@ -233,7 +234,7 @@ function handleImageAdd(rawImage, event = null, newImage = false, stateImage = n
 function offsetY(amount) {
   const { image } = this.state;
   image.verticalOffset += amount;
-  this.handleImageAdd(image.inputFile, null, false, image);
+  this.handleImageAdd(image.inputFile, false, image);
 }
 export {
   rotateClockwise,
