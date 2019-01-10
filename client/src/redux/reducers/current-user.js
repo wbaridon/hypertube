@@ -25,6 +25,7 @@ export default function user(state = defaultUserState, action) {
         ...state,
         dataFetched: true,
         data: action.data,
+        token: action.token,
       };
     case CLEAR_USER:
       return defaultUserState;

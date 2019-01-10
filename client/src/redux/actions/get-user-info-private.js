@@ -25,7 +25,7 @@ export const getUserInfoPrivateA = (token, dispatch) => new Promise((resolve, re
     .then(
       (response) => {
         dispatch(getUserInfoPrivateSuccess(response.data));
-        dispatch(setUserA(response.data));
+        dispatch(setUserA(response.data, token));
         resolve();
       },
       (error) => {

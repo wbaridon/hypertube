@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getUserListA } from 'Actions';
+import LoadingDots from '../loading-dots';
 
 class Users extends Component {
   constructor(props) {
@@ -15,16 +16,20 @@ class Users extends Component {
     const { userList } = this.props;
     return (
       <div>
-        {userList ? userList.map(user => <div key={user.id}>{user.userName}</div>) : null}
+        {userList ? userList.map(user => <div key={user.userName}>{user.userName}</div>) : <LoadingDots />}
       </div>
     );
   }
 }
 
 Users.propTypes = {
-  userList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  userList: PropTypes.arrayOf(PropTypes.shape({})),
   getUserList: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+};
+
+Users.defaultProps = {
+  userList: null,
 };
 
 const mapStateToProps = state => ({

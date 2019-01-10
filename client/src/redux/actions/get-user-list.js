@@ -32,5 +32,5 @@ export const getUserListA = (token) => {
           dispatch(getUserListError());
         },
       );
-  }
+  };
 };
