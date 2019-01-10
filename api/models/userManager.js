@@ -59,3 +59,12 @@ module.exports.updateUserField = function (req, update) {
     )
   })
 }
+
+module.exports.getAll = function () {
+  return new Promise ((resolve, reject) => {
+    User.find({})
+    .then(function(result){ resolve(result) },
+    (err) => {console.log(err)}
+    )
+  })
+}

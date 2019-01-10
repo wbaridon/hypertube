@@ -74,6 +74,11 @@ userRouter
       res.status(200).send({success: 'logout.tokenDestroy'})
     })
   })
+  .post('/getAllUsers', (req, res) => {
+    UserManager.getAll().then(result => {
+      res.status(200).send(result)
+    })
+  })
   .post('/getUser', (req, res) => {
     // Reçoit un login et retourne les infos public de ce dernier
     let userName = req.body.userName;
@@ -112,25 +117,18 @@ userRouter
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       let oldPic =  './assets/images/' + req.body.oldImageUrl
-    if (req.file) {
-      // Si l'image existe on la supprime
-      if (fs.existsSync(oldPic)) {
-        fs.unlink(oldPic, (err) => {
-          if (err) throw err;
+      if (req.file) {
+        // Si l'image existe on la supprime
+        if (fs.existsSync(oldPic)) {
+          fs.unlink(oldPic, (err) => {
+            if (err) throw err;
+          })
+        }
+        UserManager.updateUserField({'userName': user}, {'picture': req.file.filename})
+        .then((updated) => {
+          res.status(200).send({success: 'picture.Updated'})
         })
       }
-      console.log('arrive')
-      UserManager.updateUserField({'userName': user}, {'picture': req.file.filename})
-      .then((updated) => {
-        res.status(200).send({success: 'picture.Updated'})
-      })
-      console.log(req.file.filename)
-        /* Faire un update user avec nouveau image UserManager.createUser(user, callback => {
-                res.status(200).send({ success: 'registration.success' })
-              })
-        */
-        // Delete ancienne image
-    }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/resetPassword', (req, res) => {
