@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const argon2 = require('argon2');
 const multer = require('multer');
 const crypto = require('crypto');
+const fs = require('fs');
 const resetPassword = require('../utils/resetPassword');
 const tokenManager = require('../utils/token');
 const storage = multer.diskStorage({
@@ -110,9 +111,20 @@ userRouter
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
-      let oldPic =  req.body.oldImageUrl
+      let oldPic =  './assets/images/' + req.body.oldImageUrl
     if (req.file) {
-      console.log('a faire')
+      // Si l'image existe on la supprime
+      if (fs.existsSync(oldPic)) {
+        fs.unlink(oldPic, (err) => {
+          if (err) throw err;
+        })
+      }
+      console.log('arrive')
+      UserManager.updateUserField({'userName': user}, {'picture': req.file.filename})
+      .then((updated) => {
+        res.status(200).send({success: 'picture.Updated'})
+      })
+      console.log(req.file.filename)
         /* Faire un update user avec nouveau image UserManager.createUser(user, callback => {
                 res.status(200).send({ success: 'registration.success' })
               })
