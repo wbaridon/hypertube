@@ -13,7 +13,6 @@ import {
 import { closeSidebar } from 'Actions';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
@@ -39,7 +38,6 @@ function Sidebar({
   handleClose,
   loggedIn,
   classes,
-  width,
 }) {
   return (
     <Drawer classes={{ paper: classes.root }} anchor="right" open={open} onClose={handleClose}>
@@ -85,7 +83,6 @@ Sidebar.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
-  width: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -97,4 +94,4 @@ const mapDispatchToProps = dispatch => ({
   handleClose: () => dispatch(closeSidebar()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()((Sidebar))));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Sidebar)));

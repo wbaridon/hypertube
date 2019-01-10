@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   IconButton,
-  Typography,
   TextField,
 } from '@material-ui/core';
 import {
-  FormattedMessage,
   intlShape,
 } from 'react-intl';
 import ChevronRight from '@material-ui/icons/ChevronRight';

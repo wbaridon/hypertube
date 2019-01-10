@@ -6,12 +6,10 @@ import {
   IconButton,
   MuiThemeProvider,
   createMuiTheme,
-  Typography,
   withStyles,
 } from '@material-ui/core';
 import Home from '@material-ui/icons/Home';
 import Power from '@material-ui/icons/Power';
-import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -19,7 +17,6 @@ import {
   setLocale,
   openSidebar,
 } from 'Actions/index';
-import withWidth from '@material-ui/core/withWidth';
 
 const theme = createMuiTheme({
   palette: {
@@ -77,7 +74,6 @@ class Header extends React.Component {
     const {
       classes,
       handleOpenSidebar,
-      width,
     } = this.props;
     return (
       <AppBar position="sticky" className={classes.appBar}>
@@ -86,7 +82,6 @@ class Header extends React.Component {
             <IconButton component={Link} to="/" color="primary">
               <Home />
             </IconButton>
-            
             <span className={classes.spacer} />
             <IconButton onClick={handleOpenSidebar}>
               <Power color="primary" />
@@ -100,12 +95,7 @@ class Header extends React.Component {
 
 Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
-  toggleDarkThemeHandler: PropTypes.func.isRequired,
-  darkThemeBool: PropTypes.bool.isRequired,
-  changeLocale: PropTypes.func.isRequired,
-  locale: PropTypes.string.isRequired,
   handleOpenSidebar: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()((Header))));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Header)));

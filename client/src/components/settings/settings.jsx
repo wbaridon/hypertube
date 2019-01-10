@@ -11,7 +11,7 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      user: props.user,
+      ...props.user,
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
@@ -19,23 +19,22 @@ class Settings extends Component {
   }
 
   handleFieldChange(field, value) {
-    const { user } = this.state;
     const { token } = this.props;
-    this.setState({ user: { ...user, [field]: value } });
+    this.setState({ [field]: value });
     this.debounced(field, value, token);
   }
 
   render() {
-    const { user } = this.state;
+    const currentState = this.state;
     return (
       <div>
-        <ImageChanger imageUrl={user.picture} />
-        {Object.keys(user)
+        <ImageChanger imageUrl={currentState.picture} />
+        {Object.keys(currentState)
           .map(key => (
             <React.Fragment key={key}>
               <TextField
                 fullWidth
-                value={user[key]}
+                value={currentState[key]}
                 label={key}
                 onChange={e => this.handleFieldChange(key, e.target.value)}
               />

@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import {
   AppBar,
   Toolbar,
-  IconButton,
   MuiThemeProvider,
   createMuiTheme,
-  Typography,
   Grid,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';

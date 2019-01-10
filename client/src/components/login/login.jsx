@@ -16,10 +16,8 @@ import { injectIntl, intlShape } from 'react-intl';
 import Avatar from '@material-ui/core/Avatar';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import LoginProviderDumb from './login-provider-dumb';
 import LoginCard from './login-card';
 import './autocomplete-fix.css';
-import Providers from '../providers';
 
 const mapDispatchToProps = (dispatch) => {
   return ({

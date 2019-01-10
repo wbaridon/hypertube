@@ -37,7 +37,7 @@ function rotateCounterClockwise() {
     orientation = 2;
   }
   image.orientation = orientation;
-  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
+  this.handleImageAdd(image.inputFile, null, false, image);
 }
 
 function rotateClockwise() {
@@ -61,7 +61,7 @@ function rotateClockwise() {
     orientation = 2;
   }
   image.orientation = orientation;
-  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
+  this.handleImageAdd(image.inputFile, null, false, image);
 }
 
 function flip() {
@@ -85,12 +85,7 @@ function flip() {
     orientation = 3;
   }
   image.orientation = orientation;
-  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
-}
-
-function blobToFile(theBlob, fileName) {
-  const ret = new File([theBlob], fileName, { type: 'image/jpeg' });
-  return ret;
+  this.handleImageAdd(image.inputFile, null, false, image);
 }
 
 function dataURItoBlob(dataURI) {
@@ -114,7 +109,7 @@ function dataURItoBlob(dataURI) {
   return new Blob([ia], { type: mimeString });
 }
 
-function handleImageAdd(rawImage, event = null, newImage) {
+function handleImageAdd(rawImage, event = null, newImage = false, stateImage = null) {
   if (event) {
     event.stopPropagation();
     event.preventDefault();
@@ -124,6 +119,9 @@ function handleImageAdd(rawImage, event = null, newImage) {
   }
   const reader = new FileReader();
   let { image } = this.state;
+  if (stateImage) {
+    image = stateImage;
+  }
   if (newImage) {
     image = {
       rawData: null,
@@ -135,7 +133,6 @@ function handleImageAdd(rawImage, event = null, newImage) {
     };
   }
   image.inputFile = rawImage;
-  this.setState({ image });
   let { orientation } = image;
   const { verticalOffset } = image;
 
@@ -158,7 +155,6 @@ function handleImageAdd(rawImage, event = null, newImage) {
       orientation = orientation || exif['0th'][piexif.ImageIFD.Orientation];
       image.orientation = orientation;
       image.isLandscape = img.width >= img.height;
-      this.setState({ image });
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
@@ -210,7 +206,7 @@ function handleImageAdd(rawImage, event = null, newImage) {
       }
       let imageYoffset = verticalOffset;
       let imageXoffset = verticalOffset;
-      if (img.width > img.height) {
+      if (img.width > img.height || img.width === img.height) {
         imageYoffset = 0;
         if (orientation <= 4) {
           imageXoffset = 0;
@@ -237,7 +233,7 @@ function handleImageAdd(rawImage, event = null, newImage) {
 function offsetY(amount) {
   const { image } = this.state;
   image.verticalOffset += amount;
-  this.setState({ image }, () => this.handleImageAdd(image.inputFile));
+  this.handleImageAdd(image.inputFile, null, false, image);
 }
 export {
   rotateClockwise,

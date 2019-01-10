@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import googleIcon from 'Assets/icons/google.png';
 import githubIcon from 'Assets/icons/github.png';
 import fortytwoIcon from 'Assets/icons/42.png';
