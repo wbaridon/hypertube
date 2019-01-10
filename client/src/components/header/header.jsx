@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import Home from '@material-ui/icons/Home';
 import Power from '@material-ui/icons/Power';
+import People from '@material-ui/icons/People';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -85,6 +86,9 @@ class Header extends React.Component {
             <span className={classes.spacer} />
             <IconButton onClick={handleOpenSidebar}>
               <Power color="primary" />
+            </IconButton>
+            <IconButton component={Link} to="/users">
+              <People color="primary" />
             </IconButton>
           </Toolbar>
         </MuiThemeProvider>

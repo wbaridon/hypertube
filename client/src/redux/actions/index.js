@@ -15,6 +15,7 @@ import { sendEmailA } from './send-email';
 import { resetPasswordA } from './reset-password';
 import { updateUserFieldA } from './update-user-field';
 import { updateUserImageA } from './update-user-image';
+import { getUserListA } from './get-user-list';
 import {
   checkUserInCookieA,
   deleteUserFromCookieThunkA,
@@ -71,4 +72,5 @@ export {
   updateUserImageA,
   openSidebarA,
   closeSidebarA,
+  getUserListA,
 };

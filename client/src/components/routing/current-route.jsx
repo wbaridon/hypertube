@@ -8,7 +8,9 @@ import Video from '../video/video';
 import Movie from '../movie/movie';
 import Settings from '../settings/settings';
 import ForgotPassword from '../forgot-password';
+import Users from '../users';
 import LoadingDots from '../loading-dots';
+
 
 const mapStateToProps = state => ({
   authed: state.user.tokenValid,
@@ -46,6 +48,7 @@ function CurrentRoute() {
   return (
     <Switch>
       <Route path={Video.url} component={Video} />
+      <PrivateRoute path={Users.url} component={Users} />
       <PrivateRoute path={Settings.url} component={Settings} />
       <Route path={Movie.url} component={Movie} />
       <Route path={ForgotPassword.url} component={ForgotPassword} />
