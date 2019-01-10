@@ -75,22 +75,26 @@ userRouter
     })
   })
   .post('/getAllUsers', (req, res) => {
-    UserManager.getAllId().then(result => {
-      res.status(200).send(result)
-    })
+    tokenManager.decode(req.headers.authorization).then(token => {
+      UserManager.getAllId().then(result => {
+        res.status(200).send(result)
+      })
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/getUser', (req, res) => {
+    tokenManager.decode(req.headers.authorization).then(token => {
     // Reçoit un login et retourne les infos public de ce dernier
-    let userName = req.body.userName;
-    UserManager.getUser(userName).then(getResult => {
-      const user = {
-        userName: getResult.userName,
-        picture: getResult.picture,
-        lastName: getResult.lastName,
-        firstName: getResult.firstName,
-      }
-      res.send(user)
-    })
+      let userName = req.body.userName;
+      UserManager.getUser(userName).then(getResult => {
+        const user = {
+          userName: getResult.userName,
+          picture: getResult.picture,
+          lastName: getResult.lastName,
+          firstName: getResult.firstName,
+        }
+        res.send(user)
+      })
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/getUserPrivate', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
