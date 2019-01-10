@@ -6,8 +6,8 @@ export default function resetPasswordAPI(newPassword, token) {
     url: 'http://localhost:3000/user/resetPassword',
     data: {
       newPassword,
-      token,
     },
+    headers: { Authorization: `Bearer ${token}` },
     timeout: TIMEOUT_API,
   });
 }

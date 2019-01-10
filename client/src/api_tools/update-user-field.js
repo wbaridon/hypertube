@@ -5,10 +5,10 @@ export default function updateUserFieldAPI(token, field, value) {
     method: 'post',
     url: 'http://localhost:3000/user/updateUser',
     data: {
-      token,
       field,
       value,
     },
+    headers: { Authorization: `Bearer ${token}` },
     timeout: TIMEOUT_API,
   });
 }

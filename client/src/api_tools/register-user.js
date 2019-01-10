@@ -5,7 +5,7 @@ export default function registerUserAPI(formData) {
     method: 'post',
     url: 'http://localhost:3000/user/register',
     data: formData,
-    config: { headers: { 'Content-Type': 'multipart/form-data' } },
+    headers: { 'Content-Type': 'multipart/form-data' },
     timeout: TIMEOUT_API,
   });
 }
