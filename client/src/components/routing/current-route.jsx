@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setErrorHandler: () => dispatch(setErrorA('navigation.error.notAuthed')),
+  setErrorHandler: routeUrl => dispatch(setErrorA('navigation.error.notAuthed', `: ${routeUrl}`)),
 });
 
 const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
@@ -33,7 +33,8 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
       return (<LoadingDots />);
     }
     if (!protectedRouteLoading && authed !== true) {
-      setErrorHandler();
+      console.log(props);
+      setErrorHandler(props.location.pathname);
       return (<Redirect to="/" />);
     }
     return (<Component {...props} />);

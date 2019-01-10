@@ -60,6 +60,7 @@ function mapStateToProps(state) {
     user: state.user,
     error: state.notifications.error,
     success: state.notifications.success,
+    data: state.notifications.data,
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -90,13 +91,14 @@ class App extends React.Component {
       clearErrorHandler,
       clearSuccessHandler,
       success,
+      data,
     } = this.props;
     if (error) {
-      enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
+      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data}`, { variant: 'error' });
       clearErrorHandler();
     }
     if (success) {
-      enqueueSnackbar(intl.formatMessage({ id: success }), { variant: 'success' });
+      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data}`, { variant: 'success' });
       clearSuccessHandler();
     }
   }
@@ -128,11 +130,13 @@ App.propTypes = {
   intl: intlShape.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,
+  data: PropTypes.string,
 };
 
 App.defaultProps = {
   error: '',
   success: '',
+  data: '',
 };
 
 export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(((App)))));
