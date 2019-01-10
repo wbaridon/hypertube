@@ -108,6 +108,16 @@ userRouter
     }).catch(err => res.send({ error: 'token.invalidToken' }))
 
   })
+  .post('/updatePicture', upload.single('image'), (req, res, next) => {
+    console.log(req.file)
+    if (req.file) {
+        /* Faire un update user avec nouveau image UserManager.createUser(user, callback => {
+                res.status(200).send({ success: 'registration.success' })
+              })
+        */
+        // Delete ancienne image
+    }
+  })
   .post('/resetPassword', (req, res) => {
     resetPassword.reset(req, res).then(ret => {
       if (ret.status === 0) { res.status(400).send(ret.error) }
