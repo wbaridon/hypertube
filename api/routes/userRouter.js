@@ -87,7 +87,7 @@ userRouter
     })
   })
   .post('/getUserPrivate', (req, res) => {
-    tokenManager.decode(req.body.token).then(token => {
+    tokenManager.decode(req.headers.authorization).then(token => {
       UserManager.getUser(token.user).then(user => {
         let newUser = user.toObject();
         delete newUser.moviesHistory
@@ -99,24 +99,27 @@ userRouter
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/updateUser', (req, res) => {
-    console.log(req.body)
-    tokenManager.decode(req.body.token).then(token => {
-      // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
-      UserManager.updateUser('userName', token.user, req.body.user).then(result => {
-          res.send(result)
-      }, (error) => {console.log(error)})
-    }).catch(err => res.send({ error: 'token.invalidToken' }))
-
+    tokenManager.decode(req.headers.authorization).then(token => {
+        // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
+      if (req.body.field === 'firstName') {
+        UserManager.updateUser(req.body.field, req.body.value, req.body.user)
+        .then(result => { res.send(result) }, (error) => {console.log(error)})
+      }
+      }).catch(err => res.send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
-    console.log(req.file)
+    tokenManager.decode(req.headers.authorization).then(token => {
+      let user = token.user
+      let oldPic =  req.body.oldImageUrl
     if (req.file) {
+      console.log('a faire')
         /* Faire un update user avec nouveau image UserManager.createUser(user, callback => {
                 res.status(200).send({ success: 'registration.success' })
               })
         */
         // Delete ancienne image
     }
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/resetPassword', (req, res) => {
     resetPassword.reset(req, res).then(ret => {
@@ -143,7 +146,7 @@ function checkForm(user) {
         // Manque le check si chiffre et lettre dans mdp, picture
         resolve('registration.correctForm')
       }
-    } else { error('registration.emptyFields') } // Des erreurs plus explicites c'est toujours bien, pour savoir quel variable est le probleme!
+    } else { error('registration.emptyFields') }
   })
 }
 

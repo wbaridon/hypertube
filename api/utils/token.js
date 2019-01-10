@@ -9,16 +9,18 @@ function set(user) {
 
 function decode(token) {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, 'HypertubeSecretKey', function (err, decoded) {
-      if (err) { reject('token.invalidToken') }
-      else {
-        // Rajouter ici le controle du blacklistage ip et renvoyer le resolve si pas blackliste
-      /*  BlackListManager.get(token).then(getResult => {
-          console.log(getResult)
-        })*/
-        resolve(decoded)
-      }
-    })
+    if (token.split(' ')[0] === 'Bearer') {
+      jwt.verify(token.split(' ')[1], 'HypertubeSecretKey', function (err, decoded) {
+        if (err) { reject('token.invalidToken') }
+        else {
+          // Rajouter ici le controle du blacklistage ip et renvoyer le resolve si pas blackliste
+        /*  BlackListManager.get(token).then(getResult => {
+            console.log(getResult)
+          })*/
+          resolve(decoded)
+        }
+      })
+    } else { reject('token.invalidHeader') }
   })
 }
 

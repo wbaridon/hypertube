@@ -40,6 +40,8 @@ module.exports.createUser = function (data, callback) {
   })
 }
 module.exports.updateUser = function (field, value, newUser) {
+  // Revoir update   User.findOneAndUpdate({lastName: 'Baridon'}, {lastName: 'Grain'})
+  // On doit rechercher la personne en fonction d'un field puis changer la valeur
   console.log(field, value, newUser);
   return new Promise ((resolve, reject) => {
     User.findOneAndUpdate({[field]: value}, newUser)
