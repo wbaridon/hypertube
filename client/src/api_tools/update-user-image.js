@@ -5,7 +5,7 @@ export default function updateUserImageAPI(token, formData) {
     method: 'post',
     url: 'http://localhost:3000/user/updatePicture',
     data: formData,
-    config: { headers: { Authorization: `Bearer ${token}` } },
+    headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` },
     timeout: TIMEOUT_API,
   });
 }
