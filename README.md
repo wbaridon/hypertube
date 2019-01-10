@@ -28,7 +28,7 @@ Envoyer a /oauth/register/42 la data `clientCode` en format json
 Renvoi ensuite les data de l'user au front
 
 ## Liste de nos bonus
-- Auth par Github, 42, Facebook, Gitlab, Reddit et Normal
+- Auth par Github, 42, Facebook, Gitlab, Instagram, Linkedin et Normal
 - API RESTful
 - Un unique fichier de translation
 - Rotatation et modification de l'image a l'inscription
