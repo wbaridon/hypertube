@@ -81,7 +81,10 @@ function getUserFrom(provider, token) {
 function getCredentials(provider) {
   return new Promise ((resolve, reject) => {
    if (provider === 'github') { platformCredentials.gitHub().then(credentials => resolve(credentials)) }
-   else if (provider === 'twitter') { platformCredentials.twitter().then(credentials => resolve (credentials)) }
+   else if (provider === 'gitlab') { platformCredentials.gitlab().then(credentials => resolve (credentials)) }
+   else if (provider === 'facebook') { platformCredentials.facebook().then(credentials => resolve (credentials)) }
+   else if (provider === 'linkedin') { platformCredentials.linkedin().then(credentials => resolve (credentials)) }
+  else if (provider === 'instagram') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
    else if (provider === '42') { platformCredentials.fortytwo().then(credentials => resolve (credentials)) }
   })
 }

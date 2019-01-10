@@ -99,6 +99,7 @@ userRouter
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/updateUser', (req, res) => {
+    console.log(req.body)
     tokenManager.decode(req.body.token).then(token => {
       // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
       UserManager.updateUser('userName', token.user, req.body.user).then(result => {
