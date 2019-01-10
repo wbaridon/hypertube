@@ -5,10 +5,10 @@ import {
   LOGIN_ERROR,
 } from './action-types';
 import {
-  getUserInfoPrivate,
-  setError,
-  setSuccess,
-  protectedRouteFinished,
+  getUserInfoPrivateA,
+  setErrorA,
+  setSuccessA,
+  protectedRouteFinishedA,
 } from '.';
 
 function createCookie(name, value, days) {
@@ -36,28 +36,28 @@ export const loginUserErrorAction = () => ({
 export const loginUserError = (error) => {
   return (dispatch) => {
     const errorString = error.message;
-    dispatch(setError(errorString));
+    dispatch(setErrorA(errorString));
     return dispatch(loginUserErrorAction());
   };
 };
 
 export const postLoginUserSuccess = (result) => {
   return (dispatch) => {
-    return getUserInfoPrivate(result.token, dispatch).then(
+    return getUserInfoPrivateA(result.token, dispatch).then(
       () => {
-        dispatch(setSuccess('success.login'));
+        dispatch(setSuccessA('success.login'));
         dispatch(loginUserSuccess());
-        dispatch(protectedRouteFinished());
+        dispatch(protectedRouteFinishedA());
       },
       () => {
         dispatch(loginUserError());
-        dispatch(protectedRouteFinished());
+        dispatch(protectedRouteFinishedA());
       },
     );
   };
 };
 
-export const loginUser = (user) => {
+export const loginUserA = (user) => {
   return (dispatch) => {
     dispatch(loginUserStart());
     return loginUserAPI(user)

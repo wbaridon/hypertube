@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import {
-  registerUser,
-  registerUserOauth,
-  setError,
-  clearRegisterData,
-  loginUser,
+  registerUserA,
+  registerUserOauthA,
+  setErrorA,
+  clearRegisterDataA,
+  loginUserA,
 } from 'Actions';
 import Axios from 'axios';
 import handlers, {
@@ -37,11 +37,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return ({
-    registerUserHandler: form => dispatch(registerUser(form)),
-    loginUserHandler: user => dispatch(loginUser(user)),
-    clearRegisterDataHandler: () => dispatch(clearRegisterData()),
-    registerUserOauthHandler: (provider, code) => dispatch(registerUserOauth(provider, code)),
-    setErrorHandler: error => dispatch(setError(error)),
+    registerUserHandler: form => dispatch(registerUserA(form)),
+    loginUserHandler: user => dispatch(loginUserA(user)),
+    clearRegisterDataHandler: () => dispatch(clearRegisterDataA()),
+    registerUserOauthHandler: (provider, code) => dispatch(registerUserOauthA(provider, code)),
+    setErrorHandler: error => dispatch(setErrorA(error)),
   });
 };
 

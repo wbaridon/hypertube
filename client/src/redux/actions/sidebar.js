@@ -3,10 +3,10 @@ import {
   OPEN_SIDEBAR,
 } from './action-types';
 
-export const closeSidebar = () => ({
+export const closeSidebarA = () => ({
   type: CLOSE_SIDEBAR,
 });
 
-export const openSidebar = () => ({
+export const openSidebarA = () => ({
   type: OPEN_SIDEBAR,
 });

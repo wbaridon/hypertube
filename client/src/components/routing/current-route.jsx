@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setError } from 'Actions';
+import { setErrorA } from 'Actions';
 import Home from '../home/home';
 import Register from '../register/register';
 import Video from '../video/video';
@@ -16,7 +16,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setErrorHandler: () => dispatch(setError('navigation.error.notAuthed')),
+  setErrorHandler: () => dispatch(setErrorA('navigation.error.notAuthed')),
 });
 
 const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({

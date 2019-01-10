@@ -4,7 +4,7 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
 } from './action-types';
-import { setError } from '.';
+import { setErrorA } from '.';
 
 export const resetPasswordStart = () => ({
   type: RESET_PASSWORD,
@@ -19,14 +19,14 @@ export const resetPasswordError = () => ({
   type: RESET_PASSWORD_ERROR,
 });
 
-export const resetPassword = (newPassword, token) => {
+export const resetPasswordA = (newPassword, token) => {
   return (dispatch) => {
     dispatch(resetPasswordStart());
     return resetPasswordAPI(newPassword, token)
       .then(
         result => dispatch(resetPasswordSuccess(result)),
         (error) => {
-          dispatch(setError(error.message));
+          dispatch(setErrorA(error.message));
           dispatch(resetPasswordError());
         },
       );

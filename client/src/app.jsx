@@ -7,9 +7,9 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import {
-  checkUserInCookie,
-  clearError,
-  clearSuccess,
+  checkUserInCookieA,
+  clearErrorA,
+  clearSuccessA,
 } from 'Actions';
 import CurrentRoute from './components/routing/current-route';
 import Header from './components/header/header';
@@ -64,9 +64,9 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return ({
-    checkUser: () => dispatch(checkUserInCookie(document.cookie)),
-    clearErrorHandler: () => dispatch(clearError()),
-    clearSuccessHandler: () => dispatch(clearSuccess()),
+    checkUser: () => dispatch(checkUserInCookieA(document.cookie)),
+    clearErrorHandler: () => dispatch(clearErrorA()),
+    clearSuccessHandler: () => dispatch(clearSuccessA()),
   });
 }
 

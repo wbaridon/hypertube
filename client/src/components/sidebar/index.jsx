@@ -10,7 +10,7 @@ import {
   Divider,
   IconButton,
 } from '@material-ui/core';
-import { closeSidebar } from 'Actions';
+import { closeSidebarA } from 'Actions';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
@@ -91,7 +91,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleClose: () => dispatch(closeSidebar()),
+  handleClose: () => dispatch(closeSidebarA()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Sidebar)));

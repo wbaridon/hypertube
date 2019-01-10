@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { resetPassword, sendEmail } from 'Actions';
+import { resetPasswordA, sendEmailA } from 'Actions';
 import { connect } from 'react-redux';
 import SendEmail from './send-email';
 import ResetPassword from './reset-password';
 
 
 const mapDispatchToProps = dispatch => ({
-  handlePasswordReset: (newPassword, token) => dispatch(resetPassword(newPassword, token)),
-  handleSendEmail: email => dispatch(sendEmail(email)),
+  handlePasswordReset: (newPassword, token) => dispatch(resetPasswordA(newPassword, token)),
+  handleSendEmail: email => dispatch(sendEmailA(email)),
 });
 
 class ForgotPassword extends Component {

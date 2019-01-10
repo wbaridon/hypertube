@@ -5,70 +5,70 @@ import {
   PROTECTED_ROUTE_LOADING,
   PROTECTED_ROUTE_FINISHED,
 } from './action-types';
-import { loginUser } from './login-user';
-import { logoutUser } from './logout-user';
-import { registerUser } from './register-user';
-import { registerUserOauth } from './register-user-oauth';
-import { getUserInfoPrivate } from './get-user-info-private';
-import { setUser, clearUser } from './current-user';
-import { sendEmail } from './send-email';
-import { resetPassword } from './reset-password';
-import { updateUserField } from './update-user-field';
-import { updateUserImage } from './update-user-image';
+import { loginUserA } from './login-user';
+import { logoutUserA } from './logout-user';
+import { registerUserA } from './register-user';
+import { registerUserOauthA } from './register-user-oauth';
+import { getUserInfoPrivateA } from './get-user-info-private';
+import { setUserA, clearUserA } from './current-user';
+import { sendEmailA } from './send-email';
+import { resetPasswordA } from './reset-password';
+import { updateUserFieldA } from './update-user-field';
+import { updateUserImageA } from './update-user-image';
 import {
-  checkUserInCookie,
-  deleteUserFromCookieThunk,
+  checkUserInCookieA,
+  deleteUserFromCookieThunkA,
 } from './check-user-in-cookie';
 import {
-  setError,
-  clearError,
-  setSuccess,
-  clearSuccess,
+  setErrorA,
+  clearErrorA,
+  setSuccessA,
+  clearSuccessA,
 } from './notifications';
 import {
-  openSidebar,
-  closeSidebar,
+  openSidebarA,
+  closeSidebarA,
 } from './sidebar';
 
-export const toggleDarkTheme = () => ({
+export const toggleDarkThemeA = () => ({
   type: TOGGLE_DARK_THEME,
 });
 
-export const setLocale = locale => ({
+export const setLocaleA = locale => ({
   type: SET_LOCALE,
   locale,
 });
 
-export const clearRegisterData = () => ({
+export const clearRegisterDataA = () => ({
   type: CLEAR_REGISTER_DATA,
 });
 
-export const protectedRouteLoading = () => ({
+export const protectedRouteLoadingA = () => ({
   type: PROTECTED_ROUTE_LOADING,
 });
 
-export const protectedRouteFinished = () => ({
+export const protectedRouteFinishedA = () => ({
   type: PROTECTED_ROUTE_FINISHED,
 });
 
 export {
-  loginUser,
-  logoutUser,
-  registerUser,
-  registerUserOauth,
-  getUserInfoPrivate,
-  setUser,
-  clearUser,
-  setError,
-  clearError,
-  setSuccess,
-  clearSuccess,
-  checkUserInCookie,
-  deleteUserFromCookieThunk,
-  sendEmail,
-  resetPassword,
-  updateUserField,
-  updateUserImage,
-  openSidebar,
-  closeSidebar,
+  loginUserA,
+  logoutUserA,
+  registerUserA,
+  registerUserOauthA,
+  getUserInfoPrivateA,
+  setUserA,
+  clearUserA,
+  setErrorA,
+  clearErrorA,
+  setSuccessA,
+  clearSuccessA,
+  checkUserInCookieA,
+  deleteUserFromCookieThunkA,
+  sendEmailA,
+  resetPasswordA,
+  updateUserFieldA,
+  updateUserImageA,
+  openSidebarA,
+  closeSidebarA,
 };

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { TextField } from '@material-ui/core';
 import {
-  updateUserField,
-  updateUserImage,
+  updateUserFieldA,
+  updateUserImageA,
 } from 'Actions/';
 import debounce from 'lodash.debounce';
 import ImageChanger from '../image-changer';
@@ -76,8 +76,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateFieldHandle: (token, field, value) => dispatch(updateUserField(token, field, value)),
-  updateImageHandle: (token, form) => dispatch(updateUserImage(token, form)),
+  updateFieldHandle: (token, field, value) => dispatch(updateUserFieldA(token, field, value)),
+  updateImageHandle: (token, form) => dispatch(updateUserImageA(token, form)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

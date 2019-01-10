@@ -15,10 +15,8 @@ class Movie extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    console.log(match.params.id_movie);
     axios.get(`https://tv-v2.api-fetch.website/movie/${match.params.id_movie}`)
       .then((res) => {
-        console.log(res.data);
         this.setState({
           item: res.data,
         });

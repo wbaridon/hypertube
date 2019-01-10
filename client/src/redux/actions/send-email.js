@@ -4,7 +4,7 @@ import {
   SEND_EMAIL_SUCCESS,
   SEND_EMAIL_ERROR,
 } from './action-types';
-import { setError } from '.';
+import { setErrorA } from '.';
 
 export const sendEmailStart = () => ({
   type: SEND_EMAIL,
@@ -19,14 +19,14 @@ export const sendEmailError = () => ({
   type: SEND_EMAIL_ERROR,
 });
 
-export const sendEmail = (form) => {
+export const sendEmailA = (form) => {
   return (dispatch) => {
     dispatch(sendEmailStart());
     return sendEmailForgotPasswordAPI(form)
       .then(
         result => dispatch(sendEmailSuccess(result)),
         (error) => {
-          dispatch(setError(error.message));
+          dispatch(setErrorA(error.message));
           dispatch(sendEmailError());
         },
       );

@@ -39,7 +39,6 @@ class Register extends React.Component {
 
   render() {
     const { provider, code } = this.state;
-    console.log(provider, code);
     return (
       <Grid container direction="column" justify="center" alignItems="center" alignContent="center" wrap="nowrap">
         <Grid item>

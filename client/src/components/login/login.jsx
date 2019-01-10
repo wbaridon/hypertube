@@ -8,8 +8,8 @@ import {
   Grid,
 } from '@material-ui/core';
 import {
-  loginUser,
-  logoutUser,
+  loginUserA,
+  logoutUserA,
 } from 'Actions';
 import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
@@ -21,8 +21,8 @@ import './autocomplete-fix.css';
 
 const mapDispatchToProps = (dispatch) => {
   return ({
-    logIn: user => dispatch(loginUser(user)),
-    logout: () => dispatch(logoutUser()),
+    logIn: user => dispatch(loginUserA(user)),
+    logout: () => dispatch(logoutUserA()),
   });
 };
 

@@ -13,9 +13,9 @@ import Power from '@material-ui/icons/Power';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  toggleDarkTheme,
-  setLocale,
-  openSidebar,
+  toggleDarkThemeA,
+  setLocaleA,
+  openSidebarA,
 } from 'Actions/index';
 
 const theme = createMuiTheme({
@@ -44,9 +44,9 @@ const theme = createMuiTheme({
 
 
 const mapDispatchToProps = dispatch => ({
-  toggleDarkThemeHandler: () => dispatch(toggleDarkTheme()),
-  changeLocale: locale => dispatch(setLocale(locale)),
-  handleOpenSidebar: () => dispatch(openSidebar()),
+  toggleDarkThemeHandler: () => dispatch(toggleDarkThemeA()),
+  changeLocale: locale => dispatch(setLocaleA(locale)),
+  handleOpenSidebar: () => dispatch(openSidebarA()),
 });
 
 const mapStateToProps = state => ({
