@@ -31,11 +31,14 @@ class Settings extends Component {
   }
 
   handleImageChange(image) {
+    const { picture } = this.state;
     const { updateImageHandle, token } = this.props;
     const form = new FormData();
     const img = dataURItoBlob(image.rawData);
-    updateImageHandle(token, img);
+    form.append('token', token);
     form.append('image', img);
+    form.append('oldImageUrl', picture);
+    updateImageHandle(form);
   }
 
   render() {
@@ -76,7 +79,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateFieldHandle: (token, field, value) => dispatch(updateUserField(token, field, value)),
-  updateImageHandle: (token, image) => dispatch(updateUserImage(token, image)),
+  updateImageHandle: form => dispatch(updateUserImage(form)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

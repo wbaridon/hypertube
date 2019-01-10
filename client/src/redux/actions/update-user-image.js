@@ -19,10 +19,10 @@ export const updateUserImageError = () => ({
   type: UPDATE_USER_IMAGE_ERROR,
 });
 
-export const updateUserImage = (token, form) => {
+export const updateUserImage = (form) => {
   return (dispatch) => {
     dispatch(updateUserImageStart());
-    return updateUserImageAPI(token, form)
+    return updateUserImageAPI(form)
       .then(
         result => dispatch(updateUserImageSuccess(result)),
         (error) => {
