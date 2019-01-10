@@ -75,7 +75,7 @@ userRouter
     })
   })
   .post('/getAllUsers', (req, res) => {
-    UserManager.getAll().then(result => {
+    UserManager.getAllId().then(result => {
       res.status(200).send(result)
     })
   })
