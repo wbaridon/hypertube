@@ -19,10 +19,10 @@ export const updateUserFieldError = () => ({
   type: UPDATE_USER_FIELD_ERROR,
 });
 
-export const updateUserField = (token, changes) => {
+export const updateUserField = (token, field, value) => {
   return (dispatch) => {
     dispatch(updateUserFieldStart());
-    return updateUserFieldAPI(token, changes)
+    return updateUserFieldAPI(token, field, value)
       .then(
         result => dispatch(updateUserFieldSuccess(result)),
         (error) => {
