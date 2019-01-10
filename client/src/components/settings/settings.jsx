@@ -25,7 +25,6 @@ class Settings extends Component {
 
   handleFieldChange(field, value) {
     const { token } = this.props;
-    console.log(token, field, value);
     this.setState({ [field]: value });
     this.debounced(token, field, value);
   }
