@@ -18,6 +18,9 @@ class Users extends Component {
 
   render() {
     const { userList } = this.props;
+    if (!userList) {
+      return (<div>What</div>);
+    }
     return (
       <Grid container spacing={8} justify="center">
         {userList.length !== 0 ? userList.map(user => <Grid item key={user.userName}><PersonCard userName={user.userName} /></Grid>) : <LoadingDots />}
