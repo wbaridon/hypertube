@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import getUserInfoAPI from '../../api_tools/get-user-info';
 import UserDumb from './dumb';
+import PersonNotFound from '../person-not-found';
 
 function getUserFromUrl(url) {
   const parts = url.split('/');
@@ -24,17 +25,16 @@ class User extends Component {
   async componentWillMount() {
     const { token } = this.props;
     const { user } = this.state;
-    console.log(user);
     const userData = await getUserInfoAPI(token, user);
+    if (userData.data.userName) {
+      this.setState({ user: userData.data });
+    }
     console.log(userData);
-
-    this.setState({ user: userData.data });
   }
 
 
   render() {
     const { user } = this.state;
-    console.log(user);
     return (
       user.userName
         ? (
@@ -44,7 +44,7 @@ class User extends Component {
             userName={user.userName}
             picture={user.picture}
           />
-        ) : null
+        ) : <PersonNotFound />
     );
   }
 }
