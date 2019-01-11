@@ -13,6 +13,7 @@ const styles = {
     height: '160px',
   },
   userCard: {
+    width: '200px',
   },
 };
 

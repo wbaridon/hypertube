@@ -42,7 +42,7 @@ userRouter
             if (userExist) { res.status(400).send({ error: 'registration.userAlreadyRegistered' }) }
             else {
               UserManager.createUser(user, callback => {
-                res.status(200).send({ success: 'registration.success' })
+                res.status(200).send({ userName: user.userName, success: 'registration.success' })
               })
             }
           })
@@ -130,7 +130,7 @@ userRouter
         }
         UserManager.updateUserField({'userName': user}, {'picture': req.file.filename})
         .then((updated) => {
-          res.status(200).send({success: 'picture.Updated'})
+          res.status(200).send({picture: req.file.filename, user: token.user, success: 'picture.Updated'})
         })
       }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))

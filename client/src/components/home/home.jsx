@@ -8,8 +8,12 @@ import { withStyles } from '@material-ui/core/styles';
 
 const myStyles = theme => ({
   poster: {
-    [theme.breakpoints.down(500)]: {
-      maxWidth: '300px',
+    maxWidth: '200px',
+    [theme.breakpoints.down(700)]: {
+      maxWidth: '150px',
+    },
+    [theme.breakpoints.down(400)]: {
+      maxWidth: '75px',
     },
   },
 });
