@@ -11,7 +11,7 @@ import PersonCard from './person-card';
 class Users extends Component {
   constructor(props) {
     super(props);
-    if (props.userList === null) {
+    if (!props.userList.fetched) {
       props.getUserList(props.token);
     }
   }
@@ -20,7 +20,7 @@ class Users extends Component {
     const { userList } = this.props;
     return (
       <Grid container spacing={24} justify="center">
-        {userList ? userList.map(user => <Grid item key={user.userName}><PersonCard userName={user.userName} /></Grid>) : <LoadingDots />}
+        {userList.length !== 0 ? userList.map(user => <Grid item key={user.userName}><PersonCard userName={user.userName} /></Grid>) : <LoadingDots />}
       </Grid>
     );
   }

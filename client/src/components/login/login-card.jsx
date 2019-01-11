@@ -16,7 +16,7 @@ function LoginCard({
   intl,
 }) {
   return (
-    <form action="" onSubmit={e => parentLoginHandle(e)}>
+    <form name="login" action="" onSubmit={e => parentLoginHandle(e)}>
       <TextField
         className="loginInputs"
         autoComplete="username"

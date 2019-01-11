@@ -5,6 +5,7 @@ import {
   PROTECTED_ROUTE_LOADING,
   PROTECTED_ROUTE_FINISHED,
   DELETE_USER_FROM_USER_LIST,
+  ADD_USER_TO_USER_LIST,
 } from './action-types';
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
@@ -35,6 +36,11 @@ import {
 
 export const deleteUserFromUserListA = user => ({
   type: DELETE_USER_FROM_USER_LIST,
+  user,
+});
+
+export const addUserToUserListA = user => ({
+  type: ADD_USER_TO_USER_LIST,
   user,
 });
 

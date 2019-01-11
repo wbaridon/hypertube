@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Card,
   CardMedia,
-  CardContent,
   Typography,
   CardActions,
 } from '@material-ui/core';
@@ -25,7 +24,7 @@ function PersonCardDumb({
 }) {
   return (
     <Card className={classes.userCard}>
-      <CardMedia className={classes.cardMedia} image={`http://localhost:3000/images/${picture}`} />
+      <CardMedia className={classes.cardMedia} image={picture ? `http://localhost:3000/images/${picture}` : 'noImage'} />
       <CardActions>
         <Typography>
           {firstName}
