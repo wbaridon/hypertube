@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+  Grid,
+} from '@material-ui/core';
 import { getUserListA } from 'Actions';
 import LoadingDots from '../loading-dots';
+import PersonCard from './person-card';
 
 class Users extends Component {
   constructor(props) {
@@ -15,9 +19,9 @@ class Users extends Component {
   render() {
     const { userList } = this.props;
     return (
-      <div>
-        {userList ? userList.map(user => <div key={user.userName}>{user.userName}</div>) : <LoadingDots />}
-      </div>
+      <Grid container spacing={24} justify="center">
+        {userList ? userList.map(user => <Grid item key={user.userName}><PersonCard userName={user.userName} /></Grid>) : <LoadingDots />}
+      </Grid>
     );
   }
 }

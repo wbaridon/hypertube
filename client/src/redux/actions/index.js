@@ -4,18 +4,20 @@ import {
   CLEAR_REGISTER_DATA,
   PROTECTED_ROUTE_LOADING,
   PROTECTED_ROUTE_FINISHED,
+  DELETE_USER_FROM_USER_LIST,
 } from './action-types';
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
 import { registerUserA } from './register-user';
 import { registerUserOauthA } from './register-user-oauth';
 import { getUserInfoPrivateA } from './get-user-info-private';
-import { setUserA, clearUserA } from './current-user';
+import { setUserA, clearUserA, changeUserValueA } from './current-user';
 import { sendEmailA } from './send-email';
 import { resetPasswordA } from './reset-password';
 import { updateUserFieldA } from './update-user-field';
 import { updateUserImageA } from './update-user-image';
 import { getUserListA } from './get-user-list';
+import { getUserInfoA } from './get-user-info';
 import {
   checkUserInCookieA,
   deleteUserFromCookieThunkA,
@@ -30,6 +32,11 @@ import {
   openSidebarA,
   closeSidebarA,
 } from './sidebar';
+
+export const deleteUserFromUserListA = user => ({
+  type: DELETE_USER_FROM_USER_LIST,
+  user,
+});
 
 export const toggleDarkThemeA = () => ({
   type: TOGGLE_DARK_THEME,
@@ -73,4 +80,6 @@ export {
   openSidebarA,
   closeSidebarA,
   getUserListA,
+  getUserInfoA,
+  changeUserValueA,
 };

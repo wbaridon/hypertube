@@ -7,6 +7,7 @@ import {
   GET_USER_INFO_PRIVATE_SUCCESS,
   GET_USER_INFO_PRIVATE_ERROR,
   SET_USER,
+  CHANGE_USER_VALUE,
   CLEAR_USER,
 } from 'Actions/action-types';
 
@@ -26,6 +27,14 @@ export default function user(state = defaultUserState, action) {
         dataFetched: true,
         data: action.data,
         token: action.token,
+      };
+    case CHANGE_USER_VALUE:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.field]: action.value,
+        },
       };
     case CLEAR_USER:
       return defaultUserState;
