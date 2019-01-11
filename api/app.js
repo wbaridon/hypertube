@@ -6,6 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const db = require('./config/db');
 const fs = require('fs');
+var schedule = require('node-schedule');
 const app = express();
 const hostname = 'localhost';
 const port = 3000;
@@ -130,4 +131,8 @@ app.get('/video', function(req, res) {
 
 app.listen(port, function () {
   console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+var getNewMovies = schedule.scheduleJob('42 * * * *', function(){
+  console.log('Execute cette fonction a chaque fois que la minute est 42');
 });
