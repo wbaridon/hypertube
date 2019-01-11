@@ -4,7 +4,12 @@ import {
   REGISTER_SUCCESS,
   REGISTER_ERROR,
 } from './action-types';
-import { setErrorA, addUserToUserListA, setSuccessA, loginUserA } from '.';
+import {
+  setErrorA,
+  addUserToUserListA,
+  setSuccessA,
+  loginUserA,
+} from '.';
 
 export const registerUserStart = () => ({
   type: REGISTER,
