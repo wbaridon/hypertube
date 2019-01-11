@@ -86,6 +86,7 @@ userRouter
     // Reçoit un login et retourne les infos public de ce dernier
       let userName = req.body.userName;
       UserManager.getUser(userName).then(getResult => {
+        console.log(getResult);
         const user = {
           userName: getResult.userName,
           picture: getResult.picture,
@@ -93,7 +94,8 @@ userRouter
           firstName: getResult.firstName,
         }
         res.send(user)
-      })
+      },
+      (error) => res.status(404).json(error))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/getUserPrivate', (req, res) => {

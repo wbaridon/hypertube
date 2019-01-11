@@ -4,7 +4,10 @@ const User = require('./user');
 module.exports.getUser = function (userName) {
   return new Promise ((resolve, reject) => {
     User.findOne({'userName': userName}).then(function(result){
-      resolve(result)
+      if (result === null) {
+        reject('getUser.noSuchUser');
+      }
+      resolve(result);
     })
   })
 }
