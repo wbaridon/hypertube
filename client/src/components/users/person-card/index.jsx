@@ -30,6 +30,7 @@ class PersonCard extends Component {
             firstName={user.firstName}
             lastName={user.lastName}
             picture={user.picture}
+            userName={userName}
           />
         ) : null
     );

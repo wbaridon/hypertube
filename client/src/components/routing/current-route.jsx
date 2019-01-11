@@ -9,6 +9,7 @@ import Movie from '../movie/movie';
 import Settings from '../settings/settings';
 import ForgotPassword from '../forgot-password';
 import Users from '../users';
+import User from '../user';
 import LoadingDots from '../loading-dots';
 
 
@@ -48,6 +49,7 @@ function CurrentRoute() {
   return (
     <Switch>
       <Route path={Video.url} component={Video} />
+      <PrivateRoute path={User.url} component={User} />
       <PrivateRoute path={Users.url} component={Users} />
       <PrivateRoute path={Settings.url} component={Settings} />
       <Route path={Movie.url} component={Movie} />
