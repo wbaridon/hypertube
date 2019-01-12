@@ -158,7 +158,7 @@ class RegisterCardDumb extends React.Component {
               )
           }
         </CardMedia>
-        <form action="" onSubmit={e => this.handleSubmit(e)}>
+        <form name="register" action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
               className="registerInputs"
