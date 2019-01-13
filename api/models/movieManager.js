@@ -22,7 +22,12 @@ module.exports.createMovie = function (data) {
     var movie = new Movie({
       imdbId: data.imdbId,
       title: data.title,
-      year: data.year
+      year: data.year,
+      cover: data.cover,
+      synopsis: data.synopsis,
+      torrents: {
+        url: data.torrents.url,
+      }
     })
     movie.save().then(function(){
       resolve();

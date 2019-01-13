@@ -11,8 +11,14 @@ movieRouter
     var movie ={
       imdbId: response.data[0].imdb_id,
       title: response.data[0].title,
-      year: response.data[0].year
+      year: response.data[0].year,
+      cover: response.data[0].images.poster,
+      synopsis: response.data[0].synopsis,
+      torrents: {
+        url: response.data[0].torrents.en["1080p"].url,
+      }
     }
+    console.log(movie.torrents.url)
     MovieManager.exist(movie.imdbId).then(status => {
       if (!status) {
         MovieManager.createMovie(movie).then(reply => {
