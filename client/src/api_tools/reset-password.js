@@ -1,13 +1,14 @@
 import Axios from 'axios';
 
-export default function resetPasswordAPI(newPassword, token) {
+export default function resetPasswordAPI(newPassword, newPasswordRepeat, key) {
   return Axios({
     method: 'post',
     url: 'http://localhost:3000/user/resetPassword',
     data: {
       newPassword,
+      newPasswordRepeat,
+      key,
     },
-    headers: { Authorization: `Bearer ${token}` },
     timeout: TIMEOUT_API,
   });
 }

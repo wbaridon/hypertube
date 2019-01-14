@@ -3,6 +3,13 @@ const flatten = require('flat');
 
 
 const enUS = {
+  resetPassword: {
+    title: 'Hi, if you\'ve forgotten your password, enter your email below!',
+    resetForEmail: 'Hi {email}, Enter your new password twice below!',
+    newPassword: 'New password',
+    newPasswordRepeat: 'Repeat password',
+    submit: 'Confirm',
+  },
   login: {
     userName: 'User name',
     email: 'Email',
