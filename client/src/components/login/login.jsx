@@ -2,20 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Typography,
-  CircularProgress,
-  IconButton,
-  Grid,
+  CircularProgress, Modal,
 } from '@material-ui/core';
 import {
   loginUserA,
   logoutUserA,
 } from 'Actions';
-import { Link } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
-import Avatar from '@material-ui/core/Avatar';
-import Settings from '@material-ui/icons/Settings';
-import ExitToApp from '@material-ui/icons/ExitToApp';
 import LoginCard from './login-card';
 import './autocomplete-fix.css';
 
@@ -28,7 +21,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return ({
-    user: state.user,
     loading: state.loginUser.loading,
   });
 };
@@ -40,6 +32,7 @@ class Login extends React.Component {
       currentUser: {
         userName: '',
         password: '',
+        modalOpen: false,
       },
     };
     this.handleLogin = this.handleLogin.bind(this);
@@ -64,50 +57,36 @@ class Login extends React.Component {
 
   render() {
     const {
-      user,
       intl,
       loading,
-      logout,
+      modal,
     } = this.props;
     const { currentUser } = this.state;
-
-    if (user.data && user.data.firstName) {
-      return (
-        <Grid container alignContent="center" alignItems="center" justify="space-around">
-          <Grid item>
-            <Typography>
-              {`Hi ${user.data.firstName}!`}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Avatar src={`${BACKEND}images/${user.data.picture}`} />
-          </Grid>
-          <Grid item>
-            <IconButton component={Link} to="/settings">
-              <Settings />
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <IconButton onClick={logout}>
-              <ExitToApp />
-            </IconButton>
-          </Grid>
-        </Grid>);
-    } if (loading) {
+    if (loading) {
       return (<CircularProgress />);
     }
+    if (!modal) {
+      return (
+        <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
+      );
+    }
     return (
-      <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
+      <Modal open>
+        <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
+      </Modal>
     );
   }
 }
 
 Login.propTypes = {
   logIn: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-  user: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
   loading: PropTypes.bool.isRequired,
+  modal: PropTypes.bool,
+};
+
+Login.defaultProps = {
+  modal: false,
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Login));

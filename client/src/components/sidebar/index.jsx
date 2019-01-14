@@ -18,6 +18,7 @@ import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
 import Login from '../login/login';
 import Providers from '../providers';
+import Settings from '../settings/settings';
 
 const styles = theme => ({
   root: {
@@ -47,7 +48,8 @@ function Sidebar({
       {loggedIn
         ? (
           <React.Fragment>
-            <Login />
+            {/* <Login /> */}
+            <Settings />
           </React.Fragment>
         )
         : (
