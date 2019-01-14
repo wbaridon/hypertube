@@ -12,6 +12,8 @@ import {
   FormattedMessage,
 } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import LoadingDots from '../loading-dots';
 
 const styles = {
   firstItem: {
@@ -28,7 +30,11 @@ function SendEmail({
   handleSubmit,
   intl,
   classes,
+  sendEmailLoading,
 }) {
+  if (sendEmailLoading) {
+    return (<LoadingDots />);
+  }
   return (
     <form action="" onSubmit={handleSubmit}>
       <Grid container spacing={8} direction="column" alignItems="center" justify="center">
@@ -65,6 +71,12 @@ SendEmail.propTypes = {
     firstItem: PropTypes.string.isRequired,
     lastItem: PropTypes.string.isRequired,
   }).isRequired,
+  sendEmailLoading: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(injectIntl(SendEmail));
+
+const mapStateToProps = state => ({
+  sendEmailLoading: state.forgotPassword.loading,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(injectIntl(SendEmail)));

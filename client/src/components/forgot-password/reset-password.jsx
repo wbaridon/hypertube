@@ -12,6 +12,7 @@ import {
   FormattedMessage,
 } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
 const styles = {
   firstItem: {
@@ -35,7 +36,7 @@ function ResetPassword({
     <form action="">
       <Grid container spacing={8} direction="column" alignItems="center" justify="center">
         <Grid item className={classes.firstItem}>
-          <Typography variant="title">
+          <Typography>
             <FormattedMessage
               id="resetPassword.resetForEmail"
               values={{
@@ -83,4 +84,9 @@ ResetPassword.propTypes = {
   }).isRequired,
 };
 
-export default withStyles(styles)(injectIntl(ResetPassword));
+const mapStateToProps = state => ({
+  resetPasswordSuccess: state.forgotPassword.success,
+  resetPasswordLoading: state.forgotPassword.loading,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(injectIntl(ResetPassword)));
