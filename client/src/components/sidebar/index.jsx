@@ -10,7 +10,10 @@ import {
   Divider,
   IconButton,
 } from '@material-ui/core';
-import { closeSidebarA } from 'Actions';
+import {
+  closeSidebarA,
+  logoutUserA,
+} from 'Actions';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
@@ -38,6 +41,7 @@ function Sidebar({
   open,
   handleClose,
   loggedIn,
+  handleLogout,
   classes,
 }) {
   return (
@@ -48,6 +52,9 @@ function Sidebar({
       {loggedIn
         ? (
           <React.Fragment>
+            <Button onClick={handleLogout}>
+            LOGOUTTEMP
+            </Button>
             {/* <Login /> */}
             <Settings />
           </React.Fragment>
@@ -84,6 +91,7 @@ Sidebar.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
 };
 
@@ -94,6 +102,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   handleClose: () => dispatch(closeSidebarA()),
+  handleLogout: () => dispatch(logoutUserA()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Sidebar)));
