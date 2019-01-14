@@ -85,7 +85,6 @@ ResetPassword.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  resetPasswordSuccess: state.forgotPassword.success,
   resetPasswordLoading: state.forgotPassword.loading,
 });
 
