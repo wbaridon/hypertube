@@ -53,7 +53,7 @@ function Sidebar({
         ? (
           <React.Fragment>
             <Button onClick={handleLogout}>
-            LOGOUTTEMP
+              LOGOUTTEMP
             </Button>
             {/* <Login /> */}
             <Settings />
@@ -67,7 +67,6 @@ function Sidebar({
               </ListItem>
               <Divider />
               <ListItem>
-                <Login />
                 <IconButton component={Link} to="/forgot">
                   <Typography>
                     ForgotPassword

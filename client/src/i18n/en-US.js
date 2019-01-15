@@ -10,6 +10,14 @@ const enUS = {
     newPasswordRepeat: 'Repeat password',
     submit: 'Confirm',
   },
+  navigation: {
+    error: {
+      notAuthed: 'You are not permitted to view the page',
+    },
+  },
+  logout: {
+    logoutButton: 'Sign out',
+  },
   login: {
     userName: 'User name',
     email: 'Email',

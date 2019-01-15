@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  CircularProgress, Modal,
+  CircularProgress,
 } from '@material-ui/core';
 import {
   loginUserA,
@@ -32,7 +32,6 @@ class Login extends React.Component {
       currentUser: {
         userName: '',
         password: '',
-        modalOpen: false,
       },
     };
     this.handleLogin = this.handleLogin.bind(this);
@@ -59,21 +58,13 @@ class Login extends React.Component {
     const {
       intl,
       loading,
-      modal,
     } = this.props;
     const { currentUser } = this.state;
     if (loading) {
       return (<CircularProgress />);
     }
-    if (!modal) {
-      return (
-        <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
-      );
-    }
     return (
-      <Modal open>
-        <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
-      </Modal>
+      <LoginCard intl={intl} currentUser={currentUser} parentLoginHandle={this.handleLogin} parentStateChange={this.handleStateChange} />
     );
   }
 }
@@ -82,11 +73,6 @@ Login.propTypes = {
   logIn: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   loading: PropTypes.bool.isRequired,
-  modal: PropTypes.bool,
-};
-
-Login.defaultProps = {
-  modal: false,
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Login));

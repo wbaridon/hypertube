@@ -1,14 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+  IconButton,
+} from '@material-ui/core';
+import Add from '@material-ui/icons/Add';
+import { openSidebarA } from 'Actions';
 import Login from '../login/login';
 
-function LoggedOut() {
+function LoggedOut({
+  handleSideBarOpen,
+}) {
   return (
-    <Login modal />
+    <React.Fragment>
+      <Login />
+      <IconButton>
+        <Add color="primary" onClick={handleSideBarOpen} />
+      </IconButton>
+    </React.Fragment>
   );
 }
 
 LoggedOut.propTypes = {
+  handleSideBarOpen: PropTypes.func.isRequired,
 };
 
-export default LoggedOut;
+const mapDispatchToProps = dispatch => ({
+  handleSideBarOpen: () => dispatch(openSidebarA()),
+});
+
+export default connect(null, mapDispatchToProps)(LoggedOut);

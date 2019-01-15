@@ -50,8 +50,6 @@ const theme = createMuiTheme({
 const mapDispatchToProps = dispatch => ({
   toggleDarkThemeHandler: () => dispatch(toggleDarkThemeA()),
   changeLocale: locale => dispatch(setLocaleA(locale)),
-  handleOpenSidebar: () => dispatch(openSidebarA()),
-  handleLogout: () => dispatch(logoutUserA()),
 });
 
 const mapStateToProps = state => ({
@@ -71,13 +69,22 @@ const styles = {
 function Header({
   classes,
   userData,
-  handleOpenSidebar,
 }) {
   return (
     <AppBar position="sticky" className={classes.appBar}>
       <MuiThemeProvider theme={theme}>
         <Toolbar>
-          {/* {
+          <IconButton component={Link} to="/" color="primary">
+            <Home />
+          </IconButton>
+          <span className={classes.spacer} />
+          {/* <IconButton onClick={handleOpenSidebar}>
+            <ExitToApp color="primary" />
+          </IconButton>
+          <IconButton component={Link} to="/users">
+            <People color="primary" />
+          </IconButton> */}
+          {
             userData
               ? (
                 <LoggedIn />
@@ -85,17 +92,7 @@ function Header({
               : (
                 <LoggedOut />
               )
-          } */}
-          <IconButton component={Link} to="/" color="primary">
-            <Home />
-          </IconButton>
-          <span className={classes.spacer} />
-          <IconButton onClick={handleOpenSidebar}>
-            <ExitToApp color="primary" />
-          </IconButton>
-          <IconButton component={Link} to="/users">
-            <People color="primary" />
-          </IconButton>
+          }
         </Toolbar>
       </MuiThemeProvider>
     </AppBar>
@@ -105,7 +102,6 @@ function Header({
 Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   userData: PropTypes.shape({}),
-  handleOpenSidebar: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
