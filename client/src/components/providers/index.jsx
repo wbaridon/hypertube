@@ -42,7 +42,7 @@ const providers = [
   },
   {
     name: 'Instagram',
-    icon: linkedinIcon,
+    icon: instagramIcon,
     tooltip: 'login.provider.instagram',
     url: AUTHINSTAGRAM,
   },
@@ -50,7 +50,7 @@ const providers = [
 
 function Providers({ direction }) {
   return (
-    <Grid container direction={direction}>
+    <Grid container direction={direction} alignContent="center" alignItems="center" justify="space-around">
       {providers.map(provider => (
         <Grid key={provider.url} item>
           <Button title={provider.tooltip} href={provider.url} size="small">
