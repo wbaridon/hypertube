@@ -19,7 +19,7 @@ function LoggedIn({
       <Button onClick={logoutHandler}>
         <FormattedMessage id="logout.logoutButton" />
       </Button>
-      <IconButton onClick={handleOpenSidebar}>
+      <IconButton onClick={handleOpenSidebar} onKeyDown={e => (console.log(e))}>
         <Avatar src={`http://localhost:3000/images/${userData.picture}`} />
       </IconButton>
     </React.Fragment>

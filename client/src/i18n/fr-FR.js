@@ -9,6 +9,18 @@ const frFR = {
     password: 'Mot de Passe',
     loginButton: 'Se Connecter',
   },
+  api: {
+    success: {
+      login: 'Bienvenu !',
+    },
+    error: {
+      login: 'Erreur de connection',
+      'Network Error': 'Impossible de se connecter a l\'API',
+    },
+  },
+  logout: {
+    logoutButton: 'Déconnexion',
+  },
   register: {
     title: 'INSCRIPTION',
     userName: 'Nom d\'Utilisateur',

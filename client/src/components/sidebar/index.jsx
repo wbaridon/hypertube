@@ -16,10 +16,10 @@ import {
 } from 'Actions';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import { FormattedMessage } from 'react-intl';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
-import Login from '../login/login';
 import Providers from '../providers';
 import Settings from '../settings/settings';
 
@@ -27,6 +27,7 @@ const styles = theme => ({
   root: {
     [theme.breakpoints.down('md')]: {
       maxWidth: '320px',
+      width: '320px',
     },
     [theme.breakpoints.up('md')]: {
       maxWidth: '1200px',
@@ -69,7 +70,7 @@ function Sidebar({
               <ListItem>
                 <IconButton component={Link} to="/forgot">
                   <Typography>
-                    ForgotPassword
+                    <FormattedMessage id="login.forgotPassword" />
                   </Typography>
                   <SupervisedUserCircle color="primary" />
                 </IconButton>

@@ -36,7 +36,7 @@ export const loginUserErrorAction = () => ({
 export const loginUserError = (error) => {
   return (dispatch) => {
     const errorString = error.message;
-    dispatch(setErrorA(errorString));
+    dispatch(setErrorA('api.error.login', errorString));
     return dispatch(loginUserErrorAction());
   };
 };
@@ -45,7 +45,7 @@ export const postLoginUserSuccess = (result) => {
   return (dispatch) => {
     return getUserInfoPrivateA(result.token, dispatch).then(
       () => {
-        dispatch(setSuccessA('success.login'));
+        dispatch(setSuccessA('api.success.login'));
         dispatch(loginUserSuccess());
         dispatch(protectedRouteFinishedA());
       },

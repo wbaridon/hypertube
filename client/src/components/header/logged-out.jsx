@@ -14,8 +14,8 @@ function LoggedOut({
   return (
     <React.Fragment>
       <Login />
-      <IconButton>
-        <Add color="primary" onClick={handleSideBarOpen} />
+      <IconButton onClick={handleSideBarOpen}>
+        <Add color="primary" />
       </IconButton>
     </React.Fragment>
   );

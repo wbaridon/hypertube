@@ -12,7 +12,10 @@ import {
 } from 'Actions/action-types';
 
 const defaultUserState = {
-  data: null,
+  data: {
+    locale: 'en',
+    darkTheme: false,
+  },
   tokenFetched: false,
   tokenValid: false,
   dataFetched: false,
@@ -59,7 +62,6 @@ export default function user(state = defaultUserState, action) {
       };
     case GET_USER_INFO_PRIVATE:
       return {
-        dataFetched: true,
         ...state,
       };
     case GET_USER_INFO_PRIVATE_SUCCESS:

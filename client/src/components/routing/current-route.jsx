@@ -36,7 +36,7 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
       return (<LoadingDots />);
     }
     if (!protectedRouteLoading && authed !== true) {
-      return (<Redirect to={{ pathname: '/', state: { from: props.location.pathname } }} />);
+      return (<Redirect to={{ pathname: '/', state: { from: props.location.pathname } }} />); // eslint-disable-line
     }
     return (<Component {...props} />);
   }}
@@ -45,18 +45,20 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
 
 function CurrentRoute() {
   return (
-    <Switch>
-      <Route path={Video.url} component={Video} />
-      <PrivateRoute path={User.url} component={User} />
-      <PrivateRoute path={Users.url} component={Users} />
-      <PrivateRoute path={Settings.url} component={Settings} />
-      <Route path={Movie.url} component={Movie} />
-      <Route path={ForgotPassword.url} component={ForgotPassword} />
-      <Route path={Register.url} component={Register} />
-      <Route exact path={Home.url} component={Home} />
-      <Redirect path="*" to={Home.url} />
-      <Route component={Home} />
-    </Switch>
+    <div style={{ marginBottom: 70 }}>
+      <Switch>
+        <Route path={Video.url} component={Video} />
+        <PrivateRoute path={User.url} component={User} />
+        <PrivateRoute path={Users.url} component={Users} />
+        <PrivateRoute path={Settings.url} component={Settings} />
+        <Route path={Movie.url} component={Movie} />
+        <Route path={ForgotPassword.url} component={ForgotPassword} />
+        <Route path={Register.url} component={Register} />
+        <Route exact path={Home.url} component={Home} />
+        <Redirect path="*" to={Home.url} />
+        <Route component={Home} />
+      </Switch>
+    </div>
   );
 }
 

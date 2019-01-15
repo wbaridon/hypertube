@@ -9,15 +9,11 @@ import {
   withStyles,
 } from '@material-ui/core';
 import Home from '@material-ui/icons/Home';
-import ExitToApp from '@material-ui/icons/ExitToApp';
-import People from '@material-ui/icons/People';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   toggleDarkThemeA,
   setLocaleA,
-  openSidebarA,
-  logoutUserA,
 } from 'Actions/index';
 import LoggedIn from './logged-in';
 import LoggedOut from './logged-out';
@@ -55,7 +51,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   darkThemeBool: state.darkTheme,
   locale: state.locale,
-  userData: state.user.data,
+  dataFetched: state.user.dataFetched,
 });
 
 const styles = {
@@ -68,7 +64,7 @@ const styles = {
 
 function Header({
   classes,
-  userData,
+  dataFetched,
 }) {
   return (
     <AppBar position="sticky" className={classes.appBar}>
@@ -78,14 +74,8 @@ function Header({
             <Home />
           </IconButton>
           <span className={classes.spacer} />
-          {/* <IconButton onClick={handleOpenSidebar}>
-            <ExitToApp color="primary" />
-          </IconButton>
-          <IconButton component={Link} to="/users">
-            <People color="primary" />
-          </IconButton> */}
           {
-            userData
+            dataFetched
               ? (
                 <LoggedIn />
               )
@@ -102,6 +92,7 @@ function Header({
 Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   userData: PropTypes.shape({}),
+  dataFetched: PropTypes.bool.isRequired,
 };
 
 Header.defaultProps = {

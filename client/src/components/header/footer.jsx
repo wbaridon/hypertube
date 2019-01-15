@@ -53,7 +53,7 @@ class Footer extends Component {
     const { classes } = this.props;
 
     return (
-      <AppBar position="sticky" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}>
         <MuiThemeProvider theme={theme}>
           <Toolbar className={classes.toolbar}>
             <Grid container spacing={0} wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">

@@ -53,10 +53,16 @@ const darkTheme = createMuiTheme({
   },
 });
 
+const styles = {
+  routeContainer: {
+    marginBottom: '70px',
+  }
+}
+
 function mapStateToProps(state) {
   return {
-    locale: state.locale,
-    darkThemeBool: state.darkTheme,
+    locale: state.user.data.locale,
+    darkThemeBool: state.user.data.darkTheme,
     user: state.user,
     error: state.notifications.error,
     success: state.notifications.success,
@@ -94,18 +100,20 @@ class App extends React.Component {
       data,
     } = this.props;
     if (error) {
-      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data}`, { variant: 'error' });
+      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center' } });
       clearErrorHandler();
     }
     if (success) {
-      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data}`, { variant: 'success' });
+      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'success', anchorOrigin: { vertical: 'top', horizontal: 'center' } });
       clearSuccessHandler();
     }
   }
 
 
   render() {
-    const { darkThemeBool } = this.props;
+    const {
+      darkThemeBool,
+    } = this.props;
     const root = document.documentElement;
     root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
     root.style.setProperty('--autocomplete-background-color', darkThemeBool ? darkTheme.palette.background.paper : theme.palette.background.paper);
@@ -117,7 +125,7 @@ class App extends React.Component {
           <CssBaseline>
             <Header />
             <Sidebar />
-            <CurrentRoute />
+            <CurrentRoute/>
             <Footer />
           </CssBaseline>
         </MuiThemeProvider>
@@ -144,4 +152,4 @@ App.defaultProps = {
   data: '',
 };
 
-export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(((App)))));
+export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl((App))));

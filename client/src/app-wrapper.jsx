@@ -12,7 +12,7 @@ import frFR from './i18n/fr-FR';
 addLocaleData([...en, ...fr]);
 
 const mapStateToProps = state => ({
-  locale: state.locale,
+  locale: state.user.data.locale,
 });
 
 function AppWrapper({ locale }) {

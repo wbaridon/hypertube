@@ -30,6 +30,16 @@ const enUS = {
       gitlab: 'Sign in with Gitlab',
       reddit: 'Sign in with Reddit',
     },
+    forgotPassword: 'Forgot something?',
+  },
+  api: {
+    success: {
+      login: 'Successfully logged in!',
+    },
+    error: {
+      login: 'Login error',
+      'Network Error': 'Failed to connect to API',
+    },
   },
   register: {
     title: 'REGISTER',
@@ -62,12 +72,6 @@ const enUS = {
       missingImage: 'Please upload a valid image',
       formInvalid: 'Please do not forget anything',
     },
-  },
-  error: {
-    'Network Error': 'Failed to connect to API',
-  },
-  success: {
-    login: 'Successfully logged in!',
   },
 };
 

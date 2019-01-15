@@ -22,7 +22,7 @@ class Users extends Component {
       return (<div>What</div>);
     }
     return (
-      <Grid container spacing={8} justify="center">
+      <Grid container spacing={8} justify="center" alignItems="center">
         {userList.length !== 0 ? userList.map(user => <Grid item key={user.userName}><PersonCard userName={user.userName} /></Grid>) : <LoadingDots />}
       </Grid>
     );
