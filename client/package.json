@@ -13,8 +13,8 @@
   "author": "guiricha",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/core": "^3.6.1",
-    "@material-ui/icons": "^3.0.1",
+    "@material-ui/core": "^3.9.0",
+    "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
     "email-validator": "^2.0.4",
     "flat": "^4.1.0",

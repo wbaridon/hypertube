@@ -4,7 +4,7 @@ import {
   UPDATE_USER_IMAGE_SUCCESS,
   UPDATE_USER_IMAGE_ERROR,
 } from './action-types';
-import { setErrorA, changeUserValueA, deleteUserFromUserListA } from '.';
+import { setErrorA, changeUserValueA, deleteUserFromUserListA, getUserInfoA } from '.';
 
 export const updateUserImageStart = () => ({
   type: UPDATE_USER_IMAGE,
@@ -28,6 +28,7 @@ export const updateUserImageA = (token, form) => {
           console.log(result);
           dispatch(changeUserValueA('picture', result.data.picture));
           dispatch(deleteUserFromUserListA(result.data.user));
+          getUserInfoA(token, result.data.user, dispatch);
           dispatch(updateUserImageSuccess(result));
         },
         (error) => {

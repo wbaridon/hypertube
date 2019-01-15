@@ -34,7 +34,7 @@ function ResetPassword({
 }) {
   return (
     <form action="">
-      <Grid container spacing={8} direction="column" alignItems="center" justify="center">
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center">
         <Grid item className={classes.firstItem}>
           <Typography>
             <FormattedMessage

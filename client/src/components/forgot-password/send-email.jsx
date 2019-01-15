@@ -37,7 +37,7 @@ function SendEmail({
   }
   return (
     <form action="" onSubmit={handleSubmit}>
-      <Grid container spacing={8} direction="column" alignItems="center" justify="center">
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center">
         <Grid item className={classes.firstItem}>
           <Typography>
             <FormattedMessage id="resetPassword.title" />
