@@ -36,9 +36,7 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
       return (<LoadingDots />);
     }
     if (!protectedRouteLoading && authed !== true) {
-      console.log(props);
-      setErrorHandler(props.location.pathname);
-      return (<Redirect to="/" />);
+      return (<Redirect to={{ pathname: '/', state: { from: props.location.pathname } }} />);
     }
     return (<Component {...props} />);
   }}
