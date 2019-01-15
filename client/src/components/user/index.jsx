@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import getUserInfoAPI from '../../api_tools/get-user-info';
 import UserDumb from './dumb';
-import PersonNotFound from '../person-not-found';
+import LoadingDots from '../loading-dots';
 
 function getUserFromUrl(url) {
   const parts = url.split('/');
@@ -12,6 +12,13 @@ function getUserFromUrl(url) {
 
   return (user);
 }
+
+const emptyUser = {
+  userName: 'username',
+  firstName: 'first name',
+  lastName: 'last name',
+  picture: 'picture',
+};
 
 class User extends Component {
   constructor(props) {
@@ -25,11 +32,12 @@ class User extends Component {
   async componentWillMount() {
     const { token } = this.props;
     const { user } = this.state;
-    const userData = await getUserInfoAPI(token, user);
-    if (userData.data.userName) {
+    try {
+      const userData = await getUserInfoAPI(token, user);
       this.setState({ user: userData.data });
+    } catch (err) {
+      this.setState({ user: emptyUser });
     }
-    console.log(userData);
   }
 
 
@@ -44,7 +52,7 @@ class User extends Component {
             userName={user.userName}
             picture={user.picture}
           />
-        ) : <PersonNotFound />
+        ) : <LoadingDots />
     );
   }
 }

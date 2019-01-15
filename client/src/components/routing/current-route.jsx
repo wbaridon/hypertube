@@ -14,7 +14,7 @@ import LoadingDots from '../loading-dots';
 
 
 const mapStateToProps = state => ({
-  authed: state.user.tokenValid,
+  authed: state.user.tokenValid && state.user.dataFetched,
   protectedRouteLoading: state.protectedRouteLoading,
 });
 

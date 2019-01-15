@@ -16,6 +16,7 @@ import {
 } from 'Actions';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import People from '@material-ui/icons/People';
 import { FormattedMessage } from 'react-intl';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Close from '@material-ui/icons/Close';
@@ -56,8 +57,11 @@ function Sidebar({
             <Button onClick={handleLogout}>
               LOGOUTTEMP
             </Button>
+            <IconButton component={Link} to="/users" onClick={handleClose}>
+              <People />
+            </IconButton>
             {/* <Login /> */}
-            <Settings />
+            {/* <Settings /> */}
           </React.Fragment>
         )
         : (

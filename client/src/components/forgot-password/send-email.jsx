@@ -45,7 +45,7 @@ function SendEmail({
         </Grid>
         <Grid item>
           <TextField
-            label={intl.formatMessage({ id: 'email' })}
+            label={intl.formatMessage({ id: 'resetPassword.email' })}
             value={email}
             onChange={e => handleFieldChange('email', e.target.value)}
           />

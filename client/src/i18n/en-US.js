@@ -6,6 +6,7 @@ const enUS = {
   resetPassword: {
     title: 'Hi, if you\'ve forgotten your password, enter your email below!',
     resetForEmail: 'Hi {email}, Enter your new password twice below!',
+    email: 'email',
     newPassword: 'New password',
     newPasswordRepeat: 'Repeat password',
     submit: 'Confirm',

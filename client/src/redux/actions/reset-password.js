@@ -19,10 +19,10 @@ export const resetPasswordError = () => ({
   type: RESET_PASSWORD_ERROR,
 });
 
-export const resetPasswordA = (newPassword, token) => {
+export const resetPasswordA = (key, newPassword, newPasswordRepeat, email) => {
   return (dispatch) => {
     dispatch(resetPasswordStart());
-    return resetPasswordAPI(newPassword, token)
+    return resetPasswordAPI(key, newPassword, newPasswordRepeat, email)
       .then(
         result => dispatch(resetPasswordSuccess(result)),
         (error) => {

@@ -100,11 +100,11 @@ class App extends React.Component {
       data,
     } = this.props;
     if (error) {
-      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center' } });
+      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data ? ': ' : ''}${data}`, { autoHideDuration: 40000, variant: 'error' });
       clearErrorHandler();
     }
     if (success) {
-      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'success', anchorOrigin: { vertical: 'top', horizontal: 'center' } });
+      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data ? ': ' : ''}${data}`, { autoHideDuration: 40000, variant: 'success' });
       clearSuccessHandler();
     }
   }
@@ -125,7 +125,7 @@ class App extends React.Component {
           <CssBaseline>
             <Header />
             <Sidebar />
-            <CurrentRoute/>
+            <CurrentRoute />
             <Footer />
           </CssBaseline>
         </MuiThemeProvider>

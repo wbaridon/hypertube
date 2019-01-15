@@ -9,7 +9,7 @@ import ResetPassword from './reset-password';
 
 
 const mapDispatchToProps = dispatch => ({
-  handlePasswordReset: (newPassword, newPasswordRepeat, token) => dispatch(resetPasswordA(newPassword, newPasswordRepeat, token)),
+  handlePasswordReset: (key, newPassword, newPasswordRepeat, email) => dispatch(resetPasswordA(key, newPassword, newPasswordRepeat, email)),
   handleSendEmail: email => dispatch(sendEmailA(email)),
 });
 
@@ -35,9 +35,14 @@ class ForgotPassword extends Component {
 
   handleResetPasswordSubmit(e) {
     e.preventDefault();
-    const { newPassword, newPasswordRepeat, key } = this.state;
+    const {
+      newPassword,
+      newPasswordRepeat,
+      key,
+      email,
+    } = this.state;
     const { handlePasswordReset } = this.props;
-    handlePasswordReset(newPassword, newPasswordRepeat, key);
+    handlePasswordReset(key, newPassword, newPasswordRepeat, email);
   }
 
   handleSendEmailSubmit(e) {

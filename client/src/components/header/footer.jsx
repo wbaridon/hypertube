@@ -44,12 +44,7 @@ const styles = {
 };
 
 class Footer extends Component {
-  state = {
-    test: 42,
-  }
-
   render() {
-    const { test } = this.state;
     const { classes } = this.props;
 
     return (
@@ -58,7 +53,7 @@ class Footer extends Component {
           <Toolbar className={classes.toolbar}>
             <Grid container spacing={0} wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">
               <Grid item>
-                {test}
+              {3242}
               </Grid>
             </Grid>
           </Toolbar>

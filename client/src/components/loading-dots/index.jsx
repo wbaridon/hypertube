@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {
+  Typography,
+} from '@material-ui/core';
 
 export default class LoadingDots extends Component {
   constructor() {
@@ -25,9 +28,9 @@ export default class LoadingDots extends Component {
   render() {
     const { dots } = this.state;
     return (
-      <div>
+      <Typography>
         {dots}
-      </div>
+      </Typography>
     );
   }
 }
