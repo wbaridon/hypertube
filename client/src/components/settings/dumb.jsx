@@ -33,7 +33,7 @@ function DumbSettings({
       <br />
       <Typography>
         Dark theme
-        <Switch value={darkTheme} onChange={() => handleFieldChange('darkTheme', !darkTheme)} />
+        <Switch checked={darkTheme} value={darkTheme} onChange={() => handleFieldChange('darkTheme', !darkTheme)} />
       </Typography>
       <Button
         aria-owns={anchorEl ? 'simple-menu' : undefined}
