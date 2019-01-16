@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TextField } from '@material-ui/core';
 import {
   updateUserFieldA,
   updateUserImageA,
@@ -9,24 +8,51 @@ import {
 import debounce from 'lodash.debounce';
 import ImageChanger from '../image-changer';
 import { dataURItoBlob } from '../image-changer/image-handle-functions';
+import DumbSettings from './dumb';
 
 class Settings extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      ...props.user,
+      picture: props.user.picture,
+      user: {
+        userName: props.user.userName,
+        email: props.user.email,
+        firstName: props.user.firstName,
+        lastName: props.user.lastName,
+        locale: props.user.locale,
+        darkTheme: props.user.darkTheme,
+      },
+      anchorEl: null,
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleMenuClose = this.handleMenuClose.bind(this);
+    this.handleMenuOpen = this.handleMenuOpen.bind(this);
     this.debounced = debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500);
   }
 
   handleFieldChange(field, value) {
+    console.log(this.state, field, value);
     const { token } = this.props;
-    this.setState({ [field]: value });
+    const { user } = this.state;
+    user[field] = value;
+    this.setState({ user });
     this.debounced(token, field, value);
+  }
+
+  handleMenuClose(locale = null) {
+    const { user } = this.state;
+    if (locale) {
+      user.locale = locale;
+    }
+    this.setState({ user, anchorEl: null });
+  }
+
+  handleMenuOpen(e) {
+    this.setState({ anchorEl: e.currentTarget });
   }
 
   handleImageChange(image) {
@@ -40,21 +66,12 @@ class Settings extends Component {
   }
 
   render() {
-    const currentState = this.state;
+    const { picture, user, anchorEl } = this.state;
+    console.log(user.darkTheme);
     return (
       <div>
-        <ImageChanger imageUrl={currentState.picture} handleImageChange={this.handleImageChange} />
-        {Object.keys(currentState)
-          .map(key => (
-            <React.Fragment key={key}>
-              <TextField
-                fullWidth
-                value={currentState[key]}
-                label={key}
-                onChange={e => this.handleFieldChange(key, e.target.value)}
-              />
-              <br />
-            </React.Fragment>))}
+        <ImageChanger imageUrl={picture} handleImageChange={this.handleImageChange} />
+        <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
       </div>
     );
   }

@@ -19,10 +19,10 @@ import { withStyles } from '@material-ui/core/styles';
 import People from '@material-ui/icons/People';
 import { FormattedMessage } from 'react-intl';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
+import Settings from '@material-ui/icons/Settings';
 import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
 import Providers from '../providers';
-import Settings from '../settings/settings';
 
 const styles = theme => ({
   root: {
@@ -59,6 +59,9 @@ function Sidebar({
             </Button>
             <IconButton component={Link} to="/users" onClick={handleClose}>
               <People />
+            </IconButton>
+            <IconButton component={Link} to="/settings" onClick={handleClose}>
+              <Settings />
             </IconButton>
             {/* <Login /> */}
             {/* <Settings /> */}

@@ -100,11 +100,11 @@ class App extends React.Component {
       data,
     } = this.props;
     if (error) {
-      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data ? ': ' : ''}${data}`, { autoHideDuration: 40000, variant: 'error' });
+      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'error' });
       clearErrorHandler();
     }
     if (success) {
-      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data ? ': ' : ''}${data}`, { autoHideDuration: 40000, variant: 'success' });
+      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'success' });
       clearSuccessHandler();
     }
   }
