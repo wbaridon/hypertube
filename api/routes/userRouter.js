@@ -59,13 +59,13 @@ userRouter
     }
     if (user.userName && user.password) {
       UserManager.getUser(user.userName).then(getResult => {
-        if (getResult) {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
               tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
           })
-        } else { res.status(400).send({ error: 'login.noUser' }) }
+      }, noSuchUser => {
+        res.status(400).send({ error: 'login.noUser' })
       })
     } else { res.status(400).send({ error: 'login.emptyPasswordOrLogin' }) }
   })
@@ -112,6 +112,7 @@ userRouter
   })
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
+      console.log(req.body)
         // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
       if (req.body.field === 'firstName') {
         UserManager.updateUser(req.body.field, req.body.value, req.body.user)
