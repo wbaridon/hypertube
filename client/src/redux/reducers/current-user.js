@@ -7,11 +7,15 @@ import {
   GET_USER_INFO_PRIVATE_SUCCESS,
   GET_USER_INFO_PRIVATE_ERROR,
   SET_USER,
+  CHANGE_USER_VALUE,
   CLEAR_USER,
 } from 'Actions/action-types';
 
 const defaultUserState = {
-  data: null,
+  data: {
+    locale: 'en',
+    darkTheme: false,
+  },
   tokenFetched: false,
   tokenValid: false,
   dataFetched: false,
@@ -25,6 +29,15 @@ export default function user(state = defaultUserState, action) {
         ...state,
         dataFetched: true,
         data: action.data,
+        token: action.token,
+      };
+    case CHANGE_USER_VALUE:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.field]: action.value,
+        },
       };
     case CLEAR_USER:
       return defaultUserState;
@@ -49,7 +62,6 @@ export default function user(state = defaultUserState, action) {
       };
     case GET_USER_INFO_PRIVATE:
       return {
-        dataFetched: true,
         ...state,
       };
     case GET_USER_INFO_PRIVATE_SUCCESS:

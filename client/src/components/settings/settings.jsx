@@ -1,44 +1,60 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, TextField } from '@material-ui/core';
-import { updateUser } from 'Actions/';
+import { TextField } from '@material-ui/core';
+import {
+  updateUserFieldA,
+  updateUserImageA,
+} from 'Actions/';
+import debounce from 'lodash.debounce';
+import ImageChanger from '../image-changer';
+import { dataURItoBlob } from '../image-changer/image-handle-functions';
 
 class Settings extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: props.user,
+      ...props.user,
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
+    this.debounced = debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500);
   }
 
   handleFieldChange(field, value) {
-    const { user } = this.state;
-    this.setState({ user: { ...user, [field]: value } });
+    const { token } = this.props;
+    this.setState({ [field]: value });
+    this.debounced(token, field, value);
+  }
+
+  handleImageChange(image) {
+    const { picture } = this.state;
+    const { updateImageHandle, token } = this.props;
+    const form = new FormData();
+    const img = dataURItoBlob(image.rawData);
+    form.append('image', img);
+    form.append('oldImageUrl', picture);
+    updateImageHandle(token, form);
   }
 
   render() {
-    const { handleUpdateUser, token } = this.props;
-    const { user } = this.state;
+    const currentState = this.state;
     return (
       <div>
-        {Object.keys(user)
+        <ImageChanger imageUrl={currentState.picture} handleImageChange={this.handleImageChange} />
+        {Object.keys(currentState)
           .map(key => (
             <React.Fragment key={key}>
               <TextField
                 fullWidth
-                value={user[key]}
+                value={currentState[key]}
                 label={key}
                 onChange={e => this.handleFieldChange(key, e.target.value)}
               />
               <br />
             </React.Fragment>))}
-        <Button onClick={() => handleUpdateUser(token, { ...user })}>
-          UpdateUser
-        </Button>
       </div>
     );
   }
@@ -49,17 +65,19 @@ Settings.url = '/settings';
 Settings.propTypes = {
   user: PropTypes.shape({
   }).isRequired,
-  handleUpdateUser: PropTypes.func.isRequired,
+  updateFieldHandle: PropTypes.func.isRequired,
+  updateImageHandle: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  token: state.user.token,
+  token: state.user.token ? state.user.token : '',
   user: state.user.data,
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleUpdateUser: (token, changes) => dispatch(updateUser(token, changes)),
+  updateFieldHandle: (token, field, value) => dispatch(updateUserFieldA(token, field, value)),
+  updateImageHandle: (token, form) => dispatch(updateUserImageA(token, form)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

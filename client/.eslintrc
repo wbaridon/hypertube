@@ -32,6 +32,8 @@
       "AUTHFACEBOOK": true,
       "AUTHGITLAB": true,
       "AUTHREDDIT": true,
+      "AUTHLINKEDIN": true,
+      "AUTHINSTAGRAM": true,
       "BACKEND": true
     },
     "rules": {

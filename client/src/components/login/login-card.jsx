@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   IconButton,
-  Typography,
   TextField,
 } from '@material-ui/core';
 import {
-  FormattedMessage,
   intlShape,
 } from 'react-intl';
 import ChevronRight from '@material-ui/icons/ChevronRight';
@@ -18,7 +16,7 @@ function LoginCard({
   intl,
 }) {
   return (
-    <form action="" onSubmit={e => parentLoginHandle(e)}>
+    <form name="login" action="" onSubmit={e => parentLoginHandle(e)}>
       <TextField
         className="loginInputs"
         autoComplete="username"

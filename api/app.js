@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const db = require('./config/db');
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
+var schedule = require('node-schedule');
 const app = express();
 const hostname = 'localhost';
 const port = 3000;
@@ -19,6 +20,7 @@ app.use(cors());
 const userRouter = require('./routes/userRouter');
 const oAuthRouter = require('./routes/oAuthRouter');
 const libraryRouter = require('./routes/libraryRouter');
+const movieRouter = require('./routes/movieRouter');
 
 app.use(express.static('assets'))
 app.use('/user', userRouter);
@@ -98,3 +100,11 @@ app.get('/video', function(req, res) {
 app.listen(port, function () {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+
+const _ = require('lodash');
+var getNewMovies = schedule.scheduleJob('42 * * * *', function(){
+  console.log('Execute cette fonction a chaque fois que la minute est 42');
+
+});
+app.use('/movie', movieRouter);

@@ -1,17 +1,62 @@
 const { twitterId, twitterSecret,
         gitHubId, gitHubSecret,
         redditId, redditSecret,
-        gitlabId, gitlabSecret } = require('../config/env')
+        gitlabId, gitlabSecret,
+        linkedinId, linkedinSecret,
+        instagramId, instagramSecret,
+        facebookId, facebookSecret } = require('../config/env')
 
-function twitterCredentials() {
+function facebookCredentials() {
   return new Promise ((resolve, reject) => {
     credentials.client = {
-      id: twitterId,
-      secret: twitterSecret,
+      id: facebookId,
+      secret: facebookSecret,
     }
     credentials.auth = {
-     tokenHost: 'https://api.twitter.com',
-     tokenPath: '/oauth2/token'
+     tokenHost: 'https://graph.facebook.com',
+     tokenPath: '/v3.2/oauth/access_token'
+    }
+     resolve(credentials)
+    })
+}
+
+function gitlabCredentials() {
+  return new Promise ((resolve, reject) => {
+    credentials.client = {
+      id: gitlabId,
+      secret: gitlabSecret,
+    }
+    credentials.auth = {
+     tokenHost: 'http://gitlab.com',
+     tokenPath: '/oauth/token'
+    }
+     resolve(credentials)
+    })
+}
+
+function linkedinCredentials() {
+  return new Promise ((resolve, reject) => {
+    credentials.client = {
+      id: linkedinId,
+      secret: linkedinSecret,
+    }
+    credentials.auth = {
+     tokenHost: 'https://www.linkedin.com',
+     tokenPath: '/oauth/v2/accessToken'
+    }
+     resolve(credentials)
+    })
+}
+
+function instagramCredentials() {
+  return new Promise ((resolve, reject) => {
+    credentials.client = {
+      id: instagramId,
+      secret: instagramSecret,
+    }
+    credentials.auth = {
+     tokenHost: 'https://api.instagram.com',
+     tokenPath: '/oauth/accessToken'
     }
      resolve(credentials)
     })
@@ -67,5 +112,8 @@ function fortytwoCredentials() {
 }
 
 module.exports.gitHub = gitHubCredentials;
-module.exports.twitter = twitterCredentials;
+module.exports.linkedin = linkedinCredentials;
 module.exports.fortytwo = fortytwoCredentials;
+module.exports.gitlab = gitlabCredentials;
+module.exports.instagram = instagramCredentials;
+module.exports.facebook = facebookCredentials;

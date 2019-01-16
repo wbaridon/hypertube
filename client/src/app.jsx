@@ -7,9 +7,9 @@ import { injectIntl, intlShape } from 'react-intl';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import {
-  checkUserInCookie,
-  clearError,
-  clearSuccess,
+  checkUserInCookieA,
+  clearErrorA,
+  clearSuccessA,
 } from 'Actions';
 import CurrentRoute from './components/routing/current-route';
 import Header from './components/header/header';
@@ -53,20 +53,27 @@ const darkTheme = createMuiTheme({
   },
 });
 
+const styles = {
+  routeContainer: {
+    marginBottom: '70px',
+  }
+}
+
 function mapStateToProps(state) {
   return {
-    locale: state.locale,
-    darkThemeBool: state.darkTheme,
+    locale: state.user.data.locale,
+    darkThemeBool: state.user.data.darkTheme,
     user: state.user,
     error: state.notifications.error,
     success: state.notifications.success,
+    data: state.notifications.data,
   };
 }
 function mapDispatchToProps(dispatch) {
   return ({
-    checkUser: () => dispatch(checkUserInCookie(document.cookie)),
-    clearErrorHandler: () => dispatch(clearError()),
-    clearSuccessHandler: () => dispatch(clearSuccess()),
+    checkUser: () => dispatch(checkUserInCookieA(document.cookie)),
+    clearErrorHandler: () => dispatch(clearErrorA()),
+    clearSuccessHandler: () => dispatch(clearSuccessA()),
   });
 }
 
@@ -90,20 +97,28 @@ class App extends React.Component {
       clearErrorHandler,
       clearSuccessHandler,
       success,
+      data,
     } = this.props;
     if (error) {
-      enqueueSnackbar(intl.formatMessage({ id: error }), { variant: 'error' });
+      enqueueSnackbar(`${intl.formatMessage({ id: error })}${data ? ': ' : ''}${data}`, { autoHideDuration: 40000, variant: 'error' });
       clearErrorHandler();
     }
     if (success) {
-      enqueueSnackbar(intl.formatMessage({ id: success }), { variant: 'success' });
+      enqueueSnackbar(`${intl.formatMessage({ id: success })}${data ? ': ' : ''}${data}`, { autoHideDuration: 40000, variant: 'success' });
       clearSuccessHandler();
     }
   }
 
 
   render() {
-    const { darkThemeBool } = this.props;
+    const {
+      darkThemeBool,
+    } = this.props;
+    const root = document.documentElement;
+    root.style.setProperty('--autocomplete-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.background.paper) : theme.palette.getContrastText(theme.palette.background.paper));
+    root.style.setProperty('--autocomplete-background-color', darkThemeBool ? darkTheme.palette.background.paper : theme.palette.background.paper);
+    root.style.setProperty('--autocomplete-primary-color', darkThemeBool ? darkTheme.palette.getContrastText(darkTheme.palette.primary.main) : theme.palette.getContrastText(theme.palette.primary.main));
+    root.style.setProperty('--autocomplete-primary-background-color', darkThemeBool ? darkTheme.palette.primary.main : theme.palette.primary.main);
     return (
       <BrowserRouter>
         <MuiThemeProvider theme={darkThemeBool ? darkTheme : theme}>
@@ -128,11 +143,13 @@ App.propTypes = {
   intl: intlShape.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,
+  data: PropTypes.string,
 };
 
 App.defaultProps = {
   error: '',
   success: '',
+  data: '',
 };
 
-export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(((App)))));
+export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl((App))));

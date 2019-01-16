@@ -3,6 +3,22 @@ const flatten = require('flat');
 
 
 const enUS = {
+  resetPassword: {
+    title: 'Hi, if you\'ve forgotten your password, enter your email below!',
+    resetForEmail: 'Hi {email}, Enter your new password twice below!',
+    email: 'email',
+    newPassword: 'New password',
+    newPasswordRepeat: 'Repeat password',
+    submit: 'Confirm',
+  },
+  navigation: {
+    error: {
+      notAuthed: 'You are not permitted to view the page',
+    },
+  },
+  logout: {
+    logoutButton: 'Sign out',
+  },
   login: {
     userName: 'User name',
     email: 'Email',
@@ -14,6 +30,16 @@ const enUS = {
       fortytwo: 'Sign in with 42',
       gitlab: 'Sign in with Gitlab',
       reddit: 'Sign in with Reddit',
+    },
+    forgotPassword: 'Forgot something?',
+  },
+  api: {
+    success: {
+      login: 'Successfully logged in!',
+    },
+    error: {
+      login: 'Login error',
+      'Network Error': 'Failed to connect to API',
     },
   },
   register: {
@@ -47,12 +73,6 @@ const enUS = {
       missingImage: 'Please upload a valid image',
       formInvalid: 'Please do not forget anything',
     },
-  },
-  error: {
-    'Network Error': 'Failed to connect to API',
-  },
-  success: {
-    login: 'Successfully logged in!',
   },
 };
 

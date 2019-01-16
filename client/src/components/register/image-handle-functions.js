@@ -88,11 +88,6 @@ function flip() {
   this.setState({ image }, () => this.handleImageAdd(image.inputFile));
 }
 
-function blobToFile(theBlob, fileName) {
-  const ret = new File([theBlob], fileName, { type: 'image/jpeg' });
-  return ret;
-}
-
 function dataURItoBlob(dataURI) {
   // convert base64/URLEncoded data component to raw binary data held in a string
   let byteString;

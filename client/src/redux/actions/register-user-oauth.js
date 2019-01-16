@@ -19,7 +19,7 @@ export const registerUserOauthError = error => ({
   error,
 });
 
-export const registerUserOauth = (provider, code) => {
+export const registerUserOauthA = (provider, code) => {
   return (dispatch) => {
     dispatch(registerUserOauthStart());
     return registerUseroAuthAPI(provider, code)

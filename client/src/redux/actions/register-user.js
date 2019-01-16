@@ -4,7 +4,12 @@ import {
   REGISTER_SUCCESS,
   REGISTER_ERROR,
 } from './action-types';
-import { setError } from '.';
+import {
+  setErrorA,
+  addUserToUserListA,
+  setSuccessA,
+  loginUserA,
+} from '.';
 
 export const registerUserStart = () => ({
   type: REGISTER,
@@ -19,14 +24,22 @@ export const registerUserError = () => ({
   type: REGISTER_ERROR,
 });
 
-export const registerUser = (form) => {
+export const registerUserA = (form) => {
   return (dispatch) => {
     dispatch(registerUserStart());
     return registerUserAPI(form)
       .then(
-        result => dispatch(registerUserSuccess(result)),
+        (result) => {
+          dispatch(addUserToUserListA(result.data));
+          dispatch(loginUserA({
+            userName: form.get('userName'),
+            password: form.get('password'),
+          }));
+          dispatch(setSuccessA('register.success'));
+          dispatch(registerUserSuccess(result));
+        },
         (error) => {
-          dispatch(setError(error.message));
+          dispatch(setErrorA(error.message));
           dispatch(registerUserError());
         },
       );

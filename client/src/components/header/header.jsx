@@ -6,20 +6,17 @@ import {
   IconButton,
   MuiThemeProvider,
   createMuiTheme,
-  Typography,
   withStyles,
 } from '@material-ui/core';
 import Home from '@material-ui/icons/Home';
-import Power from '@material-ui/icons/Power';
-import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  toggleDarkTheme,
-  setLocale,
-  openSidebar,
+  toggleDarkThemeA,
+  setLocaleA,
 } from 'Actions/index';
-import withWidth from '@material-ui/core/withWidth';
+import LoggedIn from './logged-in';
+import LoggedOut from './logged-out';
 
 const theme = createMuiTheme({
   palette: {
@@ -47,14 +44,14 @@ const theme = createMuiTheme({
 
 
 const mapDispatchToProps = dispatch => ({
-  toggleDarkThemeHandler: () => dispatch(toggleDarkTheme()),
-  changeLocale: locale => dispatch(setLocale(locale)),
-  handleOpenSidebar: () => dispatch(openSidebar()),
+  toggleDarkThemeHandler: () => dispatch(toggleDarkThemeA()),
+  changeLocale: locale => dispatch(setLocaleA(locale)),
 });
 
 const mapStateToProps = state => ({
   darkThemeBool: state.darkTheme,
   locale: state.locale,
+  dataFetched: state.user.dataFetched,
 });
 
 const styles = {
@@ -65,47 +62,41 @@ const styles = {
   },
 };
 
-class Header extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-
-    };
-  }
-
-  render() {
-    const {
-      classes,
-      handleOpenSidebar,
-      width,
-    } = this.props;
-    return (
-      <AppBar position="sticky" className={classes.appBar}>
-        <MuiThemeProvider theme={theme}>
-          <Toolbar>
-            <IconButton component={Link} to="/" color="primary">
-              <Home />
-            </IconButton>
-            
-            <span className={classes.spacer} />
-            <IconButton onClick={handleOpenSidebar}>
-              <Power color="primary" />
-            </IconButton>
-          </Toolbar>
-        </MuiThemeProvider>
-      </AppBar>
-    );
-  }
+function Header({
+  classes,
+  dataFetched,
+}) {
+  return (
+    <AppBar position="sticky" className={classes.appBar}>
+      <MuiThemeProvider theme={theme}>
+        <Toolbar>
+          <IconButton component={Link} to="/" color="primary">
+            <Home />
+          </IconButton>
+          <span className={classes.spacer} />
+          {
+            dataFetched
+              ? (
+                <LoggedIn />
+              )
+              : (
+                <LoggedOut />
+              )
+          }
+        </Toolbar>
+      </MuiThemeProvider>
+    </AppBar>
+  );
 }
 
 Header.propTypes = {
   classes: PropTypes.shape({}).isRequired,
-  toggleDarkThemeHandler: PropTypes.func.isRequired,
-  darkThemeBool: PropTypes.bool.isRequired,
-  changeLocale: PropTypes.func.isRequired,
-  locale: PropTypes.string.isRequired,
-  handleOpenSidebar: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired,
+  userData: PropTypes.shape({}),
+  dataFetched: PropTypes.bool.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()((Header))));
+Header.defaultProps = {
+  userData: null,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Header)));

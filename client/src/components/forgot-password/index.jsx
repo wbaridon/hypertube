@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { resetPassword, sendEmail } from 'Actions';
+import { resetPasswordA, sendEmailA } from 'Actions';
 import { connect } from 'react-redux';
+import * as qs from 'query-string';
 import SendEmail from './send-email';
 import ResetPassword from './reset-password';
 
 
 const mapDispatchToProps = dispatch => ({
-  handlePasswordReset: (newPassword, token) => dispatch(resetPassword(newPassword, token)),
-  handleSendEmail: email => dispatch(sendEmail(email)),
+  handlePasswordReset: (key, newPassword, newPasswordRepeat, email) => dispatch(resetPasswordA(key, newPassword, newPasswordRepeat, email)),
+  handleSendEmail: email => dispatch(sendEmailA(email)),
 });
 
 class ForgotPassword extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      email: '',
+      email: qs.parse(props.location.search, { ignoreQueryPrefix: true }).email || '',
+      key: qs.parse(props.location.search, { ignoreQueryPrefix: true }).key || '',
       newPassword: '',
       newPasswordRepeat: '',
     };
@@ -33,9 +35,14 @@ class ForgotPassword extends Component {
 
   handleResetPasswordSubmit(e) {
     e.preventDefault();
-    const { newPassword } = this.state;
+    const {
+      newPassword,
+      newPasswordRepeat,
+      key,
+      email,
+    } = this.state;
     const { handlePasswordReset } = this.props;
-    handlePasswordReset(newPassword, null);
+    handlePasswordReset(key, newPassword, newPasswordRepeat, email);
   }
 
   handleSendEmailSubmit(e) {
@@ -50,27 +57,36 @@ class ForgotPassword extends Component {
       email,
       newPassword,
       newPasswordRepeat,
+      key,
     } = this.state;
     return (
       <div>
-        <SendEmail
-          email={email}
-          handleFieldChange={this.handleFieldChange}
-          handleSubmit={this.handleSendEmailSubmit}
-        />
-        <ResetPassword
-          newPassword={newPassword}
-          newPasswordRepeat={newPasswordRepeat}
-          handleFieldChange={this.handleFieldChange}
-          handleSubmit={this.handleResetPasswordSubmit}
-        />
+        {
+          !key
+            ? (
+              <SendEmail
+                email={email}
+                handleFieldChange={this.handleFieldChange}
+                handleSubmit={this.handleSendEmailSubmit}
+              />
+            ) : (
+              <ResetPassword
+                email={email}
+                newPassword={newPassword}
+                newPasswordRepeat={newPasswordRepeat}
+                handleFieldChange={this.handleFieldChange}
+                handleSubmit={this.handleResetPasswordSubmit}
+              />)
+        }
       </div>
     );
   }
 }
 
 ForgotPassword.propTypes = {
-  history: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string.isRequired,
+  }).isRequired,
   handlePasswordReset: PropTypes.func.isRequired,
   handleSendEmail: PropTypes.func.isRequired,
 };

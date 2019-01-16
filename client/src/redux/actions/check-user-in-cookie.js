@@ -5,7 +5,7 @@ import {
   DELETE_USER_FROM_COOKIE,
   NO_USER_IN_COOKIE,
 } from './action-types';
-import { getUserInfoPrivate, protectedRouteFinished } from '.';
+import { getUserInfoPrivateA, protectedRouteFinishedA } from '.';
 
 function readCookie(name) {
   const nameEQ = `${name}=`;
@@ -32,7 +32,7 @@ export const deleteUserFromCookie = () => ({
   type: DELETE_USER_FROM_COOKIE,
 });
 
-export const deleteUserFromCookieThunk = () => {
+export const deleteUserFromCookieThunkA = () => {
   return (dispatch) => {
     deleteCookie('userToken');
     dispatch(deleteUserFromCookie());
@@ -56,26 +56,26 @@ export const checkUserInCookieStart = () => ({
   type: CHECK_USER_IN_COOKIE,
 });
 
-export const checkUserInCookie = (cookie) => {
+export const checkUserInCookieA = (cookie) => {
   return (dispatch) => {
     dispatch(checkUserInCookieStart());
     const token = readCookie('userToken', cookie);
     if (token) {
-      getUserInfoPrivate(token, dispatch)
+      getUserInfoPrivateA(token, dispatch)
         .then(
           () => {
             dispatch(checkUserInCookieSuccess(token));
-            dispatch(protectedRouteFinished());
+            dispatch(protectedRouteFinishedA());
           },
           () => {
             deleteCookie('userToken');
             dispatch(checkUserInCookieError());
-            dispatch(protectedRouteFinished());
+            dispatch(protectedRouteFinishedA());
           },
         );
     } else {
       dispatch(noUserInCookie());
-      dispatch(protectedRouteFinished());
+      dispatch(protectedRouteFinishedA());
     }
   };
 };

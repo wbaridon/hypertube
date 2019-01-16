@@ -5,20 +5,22 @@ import {
   CLEAR_SUCCESS,
 } from './action-types';
 
-export const setError = error => ({
+export const setErrorA = (error, data) => ({
   type: SET_ERROR,
   error,
+  data,
 });
 
-export const clearError = () => ({
+export const clearErrorA = () => ({
   type: CLEAR_ERROR,
 });
 
-export const setSuccess = success => ({
+export const setSuccessA = (success, data) => ({
   type: SET_SUCCESS,
   success,
+  data,
 });
 
-export const clearSuccess = () => ({
+export const clearSuccessA = () => ({
   type: CLEAR_SUCCESS,
 });

@@ -1,9 +1,11 @@
 const express = require('express');
 const userRouter = express.Router();
 const argon2 = require('argon2');
-const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const crypto = require('crypto');
+const fs = require('fs');
+const resetPassword = require('../utils/resetPassword');
+const tokenManager = require('../utils/token');
 const storage = multer.diskStorage({
   destination: './assets/images/',
   filename: function (req, file, callback) {
@@ -18,7 +20,6 @@ const upload = multer({ storage: storage });
 
 const UserManager = require('../models/userManager');
 const BlackListManager = require('../models/blackListManager');
-const resetPassword = require('../utils/resetPassword');
 
 userRouter
   .post('/register', upload.single('image'), (req, res, next) => {
@@ -41,7 +42,7 @@ userRouter
             if (userExist) { res.status(400).send({ error: 'registration.userAlreadyRegistered' }) }
             else {
               UserManager.createUser(user, callback => {
-                res.status(200).send({ success: 'registration.success' })
+                res.status(200).send({ userName: user.userName, success: 'registration.success' })
               })
             }
           })
@@ -61,7 +62,7 @@ userRouter
         if (getResult) {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
-              setToken(user).then(token => { res.send({ token, locale: getResult.locale }); })
+              tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
           })
         } else { res.status(400).send({ error: 'login.noUser' }) }
@@ -73,21 +74,32 @@ userRouter
       res.status(200).send({success: 'logout.tokenDestroy'})
     })
   })
+  .post('/getAllUsers', (req, res) => {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      UserManager.getAllId().then(result => {
+        res.status(200).send(result)
+      })
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+  })
   .post('/getUser', (req, res) => {
+    tokenManager.decode(req.headers.authorization).then(token => {
     // Reçoit un login et retourne les infos public de ce dernier
-    let userName = req.body.userName;
-    UserManager.getUser(userName).then(getResult => {
-      const user = {
-        userName: getResult.userName,
-        picture: getResult.picture,
-        lastName: getResult.lastName,
-        firstName: getResult.firstName,
-      }
-      res.send(user)
-    })
+      let userName = req.body.userName;
+      UserManager.getUser(userName).then(getResult => {
+        console.log(getResult);
+        const user = {
+          userName: getResult.userName,
+          picture: getResult.picture,
+          lastName: getResult.lastName,
+          firstName: getResult.firstName,
+        }
+        res.send(user)
+      },
+      (error) => res.status(404).json(error))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/getUserPrivate', (req, res) => {
-    decodeToken(req.body.token).then(token => {
+    tokenManager.decode(req.headers.authorization).then(token => {
       UserManager.getUser(token.user).then(user => {
         let newUser = user.toObject();
         delete newUser.moviesHistory
@@ -99,13 +111,31 @@ userRouter
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/updateUser', (req, res) => {
-    decodeToken(req.body.token).then(token => {
-      // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
-      UserManager.updateUser('userName', token.user, req.body.user).then(result => {
-          res.send(result)
-      }, (error) => {console.log(error)})
-    }).catch(err => res.send({ error: 'token.invalidToken' }))
-
+    tokenManager.decode(req.headers.authorization).then(token => {
+        // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
+      if (req.body.field === 'firstName') {
+        UserManager.updateUser(req.body.field, req.body.value, req.body.user)
+        .then(result => { res.send(result) }, (error) => {console.log(error)})
+      }
+      }).catch(err => res.send({ error: 'token.invalidToken' }))
+  })
+  .post('/updatePicture', upload.single('image'), (req, res, next) => {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      let user = token.user
+      let oldPic =  './assets/images/' + req.body.oldImageUrl
+      if (req.file) {
+        // Si l'image existe on la supprime
+        if (fs.existsSync(oldPic)) {
+          fs.unlink(oldPic, (err) => {
+            if (err) throw err;
+          })
+        }
+        UserManager.updateUserField({'userName': user}, {'picture': req.file.filename})
+        .then((updated) => {
+          res.status(200).send({picture: req.file.filename, user: token.user, success: 'picture.Updated'})
+        })
+      }
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/resetPassword', (req, res) => {
     resetPassword.reset(req, res).then(ret => {
@@ -113,28 +143,6 @@ userRouter
       else { res.status(200).send(ret.success) }
     })
   })
-
-function setToken(user) {
-  return new Promise((resolve, error) => {
-    const token = jwt.sign({ user: user.userName }, 'HypertubeSecretKey', { expiresIn: '1d' });
-    resolve(token);
-  })
-}
-
-function decodeToken(token) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, 'HypertubeSecretKey', function (err, decoded) {
-      if (err) { reject('token.invalidToken') }
-      else {
-        // Rajouter ici le controle du blacklistage ip et renvoyer le resolve si pas blackliste
-      /*  BlackListManager.get(token).then(getResult => {
-          console.log(getResult)
-        })*/
-        resolve(decoded)
-      }
-    })
-  })
-}
 
 function hashPassword(pwd) {
   return new Promise((resolve, error) => {
@@ -154,7 +162,7 @@ function checkForm(user) {
         // Manque le check si chiffre et lettre dans mdp, picture
         resolve('registration.correctForm')
       }
-    } else { error('registration.emptyFields') } // Des erreurs plus explicites c'est toujours bien, pour savoir quel variable est le probleme!
+    } else { error('registration.emptyFields') }
   })
 }
 

@@ -9,7 +9,6 @@ import {
   ButtonBase,
   Typography,
   Switch,
-  Avatar,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
@@ -23,13 +22,8 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
-import googleIcon from 'Assets/icons/google.png';
-import githubIcon from 'Assets/icons/github.png';
-import fortytwoIcon from 'Assets/icons/42.png';
-import facebookIcon from 'Assets/icons/facebook.png';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
-import Providers from '../providers';
 
 function handleDragOver(evt) {
   evt.stopPropagation();
@@ -164,7 +158,7 @@ class RegisterCardDumb extends React.Component {
               )
           }
         </CardMedia>
-        <form action="" onSubmit={e => this.handleSubmit(e)}>
+        <form name="register" action="" onSubmit={e => this.handleSubmit(e)}>
           <CardContent>
             <TextField
               className="registerInputs"

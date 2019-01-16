@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import googleIcon from 'Assets/icons/google.png';
 import githubIcon from 'Assets/icons/github.png';
 import fortytwoIcon from 'Assets/icons/42.png';
 import gitlabIcon from 'Assets/icons/gitlab.png';
-import redditIcon from 'Assets/icons/reddit.png';
+import instagramIcon from 'Assets/icons/instagram.png';
+import linkedinIcon from 'Assets/icons/linkedin.png';
 import { Button, Avatar, Grid } from '@material-ui/core';
 
 
@@ -35,16 +35,22 @@ const providers = [
     url: AUTHGITLAB,
   },
   {
-    name: 'Reddit',
-    icon: redditIcon,
-    tooltip: 'login.provider.reddit',
-    url: AUTHREDDIT,
+    name: 'Linkedin',
+    icon: linkedinIcon,
+    tooltip: 'login.provider.linkedin',
+    url: AUTHLINKEDIN,
+  },
+  {
+    name: 'Instagram',
+    icon: instagramIcon,
+    tooltip: 'login.provider.instagram',
+    url: AUTHINSTAGRAM,
   },
 ];
 
 function Providers({ direction }) {
   return (
-    <Grid container direction={direction}>
+    <Grid container direction={direction} alignContent="center" alignItems="center" justify="space-around">
       {providers.map(provider => (
         <Grid key={provider.url} item>
           <Button title={provider.tooltip} href={provider.url} size="small">

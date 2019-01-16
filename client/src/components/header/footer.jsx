@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import {
   AppBar,
   Toolbar,
-  IconButton,
   MuiThemeProvider,
   createMuiTheme,
-  Typography,
   Grid,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -46,21 +44,16 @@ const styles = {
 };
 
 class Footer extends Component {
-  state = {
-    test: 42,
-  }
-
   render() {
-    const { test } = this.state;
     const { classes } = this.props;
 
     return (
-      <AppBar position="sticky" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}>
         <MuiThemeProvider theme={theme}>
           <Toolbar className={classes.toolbar}>
             <Grid container spacing={0} wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">
               <Grid item>
-                {test}
+              {3242}
               </Grid>
             </Grid>
           </Toolbar>

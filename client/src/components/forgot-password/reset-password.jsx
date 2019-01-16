@@ -1,30 +1,72 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Button, Typography } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Typography,
+  Grid,
+} from '@material-ui/core';
+import {
+  injectIntl,
+  intlShape,
+  FormattedMessage,
+} from 'react-intl';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+
+const styles = {
+  firstItem: {
+    marginTop: '10px',
+  },
+  lastItem: {
+    marginBottom: '10px',
+  },
+};
 
 function ResetPassword({
   newPassword,
   newPasswordRepeat,
   handleFieldChange,
   handleSubmit,
+  email,
+  intl,
+  classes,
 }) {
   return (
     <form action="">
-      <TextField
-        label="new password"
-        value={newPassword}
-        onChange={e => handleFieldChange('newPassword', e.target.value)}
-      />
-      <TextField
-        label="new password again"
-        value={newPasswordRepeat}
-        onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)}
-      />
-      <Button type="submit" onClick={handleSubmit}>
-        <Typography>
-          Submit
-        </Typography>
-      </Button>
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+        <Grid item className={classes.firstItem}>
+          <Typography>
+            <FormattedMessage
+              id="resetPassword.resetForEmail"
+              values={{
+                email,
+              }}
+            />
+          </Typography>
+        </Grid>
+        <Grid item>
+          <TextField
+            label={intl.formatMessage({ id: 'resetPassword.newPassword' })}
+            value={newPassword}
+            onChange={e => handleFieldChange('newPassword', e.target.value)}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            label={intl.formatMessage({ id: 'resetPassword.newPasswordRepeat' })}
+            value={newPasswordRepeat}
+            onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)}
+          />
+        </Grid>
+        <Grid item className={classes.lastItem}>
+          <Button type="submit" onClick={handleSubmit}>
+            <Typography>
+              <FormattedMessage id="resetPassword.submit" />
+            </Typography>
+          </Button>
+        </Grid>
+      </Grid>
     </form>
   );
 }
@@ -34,6 +76,16 @@ ResetPassword.propTypes = {
   newPasswordRepeat: PropTypes.string.isRequired,
   handleFieldChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  intl: intlShape.isRequired,
+  classes: PropTypes.shape({
+    firstItem: PropTypes.string.isRequired,
+    lastItem: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default ResetPassword;
+const mapStateToProps = state => ({
+  resetPasswordLoading: state.forgotPassword.loading,
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(injectIntl(ResetPassword)));

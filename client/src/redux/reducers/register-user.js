@@ -30,7 +30,6 @@ export default function registerUser(state = defaultRegisterState, action) {
       return {
         ...state,
         loading: false,
-        success: true,
       };
     case REGISTER_ERROR:
       return {

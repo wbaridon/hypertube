@@ -3,24 +3,49 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { setErrorA } from '../../redux/actions';
 
 const myStyles = theme => ({
   poster: {
-    [theme.breakpoints.down(500)]: {
-      maxWidth: '300px',
+    maxWidth: '200px',
+    [theme.breakpoints.down(700)]: {
+      maxWidth: '150px',
+    },
+    [theme.breakpoints.down(400)]: {
+      maxWidth: '75px',
     },
   },
 });
 
+const mapDispatchToProps = dispatch => ({
+  setErrorHandler: routeUrl => dispatch(setErrorA('navigation.error.notAuthed', `: ${routeUrl}`)),
+});
 
 class Home extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       items: [],
     };
+  }
+
+  componentWillMount() {
+    const {
+      setErrorHandler,
+      location,
+      history,
+    } = this.props;
+
+    if (location.state && location.state.from) {
+      setErrorHandler(location.state.from);
+      history.replace({
+        pathname: '/',
+        state: {},
+      });
+    }
   }
 
   componentDidMount() {
@@ -60,7 +85,14 @@ class Home extends React.Component {
 
 Home.propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      from: PropTypes.string,
+    }),
+  }).isRequired,
+  history: PropTypes.shape({}).isRequired,
+  setErrorHandler: PropTypes.func.isRequired,
 };
 
 Home.url = '/';
-export default withStyles(myStyles)(Home);
+export default withRouter(connect(null, mapDispatchToProps)(withStyles(myStyles)(Home)));

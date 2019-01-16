@@ -10,20 +10,25 @@ import {
   Divider,
   IconButton,
 } from '@material-ui/core';
-import { closeSidebar } from 'Actions';
+import {
+  closeSidebarA,
+  logoutUserA,
+} from 'Actions';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth from '@material-ui/core/withWidth';
+import People from '@material-ui/icons/People';
+import { FormattedMessage } from 'react-intl';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
-import Login from '../login/login';
 import Providers from '../providers';
+import Settings from '../settings/settings';
 
 const styles = theme => ({
   root: {
     [theme.breakpoints.down('md')]: {
       maxWidth: '320px',
+      width: '320px',
     },
     [theme.breakpoints.up('md')]: {
       maxWidth: '1200px',
@@ -38,8 +43,8 @@ function Sidebar({
   open,
   handleClose,
   loggedIn,
+  handleLogout,
   classes,
-  width,
 }) {
   return (
     <Drawer classes={{ paper: classes.root }} anchor="right" open={open} onClose={handleClose}>
@@ -49,7 +54,14 @@ function Sidebar({
       {loggedIn
         ? (
           <React.Fragment>
-            <Login />
+            <Button onClick={handleLogout}>
+              LOGOUTTEMP
+            </Button>
+            <IconButton component={Link} to="/users" onClick={handleClose}>
+              <People />
+            </IconButton>
+            {/* <Login /> */}
+            {/* <Settings /> */}
           </React.Fragment>
         )
         : (
@@ -60,10 +72,9 @@ function Sidebar({
               </ListItem>
               <Divider />
               <ListItem>
-                <Login />
                 <IconButton component={Link} to="/forgot">
                   <Typography>
-                    ForgotPassword
+                    <FormattedMessage id="login.forgotPassword" />
                   </Typography>
                   <SupervisedUserCircle color="primary" />
                 </IconButton>
@@ -84,8 +95,8 @@ Sidebar.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
-  width: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -94,7 +105,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleClose: () => dispatch(closeSidebar()),
+  handleClose: () => dispatch(closeSidebarA()),
+  handleLogout: () => dispatch(logoutUserA()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()((Sidebar))));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Sidebar)));
