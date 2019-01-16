@@ -38,7 +38,14 @@ class Settings extends Component {
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleMenuClose = this.handleMenuClose.bind(this);
     this.handleMenuOpen = this.handleMenuOpen.bind(this);
-    this.debounced = debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500);
+    this.debounced = {
+      userName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      email: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      firstName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      lastName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      locale: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      darkTheme: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+    };
   }
 
   handleFieldChange(field, value) {
@@ -47,11 +54,10 @@ class Settings extends Component {
     const { user } = this.state;
     user[field] = value;
     this.setState({ user });
-    this.debounced(token, field, value);
+    this.debounced[field](token, field, value);
   }
 
   handleMenuClose(locale = null) {
-    const { user } = this.state;
     if (locale) {
       this.handleFieldChange('locale', locale);
     }
