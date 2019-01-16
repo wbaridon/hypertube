@@ -6,6 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const db = require('./config/db');
 const fs = require('fs');
+const ffmpeg = require('fluent-ffmpeg');
 const app = express();
 const hostname = 'localhost';
 const port = 3000;
@@ -30,7 +31,7 @@ app.get('/', function (req, res) {
 
 app.get('/video', function(req, res) {
 
-  // Get hash of torrent
+  // Get torrent hash
   // const torrent_hash = '3D1E3C092836AF4F3C21C38C09E1F5550E137A32'; // New Work Minute
   const torrent_hash = req.query.videoHash;
 
@@ -44,18 +45,18 @@ app.get('/video', function(req, res) {
   engine.on('ready', function() {
     // Iterates for each file linked in torrent
     engine.files.forEach(function(file) {
-      console.log('filename:', file.name)
       let fileFormat = file.name.substr(file.name.length - 4);
-      console.log(fileFormat);
       const fileSize = file.length
-      console.log(fileSize)
 
       // Check if server has something left to return
       const range = req.headers.range
 
-      // If yes, and is either .mp4 or .mkv
-      if (range && (fileFormat === '.mp4' || fileFormat === '.mkv' || fileFormat === '.avi')) {
+      // If yes:
+      if (range && (fileFormat === '.mp4')) {
         const parts = range.replace(/bytes=/, "").split("-")
+        console.log('filename:', file.name)
+        console.log(fileFormat);
+        console.log(fileSize)
         console.log(parts)
         const startByte = parseInt(parts[0], 10)
         const endByte = parts[1]
@@ -78,49 +79,15 @@ app.get('/video', function(req, res) {
           }
           res.writeHead(206, head)
         }
-        else if (fileFormat === '.mkv') { // Is an mkv file
-          const head = {
-            'Content-Range': `bytes ${startByte}-${endByte}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': 'video/webm',
-          }
-          res.writeHead(206, head)
-        }
-        else if (fileFormat === '.avi') { // Is an avi file
-          const head = {
-            'Content-Range': `bytes ${startByte}-${endByte}/${fileSize}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': 'video/xmpg2',
-          }
-          res.writeHead(206, head)
-        }
         // Pipe what was returned so far
         stream.pipe(res)
-      } else if (fileFormat === '.mp4' || fileFormat === '.mkv' || fileFormat === '.avi') {
-        if (fileFormat === '.mp4') { // Is an mp4 file
-          const head = {
-            'Content-Length': fileSize,
-            'Content-Type': 'video/mp4',
-          }
-          res.writeHead(200, head)
+      } else if (fileFormat === '.mp4') {
+        const head = {
+          'Content-Length': fileSize,
+          'Content-Type': 'video/mp4',
         }
-        else if (fileFormat === '.mkv') { // Is an mkv file
-          const head = {
-            'Content-Length': fileSize,
-            'Content-Type': 'video/webm',
-          }
-          res.writeHead(200, head)
-        }
-        else if (fileFormat === '.avi') { // Is an avi file
-          const head = {
-            'Content-Length': fileSize,
-            'Content-Type': 'video/xmpg2',
-          }
-          res.writeHead(200, head)
-        }
-        fs.createReadStream(file.path).pipe(res)
+        res.writeHead(200, head)
+      fs.createReadStream(file.path).pipe(res)
     }
   });
 })
