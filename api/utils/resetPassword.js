@@ -8,7 +8,12 @@ function resetPassword(req, res) {
     global.host = req.headers.origin
     if (req.body.email && req.body.key && req.body.pass1 && req.body.pass2) { // AFTER MAIL
       if (req.body.pass1 === req.body.pass2) {
-        afterMail(res, req.body.email, req.body.key, req.body.pass1)
+        afterMail(req.body.email, req.body.key, req.body.pass1)
+        .then(success => {
+          resolve({status: 1, success: 'password.changed'})
+        }, error => {
+          resolve({status: 0, error: 'password.notCorresponding'})
+        })
       } else { resolve({status: 0, error: 'password.notCorresponding'}) }
     } else if (req.body.email) { // BEFORE MAIL
         beforeMail(res, req.body.email)
@@ -45,22 +50,23 @@ sendMail = user => {
 	})
 }
 
-afterMail = (client, email, key, newPW) => {
-  UserManager.getUserByMail(email).then(user => {
-    if (user) {
-      passwordHash(user.locale + user.password + email + user.userName, hash => {
-        if (hash === key) {
-          argon2.hash(newPW).then(hash => {
-          user.password = hash;
-          UserManager.updateUser('password', hash, user)
-          client.send('Password changed')
+function afterMail(email, key, newPW) {
+  return new Promise ((resolve, reject) => {
+    UserManager.getUserByMail(email).then(user => {
+      if (user) {
+        passwordHash(user.locale + user.password + email + user.userName, hash => {
+          if (hash === key) {
+            argon2.hash(newPW).then(hash => {
+            UserManager.updateUserField({'email': email}, {'password': hash})
+              resolve('Password changed')
+            })
+          }
+          else
+            reject('Hash and key not corresponding')
           })
-        }
-        else
-          client.send('Hash and key not corresponding')
-        })
-    }
-    else { client.send("No password resetting to do.") }
+      }
+      else { reject("No password resetting to do.") }
+    })
   })
 }
 
