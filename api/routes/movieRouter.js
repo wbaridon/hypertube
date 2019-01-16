@@ -6,33 +6,54 @@ const MovieManager = require('../models/movieManager');
 
 movieRouter
   .get('/testAxios' , function(req, res) {
-  axios.get('https://tv-v2.api-fetch.website/movies/1?sort=last%20added&order=-1')
-  .then(response => {
-    var movie ={
-      imdbId: response.data[0].imdb_id,
-      title: response.data[0].title,
-      year: response.data[0].year,
-      cover: response.data[0].images.poster,
-      synopsis: response.data[0].synopsis,
+      YtsPageCount().then(pages => {
+        axios.get('https://yts.am/api/v2/list_movies.json?page=1')
+        .then(response => {
+          for (var i = 0; i < response.data.data.movies.length; i++) {
+            checkMovie(response.data.data.movies[i])
+            console.log(i)
+          }
+        })
+      })
+
+    /*console.log(response.data.data.movies[0])
+    console.log(movie.torrents.url)
+    MovieManager.exist(movie.imdbId).then(status => {*/
+
+    })
+
+function YtsPageCount() {
+  return new Promise ((resolve, reject) => {
+    axios.get('https://yts.am/api/v2/list_movies.json?page=1')
+    .then(response => {
+      resolve(Math.ceil(response.data.data.movie_count / response.data.data.limit));
+    }).catch(error => reject(error));
+  });
+}
+
+function checkMovie(data) {
+  MovieManager.exist(data.imdb_code)
+  .then(status => {
+    console.log('Statut: ' + status)
+    if (!status) { addMovie(data) }
+  })
+}
+
+function addMovie(data) {
+
+    let movie = {
+      imdbId: data.imdb_code,
+      title: data.title,
+      year: data.year,
+      cover: data.large_cover_image,
+      synopsis: data.synopsis,
       torrents: {
-        url: response.data[0].torrents.en["1080p"].url,
       }
     }
-    console.log(movie.torrents.url)
-    MovieManager.exist(movie.imdbId).then(status => {
-      if (!status) {
-        MovieManager.createMovie(movie).then(reply => {
-              res.send(response.data[0]);
-              console.log('existe now')
-        })
-      } else {
-        console.log('existe')
-        res.send(response.data[0]);
-      }
+    MovieManager.createMovie(movie).then(created => {
+      console.log('+1 movie created')
     })
-  }).catch(error => { console.log(error); })
-});
 
-
+}
 
 module.exports = movieRouter;

@@ -134,8 +134,6 @@ app.listen(port, function () {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-
-const _ = require('lodash');
 var getNewMovies = schedule.scheduleJob('42 * * * *', function(){
   console.log('Execute cette fonction a chaque fois que la minute est 42');
 
