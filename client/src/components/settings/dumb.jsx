@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   TextField,
   Switch,
@@ -7,7 +7,20 @@ import {
   MenuItem,
   Typography,
   Button,
+  withStyles,
+  Grid,
 } from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
+
+const styles = {
+  myPaper: {
+    square: true,
+  },
+  menuItem: {
+    paddingLeft: '25px',
+    paddingRight: '25px',
+  },
+};
 
 function DumbSettings({
   userName,
@@ -20,38 +33,95 @@ function DumbSettings({
   handleMenuOpen,
   handleMenuClose,
   anchorEl,
+  classes,
 }) {
   return (
-    <div>
-      <TextField value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
-      <br />
-      <TextField value={firstName} onChange={e => handleFieldChange('firstName', e.target.value)} />
-      <br />
-      <TextField value={lastName} onChange={e => handleFieldChange('lastName', e.target.value)} />
-      <br />
-      <TextField value={email} onChange={e => handleFieldChange('email', e.target.value)} />
-      <br />
-      <Typography>
-        Dark theme
-        <Switch checked={darkTheme} value={darkTheme} onChange={() => handleFieldChange('darkTheme', !darkTheme)} />
-      </Typography>
-      <Button
-        aria-owns={anchorEl ? 'simple-menu' : undefined}
-        aria-haspopup="true"
-        onClick={e => handleMenuOpen(e)}
-      >
-        {locale}
-      </Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={() => handleMenuClose()}
-      >
-        <MenuItem onClick={() => handleMenuClose('en')}>en</MenuItem>
-        <MenuItem onClick={() => handleMenuClose('fr')}>fr</MenuItem>
-      </Menu>
-    </div>
+    <Grid container direction="column" justify="center">
+      <Grid item>
+        <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
+          <Grid item>
+            <Typography><FormattedMessage id="settings.userName" /></Typography>
+          </Grid>
+          <Grid item>
+            <TextField value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
+          <Grid item>
+            <Typography><FormattedMessage id="settings.firstName" /></Typography>
+          </Grid>
+          <Grid item>
+            <TextField value={firstName} onChange={e => handleFieldChange('firstName', e.target.value)} />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
+          <Grid item>
+            <Typography><FormattedMessage id="settings.lastName" /></Typography>
+          </Grid>
+          <Grid item>
+            <TextField value={lastName} onChange={e => handleFieldChange('lastName', e.target.value)} />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
+          <Grid item>
+            <Typography><FormattedMessage id="settings.email" /></Typography>
+          </Grid>
+          <Grid item>
+            <TextField value={email} onChange={e => handleFieldChange('email', e.target.value)} />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
+          <Grid item>
+            <Typography>
+              <FormattedMessage id="settings.darkTheme" />
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Switch checked={darkTheme} value={darkTheme} onChange={() => handleFieldChange('darkTheme', !darkTheme)} />
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
+            <Grid item>
+              <Typography>
+                <FormattedMessage id="settings.locale" />
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button
+                aria-owns={anchorEl ? 'simple-menu' : undefined}
+                aria-haspopup="true"
+                onClick={e => handleMenuOpen(e)}
+              >
+                {locale}
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+          marginThreshold={0}
+          open={Boolean(anchorEl)}
+          onClose={() => handleMenuClose()}
+          PaperProps={{ square: true }}
+        >
+          <MenuItem className={classes.menuItem} onClick={() => handleMenuClose('en')}>en</MenuItem>
+          <MenuItem className={classes.menuItem} onClick={() => handleMenuClose('fr')}>fr</MenuItem>
+        </Menu>
+      </Grid>
+    </Grid>
   );
 }
 
@@ -66,10 +136,11 @@ DumbSettings.propTypes = {
   handleMenuOpen: PropTypes.func.isRequired,
   handleMenuClose: PropTypes.func.isRequired,
   anchorEl: PropTypes.shape({}),
+  classes: PropTypes.shape({}).isRequired,
 };
 
 DumbSettings.defaultProps = {
   anchorEl: null,
 };
 
-export default DumbSettings;
+export default withStyles(styles)(DumbSettings);

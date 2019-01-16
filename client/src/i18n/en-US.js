@@ -11,6 +11,14 @@ const enUS = {
     newPasswordRepeat: 'Repeat password',
     submit: 'Confirm',
   },
+  settings: {
+    userName: 'Username:',
+    firstName: 'First Name:',
+    lastName: 'Last Name:',
+    email: 'Email:',
+    darkTheme: 'Dark Theme:',
+    locale: 'Locale:',
+  },
   navigation: {
     error: {
       notAuthed: 'You are not permitted to view the page',

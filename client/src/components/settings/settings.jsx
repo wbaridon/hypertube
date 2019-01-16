@@ -5,10 +5,17 @@ import {
   updateUserFieldA,
   updateUserImageA,
 } from 'Actions/';
+import { Grid, withStyles } from '@material-ui/core';
 import debounce from 'lodash.debounce';
 import ImageChanger from '../image-changer';
 import { dataURItoBlob } from '../image-changer/image-handle-functions';
 import DumbSettings from './dumb';
+
+const styles = {
+  content: {
+    minWidth: '305px',
+  },
+};
 
 class Settings extends Component {
   constructor(props) {
@@ -46,9 +53,9 @@ class Settings extends Component {
   handleMenuClose(locale = null) {
     const { user } = this.state;
     if (locale) {
-      user.locale = locale;
+      this.handleFieldChange('locale', locale);
     }
-    this.setState({ user, anchorEl: null });
+    this.setState({ anchorEl: null });
   }
 
   handleMenuOpen(e) {
@@ -67,12 +74,16 @@ class Settings extends Component {
 
   render() {
     const { picture, user, anchorEl } = this.state;
-    console.log(user.darkTheme);
+    const { classes } = this.props;
     return (
-      <div>
-        <ImageChanger imageUrl={picture} handleImageChange={this.handleImageChange} />
-        <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
-      </div>
+      <Grid container direction="column" alignItems="center" justify="center" alignContent="center">
+        <Grid item className={classes.content}>
+          <ImageChanger imageUrl={picture} handleImageChange={this.handleImageChange} />
+        </Grid>
+        <Grid item className={classes.content}>
+          <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -97,4 +108,4 @@ const mapDispatchToProps = dispatch => ({
   updateImageHandle: (token, form) => dispatch(updateUserImageA(token, form)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Settings)));

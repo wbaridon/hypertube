@@ -21,6 +21,14 @@ const frFR = {
   logout: {
     logoutButton: 'Déconnexion',
   },
+  settings: {
+    userName: 'Nom d\'utilisateur:',
+    firstName: 'Prénom:',
+    lastName: 'Nom:',
+    email: 'Email:',
+    darkTheme: 'Tenebres:',
+    locale: 'Locale:',
+  },
   register: {
     title: 'INSCRIPTION',
     userName: 'Nom d\'Utilisateur',
