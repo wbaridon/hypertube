@@ -112,9 +112,6 @@ userRouter
   })
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
-      console.log(req.body)
-      console.log(token)
-        // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
         checkUserInput(req.body, token.user)
         .then(success => {
           res.status(200).send(success);
@@ -175,29 +172,21 @@ function checkUserInput(data, user) {
     switch (data.field) {
       case 'darkTheme':
         if (data.value === true || data.value === false) {
-          UserManager.updateUserField({'userName': user}, {'darkTheme': data.value})
-          .then(updated => {
-            resolve({'darkTheme': data.value, 'user': user, 'success': 'darkTheme.Updated'})
-          })
+          updateField(data.field, data.value, user, callback => {
+            resolve(callback) });
         } else { reject('update.badValue')}
         break;
         case 'locale':
-          UserManager.updateUserField({'userName': user}, {'locale': data.value})
-          .then(updated => {
-            resolve({'locale': data.value, 'user': user, 'success': 'locale.Updated'})
-          })
+          updateField(data.field, data.value, user, callback => {
+            resolve(callback) });
           break;
         case 'firstName':
-          UserManager.updateUserField({'userName': user}, {'firstName': data.value})
-          .then(updated => {
-            resolve({'firstName': data.value, 'user': user, 'success': 'firstName.Updated'})
-          })
+        updateField(data.field, data.value, user, callback => {
+          resolve(callback) });
           break;
         case 'lastName':
-          UserManager.updateUserField({'userName': user}, {'lastName': data.value})
-          .then(updated => {
-            resolve({'lastName': data.value, 'user': user, 'success': 'lastName.Updated'})
-          })
+        updateField(data.field, data.value, user, callback => {
+          resolve(callback) });
           break;
         // reste username, email, password
       default: reject('update.badField')
@@ -205,4 +194,10 @@ function checkUserInput(data, user) {
   })
 }
 
+function updateField(field, value, user, callback) {
+  UserManager.updateUserField({'userName': user}, {[field]: value})
+    .then(updated => {
+      callback({[field]: value, 'user': user, 'success': [field]+'.Updated'});
+    })
+}
 module.exports = userRouter;
