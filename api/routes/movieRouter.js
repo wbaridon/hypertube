@@ -7,11 +7,13 @@ const MovieManager = require('../models/movieManager');
 movieRouter
   .get('/testAxios' , function(req, res) {
       YtsPageCount().then(pages => {
-        console.log('Erreur' + pages)
-        checkPage(1);
-        /*for (var i = 0; i < pages; i++) {
-          checkPage(i);
+
+      //  checkPage(1);
+      /*  for (var i = 0; i < pages; i++) {
+          //checkPage(i);
+          setInterval(test, 60)
         }*/
+        getNewMovies();
       },
         error => { console.log('Nombre de page inconnue');
       })
@@ -21,7 +23,9 @@ movieRouter
     MovieManager.exist(movie.imdbId).then(status => {*/
 
     })
-
+function test() {
+  console.log('execute +1')
+}
 function YtsPageCount() {
   return new Promise ((resolve, reject) => {
     axios.get('https://yts.am/api/v2/list_movies.json?limit=50&order_by=desc&page=1')
@@ -32,18 +36,19 @@ function YtsPageCount() {
 }
 
 function checkPage(page) {
-  axios.get('https://yts.am/api/v2/list_movies.json?limit=50&order_by=desc&page='+page)
-  .then(response => {
-    for (var i = 0; i < response.data.data.movies.length; i++) {
-      checkMovie(response.data.data.movies[i])
-      console.log(i)
-    }
+  return new Promise ((resolve, reject) => {
+    axios.get('https://yts.am/api/v2/list_movies.json?limit=50&order_by=desc&page='+page)
+    .then(response => {
+      for (var i = 0; i < response.data.data.movies.length; i++) {
+        checkMovie(response.data.data.movies[i])
+      }
+      resolve();
+    })
   })
 }
 function checkMovie(data) {
   MovieManager.exist(data.imdb_code)
   .then(status => {
-    console.log('Statut: ' + status)
     if (!status) { addMovie(data) }
   })
 }
@@ -65,4 +70,27 @@ function addMovie(data) {
 
 }
 
+function getPage(page) {
+  return new Promise (resolve => {
+    axios.get('https://yts.am/api/v2/list_movies.json?limit=50&order_by=desc&page='+page)
+    .then(response => {
+      for (var i = 0; i < response.data.data.movies.length; i++) {
+        checkMovie(response.data.data.movies[i]);
+      }
+      setTimeout(resolve, 1500)
+    })
+  })
+}
+
+async function getAllPages(pages) {
+  for (var i = 1; i <= pages; i++) {
+    console.log('YTS Check Page '+ i)
+    await getPage(i);
+  }
+}
+function getNewMovies() {
+  YtsPageCount().then(pages => {
+    getAllPages(pages);
+  })
+}
 module.exports = movieRouter;

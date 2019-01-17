@@ -47,7 +47,6 @@ module.exports.getAllId = function () {
 module.exports.exist = function (imdbId) {
   return new Promise ((resolve, reject) => {
     Movie.findOne({'imdbId': imdbId}).then(function(result){
-      console.log(result)
       resolve(result)
     })
   })

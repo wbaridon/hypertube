@@ -131,6 +131,7 @@ app.get('/video', function(req, res) {
 });
 
 app.listen(port, function () {
+  initMovieDv()
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
@@ -138,4 +139,8 @@ var getNewMovies = schedule.scheduleJob('42 * * * *', function(){
   console.log('Execute cette fonction a chaque fois que la minute est 42');
 
 });
+const axios = require('axios');
+function initMovieDv () {
+  axios.get('http://localhost:3000/movie/testAxios')
+}
 app.use('/movie', movieRouter);
