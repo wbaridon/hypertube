@@ -187,8 +187,20 @@ function checkUserInput(data, user) {
             resolve({'locale': data.value, 'user': user, 'success': 'locale.Updated'})
           })
           break;
+        case 'firstName':
+          UserManager.updateUserField({'userName': user}, {'firstName': data.value})
+          .then(updated => {
+            resolve({'firstName': data.value, 'user': user, 'success': 'firstName.Updated'})
+          })
+          break;
+        case 'lastName':
+          UserManager.updateUserField({'userName': user}, {'lastName': data.value})
+          .then(updated => {
+            resolve({'lastName': data.value, 'user': user, 'success': 'lastName.Updated'})
+          })
+          break;
+        // reste username, email, password
       default: reject('update.badField')
-
     }
   })
 }
