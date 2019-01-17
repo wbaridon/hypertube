@@ -14,6 +14,7 @@ import notifications from './notifications';
 import updateUser from './update-user';
 import getUserList from './get-user-list';
 import forgotPassword from './forgot-password';
+import changeUserPassword from './change-user-password';
 
 const darkTheme = (state = false, action) => {
   switch (action.type) {
@@ -75,4 +76,5 @@ export default combineReducers({
   protectedRouteLoading,
   getUserList,
   forgotPassword,
+  changeUserPassword,
 });

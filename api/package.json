@@ -6,7 +6,9 @@
   "dependencies": {
     "argon2": "^0.19.3",
     "axios": "^0.18.0",
+    "axios-cloudflare": "^1.0.2",
     "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^6.2.0",
@@ -14,6 +16,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.4.0",
+    "leetxapi": "^1.1.1",
     "lodash": "^4.17.11",
     "magnet-link": "^1.1.3",
     "mocha": "^5.2.0",
@@ -24,7 +27,10 @@
     "nodemailer": "^4.7.0",
     "nodemon": "^1.18.9",
     "oauth": "^0.9.15",
+    "parse5": "^5.1.0",
+    "rarbg-api": "^1.1.3",
     "simple-oauth2": "^2.2.1",
+    "torrent-search-api": "^2.0.4",
     "torrent-stream": "^1.1.0"
   },
   "devDependencies": {},

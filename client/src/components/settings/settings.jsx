@@ -1,32 +1,72 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TextField } from '@material-ui/core';
 import {
   updateUserFieldA,
   updateUserImageA,
 } from 'Actions/';
+import { Grid, withStyles } from '@material-ui/core';
 import debounce from 'lodash.debounce';
 import ImageChanger from '../image-changer';
 import { dataURItoBlob } from '../image-changer/image-handle-functions';
+import DumbSettings from './dumb';
+import ChangePassword from '../change-password';
+
+const styles = {
+  content: {
+    minWidth: '305px',
+  },
+};
 
 class Settings extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      ...props.user,
+      picture: props.user.picture,
+      user: {
+        userName: props.user.userName,
+        email: props.user.email,
+        firstName: props.user.firstName,
+        lastName: props.user.lastName,
+        locale: props.user.locale,
+        darkTheme: props.user.darkTheme,
+      },
+      anchorEl: null,
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
-    this.debounced = debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500);
+    this.handleMenuClose = this.handleMenuClose.bind(this);
+    this.handleMenuOpen = this.handleMenuOpen.bind(this);
+    this.debounced = {
+      userName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      email: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      firstName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      lastName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      locale: (token, field, value) => props.updateFieldHandle(token, field, value),
+      darkTheme: (token, field, value) => props.updateFieldHandle(token, field, value),
+    };
   }
 
   handleFieldChange(field, value) {
+    console.log(this.state, field, value);
     const { token } = this.props;
-    this.setState({ [field]: value });
-    this.debounced(token, field, value);
+    const { user } = this.state;
+    user[field] = value;
+    this.setState({ user });
+    this.debounced[field](token, field, value);
+  }
+
+  handleMenuClose(locale = null) {
+    if (locale) {
+      this.handleFieldChange('locale', locale);
+    }
+    this.setState({ anchorEl: null });
+  }
+
+  handleMenuOpen(e) {
+    this.setState({ anchorEl: e.currentTarget });
   }
 
   handleImageChange(image) {
@@ -40,22 +80,20 @@ class Settings extends Component {
   }
 
   render() {
-    const currentState = this.state;
+    const { picture, user, anchorEl } = this.state;
+    const { classes } = this.props;
     return (
-      <div>
-        <ImageChanger imageUrl={currentState.picture} handleImageChange={this.handleImageChange} />
-        {Object.keys(currentState)
-          .map(key => (
-            <React.Fragment key={key}>
-              <TextField
-                fullWidth
-                value={currentState[key]}
-                label={key}
-                onChange={e => this.handleFieldChange(key, e.target.value)}
-              />
-              <br />
-            </React.Fragment>))}
-      </div>
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center" alignContent="center">
+        <Grid item className={classes.content}>
+          <ImageChanger imageUrl={picture} handleImageChange={this.handleImageChange} />
+        </Grid>
+        <Grid item className={classes.content}>
+          <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
+        </Grid>
+        <Grid item className={classes.content}>
+          <ChangePassword />
+        </Grid>
+      </Grid>
     );
   }
 }
@@ -80,4 +118,4 @@ const mapDispatchToProps = dispatch => ({
   updateImageHandle: (token, form) => dispatch(updateUserImageA(token, form)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Settings)));

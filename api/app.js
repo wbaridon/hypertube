@@ -19,25 +19,27 @@ const oAuthRouter = require('./routes/oAuthRouter');
 const libraryRouter = require('./routes/libraryRouter');
 const movieRouter = require('./routes/movieRouter');
 const torrentRouter = require('./routes/torrentRouter');
+const yts = require('./utils/getMoviesFromYTS');
+const eztv = require('./utils/getMoviesFromEZTV');
 
 app.use(express.static('assets'))
 app.use('/user', userRouter);
 app.use('/library', libraryRouter);
 app.use('/oAuth', oAuthRouter);
 app.use('/video', torrentRouter);
+app.use('/movie', movieRouter);
 
 app.get('/', function (req, res) {
   res.send('Hello world!');
 });
 
 app.listen(port, function () {
+  yts.launcher()
+  eztv.launcher()
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-
-const _ = require('lodash');
 var getNewMovies = schedule.scheduleJob('42 * * * *', function(){
   console.log('Execute cette fonction a chaque fois que la minute est 42');
 
 });
-app.use('/movie', movieRouter);

@@ -59,13 +59,13 @@ userRouter
     }
     if (user.userName && user.password) {
       UserManager.getUser(user.userName).then(getResult => {
-        if (getResult) {
           argon2.verify(getResult.password, user.password).then(match => {
             if (match) {
               tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
           })
-        } else { res.status(400).send({ error: 'login.noUser' }) }
+      }, noSuchUser => {
+        res.status(400).send({ error: 'login.noUser' })
       })
     } else { res.status(400).send({ error: 'login.emptyPasswordOrLogin' }) }
   })
@@ -112,14 +112,16 @@ userRouter
   })
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
-        // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
-      if (req.body.field === 'firstName') {
-        UserManager.updateUser(req.body.field, req.body.value, req.body.user)
-        .then(result => { res.send(result) }, (error) => {console.log(error)})
-      }
-      }).catch(err => res.send({ error: 'token.invalidToken' }))
+        checkUserInput(req.body, token.user)
+        .then(success => {
+          res.status(200).send(success);
+        }, error => {
+          res.status(400).send(error);
+        })
+      }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
+    console.log(req.body)
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       let oldPic =  './assets/images/' + req.body.oldImageUrl
@@ -158,12 +160,75 @@ function checkForm(user) {
   return new Promise((resolve, error) => {
     if (user.email && user.userName && user.lastName && user.firstName && user.password) {
       if (user.password.length < 6) { error('registration.passwordTooShort') }
+      else if (user.password.match('^[a-zA-z]+$')) { error('registration.passwordMissDigit')}
       else {
-        // Manque le check si chiffre et lettre dans mdp, picture
+        // Manque le check picture
         resolve('registration.correctForm')
       }
     } else { error('registration.emptyFields') }
   })
 }
 
+function checkUserInput(data, user) {
+  return new Promise((resolve, reject) => {
+    switch (data.field) {
+      case 'darkTheme':
+        if (data.value === true || data.value === false) {
+          updateField(data.field, data.value, user, callback => {
+            resolve(callback) });
+        } else { reject('update.badValue')}
+        break;
+        case 'locale':
+          updateField(data.field, data.value, user, callback => {
+            resolve(callback) });
+          break;
+        case 'firstName':
+        updateField(data.field, data.value, user, callback => {
+          resolve(callback) });
+          break;
+        case 'lastName':
+        updateField(data.field, data.value, user, callback => {
+          resolve(callback) });
+          break;
+        case 'email':
+          if (data.value.match('.+@.+\..+')) {
+            UserManager.getUserByMail(data.value).then(res => {
+              if (res) { reject('update.emailAlreadyExist') }
+              else {
+                updateField(data.field, data.value, user, callback => {
+                  resolve(callback) });
+              }
+            })
+          } else { reject('update.badValue')}
+          break;
+        case 'password':
+          if (data.pass1 == data.pass2) {
+            if (data.pass1.length < 6 || data.pass1.match('^[a-zA-z]+$'))
+            {
+              reject('update.passwordIncorrectFormat');
+            } else {
+              UserManager.getUser(user).then(userData => {
+                argon2.verify(userData.password, data.currentPassword).then(match => {
+                  if (match) {
+                    argon2.hash(data.pass1).then(hash => {
+                    UserManager.updateUserField({'userName': user}, {'password': hash})
+                      resolve({'user': user, 'success': 'password.updated'})
+                    })
+                  } else { reject('update.badPassword') }
+                })
+              })
+            }
+          } else { reject('update.newPasswordnoMatch') }
+          break;
+      default: reject('update.badField')
+    }
+  })
+}
+
+function updateField(field, value, user, callback) {
+  UserManager.updateUserField({'userName': user}, {[field]: value})
+    .then(updated => {
+      callback({[field]: value, 'user': user, 'success': [field]+'.updated'});
+    })
+}
 module.exports = userRouter;
