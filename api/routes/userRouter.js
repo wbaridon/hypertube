@@ -160,8 +160,9 @@ function checkForm(user) {
   return new Promise((resolve, error) => {
     if (user.email && user.userName && user.lastName && user.firstName && user.password) {
       if (user.password.length < 6) { error('registration.passwordTooShort') }
+      else if (user.password.match('^[a-zA-z]+$')) { error('registration.passwordMissDigit')}
       else {
-        // Manque le check si chiffre et lettre dans mdp, picture
+        // Manque le check picture
         resolve('registration.correctForm')
       }
     } else { error('registration.emptyFields') }
@@ -200,7 +201,25 @@ function checkUserInput(data, user) {
             })
           } else { reject('update.badValue')}
           break;
-        // password
+        case 'password':
+          if (data.pass1 == data.pass2) {
+            if (data.pass1.length < 6 || data.pass1.match('^[a-zA-z]+$'))
+            {
+              reject('update.passwordIncorrectFormat');
+            } else {
+              UserManager.getUser(user).then(userData => {
+                argon2.verify(userData.password, data.currentPassword).then(match => {
+                  if (match) {
+                    argon2.hash(data.pass1).then(hash => {
+                    UserManager.updateUserField({'userName': user}, {'password': hash})
+                      resolve({'user': user, 'success': 'password.updated'})
+                    })
+                  } else { reject('update.badPassword') }
+                })
+              })
+            }
+          } else { reject('update.newPasswordnoMatch') }
+          break;
       default: reject('update.badField')
     }
   })
@@ -209,7 +228,7 @@ function checkUserInput(data, user) {
 function updateField(field, value, user, callback) {
   UserManager.updateUserField({'userName': user}, {[field]: value})
     .then(updated => {
-      callback({[field]: value, 'user': user, 'success': [field]+'.Updated'});
+      callback({[field]: value, 'user': user, 'success': [field]+'.updated'});
     })
 }
 module.exports = userRouter;
