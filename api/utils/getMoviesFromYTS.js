@@ -55,7 +55,7 @@ function getPage(page) {
 
 async function getAllPages(pages) {
   for (var i = 1; i <= pages; i++) {
-    console.log('YTS Check Page '+ i)
+  //  console.log('YTS Check Page '+ i)
     await getPage(i);
   }
 }
