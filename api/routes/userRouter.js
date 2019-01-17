@@ -121,6 +121,7 @@ userRouter
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
+    console.log(req.body)
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       let oldPic =  './assets/images/' + req.body.oldImageUrl

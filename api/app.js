@@ -21,6 +21,7 @@ const oAuthRouter = require('./routes/oAuthRouter');
 const libraryRouter = require('./routes/libraryRouter');
 const movieRouter = require('./routes/movieRouter');
 const yts = require('./utils/getMoviesFromYTS');
+const eztv = require('./utils/getMoviesFromEZTV');
 
 app.use(express.static('assets'))
 app.use('/user', userRouter);
@@ -134,6 +135,7 @@ app.get('/video', function(req, res) {
 
 app.listen(port, function () {
   yts.launcher()
+  eztv.launcher()
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 

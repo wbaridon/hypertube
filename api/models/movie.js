@@ -16,6 +16,8 @@ const MovieSchema = new Schema({
   year: Number,
   synopsis: String,
   rating: Number,
+  season: Number,
+  episode: Number,
   torrents: [TorrentsSchema]
 });
 
