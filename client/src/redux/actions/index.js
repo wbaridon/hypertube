@@ -19,6 +19,7 @@ import { updateUserFieldA } from './update-user-field';
 import { updateUserImageA } from './update-user-image';
 import { getUserListA } from './get-user-list';
 import { getUserInfoA } from './get-user-info';
+import { changeUserPasswordA } from './change-user-password';
 import {
   checkUserInCookieA,
   deleteUserFromCookieThunkA,
@@ -88,4 +89,5 @@ export {
   getUserListA,
   getUserInfoA,
   changeUserValueA,
+  changeUserPasswordA,
 };

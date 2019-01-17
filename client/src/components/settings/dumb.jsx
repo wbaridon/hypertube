@@ -20,6 +20,12 @@ const styles = {
     paddingLeft: '25px',
     paddingRight: '25px',
   },
+  field: {
+    flexGrow: 1,
+  },
+  text: {
+    marginRight: '10px',
+  },
 };
 
 function DumbSettings({
@@ -39,53 +45,53 @@ function DumbSettings({
     <Grid container direction="column" justify="center">
       <Grid item>
         <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
-          <Grid item>
+          <Grid item className={classes.text}>
             <Typography><FormattedMessage id="settings.userName" /></Typography>
           </Grid>
-          <Grid item>
-            <TextField value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
+          <Grid item className={classes.field}>
+            <TextField fullWidth disabled value={userName} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item>
         <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
-          <Grid item>
+          <Grid item className={classes.text}>
             <Typography><FormattedMessage id="settings.firstName" /></Typography>
           </Grid>
-          <Grid item>
-            <TextField value={firstName} onChange={e => handleFieldChange('firstName', e.target.value)} />
+          <Grid item className={classes.field}>
+            <TextField fullWidth value={firstName} onChange={e => handleFieldChange('firstName', e.target.value)} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item>
         <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
-          <Grid item>
+          <Grid item className={classes.text}>
             <Typography><FormattedMessage id="settings.lastName" /></Typography>
           </Grid>
-          <Grid item>
-            <TextField value={lastName} onChange={e => handleFieldChange('lastName', e.target.value)} />
+          <Grid item className={classes.field}>
+            <TextField fullWidth value={lastName} onChange={e => handleFieldChange('lastName', e.target.value)} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item>
         <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
-          <Grid item>
+          <Grid item className={classes.text}>
             <Typography><FormattedMessage id="settings.email" /></Typography>
           </Grid>
-          <Grid item>
-            <TextField value={email} onChange={e => handleFieldChange('email', e.target.value)} />
+          <Grid item className={classes.field}>
+            <TextField fullWidth value={email} onChange={e => handleFieldChange('email', e.target.value)} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item>
         <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
-          <Grid item>
+          <Grid item className={classes.text}>
             <Typography>
               <FormattedMessage id="settings.darkTheme" />
             </Typography>
           </Grid>
           <Grid item>
-            <Switch checked={darkTheme} value={darkTheme} onChange={() => handleFieldChange('darkTheme', !darkTheme)} />
+            <Switch onKeyPress={() => handleFieldChange('darkTheme', !darkTheme)} checked={darkTheme} value={darkTheme} onChange={() => handleFieldChange('darkTheme', !darkTheme)} />
           </Grid>
         </Grid>
         <Grid item>

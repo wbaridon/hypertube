@@ -45,7 +45,7 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
 
 function CurrentRoute() {
   return (
-    <div style={{ marginBottom: 70 }}>
+    <div style={{ marginBottom: 70, marginTop: 15 }}>
       <Switch>
         <Route path={Video.url} component={Video} />
         <PrivateRoute path={User.url} component={User} />

@@ -10,6 +10,7 @@ import debounce from 'lodash.debounce';
 import ImageChanger from '../image-changer';
 import { dataURItoBlob } from '../image-changer/image-handle-functions';
 import DumbSettings from './dumb';
+import ChangePassword from '../change-password';
 
 const styles = {
   content: {
@@ -82,12 +83,15 @@ class Settings extends Component {
     const { picture, user, anchorEl } = this.state;
     const { classes } = this.props;
     return (
-      <Grid container direction="column" alignItems="center" justify="center" alignContent="center">
+      <Grid container spacing={0} direction="column" alignItems="center" justify="center" alignContent="center">
         <Grid item className={classes.content}>
           <ImageChanger imageUrl={picture} handleImageChange={this.handleImageChange} />
         </Grid>
         <Grid item className={classes.content}>
           <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
+        </Grid>
+        <Grid item className={classes.content}>
+          <ChangePassword />
         </Grid>
       </Grid>
     );
