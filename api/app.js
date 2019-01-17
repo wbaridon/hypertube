@@ -20,11 +20,13 @@ const userRouter = require('./routes/userRouter');
 const oAuthRouter = require('./routes/oAuthRouter');
 const libraryRouter = require('./routes/libraryRouter');
 const movieRouter = require('./routes/movieRouter');
+const yts = require('./utils/getMoviesFromYTS');
 
 app.use(express.static('assets'))
 app.use('/user', userRouter);
 app.use('/library', libraryRouter);
 app.use('/oAuth', oAuthRouter);
+app.use('/movie', movieRouter);
 
 app.get('/', function (req, res) {
   res.send('Hello world!');
@@ -131,7 +133,7 @@ app.get('/video', function(req, res) {
 });
 
 app.listen(port, function () {
-  initMovieDv()
+  yts.launcher()
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
@@ -139,8 +141,3 @@ var getNewMovies = schedule.scheduleJob('42 * * * *', function(){
   console.log('Execute cette fonction a chaque fois que la minute est 42');
 
 });
-const axios = require('axios');
-function initMovieDv () {
-  axios.get('http://localhost:3000/movie/testAxios')
-}
-app.use('/movie', movieRouter);
