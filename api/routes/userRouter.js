@@ -113,12 +113,15 @@ userRouter
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       console.log(req.body)
+      console.log(token)
         // Verifier que les prerequis des nouvelles data sont bon, les ajouter ici, et lancer update RESTE A FAIRE!
-      if (req.body.field === 'firstName') {
-        UserManager.updateUser(req.body.field, req.body.value, req.body.user)
-        .then(result => { res.send(result) }, (error) => {console.log(error)})
-      }
-      }).catch(err => res.send({ error: 'token.invalidToken' }))
+        checkUserInput(req.body, token.user)
+        .then(success => {
+          res.status(200).send(success);
+        }, error => {
+          res.status(400).send(error);
+        })
+      }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
     tokenManager.decode(req.headers.authorization).then(token => {
@@ -164,6 +167,29 @@ function checkForm(user) {
         resolve('registration.correctForm')
       }
     } else { error('registration.emptyFields') }
+  })
+}
+
+function checkUserInput(data, user) {
+  return new Promise((resolve, reject) => {
+    switch (data.field) {
+      case 'darkTheme':
+        if (data.value === true || data.value === false) {
+          UserManager.updateUserField({'userName': user}, {'darkTheme': data.value})
+          .then(updated => {
+            resolve({'darkTheme': data.value, 'user': user, 'success': 'darkTheme.Updated'})
+          })
+        } else { reject('update.badValue')}
+        break;
+        case 'locale':
+          UserManager.updateUserField({'userName': user}, {'locale': data.value})
+          .then(updated => {
+            resolve({'locale': data.value, 'user': user, 'success': 'locale.Updated'})
+          })
+          break;
+      default: reject('update.badField')
+
+    }
   })
 }
 
