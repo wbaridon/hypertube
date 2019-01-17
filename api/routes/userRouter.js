@@ -189,7 +189,18 @@ function checkUserInput(data, user) {
         updateField(data.field, data.value, user, callback => {
           resolve(callback) });
           break;
-        // reste username, email, password
+        case 'email':
+          if (data.value.match('.+@.+\..+')) {
+            UserManager.getUserByMail(data.value).then(res => {
+              if (res) { reject('update.emailAlreadyExist') }
+              else {
+                updateField(data.field, data.value, user, callback => {
+                  resolve(callback) });
+              }
+            })
+          } else { reject('update.badValue')}
+          break;
+        // password
       default: reject('update.badField')
     }
   })
