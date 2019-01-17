@@ -43,8 +43,8 @@ class Settings extends Component {
       email: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
       firstName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
       lastName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
-      locale: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
-      darkTheme: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
+      locale: (token, field, value) => props.updateFieldHandle(token, field, value),
+      darkTheme: (token, field, value) => props.updateFieldHandle(token, field, value),
     };
   }
 

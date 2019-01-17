@@ -4,7 +4,7 @@ import {
   UPDATE_USER_FIELD_SUCCESS,
   UPDATE_USER_FIELD_ERROR,
 } from './action-types';
-import { setErrorA } from '.';
+import { setErrorA, changeUserValueA } from '.';
 
 export const updateUserFieldStart = () => ({
   type: UPDATE_USER_FIELD,
@@ -24,7 +24,10 @@ export const updateUserFieldA = (token, field, value) => {
     dispatch(updateUserFieldStart());
     return updateUserFieldAPI(token, field, value)
       .then(
-        result => dispatch(updateUserFieldSuccess(result)),
+        (result) => {
+          dispatch(updateUserFieldSuccess(result));
+          dispatch(changeUserValueA(field, value));
+        },
         (error) => {
           dispatch(setErrorA(error.message));
           dispatch(updateUserFieldError());
