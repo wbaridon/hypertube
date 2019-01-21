@@ -16,9 +16,15 @@ const MovieSchema = new Schema({
   year: Number,
   dateReleased: Number,
   synopsis: String,
-  rating: Number,
   season: Number,
   episode: Number,
+  public: String,
+  runtime: String,
+  genre: String,
+  director: String,
+  actors: String,
+  awards: String,
+  imdbRating: String,
   torrents: [TorrentsSchema]
 });
 

@@ -33,6 +33,11 @@ function addMovie(data) {
       cover: data.large_cover_image,
       synopsis: data.synopsis,
       torrents: {
+        language: data.language,
+        hash: data.torrents[0].hash,
+        quality: data.torrents[0].quality,
+        seeds: data.torrents[0].seeds,
+        peers: data.torrents[0].peers
       }
     }
     MovieManager.createMovie(movie).then(created => {

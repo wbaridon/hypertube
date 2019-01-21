@@ -33,6 +33,7 @@ function checkCover(cover) {
     }
   })
 }
+
 function addMovie(data) {
   checkCover(data.large_screenshot).then(coverChecked => {
     let movie = {
