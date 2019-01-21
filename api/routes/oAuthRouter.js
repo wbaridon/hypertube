@@ -16,12 +16,12 @@ oAuthRouter
         getUserFrom(req.body.provider, token)
           .then(user => {
             UserManager.getUser(user.userName).then(getResult => {
-              tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
+              tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
               // Verifier que l'on a pas l'email ou le login deja en user normal
               // A faire
               UserManager.createUser(user, callback => {
-                tokenManager.set(user).then(token => { res.send(token); })
+                tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
               })
             })
          });
@@ -57,6 +57,7 @@ function getUserFrom(provider, token) {
          userName: response.data.login,
          picture: response.data.avatar_url,
          oauth: true,
+         profilIsFill: false
        }
        // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
        resolve(user)
@@ -83,7 +84,8 @@ function getUserFrom(provider, token) {
         picture: response.data.image_url,
         name: response.data.last_name,
         firstname: response.data.first_name,
-        oauth: true
+        oauth: true,
+        profilIsFill: false
       }
       resolve(user)
       })
