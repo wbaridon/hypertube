@@ -28,6 +28,7 @@ app.use('/library', libraryRouter);
 app.use('/oAuth', oAuthRouter);
 app.use('/video', torrentRouter);
 app.use('/movie', movieRouter);
+app.use('/comments', commentsRouter);
 
 app.get('/', function (req, res) {
   res.send('Hello world!');
