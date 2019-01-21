@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const platformCredentials = require('../utils/oAuthPlatformCredentials');
+const tokenManager = require('../utils/token');
 
 const UserManager = require('../models/userManager');
 
