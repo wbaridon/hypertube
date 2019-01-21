@@ -2,11 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { changeUserPasswordA } from 'Actions';
+import { injectIntl, intlShape } from 'react-intl';
+import PasswordValidator from 'password-validator';
 import ChangePasswordDumb from './dumb';
 
-function isValidPassword(newPassword, newPasswordRepeat) {
-  return true;
-}
+
+const schema = new PasswordValidator();
+schema
+  .is().min(8)
+  .is().max(30)
+  .has()
+  .uppercase()
+  .has()
+  .lowercase()
+  .has()
+  .digits()
+  .has()
+  .not()
+  .spaces();
 
 class ChangePassword extends Component {
   constructor() {
@@ -15,6 +28,9 @@ class ChangePassword extends Component {
       currentPassword: '',
       newPassword: '',
       newPasswordRepeat: '',
+      currentPasswordError: [],
+      newPasswordError: [],
+      newPasswordRepeatError: [],
       toggled: false,
     };
 
@@ -31,9 +47,21 @@ class ChangePassword extends Component {
         currentPassword: '',
         newPassword: '',
         newPasswordRepeat: '',
+        currentPasswordError: [],
+        newPasswordError: [],
+        newPasswordRepeatError: [],
       });
     }
     this.setState({ toggled: !toggled });
+  }
+
+  isValidPassword(newPassword, newPasswordRepeat) {
+    const errors = schema.validate(newPassword, { list: true });
+    const errorsRepeat = schema.validate(newPasswordRepeat, { list: true });
+    if (newPassword !== newPasswordRepeat) {
+      errors.push('password.notMatch');
+    }
+    this.setState({ newPasswordError: errors, newPasswordRepeatError: errorsRepeat });
   }
 
   handleSubmit(e) {
@@ -47,13 +75,20 @@ class ChangePassword extends Component {
       token,
       handleChangeUserPassword,
     } = this.props;
-    if (isValidPassword(newPassword, newPasswordRepeat)) {
+    if (this.isValidPassword(newPassword, newPasswordRepeat)) {
       handleChangeUserPassword(token, currentPassword, newPassword, newPasswordRepeat);
     }
   }
 
   handleFieldChange(field, value) {
-    this.setState({ [field]: value });
+    const { newPassword } = this.state;
+    const error = value === '' ? [] : schema.validate(value, { list: true });
+    if (field === 'newPasswordRepeat') {
+      if (value !== newPassword && value !== '') {
+        error.push('notEqual');
+      }
+    }
+    this.setState({ [field]: value, [`${field}Error`]: error });
   }
 
   render() {
@@ -61,8 +96,14 @@ class ChangePassword extends Component {
       currentPassword,
       newPassword,
       newPasswordRepeat,
+      currentPasswordError,
+      newPasswordError,
+      newPasswordRepeatError,
       toggled,
     } = this.state;
+    const {
+      intl,
+    } = this.props;
     return (
       <ChangePasswordDumb
         currentPassword={currentPassword}
@@ -72,6 +113,10 @@ class ChangePassword extends Component {
         handleSubmit={this.handleSubmit}
         handleToggle={this.handleToggle}
         toggled={toggled}
+        currentPasswordError={currentPasswordError}
+        newPasswordError={newPasswordError}
+        newPasswordRepeatError={newPasswordRepeatError}
+        formatMessage={intl.formatMessage}
       />
     );
   }
@@ -80,6 +125,7 @@ class ChangePassword extends Component {
 ChangePassword.propTypes = {
   token: PropTypes.string.isRequired,
   handleChangeUserPassword: PropTypes.func.isRequired,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -90,4 +136,4 @@ const mapDispatchToProps = dispatch => ({
   handleChangeUserPassword: (token, currentPassword, newPassword, newPasswordRepeat) => dispatch(changeUserPasswordA(token, currentPassword, newPassword, newPasswordRepeat)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ChangePassword));

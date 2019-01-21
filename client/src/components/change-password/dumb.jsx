@@ -8,6 +8,7 @@ import {
   Grid,
   Button,
   Divider,
+  Tooltip,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -21,14 +22,28 @@ const styles = {
   },
 };
 
+const errorArrayToString = (errorArray, formatMessage) => {
+  const newArray = [];
+  errorArray.forEach((item) => {
+    const newItem = formatMessage({ id: `changePassword.${item}` });
+    newArray.push(newItem);
+  });
+  const ret = newArray.join(',');
+  return (ret);
+};
+
 function ChangePasswordDumb({
   currentPassword,
   newPassword,
   newPasswordRepeat,
+  currentPasswordError,
+  newPasswordError,
+  newPasswordRepeatError,
   handleFieldChange,
   toggled,
   handleToggle,
   handleSubmit,
+  formatMessage,
   classes,
 }) {
   if (!toggled) {
@@ -55,7 +70,9 @@ function ChangePasswordDumb({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <TextField variant="outlined" value={currentPassword} type="password" onChange={e => handleFieldChange('currentPassword', e.target.value)} />
+                  <Tooltip placement="top" open={currentPasswordError.length !== 0} title={errorArrayToString(currentPasswordError, formatMessage)}>
+                    <TextField variant="outlined" value={currentPassword} type="password" onChange={e => handleFieldChange('currentPassword', e.target.value)} />
+                  </Tooltip>
                 </Grid>
               </Grid>
             </Grid>
@@ -70,7 +87,9 @@ function ChangePasswordDumb({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <TextField variant="outlined" value={newPassword} type="password" onChange={e => handleFieldChange('newPassword', e.target.value)} />
+                  <Tooltip placement="top" open={newPasswordError.length !== 0} title={errorArrayToString(newPasswordError, formatMessage)}>
+                    <TextField variant="outlined" value={newPassword} type="password" onChange={e => handleFieldChange('newPassword', e.target.value)} />
+                  </Tooltip>
                 </Grid>
               </Grid>
             </Grid>
@@ -82,7 +101,9 @@ function ChangePasswordDumb({
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <TextField variant="outlined" value={newPasswordRepeat} type="password" onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)} />
+                  <Tooltip placement="top" open={newPasswordRepeatError.length !== 0} title={errorArrayToString(newPasswordRepeatError, formatMessage)}>
+                    <TextField variant="outlined" value={newPasswordRepeat} type="password" onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)} />
+                  </Tooltip>
                 </Grid>
               </Grid>
             </Grid>
@@ -109,13 +130,17 @@ function ChangePasswordDumb({
 
 ChangePasswordDumb.propTypes = {
   currentPassword: PropTypes.string.isRequired,
+  currentPasswordError: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   newPassword: PropTypes.string.isRequired,
+  newPasswordError: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   newPasswordRepeat: PropTypes.string.isRequired,
+  newPasswordRepeatError: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   handleFieldChange: PropTypes.func.isRequired,
   handleToggle: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   toggled: PropTypes.bool.isRequired,
   classes: PropTypes.shape({}).isRequired,
+  formatMessage: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ChangePasswordDumb);
