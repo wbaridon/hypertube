@@ -19,7 +19,7 @@ oAuthRouter
               tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             }, noSuchUser => {
               UserManager.createUser(user, callback => {
-                tokenManager.set(user).then(token => { res.send({ token, locale: 'en' }); })
+                tokenManager.set(user).then(token => { res.send(token); })
               })
             })
          });
@@ -54,6 +54,7 @@ function getUserFrom(provider, token) {
          userName: response.data.login,
          picture: response.data.avatar_url,
          name: response.data.name,
+         oauth: true,
          firstname: '',
          password: '',
        }
