@@ -18,6 +18,7 @@ oAuthRouter
             UserManager.getUser(user.userName).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             }, noSuchUser => {
+              console.log(user)
               UserManager.createUser(user, callback => {
                 tokenManager.set(user).then(token => { res.send(token); })
               })
@@ -55,8 +56,7 @@ function getUserFrom(provider, token) {
          picture: response.data.avatar_url,
          name: response.data.name,
          oauth: true,
-         firstname: '',
-         password: '',
+         firstname: ''
        }
        // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
        resolve(user)
@@ -66,11 +66,11 @@ function getUserFrom(provider, token) {
       axios.get(api, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
       var user = {
         email: response.data.email,
-        login: response.data.login,
+        userName: response.data.login,
         picture: response.data.image_url,
         name: response.data.last_name,
         firstname: response.data.first_name,
-        password: '',
+        oauth: true
       }
       resolve(user)
       })
