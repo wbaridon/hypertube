@@ -36,7 +36,9 @@ module.exports.createUser = function (data, callback) {
     firstName: data.firstName,
     password: data.password,
     locale: data.locale,
-    darkTheme: data.darkTheme
+    darkTheme: data.darkTheme,
+    oauth: data.oauth,
+    profilIsFill: data.profilIsFill
   })
   user.save().then(function(){
     callback()
