@@ -1,5 +1,5 @@
 const express = require('express');
-const movieRouter = express.Router();
+const commentsRouter = express.Router();
 const axios = require('axios');
 
 const MovieManager = require('../models/movieManager');

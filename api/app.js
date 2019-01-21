@@ -18,6 +18,7 @@ const userRouter = require('./routes/userRouter');
 const oAuthRouter = require('./routes/oAuthRouter');
 const libraryRouter = require('./routes/libraryRouter');
 const movieRouter = require('./routes/movieRouter');
+const commentsRouter = require('./routes/commentsRouter');
 const torrentRouter = require('./routes/torrentRouter');
 const yts = require('./utils/getMoviesFromYTS');
 const eztv = require('./utils/getMoviesFromEZTV');
