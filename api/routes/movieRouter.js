@@ -5,17 +5,6 @@ const axios = require('axios');
 const MovieManager = require('../models/movieManager');
 
 movieRouter
-  .post('/testGetMovie', function(req, res){
-    if (req.body.movieId === 42) {
-      res.send({ movie: {
-        title: 'my favorite movie',
-        description: 'it is described within',
-      }})
-    }
-    else {
-      res.status(404)
-    }
-  })
   .post('/getMovies' , function(req, res) {
     getMoreData(req.body.id)
   })
