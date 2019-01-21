@@ -75,7 +75,6 @@ class RegisterCardDumb extends React.Component {
       password, passwordError, showPassword,
       locale,
       darkTheme,
-      provided,
       handleChange,
       handleClickShowPassword,
       handleSubmit,
@@ -177,7 +176,6 @@ class RegisterCardDumb extends React.Component {
             />
             <br />
             <TextField
-              disabled={provided}
               className="registerInputs"
               inputProps={{ className: classes.fixAutoComplete }}
               fullWidth
@@ -217,34 +215,32 @@ class RegisterCardDumb extends React.Component {
               helperText={lastNameError.length ? this.mergeErrors(lastNameError) : ' '}
             />
             <br />
-            {!provided
-              ? (<TextField
-                className="registerInputs"
-                autoComplete="current-password"
-                fullWidth
-                error={passwordError.length !== 0}
-                id="filled-adornment-password"
-                variant="filled"
-                type={showPassword ? 'text' : 'password'}
-                label={intl.formatMessage({ id: 'register.password' })}
-                value={password}
-                onChange={e => handleChange('password', e)}
-                InputProps={{
-                  className: classes.fixAutoComplete,
-                  endAdornment: (
-                    <InputAdornment variant="filled" position="end">
-                      <IconButton
-                        aria-label="Toggle password visibility"
-                        onClick={handleClickShowPassword}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
-              />
-              ) : null}
+            <TextField
+              className="registerInputs"
+              autoComplete="current-password"
+              fullWidth
+              error={passwordError.length !== 0}
+              id="filled-adornment-password"
+              variant="filled"
+              type={showPassword ? 'text' : 'password'}
+              label={intl.formatMessage({ id: 'register.password' })}
+              value={password}
+              onChange={e => handleChange('password', e)}
+              InputProps={{
+                className: classes.fixAutoComplete,
+                endAdornment: (
+                  <InputAdornment variant="filled" position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={handleClickShowPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
+            />
             <Switch checked={locale === 'en'} onChange={toggleLocale} />
             <Typography>{locale}</Typography>
             <Switch checked={darkTheme} onChange={toggleTheme} />
@@ -287,7 +283,6 @@ RegisterCardDumb.propTypes = {
   rotateClockwise: PropTypes.func.isRequired,
   rotateCounterClockwise: PropTypes.func.isRequired,
   offsetY: PropTypes.func.isRequired,
-  provided: PropTypes.bool.isRequired,
 };
 
 RegisterCardDumb.defaultProps = {

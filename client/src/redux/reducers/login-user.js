@@ -5,6 +5,9 @@ import {
   LOGOUT,
   LOGOUT_SUCCESS,
   LOGOUT_ERROR,
+  OAUTH_USER,
+  OAUTH_USER_SUCCESS,
+  OAUTH_USER_ERROR,
 } from 'Actions/action-types';
 
 const defaultLoginState = {
@@ -26,6 +29,23 @@ export default function loginUser(state = defaultLoginState, action) {
         success: true,
       };
     case LOGIN_ERROR:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+      };
+    case OAUTH_USER:
+      return {
+        ...state,
+        loading: true,
+      };
+    case OAUTH_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+      };
+    case OAUTH_USER_ERROR:
       return {
         ...state,
         loading: false,

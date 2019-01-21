@@ -96,7 +96,6 @@ export function handleSubmit(e) {
   const {
     registerUserHandler,
     setErrorHandler,
-    provided,
   } = this.props;
 
   if (userName === '' && userNameError.length === 0) {
@@ -107,7 +106,7 @@ export function handleSubmit(e) {
     firstNameError.push('register.error.noFirstName');
   } if (lastName === '' && lastNameError.length === 0) {
     lastNameError.push('register.error.noLastName');
-  } if (password === '' && passwordError.length === 0 && !provided) {
+  } if (password === '' && passwordError.length === 0) {
     passwordError.push('register.error.noPassword');
   } if (!image.rawData) {
     image.error = 'register.error.missingImage';
@@ -117,7 +116,7 @@ export function handleSubmit(e) {
     || emailError.length !== 0
     || firstNameError.length !== 0
     || lastNameError.length !== 0
-    || (passwordError.length !== 0 && !provided)) {
+    || (passwordError.length !== 0)) {
     willSend = false;
     setErrorHandler('register.error.formInvalid');
     this.setState({
@@ -138,6 +137,7 @@ export function handleSubmit(e) {
     locale,
     darkTheme,
   };
+  console.log(formData);
   const form = new FormData();
   Object.keys(formData).forEach((key) => {
     form.append(key, formData[key]);

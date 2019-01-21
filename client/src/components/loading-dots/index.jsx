@@ -7,7 +7,7 @@ export default class LoadingDots extends Component {
   constructor() {
     super();
     this.state = {
-      dots: [],
+      dots: '',
     };
     this.timer = null;
   }

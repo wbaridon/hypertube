@@ -56,8 +56,8 @@ const darkTheme = createMuiTheme({
 const styles = {
   routeContainer: {
     marginBottom: '70px',
-  }
-}
+  },
+};
 
 function mapStateToProps(state) {
   return {

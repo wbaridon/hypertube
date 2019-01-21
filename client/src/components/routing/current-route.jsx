@@ -10,6 +10,7 @@ import Settings from '../settings/settings';
 import ForgotPassword from '../forgot-password';
 import Users from '../users';
 import User from '../user';
+import Oauth from '../oauth';
 import LoadingDots from '../loading-dots';
 
 
@@ -47,6 +48,7 @@ function CurrentRoute() {
   return (
     <div style={{ marginBottom: 70, marginTop: 15 }}>
       <Switch>
+        <Route path={Oauth.url} component={Oauth} />
         <Route path={Video.url} component={Video} />
         <PrivateRoute path={User.url} component={User} />
         <PrivateRoute path={Users.url} component={Users} />

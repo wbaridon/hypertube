@@ -5,12 +5,10 @@ import { CircularProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import {
   registerUserA,
-  registerUserOauthA,
   setErrorA,
   clearRegisterDataA,
   loginUserA,
 } from 'Actions';
-import Axios from 'axios';
 import handlers, {
   handleSubmit,
   toggleLocale,
@@ -31,7 +29,6 @@ const mapStateToProps = (state) => {
     registerData: state.registerUser.registerData,
     loading: state.registerUser.loading,
     success: state.registerUser.success,
-    provided: state.registerUser.provided,
   });
 };
 
@@ -40,7 +37,6 @@ const mapDispatchToProps = (dispatch) => {
     registerUserHandler: form => dispatch(registerUserA(form)),
     loginUserHandler: user => dispatch(loginUserA(user)),
     clearRegisterDataHandler: () => dispatch(clearRegisterDataA()),
-    registerUserOauthHandler: (provider, code) => dispatch(registerUserOauthA(provider, code)),
     setErrorHandler: error => dispatch(setErrorA(error)),
   });
 };
@@ -57,7 +53,6 @@ class RegisterCard extends React.Component {
         orientation: 1,
         error: '',
       },
-      registerDataCleared: false,
       locale: 'en',
       darkTheme: false,
       userName: '',
@@ -86,60 +81,14 @@ class RegisterCard extends React.Component {
     this.toggleTheme = toggleTheme.bind(this);
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     const {
-      provider,
-      code,
-      registerUserOauthHandler,
-    } = this.props;
-    if (provider !== null && code !== '') {
-      registerUserOauthHandler(provider, code);
-    }
-  }
-
-  componentDidUpdate = async () => {
-    const {
-      registerData,
-      clearRegisterDataHandler,
-      provider,
       success,
-      history,
     } = this.props;
-    const { registerDataCleared } = this.state;
     if (success) {
       const { userName, password } = this.state;
       const { loginUserHandler } = this.props;
       loginUserHandler({ userName, password });
-    }
-    if (registerData.exists && !registerDataCleared) {
-      try {
-        this.setState({
-          registerDataCleared: true,
-        });
-        const img = await Axios({
-          method: 'get',
-          responseType: 'blob',
-          url: registerData.imageUrl,
-          timeout: TIMEOUT_API,
-        });
-        this.handleImageAdd(img.data);
-        let { firstName, lastName } = registerData;
-        if (provider === 'github') {
-          [firstName, lastName] = lastName.split(' ');
-        }
-        this.setState({
-          userName: registerData.userName,
-          firstName,
-          lastName,
-          email: registerData.email,
-          password: '',
-        }, () => {
-          clearRegisterDataHandler();
-          history.push('/register/');
-        });
-      } catch (e) {
-        console.error(e);
-      }
     }
   }
 
@@ -166,7 +115,6 @@ class RegisterCard extends React.Component {
     } = this.state;
     const {
       loading,
-      provided,
     } = this.props;
     if (loading) {
       return (<CircularProgress />);
@@ -186,7 +134,6 @@ class RegisterCard extends React.Component {
       locale={locale}
       darkTheme={darkTheme}
       showPassword={showPassword}
-      provided={provided}
       handleChange={this.handleChange}
       handleClickShowPassword={this.handleClickShowPassword}
       handleSubmit={this.handleSubmit}
@@ -205,20 +152,12 @@ class RegisterCard extends React.Component {
 
 RegisterCard.propTypes = {
   registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
-  registerUserOauthHandler: PropTypes.func.isRequired,
-  provider: PropTypes.string,
-  code: PropTypes.string,
   setErrorHandler: PropTypes.func.isRequired, // eslint-disable-line
+  loginUserHandler: PropTypes.func.isRequired,
   registerData: PropTypes.shape({}).isRequired,
   loading: PropTypes.bool.isRequired,
   success: PropTypes.bool.isRequired,
-  provided: PropTypes.bool.isRequired,
   history: PropTypes.shape({}).isRequired,
-};
-
-RegisterCard.defaultProps = {
-  provider: '',
-  code: '',
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RegisterCard));

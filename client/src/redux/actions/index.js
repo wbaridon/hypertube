@@ -10,7 +10,7 @@ import {
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
 import { registerUserA } from './register-user';
-import { registerUserOauthA } from './register-user-oauth';
+import { oauthUserA } from './oauth-user';
 import { getUserInfoPrivateA } from './get-user-info-private';
 import { setUserA, clearUserA, changeUserValueA } from './current-user';
 import { sendEmailA } from './send-email';
@@ -70,7 +70,7 @@ export {
   loginUserA,
   logoutUserA,
   registerUserA,
-  registerUserOauthA,
+  oauthUserA,
   getUserInfoPrivateA,
   setUserA,
   clearUserA,

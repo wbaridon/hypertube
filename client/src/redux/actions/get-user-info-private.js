@@ -10,9 +10,8 @@ export const getUserInfoPrivateStart = () => ({
   type: GET_USER_INFO_PRIVATE,
 });
 
-export const getUserInfoPrivateSuccess = data => ({
+export const getUserInfoPrivateSuccess = () => ({
   type: GET_USER_INFO_PRIVATE_SUCCESS,
-  data,
 });
 
 export const getUserInfoPrivateError = () => ({
@@ -24,7 +23,7 @@ export const getUserInfoPrivateA = (token, dispatch) => new Promise((resolve, re
   return userInfoPrivateAPI(token)
     .then(
       (response) => {
-        dispatch(getUserInfoPrivateSuccess(response.data));
+        dispatch(getUserInfoPrivateSuccess());
         dispatch(setUserA(response.data, token));
         resolve();
       },
