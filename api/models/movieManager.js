@@ -51,3 +51,13 @@ module.exports.exist = function (imdbId) {
     })
   })
 }
+
+module.exports.update = function (id, data) {
+  return new Promise ((resolve, reject) => {
+    console.log('Mon id: ' + id)
+    Movie.findOneAndUpdate({'imdbId': id}, data)
+    .then(function(result){ resolve(console.log(result)) },
+    (err) => {console.log(err)}
+    )
+  })
+}

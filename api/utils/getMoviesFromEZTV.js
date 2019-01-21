@@ -37,7 +37,7 @@ function checkCover(cover) {
 function addMovie(data) {
   checkCover(data.large_screenshot).then(coverChecked => {
     let movie = {
-      imdbId: data.imdb_id,
+      imdbId: 'tt'+data.imdb_id,
       title: data.title,
       season: data.season,
       episode: data.episode,
