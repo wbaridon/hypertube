@@ -24,21 +24,34 @@ function checkMovie(data) {
   })
 }
 
+function checkCover(cover) {
+  return new Promise ((resolve, reject) => {
+    if (cover.match('^http:')) {
+      resolve(cover);
+    } else {
+      resolve('http:'+cover);
+    }
+  })
+}
 function addMovie(data) {
-
+  checkCover(data.large_screenshot).then(coverChecked => {
     let movie = {
       imdbId: data.imdb_id,
       title: data.title,
       season: data.season,
       episode: data.episode,
-      cover: data.large_screenshot,
+      cover: coverChecked,
+      dateReleased: data.date_released_unix,
       torrents: {
+        hash: data.hash,
+        seeds: data.seeds,
+        peers: data.peers
       }
     }
     MovieManager.createMovie(movie).then(created => {
 
     })
-
+  })
 }
 
 function getPage(page) {

@@ -14,6 +14,7 @@ const MovieSchema = new Schema({
   imdbId: String,
   title: String,
   year: Number,
+  dateReleased: Number,
   synopsis: String,
   rating: Number,
   season: Number,
