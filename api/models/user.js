@@ -14,6 +14,7 @@ const UserSchema = new Schema({
   password: String,
   locale: String,
   darkTheme: Boolean,
+  oauth: Boolean,
   moviesHistory: [MovieHistorySchema]
 });
 

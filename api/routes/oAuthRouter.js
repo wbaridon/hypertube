@@ -5,32 +5,25 @@ const axios = require('axios');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const platformCredentials = require('../utils/oAuthPlatformCredentials');
 
-oAuthRouter
-  /*.post('/register', (req, res) => {
-    getCredentials(req.body.provider).then(credentials => {
-      getToken(req.body.provider, req.url, req.body.clientCode, credentials)
-      .then(token => {
+const UserManager = require('../models/userManager');
 
-        // Renvoi en front de l'user pour remplir les champs manquant,
-        // Faire une verif avant si le compte existe pas deja ou apres sur la route normal ?
-        // Et en front on validera les informations ensuite.. On ne doit pas pouvoir modifier le login et mail
-        getUserFrom(req.body.provider, token).then(user => res.send(user))
-      }).catch(error => res.status(400).send(error))
-    })
-  })*/
+oAuthRouter
   .post('/login', (req, res) => {
-    console.log(req.body)
-  getCredentials(req.body.provider).then(credentials => {
-    getToken(req.body.provider, req.url, req.body.clientCode, credentials)
-    .then(token => {
-      console.log('ici: ' + token)
-      getUserFrom(req.body.provider, token).then(user =>
-        // Au register il faudra checker que le compte est pas deja pris
-        // Il faut renvoyer un token jwt par rapport au compte ou le token oauth ?
-         res.send('non fonctionnel')
-       );
-    }).catch(error => console.log(error))//res.status(400).send(error))
-  });
+    getCredentials(req.body.provider).then(credentials => {
+      getToken(req.body.provider, '/oauth', req.body.clientCode, credentials)
+      .then(token => {
+        getUserFrom(req.body.provider, token)
+          .then(user => {
+            UserManager.getUser(user.userName).then(getResult => {
+              tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
+            }, noSuchUser => {
+              UserManager.createUser(user, callback => {
+                tokenManager.set(user).then(token => { res.send({ token, locale: 'en' }); })
+              })
+            })
+         });
+      }).catch(error => res.status(400).send(error))
+    });
   })
 
 function getToken(provider, path, clientCode, credentials) {
@@ -53,10 +46,11 @@ function getUserFrom(provider, token) {
   return new Promise ((resolve, reject) => {
     if (provider === 'github') {
       api = 'https://api.github.com/user'
-      axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
+      axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(user => {
+        console.log(response);
         var user = {
          email: response.data.email,
-         login: response.data.login,
+         userName: response.data.login,
          picture: response.data.avatar_url,
          name: response.data.name,
          firstname: '',
