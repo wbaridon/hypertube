@@ -11,6 +11,15 @@ const enUS = {
     newPasswordRepeat: 'Repeat password',
     submit: 'Confirm',
   },
+  changePassword: {
+    uppercase: 'Missing uppercase letter',
+    lowercase: 'Missing lowercase letter',
+    min: 'Need at least 8 characters',
+    max: 'No more than 30 characters',
+    digits: 'Missing digit',
+    spaces: 'Cannot contain spaces',
+    notEqual: 'Passwords do not match',
+  },
   settings: {
     userName: 'Username:',
     firstName: 'First Name:',
