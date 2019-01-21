@@ -50,7 +50,6 @@ function linkedinCredentials() {
         tokenPath: '/oauth/v2/accessToken'
       }
     }
-    console.log('ici')
      resolve(credentials)
     })
 }
@@ -83,7 +82,6 @@ function gitHubCredentials() {
        tokenPath: '/login/oauth/access_token'
       }
     }
-    console.log(credentials.client)
      resolve(credentials)
     })
 }

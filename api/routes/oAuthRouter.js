@@ -18,7 +18,8 @@ oAuthRouter
             UserManager.getUser(user.userName).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             }, noSuchUser => {
-              console.log(user)
+              // Verifier que l'on a pas l'email ou le login deja en user normal
+              // A faire
               UserManager.createUser(user, callback => {
                 tokenManager.set(user).then(token => { res.send(token); })
               })
@@ -40,27 +41,39 @@ function getToken(provider, path, clientCode, credentials) {
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
          resolve(token);
-       }).catch (error => { console.log(error); reject({'error': 'registerOauth.accessTokenError'}); })
+       }).catch (error => { reject({'error': 'registerOauth.accessTokenError'}); })
     });
   });
 }
 function getUserFrom(provider, token) {
   return new Promise ((resolve, reject) => {
+    console.log('GetUser')
     if (provider === 'github') {
       api = 'https://api.github.com/user'
-      axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(user => {
+      axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
         console.log(response);
         var user = {
          email: response.data.email,
          userName: response.data.login,
          picture: response.data.avatar_url,
-         name: response.data.name,
          oauth: true,
-         firstname: ''
        }
        // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
        resolve(user)
      })
+  /* } else if (provider === 'gitlab') {
+     console.log('ici')
+     api = 'http://gitlab.com/api/v4/user'
+     axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
+       console.log(response);
+       var user = {
+        email: response.data.email,
+        userName: response.data.login,
+        picture: response.data.avatar_url,
+        oauth: true,
+      }
+      resolve(user)
+    })*/
    } else {
      api = 'https://api.intra.42.fr/v2/me';
       axios.get(api, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
