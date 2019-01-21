@@ -21,7 +21,7 @@ oAuthRouter
               // Verifier que l'on a pas l'email ou le login deja en user normal
               // A faire
               UserManager.createUser(user, callback => {
-                tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
+                tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
               })
             })
          });
