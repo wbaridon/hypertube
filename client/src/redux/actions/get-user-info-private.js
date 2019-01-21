@@ -18,19 +18,18 @@ export const getUserInfoPrivateError = () => ({
   type: GET_USER_INFO_PRIVATE_ERROR,
 });
 
-export const getUserInfoPrivateA = (token, dispatch) => new Promise((resolve, reject) => {
+export const getUserInfoPrivateA = (token, dispatch) => {
   dispatch(getUserInfoPrivateStart());
   return userInfoPrivateAPI(token)
     .then(
       (response) => {
         dispatch(getUserInfoPrivateSuccess());
+        console.log(response.data);
         dispatch(setUserA(response.data, token));
-        resolve();
       },
       (error) => {
         dispatch(setErrorA(error.message));
         dispatch(getUserInfoPrivateError());
-        reject();
       },
     );
-});
+};

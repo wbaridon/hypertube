@@ -37,7 +37,7 @@ class ImageChanger extends React.Component {
       const img = await Axios({
         method: 'get',
         responseType: 'blob',
-        url: `http://localhost:3000/images/${imageUrl}`,
+        url: imageUrl,
         timeout: TIMEOUT_API,
       });
       this.handleImageAdd(img.data, false);

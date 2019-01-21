@@ -31,6 +31,7 @@ class Settings extends Component {
         lastName: props.user.lastName,
         locale: props.user.locale,
         darkTheme: props.user.darkTheme,
+        oauth: props.user.oauth,
       },
       anchorEl: null,
     };
@@ -85,14 +86,19 @@ class Settings extends Component {
     return (
       <Grid container spacing={0} direction="column" alignItems="center" justify="center" alignContent="center">
         <Grid item className={classes.content}>
-          <ImageChanger imageUrl={picture} handleImageChange={this.handleImageChange} />
+          <ImageChanger imageUrl={user.oauth ? picture : `http:localhost:3000/images/${picture}`} handleImageChange={this.handleImageChange} />
         </Grid>
         <Grid item className={classes.content}>
           <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
         </Grid>
-        <Grid item className={classes.content}>
-          <ChangePassword />
-        </Grid>
+        {
+          !user.oauth
+            ? (
+              <Grid item className={classes.content}>
+                <ChangePassword />
+              </Grid>
+            ) : null
+        }
       </Grid>
     );
   }

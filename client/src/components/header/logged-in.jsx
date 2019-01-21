@@ -19,8 +19,8 @@ function LoggedIn({
       <Button onClick={logoutHandler}>
         <FormattedMessage id="logout.logoutButton" />
       </Button>
-      <IconButton onClick={handleOpenSidebar} onKeyDown={e => (console.log(e))}>
-        <Avatar src={`http://localhost:3000/images/${userData.picture}`} />
+      <IconButton onClick={handleOpenSidebar}>
+        <Avatar src={userData.oauth ? userData.picture : `http://localhost:3000/images/${userData.picture}`} />
       </IconButton>
     </React.Fragment>
   );
@@ -28,12 +28,19 @@ function LoggedIn({
 
 LoggedIn.propTypes = {
   userData: PropTypes.shape({
-    firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
     picture: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
   handleOpenSidebar: PropTypes.func.isRequired,
   logoutHandler: PropTypes.func.isRequired,
+};
+
+LoggedIn.defaultProps = {
+  userData: {
+    firstName: 'MissingFN',
+    lastName: 'MissingLN',
+  },
 };
 
 const mapStateToProps = state => ({
