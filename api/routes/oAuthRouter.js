@@ -37,6 +37,7 @@ function getToken(provider, path, clientCode, credentials) {
         code: clientCode,
         redirect_uri: `http://localhost:8080${path}/${provider}`
       };
+      console.log(tokenConfig)
       oauth2.authorizationCode.getToken(tokenConfig).then(result => {
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
@@ -57,7 +58,9 @@ function getUserFrom(provider, token) {
          userName: response.data.login,
          picture: response.data.avatar_url,
          oauth: true,
-         profilIsFill: false
+         profilIsFill: false,
+         locale: 'en',
+         darkTheme: false
        }
        // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
        resolve(user)
@@ -85,7 +88,9 @@ function getUserFrom(provider, token) {
         name: response.data.last_name,
         firstname: response.data.first_name,
         oauth: true,
-        profilIsFill: false
+        profilIsFill: false,
+        locale: 'en',
+        darkTheme: false
       }
       resolve(user)
       })

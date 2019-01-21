@@ -30,7 +30,7 @@ function gitlabCredentials() {
         secret: gitlabSecret,
       },
       auth: {
-       tokenHost: 'http://gitlab.com',
+       tokenHost: 'http://gitlab.com/api/v4/',
        tokenPath: '/oauth/token'
       }
     }

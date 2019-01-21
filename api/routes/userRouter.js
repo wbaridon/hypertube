@@ -33,7 +33,8 @@ userRouter
         firstName: req.body.firstName,
         password: req.body.password,
         locale: req.body.locale,
-        darkTheme: req.body.darkTheme
+        darkTheme: req.body.darkTheme,
+        profilIsFill: true
       }
       checkForm(user).then(result => {
         hashPassword(user.password).then(hash => {
