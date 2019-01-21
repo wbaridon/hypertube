@@ -8,13 +8,15 @@ const { twitterId, twitterSecret,
 
 function facebookCredentials() {
   return new Promise ((resolve, reject) => {
-    credentials.client = {
-      id: facebookId,
-      secret: facebookSecret,
-    }
-    credentials.auth = {
-     tokenHost: 'https://graph.facebook.com',
-     tokenPath: '/v3.2/oauth/access_token'
+    const credentials = {
+      client: {
+        id: facebookId,
+        secret: facebookSecret,
+      },
+      auth: {
+       tokenHost: 'https://graph.facebook.com',
+       tokenPath: '/v3.2/oauth/access_token'
+      }
     }
      resolve(credentials)
     })
@@ -22,13 +24,15 @@ function facebookCredentials() {
 
 function gitlabCredentials() {
   return new Promise ((resolve, reject) => {
-    credentials.client = {
-      id: gitlabId,
-      secret: gitlabSecret,
-    }
-    credentials.auth = {
-     tokenHost: 'http://gitlab.com',
-     tokenPath: '/oauth/token'
+    const credentials = {
+      client: {
+        id: gitlabId,
+        secret: gitlabSecret,
+      },
+      auth: {
+       tokenHost: 'http://gitlab.com',
+       tokenPath: '/oauth/token'
+      }
     }
      resolve(credentials)
     })
@@ -36,27 +40,32 @@ function gitlabCredentials() {
 
 function linkedinCredentials() {
   return new Promise ((resolve, reject) => {
-    credentials.client = {
-      id: linkedinId,
-      secret: linkedinSecret,
+    const credentials = {
+      client: {
+        id: linkedinId,
+        secret: linkedinSecret,
+      },
+      auth: {
+        tokenHost: 'https://www.linkedin.com',
+        tokenPath: '/oauth/v2/accessToken'
+      }
     }
-    credentials.auth = {
-     tokenHost: 'https://www.linkedin.com',
-     tokenPath: '/oauth/v2/accessToken'
-    }
+    console.log('ici')
      resolve(credentials)
     })
 }
 
 function instagramCredentials() {
   return new Promise ((resolve, reject) => {
-    credentials.client = {
-      id: instagramId,
-      secret: instagramSecret,
-    }
-    credentials.auth = {
-     tokenHost: 'https://api.instagram.com',
-     tokenPath: '/oauth/accessToken'
+    const credentials = {
+      client: {
+        id: instagramId,
+        secret: instagramSecret,
+      },
+      auth: {
+       tokenHost: 'https://api.instagram.com',
+       tokenPath: '/oauth/accessToken'
+      }
     }
      resolve(credentials)
     })

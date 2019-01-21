@@ -1,12 +1,12 @@
 const express = require('express');
 const oAuthRouter = express.Router();
 const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const axios = require('axios');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const platformCredentials = require('../utils/oAuthPlatformCredentials');
 
 oAuthRouter
-  .post('/register', (req, res) => {
+  /*.post('/register', (req, res) => {
     getCredentials(req.body.provider).then(credentials => {
       getToken(req.body.provider, req.url, req.body.clientCode, credentials)
       .then(token => {
@@ -17,16 +17,20 @@ oAuthRouter
         getUserFrom(req.body.provider, token).then(user => res.send(user))
       }).catch(error => res.status(400).send(error))
     })
-  })
+  })*/
   .post('/login', (req, res) => {
+    console.log(req.body)
+  getCredentials(req.body.provider).then(credentials => {
     getToken(req.body.provider, req.url, req.body.clientCode, credentials)
     .then(token => {
+      console.log('ici: ' + token)
       getUserFrom(req.body.provider, token).then(user =>
         // Au register il faudra checker que le compte est pas deja pris
         // Il faut renvoyer un token jwt par rapport au compte ou le token oauth ?
          res.send('non fonctionnel')
        );
-    }).catch(error => res.status(400).send(error))
+    }).catch(error => console.log(error))//res.status(400).send(error))
+  });
   })
 
 function getToken(provider, path, clientCode, credentials) {
@@ -41,7 +45,7 @@ function getToken(provider, path, clientCode, credentials) {
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
          resolve(token);
-       }).catch (error => { reject({'error': 'registerOauth.accessTokenError'}); })
+       }).catch (error => { console.log(error); reject({'error': 'registerOauth.accessTokenError'}); })
     });
   });
 }
@@ -84,7 +88,7 @@ function getCredentials(provider) {
    else if (provider === 'gitlab') { platformCredentials.gitlab().then(credentials => resolve (credentials)) }
    else if (provider === 'facebook') { platformCredentials.facebook().then(credentials => resolve (credentials)) }
    else if (provider === 'linkedin') { platformCredentials.linkedin().then(credentials => resolve (credentials)) }
-  else if (provider === 'instagram') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
+   else if (provider === 'instagram') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
    else if (provider === '42') { platformCredentials.fortytwo().then(credentials => resolve (credentials)) }
   })
 }
