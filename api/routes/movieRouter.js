@@ -6,7 +6,7 @@ const MovieManager = require('../models/movieManager');
 
 movieRouter
   .post('/getMovies' , function(req, res) {
-    
+
   })
 
 // Check si on peut recuperer des infos en + avant de l'envoyer en front

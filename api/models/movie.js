@@ -9,6 +9,12 @@ const TorrentsSchema = new Schema({
   language: String
 });
 
+const CommentsSchema = new Schema({
+  userName: String,
+  comment: String,
+  postedOn: Number
+});
+
 const MovieSchema = new Schema({
   cover: String,
   imdbId: String,
@@ -25,7 +31,8 @@ const MovieSchema = new Schema({
   actors: String,
   awards: String,
   imdbRating: String,
-  torrents: [TorrentsSchema]
+  torrents: [TorrentsSchema],
+  comments: [CommentsSchema]
 });
 
 const Movie = mongoose.model('movie', MovieSchema);
