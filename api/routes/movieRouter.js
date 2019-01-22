@@ -25,7 +25,7 @@ movieRouter
     /*limit = 5;
     start = 0;
     const filter = { searchString: 'The' }*/
-    MovieManager.getList(filter.searchString, start, limit).then(result => {
+    MovieManager.getList(filter.searchString, filter.from, limit).then(result => {
       res.status(200).send(result)
     })
   })
