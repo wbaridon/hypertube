@@ -17,7 +17,6 @@ import LoadingDots from '../loading-dots';
 const mapStateToProps = state => ({
   authed: state.user.tokenValid && state.user.dataFetched,
   protectedRouteLoading: state.protectedRouteLoading,
-  redirectUrl: state.loginUser.redirectUrl,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,7 +29,6 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
   authed,
   protectedRouteLoading,
   setErrorHandler,
-  redirectUrl,
   ...rest
 }) => (<Route
   {...rest}
@@ -40,9 +38,6 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
     }
     if (!protectedRouteLoading && authed !== true) {
       return (<Redirect to={{ pathname: '/', state: { from: props.location.pathname } }} />); // eslint-disable-line
-    }
-    if (!protectedRouteLoading && authed && redirectUrl) {
-      return (<Redirect to={{ pathname: redirectUrl, state: { redirected: true } }} />);
     }
     return (<Component {...props} />);
   }}

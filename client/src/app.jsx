@@ -67,7 +67,6 @@ function mapStateToProps(state) {
     error: state.notifications.error,
     success: state.notifications.success,
     data: state.notifications.data,
-    redirectUrl: state.loginUser.redirectUrl,
   };
 }
 function mapDispatchToProps(dispatch) {
