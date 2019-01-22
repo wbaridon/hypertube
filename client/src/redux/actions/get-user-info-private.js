@@ -24,7 +24,6 @@ export const getUserInfoPrivateA = (token, dispatch) => {
     .then(
       (response) => {
         dispatch(getUserInfoPrivateSuccess());
-        console.log(response.data);
         dispatch(setUserA(response.data, token));
       },
       (error) => {
