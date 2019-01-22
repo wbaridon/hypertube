@@ -15,8 +15,13 @@ movieRouter
       })
     } else (res.status(404).send({'error':'error'}))
   })
-  .post('/getMovies' , function(req, res) {
+  .post('/getMovie' , function(req, res) {
     getMoreData(req.body.id)
+  })
+  .post('/list', function(req,res) {
+    MovieManager.getAllId().then(result => {
+      res.status(200).send(result)
+    })
   })
 // Check si on peut recuperer des infos en + avant de l'envoyer en front
 // Obliger de le mettre ici car nous sommes limite a 1 000 requetes / jour

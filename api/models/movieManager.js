@@ -37,7 +37,7 @@ module.exports.createMovie = function (data) {
 
 module.exports.getAllId = function () {
   return new Promise ((resolve, reject) => {
-    Movie.find({}, 'imdbId')
+    Movie.find({}).limit(15)
     .then(function(result){ resolve(result) },
     (err) => {console.log(err)}
     )
