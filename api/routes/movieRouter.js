@@ -22,7 +22,10 @@ movieRouter
     let filter = req.body.filter;
     let limit = (filter.to - filter.from) + 1;
     console.log('Limite : '+limit);
-    MovieManager.getList(filter.searchString, limit).then(result => {
+    /*limit = 5;
+    start = 0;
+    const filter = { searchString: 'The' }*/
+    MovieManager.getList(filter.searchString, start, limit).then(result => {
       res.status(200).send(result)
     })
   })
