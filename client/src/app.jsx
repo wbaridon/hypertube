@@ -67,6 +67,7 @@ function mapStateToProps(state) {
     error: state.notifications.error,
     success: state.notifications.success,
     data: state.notifications.data,
+    redirectUrl: state.loginUser.redirectUrl,
   };
 }
 function mapDispatchToProps(dispatch) {
@@ -152,4 +153,4 @@ App.defaultProps = {
   data: '',
 };
 
-export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl((App))));
+export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(App)));

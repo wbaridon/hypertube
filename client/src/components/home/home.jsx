@@ -6,7 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { setErrorA } from '../../redux/actions';
+import {
+  setErrorA,
+  setRedirectUrlA,
+} from '../../redux/actions';
 
 const myStyles = theme => ({
   poster: {
@@ -22,6 +25,7 @@ const myStyles = theme => ({
 
 const mapDispatchToProps = dispatch => ({
   setErrorHandler: routeUrl => dispatch(setErrorA('navigation.error.notAuthed', `: ${routeUrl}`)),
+  setRedirectUrlHandler: routeUrl => dispatch(setRedirectUrlA(routeUrl)),
 });
 
 class Home extends React.Component {
@@ -35,12 +39,14 @@ class Home extends React.Component {
   componentWillMount() {
     const {
       setErrorHandler,
+      setRedirectUrlHandler,
       location,
       history,
     } = this.props;
 
     if (location.state && location.state.from) {
       setErrorHandler(location.state.from);
+      setRedirectUrlHandler(location.state.from);
       history.replace({
         pathname: '/',
         state: {},
@@ -92,6 +98,7 @@ Home.propTypes = {
   }).isRequired,
   history: PropTypes.shape({}).isRequired,
   setErrorHandler: PropTypes.func.isRequired,
+  setRedirectUrlHandler: PropTypes.func.isRequired,
 };
 
 Home.url = '/';
