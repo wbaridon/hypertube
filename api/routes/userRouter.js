@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const resetPassword = require('../utils/resetPassword');
 const tokenManager = require('../utils/token');
+const { racine } = require('../config/env');
 const storage = multer.diskStorage({
   destination: './assets/images/',
   filename: function (req, file, callback) {
@@ -28,7 +29,7 @@ userRouter
       var user = {
         email: req.body.email,
         userName: req.body.userName,
-        picture: req.file.filename,
+        picture: racine + 'images/' + req.file.filename,
         lastName: req.body.lastName,
         firstName: req.body.firstName,
         password: req.body.password,
@@ -133,7 +134,7 @@ userRouter
             if (err) throw err;
           })
         }
-        UserManager.updateUserField({'userName': user}, {'picture': req.file.filename})
+        UserManager.updateUserField({'userName': user}, {'picture': racine + 'images/' + req.file.filename})
         .then((updated) => {
           res.status(200).send({picture: req.file.filename, user: token.user, success: 'picture.Updated'})
         })

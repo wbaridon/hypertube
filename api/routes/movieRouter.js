@@ -22,6 +22,7 @@ movieRouter
     let filter = req.body.filter;
     let limit = (filter.to - filter.from) + 1;
     console.log('Limite : '+limit);
+    // Manque le sort et le reverse -1 ou 1 
     /*limit = 5;
     start = 0;
     const filter = { searchString: 'The' }*/
