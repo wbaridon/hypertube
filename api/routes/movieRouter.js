@@ -21,8 +21,8 @@ movieRouter
   .post('/list', function(req,res) {
     let filter = req.body.filter;
     let limit = (filter.to - filter.from) + 1;
-    console.log(limit)
-    MovieManager.getList(limit).then(result => {
+    console.log('Limite : '+limit);
+    MovieManager.getList(filter.searchString, limit).then(result => {
       res.status(200).send(result)
     })
   })

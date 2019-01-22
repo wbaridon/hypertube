@@ -35,9 +35,9 @@ module.exports.createMovie = function (data) {
   })
 }
 
-module.exports.getList = function (limit) {
+module.exports.getList = function (query, limit) {
   return new Promise ((resolve, reject) => {
-    Movie.find({}).limit(15)
+    Movie.find({'title': { $regex: query, $options: 'i'} }).limit(limit)
     .then(function(result){ resolve(result) },
     (err) => {console.log(err)}
     )
