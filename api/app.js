@@ -31,12 +31,8 @@ app.use('/video', torrentRouter);
 app.use('/movie', movieRouter);
 app.use('/comments', commentsRouter);
 
-app.get('/', function (req, res) {
-  res.send('Hello world!');
-});
-
 app.listen(port, function () {
-  yts.launcher()
+  // yts.launcher()
   eztv.launcher()
   console.log(`Server running at http://${hostname}:${port}/`);
 });
