@@ -19,7 +19,10 @@ movieRouter
     getMoreData(req.body.id)
   })
   .post('/list', function(req,res) {
-    MovieManager.getAllId().then(result => {
+    let filter = req.body.filter;
+    let limit = (filter.to - filter.from) + 1;
+    console.log(limit)
+    MovieManager.getList(limit).then(result => {
       res.status(200).send(result)
     })
   })

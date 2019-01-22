@@ -35,7 +35,7 @@ module.exports.createMovie = function (data) {
   })
 }
 
-module.exports.getAllId = function () {
+module.exports.getList = function (limit) {
   return new Promise ((resolve, reject) => {
     Movie.find({}).limit(15)
     .then(function(result){ resolve(result) },
