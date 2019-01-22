@@ -26,7 +26,7 @@ function UserDumb({
 }) {
   return (
     <Card className={classes.card}>
-      <CardMedia className={classes.cardMedia} image={`http://localhost:3000/images/${picture}`} />
+      <CardMedia className={classes.cardMedia} image={picture} />
       <CardContent>
         <Typography>
           {userName}

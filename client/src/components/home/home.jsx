@@ -27,13 +27,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-    };
-  }
-
   componentWillMount() {
     const {
       setErrorHandler,
@@ -50,38 +43,8 @@ class Home extends React.Component {
     }
   }
 
-  componentDidMount() {
-    axios.get('https://tv-v2.api-fetch.website/movies/1')
-      .then((res) => {
-        this.setState({
-          items: res.data.slice(0, 60),
-        });
-      });
-  }
-
   render() {
-    const { items } = this.state;
-    const { classes } = this.props;
-    const itemList = items.length ? (
-      items.map((item) => {
-        return (
-          // eslint-disable-next-line no-underscore-dangle
-          <Grid item key={item._id} className={classes.poster}>
-            <Link to={`/movie/${item.imdb_id}`}>
-              <img className={classes.poster} src={item.images.poster} alt="" />
-            </Link>
-          </Grid>
-        );
-      })
-    ) : (
-      <Typography>No items yet</Typography>
-    );
-    return (
-      <Grid container direction="row" spacing={0} justify="space-around" alignItems="center" alignContent="center">
-        {itemList}
-      </Grid>
-    );
-    // const { classes } = this.props;
+    return (<div>Home</div>);
   }
 }
 

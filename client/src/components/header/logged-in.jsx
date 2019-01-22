@@ -20,7 +20,7 @@ function LoggedIn({
         <FormattedMessage id="logout.logoutButton" />
       </Button>
       <IconButton onClick={handleOpenSidebar}>
-        <Avatar src={userData.oauth ? userData.picture : `http://localhost:3000/images/${userData.picture}`} />
+        <Avatar src={userData.picture} />
       </IconButton>
     </React.Fragment>
   );

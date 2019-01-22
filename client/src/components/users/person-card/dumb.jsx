@@ -35,7 +35,7 @@ function PersonCardDumb({
       to={`/user/${userName}`}
     >
       <Card className={classes.userCard}>
-        <CardMedia className={classes.cardMedia} image={picture ? `http://localhost:3000/images/${picture}` : 'noImage'} />
+        <CardMedia className={classes.cardMedia} image={picture} />
         <CardActions>
           <Typography>
             {firstName}

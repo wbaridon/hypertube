@@ -24,7 +24,7 @@ class PersonCard extends Component {
       user = users[userName];
     }
     return (
-      users[userName]
+      users[userName] && users[userName].profilIsFill
         ? (
           <PersonCardDumb
             firstName={user.firstName}
