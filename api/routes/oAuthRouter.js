@@ -15,6 +15,7 @@ oAuthRouter
       .then(token => {
         getUserFrom(req.body.provider, token)
           .then(user => {
+            console.log(user)
             UserManager.getUser(user.userName).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
@@ -52,18 +53,21 @@ function getUserFrom(provider, token) {
     if (provider === 'github') {
       api = 'https://api.github.com/user'
       axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-        console.log(response);
-        var user = {
-         email: response.data.email,
-         userName: response.data.login,
-         picture: response.data.avatar_url,
-         oauth: true,
-         profilIsFill: false,
-         locale: 'en',
-         darkTheme: false
-       }
-       // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
-       resolve(user)
+        console.log(response.data);
+        axios.get(`${api}/emails`, { headers: {"Authorization": `Bearer ${token}`}}).then(emails => {
+          var user = {
+           email: emails.data[0].email,
+           userName: response.data.login,
+           picture: response.data.avatar_url,
+           oauth: true,
+           profilIsFill: false,
+           locale: 'en',
+           darkTheme: false
+         }
+         console.log(user)
+         // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
+         resolve(user)
+        });
      })
   /* } else if (provider === 'gitlab') {
      console.log('ici')
