@@ -19,16 +19,29 @@ oAuthRouter
             UserManager.getUserByMail(user.email).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
-              // Verifier que l'on a pas le login deja en user normal
-              // A faire
-              UserManager.createUser(user, callback => {
-                tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
+              userNameIsFree(user.userName).then(isFree => {
+                UserManager.createUser(user, callback => {
+                  tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
+                })
+              }).catch(isBusy => {
+                  delete user.userName
+                  UserManager.createUser(user, callback => {
+                    tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
+                  })
+                })
               })
             })
          });
       }).catch(error => res.status(400).send(error))
-    });
   })
+
+function userNameIsFree (userName) {
+  return new Promise ((resolve, reject) => {
+    UserManager.getUser(userName).then(user => {
+      reject();
+    }, isFree => { resolve(); })
+  })
+}
 
 function getToken(provider, path, clientCode, credentials) {
   return new Promise((resolve, reject) => {
