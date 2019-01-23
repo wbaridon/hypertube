@@ -43,13 +43,13 @@ function addMovie(data) {
       episode: data.episode,
       cover: coverChecked,
       dateReleased: data.date_released_unix,
-      torrents: {
-        hash: data.hash,
-        seeds: data.seeds,
-        peers: data.peers
-      }
     }
-    MovieManager.createMovie(movie).then(created => {
+    torrent = {
+      hash: data.hash,
+      seeds: data.seeds,
+      peers: data.peers
+    }
+    MovieManager.createMovie(movie, torrent).then(created => {
       getBetterCover(movie.imdbId)
     })
   })
