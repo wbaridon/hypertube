@@ -20,7 +20,7 @@ function SearchBar({
 }) {
   return (
     <Paper className={classes.searchBar}>
-      <TextField id="searchBar" tabIndex={-1} placeholder="Search for movie titles, directors, writers, etc..." variant="outlined" fullWidth value={searchString} onChange={handleSearchStringChange} />
+      <TextField classes={{ focused: classes.searchBarFocused }} id="searchBar" tabIndex={-1} placeholder="Search for movie titles, directors, writers, etc..." variant="outlined" fullWidth value={searchString} onChange={handleSearchStringChange} />
     </Paper>
   );
 }

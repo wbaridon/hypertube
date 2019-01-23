@@ -3,7 +3,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -26,6 +26,10 @@ const mapDispatchToProps = dispatch => ({
   setErrorHandler: routeUrl => dispatch(setErrorA('navigation.error.notAuthed', `: ${routeUrl}`)),
 });
 
+const mapStateToProps = state => ({
+  authed: state.user.tokenValid && state.user.dataFetched,
+});
+
 class Home extends React.Component {
   componentWillMount() {
     const {
@@ -44,7 +48,88 @@ class Home extends React.Component {
   }
 
   render() {
-    return (<div>Home</div>);
+    const {
+      authed,
+    } = this.props;
+    return (
+      authed
+        ? <Redirect to="/movies" />
+        : (
+          <Grid container direction="column" justify="center" alignItems="center" alignContent="center">
+            <Grid item>
+              <Typography inline variant="h1">
+                H
+              </Typography>
+              <Typography inline variant="h4">
+                yper
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                Y
+              </Typography>
+              <Typography inline variant="h4">
+                olo
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                P
+              </Typography>
+              <Typography inline variant="h4">
+                roper
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                E
+              </Typography>
+              <Typography inline variant="h4">
+                vil
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                R
+              </Typography>
+              <Typography inline variant="h4">
+                etro
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                T
+              </Typography>
+              <Typography inline variant="h4">
+                echnological
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                U
+              </Typography>
+              <Typography inline variant="h4">
+                ltimate
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                B
+              </Typography>
+              <Typography inline variant="h4">
+                rowsing
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography inline variant="h1">
+                E
+              </Typography>
+              <Typography inline variant="h4">
+                xperience
+              </Typography>
+            </Grid>
+          </Grid>
+        ));
   }
 }
 
@@ -57,7 +142,8 @@ Home.propTypes = {
   }).isRequired,
   history: PropTypes.shape({}).isRequired,
   setErrorHandler: PropTypes.func.isRequired,
+  authed: PropTypes.bool.isRequired,
 };
 
 Home.url = '/';
-export default withRouter(connect(null, mapDispatchToProps)(withStyles(myStyles)(Home)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(myStyles)(Home)));
