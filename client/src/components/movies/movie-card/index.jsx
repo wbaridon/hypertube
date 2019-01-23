@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   ButtonBase, Grid, Button,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 
 class MovieCard extends Component {
@@ -21,7 +22,9 @@ class MovieCard extends Component {
     return (
       <Grid container>
         <Grid item>
-          <img style={{ height: 360, width: 240 }} src={cover} alt={title} />
+          <Link to={`/movie/${imdbId}`}>
+            <img style={{ height: 360, width: 240 }} src={cover} alt={title} />
+          </Link>
         </Grid>
       </Grid>
     );

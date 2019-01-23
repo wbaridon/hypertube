@@ -62,6 +62,7 @@ class Movies extends Component {
     if (!loading) {
       return (
         <Waypoint
+          bottomOffset="-350px"
           onEnter={this.loadMoreItems}
         />
       );
