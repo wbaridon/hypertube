@@ -21,7 +21,6 @@ movieRouter
         res.status(200).send(result);
       }).catch(error => res.status(404).send('errorInTheDb'))
     })
-  res.send('prochainement');
   })
   .post('/list', function(req,res) {
     let filter = req.body.filter;
