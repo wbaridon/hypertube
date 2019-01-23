@@ -10,54 +10,57 @@ function getUser(provider, token) {
     else if (provider === 'instagram') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
     else if (provider === '42') { platformCredentials.fortytwo().then(credentials => resolve (credentials)) }
   })*/
+    switch (provider) {
+      case 'github':
+        getFrom(provider, 'https://api.github.com/user', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        break;
+      case '42':
+        getFrom(provider, 'https://api.intra.42.fr/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        break;
+    }
+  });
+}
 
-    if (provider === 'github') {
-      api = 'https://api.github.com/user'
-      axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-        console.log(response.data);
-        axios.get(`${api}/emails`, { headers: {"Authorization": `Bearer ${token}`}}).then(emails => {
+function getFrom(provider, api, token) {
+  return new Promise ((resolve, reject) => {
+    axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}})
+      .then(response => {
+        userModel(provider, response.data, token)
+          .then(user => {
+            user.oauth = true;
+            user.profilIsFill= false,
+            user.locale= 'en',
+            user.darkTheme= false
+            resolve(user);
+          }).catch(error => { reject(error) })
+      }).catch(error => { reject(error) });
+  })
+}
+
+function userModel(provider, data, token) {
+  return new Promise ((resolve, reject) => {
+    switch (provider) {
+      case '42':
+        var user = {
+          email: data.email,
+          userName: data.login,
+          picture: data.image_url,
+          name: data.last_name,
+          firstname: data.first_name,
+        }
+        break;
+      case 'github':
+        axios.get(`https://api.github.com/user/emails`, { headers: {"Authorization": `Bearer ${token}`}})
+        .then(emails => {
           var user = {
            email: emails.data[0].email,
-           userName: response.data.login,
-           picture: response.data.avatar_url,
-           oauth: true,
-           profilIsFill: false,
-           locale: 'en',
-           darkTheme: false
-         }
-         resolve(user)
-        });
-     })
-  /* } else if (provider === 'gitlab') {
-     console.log('ici')
-     api = 'http://gitlab.com/api/v4/user'
-     axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-       console.log(response);
-       var user = {
-        email: response.data.email,
-        userName: response.data.login,
-        picture: response.data.avatar_url,
-        oauth: true,
-      }
-      resolve(user)
-    })*/
-   } else {
-     api = 'https://api.intra.42.fr/v2/me';
-      axios.get(api, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-      var user = {
-        email: response.data.email,
-        userName: response.data.login,
-        picture: response.data.image_url,
-        name: response.data.last_name,
-        firstname: response.data.first_name,
-        oauth: true,
-        profilIsFill: false,
-        locale: 'en',
-        darkTheme: false
-      }
-      resolve(user)
-      })
+           userName: data.login,
+           picture: data.avatar_url
+          }
+        }).catch(error => { reject(error) });
+        break;
     }
+    resolve(user)
   })
 }
 
