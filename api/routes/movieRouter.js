@@ -16,7 +16,8 @@ movieRouter
     } else (res.status(404).send({'error':'error'}))
   })
   .post('/getMovie' , function(req, res) {
-    getMoreData(req.body.id)
+  //  getMoreData(req.body.id)
+  res.send('prochainement');
   })
   .post('/list', function(req,res) {
     let filter = req.body.filter;
