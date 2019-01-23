@@ -5,6 +5,7 @@ import { Grid, withStyles } from '@material-ui/core';
 import Waypoint from 'react-waypoint';
 import { getMoviePageA } from 'Actions';
 import MovieCard from './movie-card';
+import ActiveMovieCard from './active-movie-card';
 import SearchBar from './search-bar';
 
 
@@ -19,6 +20,8 @@ const defaultRequestShape = {
 };
 const myStyles = theme => ({
   poster: {
+    height: 'auto',
+    flexGrow: 1,
     maxWidth: '200px',
     [theme.breakpoints.down(700)]: {
       maxWidth: '150px',
@@ -34,6 +37,7 @@ class Movies extends Component {
     super();
     this.state = {
       searchString: '',
+      currentMovie: null,
     };
 
     this.renderMovies = this.renderMovies.bind(this);
@@ -46,6 +50,10 @@ class Movies extends Component {
     document.getElementById('searchBar').focus();
   }
 
+  onHoverMovie(movieId) {
+    this.setState({ currentMovie: movieId });
+    console.log(movieId);
+  }
 
   loadMoreItems() {
     const {
@@ -56,11 +64,10 @@ class Movies extends Component {
     const {
       searchString,
     } = this.state;
-    console.log(page);
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
-    request.filter.from = page * 10;
-    request.filter.to = (page + 1) * 10;
+    request.filter.from = page * 12;
+    request.filter.to = (page + 1) * 12;
 
     getMoviePageHandle(token, request);
   }
@@ -74,7 +81,6 @@ class Movies extends Component {
     if (!loading) {
       return (
         <Waypoint
-          bottomOffset="-350px"
           onEnter={this.loadMoreItems}
         />
       );
@@ -84,10 +90,19 @@ class Movies extends Component {
 
   renderMovies() {
     const { movies, classes } = this.props;
+    const { currentMovie } = this.state;
     if (movies.length === 0) {
       return (<div>No movies yet</div>);
     }
-    return movies.map(movie => <Grid item className={classes.poster} key={movie._id}><MovieCard myPropClass={classes.poster} {...movie} /></Grid>);
+    return movies.map((movie) => {
+      return (
+        <Grid item onMouseOver={() => this.onHoverMovie(movie._id)}  className={classes.poster} key={movie._id}>
+          {
+            currentMovie === movie._id ? <ActiveMovieCard myPropClass={classes.poster} {...movie} />
+              : <MovieCard myPropClass={classes.poster} {...movie} />
+          }
+        </Grid>);
+    });
   }
 
   render() {
