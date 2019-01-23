@@ -12,6 +12,7 @@ import Users from '../users';
 import User from '../user';
 import Oauth from '../oauth';
 import LoadingDots from '../loading-dots';
+import Movies from '../movies';
 
 
 const mapStateToProps = state => ({
@@ -50,6 +51,7 @@ function CurrentRoute() {
       <Switch>
         <Route path={Oauth.url} component={Oauth} />
         <Route path={Video.url} component={Video} />
+        <PrivateRoute path={Movies.url} component={Movies} />
         <PrivateRoute path={User.url} component={User} />
         <PrivateRoute path={Users.url} component={Users} />
         <PrivateRoute path={Settings.url} component={Settings} />

@@ -19,14 +19,14 @@ import Sidebar from './components/sidebar';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#39796b',
-      main: '#004d40',
-      dark: '#00251a',
+      light: '#484848',
+      main: '#212121',
+      dark: '#000',
     },
     secondary: {
-      light: '#bc477b',
-      main: '#880e4f',
-      dark: '#560027',
+      light: '#fff',
+      main: '#fff',
+      dark: '#fff',
     },
   },
   typography: {

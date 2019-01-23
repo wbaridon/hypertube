@@ -19,10 +19,11 @@ export const getMoviePageError = () => ({
   type: GET_MOVIE_PAGE_ERROR,
 });
 
-export const getMoviePageA = (token, page) => {
+export const getMoviePageA = (token, request) => {
+  console.log(request);
   return (dispatch) => {
     dispatch(getMoviePageStart());
-    return getMoviePageAPI(token, page)
+    return getMoviePageAPI(token, request)
       .then(
         (response) => {
           dispatch(getMoviePageSuccess(response.data));
