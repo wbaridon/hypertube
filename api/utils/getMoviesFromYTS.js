@@ -53,7 +53,7 @@ function getPage(page) {
       for (var i = 0; i < response.data.data.movies.length; i++) {
         checkMovie(response.data.data.movies[i]);
       }
-      setTimeout(resolve, 1500)
+      setTimeout(resolve, 2500)
     })
   })
 }
