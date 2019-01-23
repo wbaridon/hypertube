@@ -16,7 +16,11 @@ movieRouter
     } else (res.status(404).send({'error':'error'}))
   })
   .post('/getMovie' , function(req, res) {
-  //  getMoreData(req.body.id)
+    getMoreData(req.body.id).then(done => {
+      MovieManager.getMovie(req.body.id).then(result => {
+        res.status(200).send(result);
+      }).catch(error => res.status(404).send('errorInTheDb'))
+    })
   res.send('prochainement');
   })
   .post('/list', function(req,res) {
@@ -38,9 +42,7 @@ function getMoreData(id) {
   return new Promise ((resolve, reject) => {
     axios.get('http://www.omdbapi.com/?i='+id+'&apikey=c0120222')
     .then(response => {
-    //  console.log(data)
       var data = response.data
-      console.log(response.data)
       let movie = {
         public: data.Rated,
         runtime: data.Runtime,
@@ -52,9 +54,7 @@ function getMoreData(id) {
         cover: data.Poster,
         imdbRating: data.imdbRating
       }
-      console.log(movie)
-      MovieManager.update(id, movie)
-      // Voir comment faire l'update dans la database
+      MovieManager.update(id, movie).then(done => resolve()).catch(error => reject(error));
     })
   })
 }
