@@ -16,10 +16,10 @@ oAuthRouter
         getUserFrom(req.body.provider, token)
           .then(user => {
             console.log(user)
-            UserManager.getUser(user.userName).then(getResult => {
+            UserManager.getUserByMail(user.email).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
-              // Verifier que l'on a pas l'email ou le login deja en user normal
+              // Verifier que l'on a pas le login deja en user normal
               // A faire
               UserManager.createUser(user, callback => {
                 tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
@@ -38,7 +38,6 @@ function getToken(provider, path, clientCode, credentials) {
         code: clientCode,
         redirect_uri: `http://localhost:8080${path}/${provider}`
       };
-      console.log(tokenConfig)
       oauth2.authorizationCode.getToken(tokenConfig).then(result => {
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
@@ -49,7 +48,6 @@ function getToken(provider, path, clientCode, credentials) {
 }
 function getUserFrom(provider, token) {
   return new Promise ((resolve, reject) => {
-    console.log('GetUser')
     if (provider === 'github') {
       api = 'https://api.github.com/user'
       axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
@@ -64,8 +62,6 @@ function getUserFrom(provider, token) {
            locale: 'en',
            darkTheme: false
          }
-         console.log(user)
-         // mon token 42 625c8be5dffc446ab45c450811b2cfff93edc75748de0c8650c144098e7f73e3
          resolve(user)
         });
      })
