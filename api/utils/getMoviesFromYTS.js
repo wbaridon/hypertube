@@ -32,15 +32,16 @@ function addMovie(data) {
       year: data.year,
       cover: data.large_cover_image,
       synopsis: data.synopsis,
-      torrents: {
-        language: data.language,
-        hash: data.torrents[0].hash,
-        quality: data.torrents[0].quality,
-        seeds: data.torrents[0].seeds,
-        peers: data.torrents[0].peers
-      }
     }
-    MovieManager.createMovie(movie).then(created => {
+    torrent = {
+      language: data.language,
+      hash: data.torrents[0].hash,
+      quality: data.torrents[0].quality,
+      seeds: data.torrents[0].seeds,
+      peers: data.torrents[0].peers
+    }
+
+    MovieManager.createMovie(movie, torrent).then(created => {
 
     })
 
@@ -53,7 +54,7 @@ function getPage(page) {
       for (var i = 0; i < response.data.data.movies.length; i++) {
         checkMovie(response.data.data.movies[i]);
       }
-      setTimeout(resolve, 1500)
+      setTimeout(resolve, 2500)
     })
   })
 }

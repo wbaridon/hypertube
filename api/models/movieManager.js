@@ -17,7 +17,7 @@ module.exports.getMovieByTitle = function (title) {
   })
 }
 
-module.exports.createMovie = function (data) {
+module.exports.createMovie = function (data,torrent) {
   return new Promise ((resolve, reject) => {
     var movie = new Movie({
       imdbId: data.imdbId,
@@ -25,10 +25,8 @@ module.exports.createMovie = function (data) {
       year: data.year,
       cover: data.cover,
       synopsis: data.synopsis,
-      torrents: {
-        url: data.torrents.url,
-      }
     })
+    movie.torrents.push(torrent)
     movie.save().then(function(){
       resolve();
     })
@@ -54,9 +52,8 @@ module.exports.exist = function (imdbId) {
 
 module.exports.update = function (id, data) {
   return new Promise ((resolve, reject) => {
-    console.log('Mon id: ' + id)
     Movie.findOneAndUpdate({'imdbId': id}, data)
-    .then(function(result){ resolve(console.log(result)) },
+    .then(function(result){ resolve() },
     (err) => {console.log(err)}
     )
   })
