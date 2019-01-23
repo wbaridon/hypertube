@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid } from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import Waypoint from 'react-waypoint';
 import { getMoviePageA } from 'Actions';
 import MovieCard from './movie-card';
 import SearchBar from './search-bar';
+
 
 const defaultRequestShape = {
   filter: {
@@ -16,6 +17,17 @@ const defaultRequestShape = {
     reverse: false,
   },
 };
+const myStyles = theme => ({
+  poster: {
+    maxWidth: '200px',
+    [theme.breakpoints.down(700)]: {
+      maxWidth: '150px',
+    },
+    [theme.breakpoints.down(400)]: {
+      maxWidth: '75px',
+    },
+  },
+});
 
 class Movies extends Component {
   constructor() {
@@ -71,11 +83,11 @@ class Movies extends Component {
   }
 
   renderMovies() {
-    const { movies } = this.props;
+    const { movies, classes } = this.props;
     if (movies.length === 0) {
       return (<div>No movies yet</div>);
     }
-    return movies.map(movie => <Grid item key={movie._id}><MovieCard {...movie} /></Grid>);
+    return movies.map(movie => <Grid item className={classes.poster} key={movie._id}><MovieCard myPropClass={classes.poster} {...movie} /></Grid>);
   }
 
   render() {
@@ -85,7 +97,7 @@ class Movies extends Component {
     return (
       <div>
         <SearchBar handleSearchStringChange={this.handleSearchStringChange} searchString={searchString} />
-        <Grid style={{ marginTop: '70px' }} spacing={0} container justify="center">
+        <Grid container style={{ marginTop: '70px' }} spacing={0} justify="space-around">
           {this.renderMovies()}
         </Grid>
         {this.renderWaypoint()}
@@ -122,4 +134,4 @@ const mapDispatchToProps = dispatch => ({
   getMoviePageHandle: (token, request) => dispatch(getMoviePageA(token, request)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Movies);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(myStyles)(Movies));

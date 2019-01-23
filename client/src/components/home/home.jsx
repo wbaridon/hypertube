@@ -142,7 +142,7 @@ Home.propTypes = {
   }).isRequired,
   history: PropTypes.shape({}).isRequired,
   setErrorHandler: PropTypes.func.isRequired,
-  tokenValid: PropTypes.bool.isRequired,
+  authed: PropTypes.bool.isRequired,
 };
 
 Home.url = '/';

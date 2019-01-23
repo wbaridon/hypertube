@@ -5,12 +5,12 @@
   --autocomplete-primary-background-color: #fff;
 }
 
-::-webkit-scrollbar { 
+/* ::-webkit-scrollbar { 
   display: none; 
 }
 html {
   -ms-overflow-style: -ms-autohiding-scrollbar;
-}
+} */
 html {
     scroll-behavior: smooth;
     overflow: auto;
