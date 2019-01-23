@@ -16,10 +16,12 @@ oAuthRouter
       .then(token => {
         oauthGet.user(req.body.provider, token)
           .then(user => {
+            console.log('ici')
             console.log(user)
             UserManager.getUserByMail(user.email).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
+              console.log('no user')
               userNameIsFree(user.userName).then(isFree => {
                 UserManager.createUser(user, callback => {
                   tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
