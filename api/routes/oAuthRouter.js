@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const platformCredentials = require('../utils/oAuthPlatformCredentials');
+const oauthGet = require('../utils/oAuthGetUser');
 const tokenManager = require('../utils/token');
 
 const UserManager = require('../models/userManager');
@@ -13,7 +14,7 @@ oAuthRouter
     getCredentials(req.body.provider).then(credentials => {
       getToken(req.body.provider, '/oauth', req.body.clientCode, credentials)
       .then(token => {
-        getUserFrom(req.body.provider, token)
+        oauthGet.user(req.body.provider, token)
           .then(user => {
             console.log(user)
             UserManager.getUserByMail(user.email).then(getResult => {
@@ -58,57 +59,6 @@ function getToken(provider, path, clientCode, credentials) {
        }).catch (error => { reject({'error': 'registerOauth.accessTokenError'}); })
     });
   });
-}
-function getUserFrom(provider, token) {
-  return new Promise ((resolve, reject) => {
-    if (provider === 'github') {
-      api = 'https://api.github.com/user'
-      axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-        console.log(response.data);
-        axios.get(`${api}/emails`, { headers: {"Authorization": `Bearer ${token}`}}).then(emails => {
-          var user = {
-           email: emails.data[0].email,
-           userName: response.data.login,
-           picture: response.data.avatar_url,
-           oauth: true,
-           profilIsFill: false,
-           locale: 'en',
-           darkTheme: false
-         }
-         resolve(user)
-        });
-     })
-  /* } else if (provider === 'gitlab') {
-     console.log('ici')
-     api = 'http://gitlab.com/api/v4/user'
-     axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-       console.log(response);
-       var user = {
-        email: response.data.email,
-        userName: response.data.login,
-        picture: response.data.avatar_url,
-        oauth: true,
-      }
-      resolve(user)
-    })*/
-   } else {
-     api = 'https://api.intra.42.fr/v2/me';
-      axios.get(api, { headers: {"Authorization": `Bearer ${token}`}}).then(response => {
-      var user = {
-        email: response.data.email,
-        userName: response.data.login,
-        picture: response.data.image_url,
-        name: response.data.last_name,
-        firstname: response.data.first_name,
-        oauth: true,
-        profilIsFill: false,
-        locale: 'en',
-        darkTheme: false
-      }
-      resolve(user)
-      })
-    }
-  })
 }
 
 function getCredentials(provider) {
