@@ -17,7 +17,7 @@ const styles = {
   },
   textFlex: {
     flexGrow: 1,
-  }
+  },
 };
 
 class ActiveMovieCard extends React.Component {

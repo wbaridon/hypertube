@@ -22,12 +22,12 @@ const myStyles = theme => ({
   poster: {
     height: 'auto',
     flexGrow: 1,
-    maxWidth: '200px',
-    [theme.breakpoints.down(700)]: {
-      maxWidth: '150px',
+    maxWidth: '275px',
+    [theme.breakpoints.down(800)]: {
+      maxWidth: '200px',
     },
-    [theme.breakpoints.down(400)]: {
-      maxWidth: '75px',
+    [theme.breakpoints.down(500)]: {
+      maxWidth: '150px',
     },
   },
 });
