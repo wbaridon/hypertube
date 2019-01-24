@@ -6,6 +6,7 @@ import {
   Typography,
   Grid,
   Button,
+  Paper,
 } from '@material-ui/core';
 
 function ActiveMovieCard({
@@ -16,21 +17,28 @@ function ActiveMovieCard({
   dimensions,
 }) {
   return (
-    <Card style={{ width: dimensions.width, height: dimensions.height, padding: 5 }}>
+    <Card style={{ zIndex: 1, position: 'relative', width: dimensions.width, height: dimensions.height, padding: 5 }}>
+      <Paper
+        style={{
+          padding: '3px',
+          position: 'absolute',
+          top: '5px',
+          right: '5px',
+          boxShadow: '-3px 3px 10px rgba(0, 0, 0, 0.5)',
+        }}
+      >
+        <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+          {title}
+        </Typography>
+        <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+          {`Released: ${year}`}
+        </Typography>
+      </Paper>
       <Grid container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
         <Grid item>
           <CardMedia style={{ height: dimensions.width / 2 }} image={cover} />
         </Grid>
-        <Grid item>
-          <Typography variant={dimensions.width <= 150 ? 'caption' : 'title'}>
-            {title}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant={dimensions.width <= 150 ? 'caption' : 'title'}>
-            {`Released: ${year}`}
-          </Typography>
-        </Grid>
+
         <Grid
           item
           style={{
@@ -45,19 +53,15 @@ function ActiveMovieCard({
           </Typography>
         </Grid>
         <Grid item style={{ paddingBottom: 10 }}>
-          <Grid container wrap="nowrap">
+          <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
             <Grid item>
-              <Button>
-                <Typography variant="caption">
-                  + to list
-                </Typography>
+              <Button variant="text" size="small">
+                + to list
               </Button>
             </Grid>
             <Grid item>
-              <Button>
-                <Typography variant="caption">
-                  watch now
-                </Typography>
+              <Button variant="text" size="small">
+                watch now
               </Button>
             </Grid>
           </Grid>

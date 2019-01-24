@@ -107,7 +107,7 @@ class Movies extends Component {
   }
 
   renderMovies() {
-    const { movies, classes, width } = this.props;
+    const { movies, width } = this.props;
     const { currentMovie } = this.state;
     const dimensions = getMaxImageWidth(width);
     if (movies.length === 0) {
@@ -115,7 +115,7 @@ class Movies extends Component {
     }
     return movies.map((movie) => {
       return (
-        <Grid item onMouseOver={() => this.onHoverMovie(movie._id)} key={movie._id}>
+        <Grid item onMouseOver={() => this.onHoverMovie(movie._id)} onFocus={() => this.onHoverMovie(movie._id)} key={movie._id}>
           {
             currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />

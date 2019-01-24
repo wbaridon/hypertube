@@ -9,9 +9,9 @@ import Comments from './comments';
 
 class Movie extends React.Component {
   componentWillMount() {
-    const {
-      getMovie,
-    } = this.props;
+    // const {
+    //   getMovie,
+    // } = this.props;
   }
 
   render() {
@@ -30,11 +30,11 @@ class Movie extends React.Component {
         comment: 'love this movie as well lol',
         timestamp: 20410242241,
       },
-    ] 
+    ];
     return (
       <Grid>
         <Typography>empty</Typography>
-        <Comments comments={comments}/>
+        <Comments comments={comments} />
       </Grid>
     );
   }
@@ -47,12 +47,13 @@ Movie.propTypes = {
     }).isRequired,
   }).isRequired,
 };
-
+/* eslint-disable */
 const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
 });
+/* eslint-enable */
 
 Movie.url = '/movie/:id_movie';
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);
