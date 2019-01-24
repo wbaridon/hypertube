@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, withStyles, withWidth } from '@material-ui/core';
+import { Grid, withWidth } from '@material-ui/core';
 import Waypoint from 'react-waypoint';
 import { getMoviePageA } from 'Actions';
 import MovieCard from './movie-card';
@@ -18,19 +18,6 @@ const defaultRequestShape = {
     reverse: false,
   },
 };
-const myStyles = theme => ({
-  poster: {
-    height: 'auto',
-    flexGrow: 1,
-    maxWidth: '275px',
-    [theme.breakpoints.down(800)]: {
-      maxWidth: '200px',
-    },
-    [theme.breakpoints.down(500)]: {
-      maxWidth: '150px',
-    },
-  },
-});
 
 const getMaxImageWidth = (width) => {
   if (width === 'xs') {
@@ -97,8 +84,8 @@ class Movies extends Component {
     } = this.state;
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
-    request.filter.from = page * 5;
-    request.filter.to = (page + 1) * 5;
+    request.filter.from = page * 30;
+    request.filter.to = (page + 1) * 30;
 
     getMoviePageHandle(token, request);
   }
@@ -130,8 +117,8 @@ class Movies extends Component {
       return (
         <Grid item onMouseOver={() => this.onHoverMovie(movie._id)} key={movie._id}>
           {
-            currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} myPropClass={classes.poster} {...movie} />
-              : <MovieCard dimensions={dimensions} myPropClass={classes.poster} {...movie} />
+            currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} {...movie} />
+              : <MovieCard dimensions={dimensions} {...movie} />
           }
         </Grid>);
     });
@@ -181,4 +168,4 @@ const mapDispatchToProps = dispatch => ({
   getMoviePageHandle: (token, request) => dispatch(getMoviePageA(token, request)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(myStyles)(withWidth()(Movies)));
+export default connect(mapStateToProps, mapDispatchToProps)((withWidth()(Movies)));

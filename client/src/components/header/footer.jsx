@@ -6,6 +6,7 @@ import {
   MuiThemeProvider,
   createMuiTheme,
   Grid,
+  Typography,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -43,24 +44,24 @@ const styles = {
   },
 };
 
-class Footer extends Component {
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <AppBar position="fixed" className={classes.appBar}>
-        <MuiThemeProvider theme={theme}>
-          <Toolbar className={classes.toolbar}>
-            <Grid container spacing={0} wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">
-              <Grid item>
-              {3242}
-              </Grid>
+function Footer({
+  classes,
+}) {
+  return (
+    <AppBar position="fixed" className={classes.appBar}>
+      <MuiThemeProvider theme={theme}>
+        <Toolbar className={classes.toolbar}>
+          <Grid container spacing={0} wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">
+            <Grid item>
+              <Typography variant="button">
+                Guiricha, Wbaridon, Frahaing, Pihouvie
+              </Typography>
             </Grid>
-          </Toolbar>
-        </MuiThemeProvider>
-      </AppBar>
-    );
-  }
+          </Grid>
+        </Toolbar>
+      </MuiThemeProvider>
+    </AppBar>
+  );
 }
 
 Footer.propTypes = {

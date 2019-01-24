@@ -44,7 +44,8 @@
       "max-len": "off",
       "import/no-dynamic-require": "off",
       "arrow-body-style": "off",
-      "no-plusplus": "off"
+      "no-plusplus": "off",
+      "no-underscore-dangle": "off"
     },
     "settings": {
       "import/resolver": {

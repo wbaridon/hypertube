@@ -3,76 +3,64 @@ import PropTypes from 'prop-types';
 import {
   Card,
   CardMedia,
-  CardContent,
   Typography,
-  withStyles,
   Grid,
-  CardActions,
   Button,
 } from '@material-ui/core';
-
-const styles = {
-  media: {
-    height: 160,
-  },
-  textFlex: {
-    flexGrow: 1,
-  },
-};
 
 function ActiveMovieCard({
   title,
   year,
   cover,
   synopsis,
-  myPropClass,
-  classes,
   dimensions,
 }) {
   return (
-    <Card style={{ width: dimensions.width, height: dimensions.height }}>
-      <CardContent style={{ padding: 3 }}>
-        <Grid container direction="column" wrap="nowrap" style={{ height: dimensions.height }}>
-          <Grid item>
-            <Typography variant="body1">
-              {title}
-            </Typography>
-          </Grid>
-          <Grid item style={{ display: 'flex', flex: 1, minHeight: 0, minWidth: 0 }}>
-            <Typography style={{ minHeight: 0, overflowY: 'auto' }} variant={dimensions.width === 400 ? 'h6' : 'caption'}>
-              {synopsis}
-            </Typography>
-          </Grid>
-          {/* <Grid item>
-            <Grid container wrap="nowrap">
-              <Grid item>
-                <Button>
-                  + to list
-              </Button>
-              </Grid>
-              <Grid item>
-                <Button>
-                  watch now
-              </Button>
-              </Grid>
-            </Grid> */}
-          {/* </Grid> */}
-          <Grid item>
-            <CardActions>
+    <Card style={{ width: dimensions.width, height: dimensions.height, padding: 5 }}>
+      <Grid container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
+        {dimensions.width < 300 ? <Grid item><CardMedia style={{ height: dimensions.width / 2 }} image={cover} /></Grid> : null}
+        <Grid item>
+          <Typography variant="body1">
+            {title}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1">
+            {`Released: ${year}`}
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          style={{
+            display: 'flex',
+            flex: 1,
+            minHeight: 0,
+            minWidth: 0,
+          }}
+        >
+          <Typography style={{ minHeight: 0, overflowY: 'auto' }} variant={dimensions.width === 500 ? 'body1' : 'caption'}>
+            {synopsis}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Grid container>
+            <Grid item>
               <Button>
                 <Typography variant="caption">
                   + to list
                 </Typography>
               </Button>
+            </Grid>
+            <Grid item>
               <Button>
                 <Typography variant="caption">
                   watch now
                 </Typography>
               </Button>
-            </CardActions>
+            </Grid>
           </Grid>
         </Grid>
-      </CardContent>
+      </Grid>
     </Card>
   );
 }
@@ -86,8 +74,6 @@ ActiveMovieCard.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
   }).isRequired,
-  myPropClass: PropTypes.string.isRequired,
-  // classes: PropTypes.shape({}).isRequired,
 };
 
-export default withStyles(styles)(ActiveMovieCard);
+export default ActiveMovieCard;
