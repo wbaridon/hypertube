@@ -18,7 +18,9 @@ function ActiveMovieCard({
   return (
     <Card style={{ width: dimensions.width, height: dimensions.height, padding: 5 }}>
       <Grid container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
-        {dimensions.width < 300 ? <Grid item><CardMedia style={{ height: dimensions.width / 2 }} image={cover} /></Grid> : null}
+        <Grid item>
+          <CardMedia style={{ height: dimensions.width / 2 }} image={cover} />
+        </Grid>
         <Grid item>
           <Typography variant={dimensions.width <= 150 ? 'caption' : 'title'}>
             {title}
