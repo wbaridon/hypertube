@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, withStyles } from '@material-ui/core';
+import { Grid, withStyles, withWidth } from '@material-ui/core';
 import Waypoint from 'react-waypoint';
 import { getMoviePageA } from 'Actions';
 import MovieCard from './movie-card';
@@ -31,6 +31,37 @@ const myStyles = theme => ({
     },
   },
 });
+
+const getMaxImageWidth = (width) => {
+  if (width === 'xs') {
+    return {
+      width: 150,
+      height: 225,
+    };
+  }
+  if (width === 'sm') {
+    return {
+      width: 175,
+      height: 262.5,
+    };
+  }
+  if (width === 'md') {
+    return {
+      width: 200,
+      height: 300,
+    };
+  }
+  if (width === 'lg') {
+    return {
+      width: 250,
+      height: 375,
+    };
+  }
+  return {
+    width: 500,
+    height: 750,
+  };
+};
 
 class Movies extends Component {
   constructor() {
@@ -66,8 +97,8 @@ class Movies extends Component {
     } = this.state;
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
-    request.filter.from = page * 12;
-    request.filter.to = (page + 1) * 12;
+    request.filter.from = page * 5;
+    request.filter.to = (page + 1) * 5;
 
     getMoviePageHandle(token, request);
   }
@@ -89,17 +120,18 @@ class Movies extends Component {
   }
 
   renderMovies() {
-    const { movies, classes } = this.props;
+    const { movies, classes, width } = this.props;
     const { currentMovie } = this.state;
+    const dimensions = getMaxImageWidth(width);
     if (movies.length === 0) {
       return (<div>No movies yet</div>);
     }
     return movies.map((movie) => {
       return (
-        <Grid item onMouseOver={() => this.onHoverMovie(movie._id)}  className={classes.poster} key={movie._id}>
+        <Grid item onMouseOver={() => this.onHoverMovie(movie._id)} key={movie._id}>
           {
-            currentMovie === movie._id ? <ActiveMovieCard myPropClass={classes.poster} {...movie} />
-              : <MovieCard myPropClass={classes.poster} {...movie} />
+            currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} myPropClass={classes.poster} {...movie} />
+              : <MovieCard dimensions={dimensions} myPropClass={classes.poster} {...movie} />
           }
         </Grid>);
     });
@@ -149,4 +181,4 @@ const mapDispatchToProps = dispatch => ({
   getMoviePageHandle: (token, request) => dispatch(getMoviePageA(token, request)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(myStyles)(Movies));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(myStyles)(withWidth()(Movies)));

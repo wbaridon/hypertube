@@ -1,20 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ButtonBase,
-  Grid,
-  Button,
-  Tooltip,
-  Popper,
-  Popover,
-  Typography,
-  Paper,
   withStyles,
-  Card,
-  CardMedia,
-  CardContent,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 const styles = {
   media: {
@@ -22,38 +10,21 @@ const styles = {
   },
 };
 
-class MovieCard extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      hovered: false,
-      height: 0,
-    };
-
-  }
-
-  componentDidMount() {
-
-  }
-
-  render() {
-    const {
-      imdbId,
-      title,
-      year,
-      cover,
-      synopsis,
-      myPropClass,
-      classes,
-    } = this.props;
-    return (
-      <Link to={`/movie/${imdbId}`}>
-        <img src={cover} className={myPropClass} alt={title} />
-      </Link>
-    );
-  }
+function MovieCard({
+  imdbId,
+  title,
+  year,
+  cover,
+  synopsis,
+  myPropClass,
+  dimensions,
+  classes,
+}) {
+  return (
+    <img src={cover} style={{ maxWidth: dimensions.width, height: 'auto' }} alt={title} />
+  );
 }
+
 
 MovieCard.propTypes = {
   imdbId: PropTypes.string.isRequired,
@@ -62,6 +33,10 @@ MovieCard.propTypes = {
   cover: PropTypes.string.isRequired,
   synopsis: PropTypes.string.isRequired,
   myPropClass: PropTypes.string.isRequired,
+  dimensions: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  }).isRequired,
   classes: PropTypes.shape({}).isRequired,
 };
 
