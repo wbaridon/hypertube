@@ -17,28 +17,63 @@ function ActiveMovieCard({
   dimensions,
 }) {
   return (
-    <Card style={{ zIndex: 1, position: 'relative', width: dimensions.width, height: dimensions.height, padding: 5 }}>
-      <Paper
-        style={{
-          padding: '3px',
-          position: 'absolute',
-          top: '5px',
-          right: '5px',
-          boxShadow: '-3px 3px 10px rgba(0, 0, 0, 0.5)',
-        }}
-      >
-        <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
-          {title}
-        </Typography>
-        <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
-          {`Released: ${year}`}
-        </Typography>
-      </Paper>
+    <Card
+      style={{
+        zIndex: 1,
+        position: 'relative',
+        width: dimensions.width,
+        height: dimensions.height,
+        padding: 5,
+      }}
+    >
+      {dimensions.width <= 175 && title.length > 22 ? null : (
+        <Paper
+          elevation={0}
+          square
+          style={{
+            padding: '3px',
+            position: 'absolute',
+            top: '4px',
+            right: '4px',
+            boxShadow: '-3px 3px 10px rgba(0, 0, 0, 0.5)',
+          }}
+        >
+          <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+            {title}
+          </Typography>
+          <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+            {`Released: ${year}`}
+          </Typography>
+        </Paper>
+      )
+      }
       <Grid container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
-        <Grid item>
-          <CardMedia style={{ height: dimensions.width / 2 }} image={cover} />
-        </Grid>
-
+        {
+          dimensions.width <= 175 && title.length > 22
+            ? (
+              <Grid item>
+                <Paper
+                  elevation={0}
+                  square
+                  style={{
+                    padding: '3px',
+                  }}
+                >
+                  <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+                    {title}
+                  </Typography>
+                  <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+                    {`Released: ${year}`}
+                  </Typography>
+                </Paper>
+              </Grid>
+            )
+            : (
+              <Grid item>
+                <CardMedia style={{ height: dimensions.width / 2 }} image={cover} />
+              </Grid>
+            )
+        }
         <Grid
           item
           style={{
@@ -67,7 +102,7 @@ function ActiveMovieCard({
           </Grid>
         </Grid>
       </Grid>
-    </Card>
+    </Card >
   );
 }
 
