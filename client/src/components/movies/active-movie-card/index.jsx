@@ -26,7 +26,7 @@ function ActiveMovieCard({
         padding: 5,
       }}
     >
-      {dimensions.width <= 175 && title.length > 22 ? null : (
+      {dimensions.width <= 175 && title.length > 16 ? null : (
         <Paper
           elevation={0}
           square
@@ -38,18 +38,15 @@ function ActiveMovieCard({
             boxShadow: '-3px 3px 10px rgba(0, 0, 0, 0.5)',
           }}
         >
-          <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
-            {title}
-          </Typography>
-          <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
-            {`Released: ${year}`}
+          <Typography inline variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+            {`${title} - ${year}`}
           </Typography>
         </Paper>
       )
       }
       <Grid container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
         {
-          dimensions.width <= 175 && title.length > 22
+          dimensions.width <= 175 && title.length > 16
             ? (
               <Grid item>
                 <Paper
@@ -59,18 +56,15 @@ function ActiveMovieCard({
                     padding: '3px',
                   }}
                 >
-                  <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
-                    {title}
-                  </Typography>
-                  <Typography variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
-                    {`Released: ${year}`}
+                  <Typography inline variant={dimensions.width <= 250 ? 'caption' : 'caption'}>
+                    {`${title} - ${year}`}
                   </Typography>
                 </Paper>
               </Grid>
             )
             : (
               <Grid item>
-                <CardMedia style={{ height: dimensions.width / 2 }} image={cover} />
+                <CardMedia style={{ borderRadius: '5px', height: dimensions.width / 2 }} image={cover} />
               </Grid>
             )
         }
@@ -90,19 +84,19 @@ function ActiveMovieCard({
         <Grid item style={{ paddingBottom: 10 }}>
           <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
             <Grid item>
-              <Button variant="text" size="small">
+              <Button style={{ fontSize: '9px' }} variant="text" size="small">
                 + to list
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="text" size="small">
+              <Button style={{ fontSize: '9px' }} variant="text" size="small">
                 watch now
               </Button>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Card >
+    </Card>
   );
 }
 

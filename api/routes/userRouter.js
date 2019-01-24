@@ -94,6 +94,7 @@ userRouter
           picture: getResult.picture,
           lastName: getResult.lastName,
           firstName: getResult.firstName,
+          profilIsFill: getResult.profilIsFill,
         }
         res.send(user)
       },
