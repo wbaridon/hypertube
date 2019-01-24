@@ -44,7 +44,7 @@ function ActiveMovieCard({
             {synopsis}
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid item style={{ paddingBottom: 10 }}>
           <Grid container wrap="nowrap">
             <Grid item>
               <Button>

@@ -45,8 +45,8 @@ const getMaxImageWidth = (width) => {
     };
   }
   return {
-    width: 500,
-    height: 750,
+    width: 325,
+    height: 487.5,
   };
 };
 
