@@ -20,12 +20,12 @@ function ActiveMovieCard({
       <Grid container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
         {dimensions.width < 300 ? <Grid item><CardMedia style={{ height: dimensions.width / 2 }} image={cover} /></Grid> : null}
         <Grid item>
-          <Typography variant="body1">
+          <Typography variant={dimensions.width <= 150 ? 'caption' : 'title'}>
             {title}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography variant="body1">
+          <Typography variant={dimensions.width <= 150 ? 'caption' : 'title'}>
             {`Released: ${year}`}
           </Typography>
         </Grid>
@@ -43,7 +43,7 @@ function ActiveMovieCard({
           </Typography>
         </Grid>
         <Grid item>
-          <Grid container>
+          <Grid container wrap="nowrap">
             <Grid item>
               <Button>
                 <Typography variant="caption">

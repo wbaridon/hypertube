@@ -24,9 +24,9 @@ const theme = createMuiTheme({
       dark: '#000',
     },
     secondary: {
-      light: '#fff',
-      main: '#fff',
-      dark: '#fff',
+      light: '#ccc',
+      main: '#ccc',
+      dark: '#ccc',
     },
   },
   typography: {
@@ -43,9 +43,9 @@ const darkTheme = createMuiTheme({
       dark: '#000',
     },
     secondary: {
-      light: '#fff',
-      main: '#fff',
-      dark: '#fff',
+      light: '#ccc',
+      main: '#ccc',
+      dark: '#ccc',
     },
   },
   typography: {
