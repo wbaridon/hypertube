@@ -35,6 +35,7 @@ import {
   closeSidebarA,
 } from './sidebar';
 import { getMoviePageA } from './get-movie-page';
+import { getMovieDataA } from './get-movie-data';
 
 export const deleteUserFromUserListA = user => ({
   type: DELETE_USER_FROM_USER_LIST,
@@ -92,4 +93,5 @@ export {
   changeUserValueA,
   changeUserPasswordA,
   getMoviePageA,
+  getMovieDataA
 };
