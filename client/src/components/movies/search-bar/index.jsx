@@ -10,6 +10,7 @@ const styles = {
     marginLeft: '5%',
     position: 'fixed',
     top: '70px',
+    zIndex: 1,
   },
 };
 

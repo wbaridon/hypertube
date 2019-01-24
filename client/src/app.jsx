@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
@@ -16,7 +17,40 @@ import Header from './components/header/header';
 import Footer from './components/header/footer';
 import Sidebar from './components/sidebar';
 
+function pxToRem(value) {
+  return `${value / 16}rem`;
+}
+const breakpoints = createBreakpoints({});
 const theme = createMuiTheme({
+  breakpoints,
+  overrides: {
+    MuiTypography: {
+      body2: {
+        fontSize: pxToRem(12),
+        [breakpoints.up('sm')]: {
+          fontSize: pxToRem(12),
+        },
+        [breakpoints.up('md')]: {
+          fontSize: pxToRem(14),
+        },
+        [breakpoints.up('lg')]: {
+          fontSize: pxToRem(16),
+        },
+      },
+      button: {
+        fontSize: pxToRem(12),
+        [breakpoints.up('sm')]: {
+          fontSize: pxToRem(12),
+        },
+        [breakpoints.up('md')]: {
+          fontSize: pxToRem(14),
+        },
+        [breakpoints.up('lg')]: {
+          fontSize: pxToRem(16),
+        },
+      },
+    },
+  },
   palette: {
     primary: {
       light: '#484848',
@@ -35,6 +69,35 @@ const theme = createMuiTheme({
 });
 
 const darkTheme = createMuiTheme({
+  breakpoints,
+  overrides: {
+    MuiTypography: {
+      body2: {
+        fontSize: pxToRem(10),
+        [breakpoints.up('sm')]: {
+          fontSize: pxToRem(12),
+        },
+        [breakpoints.up('md')]: {
+          fontSize: pxToRem(14),
+        },
+        [breakpoints.up('lg')]: {
+          fontSize: pxToRem(16),
+        },
+      },
+      button: {
+        fontSize: pxToRem(10),
+        [breakpoints.up('sm')]: {
+          fontSize: pxToRem(12),
+        },
+        [breakpoints.up('md')]: {
+          fontSize: pxToRem(14),
+        },
+        [breakpoints.up('lg')]: {
+          fontSize: pxToRem(16),
+        },
+      },
+    },
+  },
   palette: {
     type: 'dark',
     primary: {

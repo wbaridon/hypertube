@@ -19,7 +19,6 @@ function ActiveMovieCard({
   return (
     <Card
       style={{
-        zIndex: 1,
         position: 'relative',
         width: dimensions.width,
         height: dimensions.height,
@@ -77,20 +76,24 @@ function ActiveMovieCard({
             minWidth: 0,
           }}
         >
-          <Typography style={{ minHeight: 0, overflowY: 'auto' }} variant={dimensions.width === 500 ? 'body1' : 'caption'}>
+          <Typography style={{ minHeight: 0, overflowY: 'auto' }}>
             {synopsis}
           </Typography>
         </Grid>
         <Grid item style={{ paddingBottom: 10 }}>
           <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
             <Grid item>
-              <Button style={{ fontSize: '9px' }} variant="text" size="small">
-                + to list
+              <Button>
+                <Typography variant="button" noWrap>
+                  + to list
+          </Typography>
               </Button>
             </Grid>
             <Grid item>
-              <Button style={{ fontSize: '9px' }} variant="text" size="small">
-                watch now
+              <Button>
+                <Typography variant="button" noWrap>
+                  watch now
+          </Typography>
               </Button>
             </Grid>
           </Grid>

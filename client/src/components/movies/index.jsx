@@ -131,7 +131,7 @@ class Movies extends Component {
     return (
       <div>
         <SearchBar handleSearchStringChange={this.handleSearchStringChange} searchString={searchString} />
-        <Grid container style={{ marginTop: '70px' }} spacing={16} justify="space-around">
+        <Grid container style={{ marginTop: '70px' }} spacing={16} justify="center">
           {this.renderMovies()}
         </Grid>
         {this.renderWaypoint()}
