@@ -6,8 +6,8 @@ const MovieManager = require('../models/movieManager');
 
 movieRouter
   .post('/testgetMovie', function (req, res) {
-    console.log(req.body);
-    if (req.body === '42') {
+    console.log(req.body.id);
+    if (req.body.id === '42') {
       res.send({
         movie: {
           title: 'asdfg',

@@ -5,7 +5,8 @@ export default function movieAPI(movieId) {
     method: 'post',
     url: 'http://localhost:3000/movie/testgetMovie',
     data: {
-      movieId,
+      id: movieId,
+      // movieId,
     },
     timeout: TIMEOUT_API,
   });
