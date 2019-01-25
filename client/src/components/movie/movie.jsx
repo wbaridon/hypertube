@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getMovieDataA } from 'Actions';
 import {
   Typography,
   Grid,
@@ -9,9 +10,12 @@ import Comments from './comments';
 
 class Movie extends React.Component {
   componentWillMount() {
-    // const {
-    //   getMovie,
-    // } = this.props;
+    const {
+      idMovie,
+      getMovie,
+    } = this.props;
+    const {match } = this.props;
+    getMovie(match.params.id_movie);
   }
 
   render() {
@@ -31,11 +35,20 @@ class Movie extends React.Component {
         timestamp: 20410242241,
       },
     ];
+    const  { movie, } = this.props;
+    console.log(movie);
     return (
-      <Grid>
-        <Typography>empty</Typography>
+      movie ? (
+        <Grid>
+        <Typography>Success !</Typography>
         <Comments comments={comments} />
-      </Grid>
+        </Grid>
+      ) : (
+        <Grid>
+        <Typography>error</Typography>
+        <Comments comments={comments} />
+        </Grid>
+      )
     );
   }
 }
@@ -47,13 +60,14 @@ Movie.propTypes = {
     }).isRequired,
   }).isRequired,
 };
-/* eslint-disable */
+
 const mapDispatchToProps = dispatch => ({
+  getMovie: (idMovie) => dispatch(getMovieDataA(idMovie)),
 });
 
 const mapStateToProps = state => ({
+  // movie: state.movie.data,
 });
-/* eslint-enable */
 
 Movie.url = '/movie/:id_movie';
 export default connect(mapStateToProps, mapDispatchToProps)(Movie);

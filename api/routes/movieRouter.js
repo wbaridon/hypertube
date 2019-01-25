@@ -5,8 +5,9 @@ const axios = require('axios');
 const MovieManager = require('../models/movieManager');
 
 movieRouter
-  .post('/testGetMovie', function (req, res) {
-    if (req.body === 42) {
+  .post('/testgetMovie', function (req, res) {
+    console.log(req.body.id);
+    if (req.body.id === '42') {
       res.send({
         movie: {
           title: 'asdfg',

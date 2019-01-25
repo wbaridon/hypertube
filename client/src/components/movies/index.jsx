@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Grid, withWidth } from '@material-ui/core';
 import Waypoint from 'react-waypoint';
-import { getMoviePageA } from 'Actions';
+import debounce from 'lodash.debounce';
+import {
+  getMoviePageA,
+  clearMoviesA,
+} from 'Actions';
 import MovieCard from './movie-card';
 import ActiveMovieCard from './active-movie-card';
 import SearchBar from './search-bar';
@@ -62,6 +66,7 @@ class Movies extends Component {
     this.renderWaypoint = this.renderWaypoint.bind(this);
     this.loadMoreItems = this.loadMoreItems.bind(this);
     this.handleSearchStringChange = this.handleSearchStringChange.bind(this);
+    this.debounceSearchStringChange = debounce(this.debounceSearchStringChange, 300);
   }
 
   componentDidMount() {
@@ -84,19 +89,27 @@ class Movies extends Component {
     } = this.state;
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
-    request.filter.from = page * 30;
-    request.filter.to = (page + 1) * 30;
-
+    request.filter.from = page * 10;
+    request.filter.to = (page + 1) * 10;
     getMoviePageHandle(token, request);
   }
 
+  debounceSearchStringChange() {
+    const { clearMoviesHandle } = this.props;
+    console.log(this.state);
+    clearMoviesHandle();
+    this.loadMoreItems();
+  }
+
   handleSearchStringChange(event) {
-    this.setState({ searchString: event.target.value });
+    this.setState({ searchString: event.target.value }, () => {
+      this.debounceSearchStringChange();
+    });
   }
 
   renderWaypoint() {
-    const { loading } = this.props;
-    if (!loading) {
+    const { loading, noMoreMovies } = this.props;
+    if (!loading && !noMoreMovies) {
       return (
         <Waypoint
           onEnter={this.loadMoreItems}
@@ -115,7 +128,16 @@ class Movies extends Component {
     }
     return movies.map((movie) => {
       return (
-        <Grid item onMouseOver={() => this.onHoverMovie(movie._id)} onFocus={() => this.onHoverMovie(movie._id)} key={movie._id}>
+        <Grid
+          item
+          style={{ height: dimensions.height, width: dimensions.width }}
+          onBlur={() => this.onHoverMovie(null)}
+          onMouseLeave={() => this.onHoverMovie(null)}
+          onMouseEnter={() => this.onHoverMovie(movie._id)}
+          onMouseOver={() => this.onHoverMovie(movie._id)}
+          onFocus={() => this.onHoverMovie(movie._id)}
+          key={movie._id}
+        >
           {
             currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />
@@ -131,7 +153,7 @@ class Movies extends Component {
     return (
       <div>
         <SearchBar handleSearchStringChange={this.handleSearchStringChange} searchString={searchString} />
-        <Grid container style={{ marginTop: '70px' }} spacing={16} justify="center">
+        <Grid container style={{ marginTop: '70px' }} spacing={0} justify="center">
           {this.renderMovies()}
         </Grid>
         {this.renderWaypoint()}
@@ -161,11 +183,13 @@ const mapStateToProps = state => ({
   movies: state.movies.movies,
   loading: state.movies.loading,
   page: state.movies.currentPage,
+  noMoreMovies: state.movies.noMoreMovies,
   token: state.user.token,
 });
 
 const mapDispatchToProps = dispatch => ({
   getMoviePageHandle: (token, request) => dispatch(getMoviePageA(token, request)),
+  clearMoviesHandle: () => dispatch(clearMoviesA()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)((withWidth()(Movies)));
