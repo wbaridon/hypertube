@@ -6,6 +6,7 @@ import {
   PROTECTED_ROUTE_FINISHED,
   DELETE_USER_FROM_USER_LIST,
   ADD_USER_TO_USER_LIST,
+  CLEAR_MOVIES,
 } from './action-types';
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
@@ -36,6 +37,10 @@ import {
 } from './sidebar';
 import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
+
+export const clearMoviesA = () => ({
+  type: CLEAR_MOVIES,
+});
 
 export const deleteUserFromUserListA = user => ({
   type: DELETE_USER_FROM_USER_LIST,
