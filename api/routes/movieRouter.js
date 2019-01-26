@@ -5,17 +5,6 @@ const axios = require('axios');
 const MovieManager = require('../models/movieManager');
 
 movieRouter
-  .post('/testgetMovie', function (req, res) {
-    console.log(req.body.id);
-    if (req.body.id === '42') {
-      res.send({
-        movie: {
-          title: 'asdfg',
-          description: 'sdgkldfgj',
-        },
-      })
-    } else (res.status(404).send({'error':'error'}))
-  })
   .post('/getMovie' , function(req, res) {
     getMoreData(req.body.id).then(done => {
       MovieManager.getMovie(req.body.id).then(result => {

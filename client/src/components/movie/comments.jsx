@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Table,
-  TableBody,
+  Grid,
+  Avatar,
+  Paper,
+  TextField,
+  Typography,
+  form,
+  FormControl,
+  Input,
+  InputLabel,
+  Button,
   TableRow,
-  TableCell,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 
 
 class Comments extends React.Component {
@@ -18,23 +26,26 @@ class Comments extends React.Component {
       comments,
     } = this.props;
     return (
-      <Table>
-        <TableBody>
+      <div>
+        <div>
           {comments.map(comment => (
-            <TableRow key={comment.timestamp}>
-              <TableCell>
-                {comment.username}
-              </TableCell>
-              <TableCell>
-                {comment.comment}
-              </TableCell>
-              <TableCell>
-                {comment.timestamp}
-              </TableCell>
-            </TableRow>
+            <Paper key={comment.timestamp}>
+              <Grid container wrap='nowrap' spacing={16}>
+                <Grid item>
+                  <Avatar>W</Avatar>
+                </Grid>
+                <Grid item>
+                <Typography noWrap>{comment.username}</Typography> 
+                <Typography noWrap>{comment.comment}</Typography> 
+                <Typography noWrap>{comment.timestamp}</Typography> 
+                </Grid>
+              </Grid>
+            </Paper>
           ))}
-        </TableBody>
-      </Table>
+          {/* Ajouter un commentaire */}
+          
+        </div>
+      </div>
     );
   }
 }
