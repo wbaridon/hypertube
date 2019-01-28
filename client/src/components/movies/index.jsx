@@ -142,7 +142,8 @@ class Movies extends Component {
             currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />
           }
-        </Grid>);
+        </Grid>
+      );
     });
   }
 
