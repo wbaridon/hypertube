@@ -9,8 +9,8 @@ import {
   Button,
   Paper,
   CardContent,
-  Link,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 class ActiveMovieCard extends React.Component {
   constructor() {
@@ -109,11 +109,15 @@ class ActiveMovieCard extends React.Component {
                   <Button>
                     <Typography variant="button" noWrap>
                       + to list
-          </Typography>
+                    </Typography>
                   </Button>
                 </Grid>
                 <Grid item>
+<<<<<<< HEAD
                   <Button component={RouterLink} to={"/movie/"+imdbId}>
+=======
+                  <Button component={Link} to={`/movie/${imdbId}`}>
+>>>>>>> 5d3a46bc2f0f07d893f071a5a70bdee673fbb6b8
                     <Typography variant="button" noWrap>
                       watch now
                     </Typography>
