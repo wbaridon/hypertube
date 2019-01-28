@@ -8,6 +8,7 @@ import {
   Button,
   Paper,
   CardContent,
+  Link,
 } from '@material-ui/core';
 
 class ActiveMovieCard extends React.Component {
@@ -21,12 +22,13 @@ class ActiveMovieCard extends React.Component {
   }
 
   setImageFalse() {
-    console.log('worked');
+    // console.log('worked');
     this.setState({ image: false });
   }
 
   render() {
     const {
+      imdbId,
       title,
       year,
       cover,
@@ -34,6 +36,7 @@ class ActiveMovieCard extends React.Component {
       dimensions,
     } = this.props;
     const { image } = this.state;
+    console.log(imdbId);
     if (image && cover) {
       return (
         <Card
@@ -110,7 +113,7 @@ class ActiveMovieCard extends React.Component {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button>
+                  <Button href={"/movie/"+imdbId}>
                     <Typography variant="button" noWrap>
                       watch now
           </Typography>
