@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getMovieDataA } from 'Actions';
+import {Link as RouterLink} from 'react-router-dom';
 import {
   Typography,
   Grid,
-  GridListTile,
   Card,
-  CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
+  Button,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Comments from './comments';
@@ -54,7 +53,7 @@ class Movie extends React.Component {
       },
     ];
     const  { classes, movie, } = this.props;
-    console.log(movie.data);
+    console.log(movie);
     return (
       movie ? (
           <Grid container 
@@ -64,54 +63,55 @@ class Movie extends React.Component {
           alignItems='center'
           >
             <Card>
-              <CardMedia
-                style={{margin:'auto', width: '70%'}}
-                title="movie cover"
-                component='img'
-                image="https://m.media-amazon.com/images/M/MV5BZDZhOGJiOTUtNjIxOS00MWZiLWFiZWUtMTYzZThmNGYwNmI0XkEyXkFqcGdeQXVyNTcwMzkyNDE@._V1_SX300.jpg"
-                />
-              <CardContent>
-                <Typography component="h6" variant="h6">Landmine Goes Click</Typography>
-                <Typography>Trapped standing on an armed landmine, an American tourist is forced to watch helplessly while his girlfriend is terrorized and brutally assaulted.</Typography>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Année de production:</Typography>
-                <Typography>2015</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Durée:</Typography>
-                <Typography>105 min</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Genre:</Typography>
-                <Typography>Action, Crime, Drama, Thriller</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Rélisateur:</Typography>
-                <Typography>Levan Bakhia</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Acteurs:</Typography>
-                <Typography>Sterling Knight, Spencer Locke, Dean Geyer, Kote Tolordava</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Langues:</Typography>
-                <Typography>English, Georgian, Russian</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Pays:</Typography>
-                <Typography>Georgia</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Prix:</Typography>
-                <Typography>7 wins & 4 nominations.</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Note:</Typography>
-                <Typography>Internet movie database :6.0/10.......</Typography>
-                </div>
-                <Comments comments={comments} />
-              </CardContent>
+              <Grid container>
+                <Grid item xs={12} sm={6}>
+                  <Button component={RouterLink} to="/movies">
+                  Go back
+                  </Button>
+                  <CardMedia
+                    style={{margin:'auto', width: '70%', maxWidth:'500px', marginBottom:'20px'}}
+                    title="movie cover"
+                    component='img'
+                    image={movie.cover}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>  
+                  <CardContent>
+                    <Typography variant="h5">{movie.title}</Typography>
+                    <Typography variant="subtitle1">{movie.synopsis}</Typography>
+                    <Typography inline={true} variant="h5">Sortie: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.year}</Typography>
+                    <br></br>
+                    <Typography inline={true} variant="h5">Durée: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.runtime}</Typography>
+                    <br></br>
+                    <Typography inline={true} variant="h5">Genre: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.genre}</Typography>
+                    <br></br> 
+                    <Typography inline={true} variant="h5">Rélisateur: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.director}</Typography>
+                    <br></br>
+                    <Typography inline={true} variant="h5">Acteurs: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.actors}</Typography>
+                    <br></br>
+                    <Typography inline={true} variant="h5">Langues: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.title}</Typography>
+                    <br></br>
+                    <Typography inline={true} variant="h5">Pays: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.title}</Typography>
+                    <br></br>
+                    <Typography inline={true} variant="h5">Prix: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.awards}</Typography>
+                    <br></br>
+                    <Typography inline={true} variant="h5">Note: </Typography>
+                    <Typography inline={true} variant="subtitle1">{movie.imdbRating}</Typography>
+                  </CardContent>
+                </Grid>
+              </Grid>
             </Card>
+            <Grid container item xs={9} justify="center">
+              <Comments comments={movie.comments} />
+            </Grid>
         </Grid>
       ) : (
         <Grid>
@@ -135,7 +135,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  movie: state.movie,
+  movie: state.movie.data,
 });
 
 Movie.url = '/movie/:id_movie';

@@ -4,14 +4,13 @@ import {
   Grid,
   Avatar,
   Paper,
-  TextField,
   Typography,
   form,
   FormControl,
   Input,
   InputLabel,
   Button,
-  TableRow,
+  OutlinedInput,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -25,10 +24,12 @@ class Comments extends React.Component {
     const {
       comments,
     } = this.props;
+    console.log(comments)
     return (
       <div style={{marginTop: '40px'}}>
-        <div>
-          {comments.map(comment => (
+        <Paper style={{padding:"20px"}}>
+          <Typography variant='h6'>Commentaires:</Typography>
+          {comments.length !== 0 ? comments.map(comment => (
             <Paper key={comment.timestamp}>
               <Grid container wrap='nowrap' spacing={16}>
                 <Grid item>
@@ -41,10 +42,25 @@ class Comments extends React.Component {
                 </Grid>
               </Grid>
             </Paper>
-          ))}
-          {/* Ajouter un commentaire */}
+          )):
+          <Typography variant="subtitle1">Aucun commentaire</Typography>
+          }
+          <Paper>
+            <FormControl variant="outlined">
+              <InputLabel
+                
+              >
+                Commenter
+              </InputLabel>
+              <OutlinedInput
+                id="component-outlined"
+                labelWidth={400}
+                style={{margin:"10px"}}
+              />
+            </FormControl>
+          </Paper>
           
-        </div>
+        </Paper>
       </div>
     );
   }

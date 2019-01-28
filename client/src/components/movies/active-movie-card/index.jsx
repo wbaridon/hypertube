@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link as RouterLink} from 'react-router-dom';
 import {
   Card,
   CardMedia,
@@ -36,7 +37,6 @@ class ActiveMovieCard extends React.Component {
       dimensions,
     } = this.props;
     const { image } = this.state;
-    console.log(imdbId);
     if (image && cover) {
       return (
         <Card
@@ -113,10 +113,10 @@ class ActiveMovieCard extends React.Component {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button href={"/movie/"+imdbId}>
+                  <Button component={RouterLink} to={"/movie/"+imdbId}>
                     <Typography variant="button" noWrap>
                       watch now
-          </Typography>
+                    </Typography>
                   </Button>
                 </Grid>
               </Grid>

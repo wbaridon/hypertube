@@ -25,7 +25,7 @@ export const getMovieDataA = (idMovie) => {
     return movieAPI(idMovie)
       .then(
         (response) => {
-          dispatch(getMovieSuccess(response.data.movie));
+          dispatch(getMovieSuccess(response.data));
         },
         (error) => {
           dispatch(setErrorA("error"));
