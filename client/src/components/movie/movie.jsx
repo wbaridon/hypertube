@@ -60,7 +60,6 @@ class Movie extends React.Component {
           <Grid container 
           className={classes.movie_info}
           spacing={8}
-          direction='collumn'
           justify='center'
           alignItems='center'
           >
@@ -72,12 +71,10 @@ class Movie extends React.Component {
                 image="https://m.media-amazon.com/images/M/MV5BZDZhOGJiOTUtNjIxOS00MWZiLWFiZWUtMTYzZThmNGYwNmI0XkEyXkFqcGdeQXVyNTcwMzkyNDE@._V1_SX300.jpg"
                 />
               <CardContent>
+                <Typography component="h6" variant="h6">Landmine Goes Click</Typography>
+                <Typography>Trapped standing on an armed landmine, an American tourist is forced to watch helplessly while his girlfriend is terrorized and brutally assaulted.</Typography>
                 <div className={classes.info_container}>
-                  <Typography component="h6" variant="h6">Titre:</Typography>
-                  <Typography>Landmine Goes Click</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Année: </Typography>
+                <Typography component="h6" variant="h6">Année de production:</Typography>
                 <Typography>2015</Typography>
                 </div>
                 <div className={classes.info_container}>
@@ -97,11 +94,7 @@ class Movie extends React.Component {
                 <Typography>Sterling Knight, Spencer Locke, Dean Geyer, Kote Tolordava</Typography>
                 </div>
                 <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Synopsis:</Typography>
-                <Typography>Trapped standing on an armed landmine, an American tourist is forced to watch helplessly while his girlfriend is terrorized and brutally assaulted.</Typography>
-                </div>
-                <div className={classes.info_container}>
-                <Typography component="h6" variant="h6">Langue:</Typography>
+                <Typography component="h6" variant="h6">Langues:</Typography>
                 <Typography>English, Georgian, Russian</Typography>
                 </div>
                 <div className={classes.info_container}>
@@ -116,11 +109,9 @@ class Movie extends React.Component {
                 <Typography component="h6" variant="h6">Note:</Typography>
                 <Typography>Internet movie database :6.0/10.......</Typography>
                 </div>
+                <Comments comments={comments} />
               </CardContent>
             </Card>
-          <Grid>
-            <Comments comments={comments} />
-          </Grid>
         </Grid>
       ) : (
         <Grid>

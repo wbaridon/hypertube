@@ -26,7 +26,7 @@ class Comments extends React.Component {
       comments,
     } = this.props;
     return (
-      <div>
+      <div style={{marginTop: '40px'}}>
         <div>
           {comments.map(comment => (
             <Paper key={comment.timestamp}>
@@ -35,9 +35,9 @@ class Comments extends React.Component {
                   <Avatar>W</Avatar>
                 </Grid>
                 <Grid item>
-                <Typography noWrap>{comment.username}</Typography> 
-                <Typography noWrap>{comment.comment}</Typography> 
-                <Typography noWrap>{comment.timestamp}</Typography> 
+                <Typography>{comment.username} à écrit:</Typography> 
+                <Typography>{comment.comment}</Typography> 
+                <Typography>Le {comment.timestamp}</Typography> 
                 </Grid>
               </Grid>
             </Paper>

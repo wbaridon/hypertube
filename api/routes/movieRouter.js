@@ -6,7 +6,6 @@ const MovieManager = require('../models/movieManager');
 
 movieRouter
   .post('/getMovie' , function(req, res) {
-    console.log("coucou");
     console.log(req.body.id);
     getMoreData(req.body.id).then(done => {
       MovieManager.getMovie(req.body.id).then(result => {
