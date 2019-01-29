@@ -6,7 +6,8 @@ const MovieManager = require('../models/movieManager');
 
 commentsRouter
   .post('/add' , function(req, res) {
-
+    console.log("bananier");
+    return ('ok');
   })
   .post('/delete' , function(req, res) {
 
