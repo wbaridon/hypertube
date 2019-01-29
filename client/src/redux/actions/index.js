@@ -38,6 +38,7 @@ import {
 import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
 import { newCommentA } from './add-comment';
+import { deleteCommentA } from './delete-comment';
 
 export const clearMoviesA = () => ({
   type: CLEAR_MOVIES,
@@ -101,4 +102,5 @@ export {
   getMoviePageA,
   getMovieDataA,
   newCommentA,
+  deleteCommentA,
 };
