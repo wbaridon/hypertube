@@ -11,13 +11,16 @@ const UserManager = require('../models/userManager');
 
 oAuthRouter
   .post('/login', (req, res) => {
+    console.log('OAuth: Login enter for ' + req.body.provider)
     getCredentials(req.body.provider).then(credentials => {
+      console.log('Credentials for token: ' + req.body.clientCode)
+      console.log(credentials)
       getToken(req.body.provider, '/oauth', req.body.clientCode, credentials)
       .then(token => {
+        console.log('possede token: ' + token)
         oauthGet.user(req.body.provider, token)
           .then(user => {
             console.log('ici')
-            console.log(user)
             UserManager.getUserByMail(user.email).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
@@ -35,7 +38,7 @@ oAuthRouter
                 })
               })
             })
-         });
+         }).catch(error => res.status(400).send(error));
       }).catch(error => res.status(400).send(error))
   })
 
@@ -49,17 +52,21 @@ function userNameIsFree (userName) {
 
 function getToken(provider, path, clientCode, credentials) {
   return new Promise((resolve, reject) => {
+    console.log('GetToken begin')
     getCredentials(provider, credentials).then(credentials => {
       const oauth2 = require('simple-oauth2').create(credentials);
       const tokenConfig = {
         code: clientCode,
-        redirect_uri: `http://localhost:8080${path}/${provider}`
+        redirect_uri: `http://localhost:8080${path}/${provider}`,
       };
+      console.log(credentials)
+      console.log(tokenConfig)
       oauth2.authorizationCode.getToken(tokenConfig).then(result => {
+        console.log(result)
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
          resolve(token);
-       }).catch (error => { reject({'error': 'registerOauth.accessTokenError'}); })
+       }).catch (error => { console.log(error); reject({'error': 'registerOauth.accessTokenError'}); })
     });
   });
 }
@@ -70,7 +77,7 @@ function getCredentials(provider) {
    else if (provider === 'gitlab') { platformCredentials.gitlab().then(credentials => resolve (credentials)) }
    else if (provider === 'facebook') { platformCredentials.facebook().then(credentials => resolve (credentials)) }
    else if (provider === 'linkedin') { platformCredentials.linkedin().then(credentials => resolve (credentials)) }
-   else if (provider === 'instagram') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
+   else if (provider === 'insta') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
    else if (provider === '42') { platformCredentials.fortytwo().then(credentials => resolve (credentials)) }
   })
 }

@@ -10,6 +10,7 @@ function getUser(provider, token) {
     else if (provider === 'instagram') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
     else if (provider === '42') { platformCredentials.fortytwo().then(credentials => resolve (credentials)) }
   })*/
+  console.log('Get user oAuth with ' + provider)
     switch (provider) {
       case 'github':
         getFrom(provider, 'https://api.github.com/user', token).then(user => {
@@ -19,14 +20,22 @@ function getUser(provider, token) {
       case '42':
         getFrom(provider, 'https://api.intra.42.fr/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
+      case 'insta':
+        getFrom(provider, 'https://api.instagram.com/v1/users/self/', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        break;
+      case 'linkedin':
+        getFrom(provider, 'https://api.linkedin.com/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        break;
     }
   });
 }
 
 function getFrom(provider, api, token) {
   return new Promise ((resolve, reject) => {
+    console.log('Enter in getFrom with token ' + token)
     axios.get(`${api}`, { headers: {"Authorization": `Bearer ${token}`}})
       .then(response => {
+        console.log('Obtain a response')
         userModel(provider, response.data, token)
           .then(user => {
             user.oauth = true;
@@ -35,12 +44,15 @@ function getFrom(provider, api, token) {
             user.darkTheme= false;
             resolve(user);
           }).catch(error => { reject(error) })
-      }).catch(error => { reject(error) });
+      }).catch(error => {
+        console.log(error);
+        reject(error) });
   })
 }
 
 function userModel(provider, data, token) {
   return new Promise ((resolve, reject) => {
+    console.log('Enter in userModel')
     switch (provider) {
       case '42':
         var user = {
@@ -62,6 +74,28 @@ function userModel(provider, data, token) {
           }
           resolve(user)
         }).catch(error => { reject(error) });
+        break;
+      case 'insta':
+        console.log(data)
+        var user = {
+          email: data.email,
+          userName: data.login,
+          picture: data.image_url,
+          name: data.last_name,
+          firstname: data.first_name,
+        }
+        resolve(user)
+        break;
+      case 'linkedin':
+        console.log(data)
+        var user = {
+          email: data.email,
+          userName: data.login,
+          picture: data.image_url,
+          name: data.last_name,
+          firstname: data.first_name,
+        }
+        resolve(user)
         break;
     }
   })
