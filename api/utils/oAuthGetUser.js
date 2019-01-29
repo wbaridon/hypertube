@@ -12,7 +12,9 @@ function getUser(provider, token) {
   })*/
     switch (provider) {
       case 'github':
-        getFrom(provider, 'https://api.github.com/user', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        getFrom(provider, 'https://api.github.com/user', token).then(user => {
+          console.log(user)
+          resolve(user) }).catch(error => { reject(error) });
         break;
       case '42':
         getFrom(provider, 'https://api.intra.42.fr/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
@@ -28,9 +30,9 @@ function getFrom(provider, api, token) {
         userModel(provider, response.data, token)
           .then(user => {
             user.oauth = true;
-            user.profilIsFill= false,
-            user.locale= 'en',
-            user.darkTheme= false
+            user.profilIsFill= false;
+            user.locale= 'en';
+            user.darkTheme= false;
             resolve(user);
           }).catch(error => { reject(error) })
       }).catch(error => { reject(error) });
@@ -48,6 +50,7 @@ function userModel(provider, data, token) {
           name: data.last_name,
           firstname: data.first_name,
         }
+        resolve(user)
         break;
       case 'github':
         axios.get(`https://api.github.com/user/emails`, { headers: {"Authorization": `Bearer ${token}`}})
@@ -57,10 +60,10 @@ function userModel(provider, data, token) {
            userName: data.login,
            picture: data.avatar_url
           }
+          resolve(user)
         }).catch(error => { reject(error) });
         break;
     }
-    resolve(user)
   })
 }
 

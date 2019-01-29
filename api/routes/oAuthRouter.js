@@ -27,6 +27,7 @@ oAuthRouter
                   tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
                 })
               }).catch(isBusy => {
+                console.log('isBusy')
                   delete user.userName
                   UserManager.createUser(user, callback => {
                     tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
