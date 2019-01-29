@@ -48,6 +48,9 @@ function linkedinCredentials() {
       auth: {
         tokenHost: 'https://www.linkedin.com',
         tokenPath: '/oauth/v2/accessToken'
+      },
+      options: {
+        authorizationMethod: 'body',
       }
     }
      resolve(credentials)
