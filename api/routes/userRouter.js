@@ -55,6 +55,7 @@ userRouter
     } else { res.status(400).send({ error: 'registration.undefinedPictureIssue' }) }
   })
   .post('/login', (req, res) => {
+    console.log(req.body)
     const user = {
       userName: req.body.userName,
       password: req.body.password
