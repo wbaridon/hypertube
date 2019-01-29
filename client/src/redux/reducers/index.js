@@ -17,6 +17,7 @@ import forgotPassword from './forgot-password';
 import changeUserPassword from './change-user-password';
 import movies from './movies';
 import movie from './movie';
+import addComment from './add-comment';
 
 const darkTheme = (state = false, action) => {
   switch (action.type) {
@@ -81,4 +82,5 @@ export default combineReducers({
   changeUserPassword,
   movies,
   movie,
+  addComment,
 });

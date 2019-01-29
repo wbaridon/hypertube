@@ -37,6 +37,7 @@ import {
 } from './sidebar';
 import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
+import { newCommentA } from './add-comment';
 
 export const clearMoviesA = () => ({
   type: CLEAR_MOVIES,
@@ -98,5 +99,6 @@ export {
   changeUserValueA,
   changeUserPasswordA,
   getMoviePageA,
-  getMovieDataA
+  getMovieDataA,
+  newCommentA,
 };

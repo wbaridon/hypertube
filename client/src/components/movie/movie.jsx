@@ -1,18 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getMovieDataA } from 'Actions';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import {
   Typography,
   Grid,
   Card,
   CardContent,
   CardMedia,
-  Button,
+  IconButton,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Comments from './comments';
-import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
   movie_info: {
@@ -28,7 +34,6 @@ const styles = {
 class Movie extends React.Component {
   componentWillMount() {
     const {
-      idMovie,
       getMovie,
     } = this.props;
     const {match } = this.props;
@@ -36,82 +41,75 @@ class Movie extends React.Component {
   }
 
   render() {
-    const comments = [
-      {
-        username: 'abc',
-        comment: 'love this movie',
-        timestamp: 20410242221,
-      },
-      {
-        username: 'abc',
-        comment: 'love this movie too wow what a coincidence. Specialy the part of the goat licking acidic water and then going into total madness. Trying to fight everything. ',
-        timestamp: 204101231232,
-      }, {
-        username: 'efg',
-        comment: 'love this movie as well lol',
-        timestamp: 20410242241,
-      },
-    ];
-    const  { classes, movie, } = this.props;
+    const  { classes, movie } = this.props;
     console.log(movie);
     return (
       movie ? (
-          <Grid container 
+        <Grid
+          container
           className={classes.movie_info}
           spacing={8}
-          justify='center'
-          alignItems='center'
-          >
-            <Card>
-              <Grid container>
-                <Grid item xs={12} sm={6}>
-                  <Button component={RouterLink} to="/movies">
-                  Go back
-                  </Button>
-                  <CardMedia
-                    style={{margin:'auto', width: '70%', maxWidth:'500px', marginBottom:'20px'}}
-                    title="movie cover"
-                    component='img'
-                    image={movie.cover}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>  
-                  <CardContent>
-                    <Typography variant="h5">{movie.title}</Typography>
-                    <Typography variant="subtitle1">{movie.synopsis}</Typography>
-                    <Typography inline={true} variant="h5">Sortie: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.year}</Typography>
-                    <br></br>
-                    <Typography inline={true} variant="h5">Durée: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.runtime}</Typography>
-                    <br></br>
-                    <Typography inline={true} variant="h5">Genre: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.genre}</Typography>
-                    <br></br> 
-                    <Typography inline={true} variant="h5">Rélisateur: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.director}</Typography>
-                    <br></br>
-                    <Typography inline={true} variant="h5">Acteurs: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.actors}</Typography>
-                    <br></br>
-                    <Typography inline={true} variant="h5">Langues: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.title}</Typography>
-                    <br></br>
-                    <Typography inline={true} variant="h5">Pays: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.title}</Typography>
-                    <br></br>
-                    <Typography inline={true} variant="h5">Prix: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.awards}</Typography>
-                    <br></br>
-                    <Typography inline={true} variant="h5">Note: </Typography>
-                    <Typography inline={true} variant="subtitle1">{movie.imdbRating}</Typography>
-                  </CardContent>
-                </Grid>
+          justify="center"
+          alignItems="center"
+        >
+          <Card>
+            <Grid container>
+              <Grid item xs={12} sm={6}>
+                <IconButton component={Link} to="/movies">
+                  <ArrowBack />
+                </IconButton>
+                <CardMedia
+                  style={
+                    {
+                      margin: 'auto', width: '70%', maxWidth: '500px', marginBottom: '20px'
+                    }
+                    }
+                  title="movie cover"
+                  component="img"
+                  image={movie.cover}
+                />
               </Grid>
-            </Card>
-            <Grid container item xs={9} justify="center">
-              <Comments comments={movie.comments} />
+              <Grid item xs={12} sm={6}>  
+                <CardContent>
+                  <Typography variant="h5">{movie.title}</Typography>
+                  <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <Typography variant="h5">Synopsis</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <Typography inline variant="subtitle1">
+                        {movie.synopsis}
+                      </Typography>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                  <Typography variant="subtitle1"></Typography>
+                  <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
+                  <Typography inline variant="subtitle1">{movie.year}</Typography>
+                  <br />
+                  <Typography inline variant="h5"><FormattedMessage id="movie.runtime" /></Typography>
+                  <Typography inline variant="subtitle1">{movie.runtime}</Typography>
+                  <br />
+                  <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
+                  <Typography inline variant="subtitle1">{movie.genre}</Typography>
+                  <br />
+                  <Typography inline variant="h5"><FormattedMessage id="movie.director" /></Typography>
+                  <Typography inline variant="subtitle1">{movie.director}</Typography>
+                  <br />
+                  <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
+                  <Typography inline variant="subtitle1">{movie.actors}</Typography>
+                  <br />
+                  <Typography inline variant="h5"><FormattedMessage id="movie.awards" /></Typography>
+                  <Typography inline variant="subtitle1">{movie.awards}</Typography>
+                  <br />
+                  <Typography inline variant="h5"><FormattedMessage id="movie.rating" /></Typography>
+                  <Typography inline variant="subtitle1">{movie.imdbRating}</Typography>
+                </CardContent>
+              </Grid>
             </Grid>
+          </Card>
+          <Grid container item xs={12} justify="center">
+            <Comments comments={movie.comments} />
+          </Grid>
         </Grid>
       ) : (
         <Grid>
@@ -131,7 +129,7 @@ Movie.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  getMovie: (idMovie) => dispatch(getMovieDataA(idMovie)),
+  getMovie: idMovie => dispatch(getMovieDataA(idMovie)),
 });
 
 const mapStateToProps = state => ({

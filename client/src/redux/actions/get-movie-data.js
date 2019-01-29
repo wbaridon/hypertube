@@ -28,7 +28,7 @@ export const getMovieDataA = (idMovie) => {
           dispatch(getMovieSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA("error"));
+          dispatch(setErrorA('error'));
           dispatch(getMovieError());
         },
       );

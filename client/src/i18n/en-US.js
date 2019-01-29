@@ -3,6 +3,20 @@ const flatten = require('flat');
 
 
 const enUS = {
+  movie: {
+    year: 'Year: ',
+    runtime: 'Runtime: ',
+    genre: 'Genre: ',
+    director: 'Director: ',
+    actors: 'Actors: ',
+    awards: 'Awards: ',
+    rating: 'Rating: ',
+    comments: 'Comments',
+    noComments: 'There is not comments yet !',
+    commentInput: 'Say something',
+    worte: 'wrote',
+    at: 'at',
+  },
   resetPassword: {
     title: 'Hi, if you\'ve forgotten your password, enter your email below!',
     resetForEmail: 'Hi {email}, Enter your new password twice below!',
