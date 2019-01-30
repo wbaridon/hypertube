@@ -21,7 +21,7 @@ function getUser(provider, token) {
         getFrom(provider, 'https://api.intra.42.fr/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
       case 'insta':
-        getFrom(provider, 'https://api.instagram.com/v1/users/self/', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        getFromInsta(provider, 'https://api.instagram.com/v1/users/self/', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
       case 'linkedin':
         getFrom(provider, 'https://api.linkedin.com/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
@@ -40,6 +40,26 @@ function getFrom(provider, api, token) {
       .then(response => {
         console.log('Obtain a response')
         userModel(provider, response.data, token)
+          .then(user => {
+            user.oauth = true;
+            user.profilIsFill= false;
+            user.locale= 'en';
+            user.darkTheme= false;
+            resolve(user);
+          }).catch(error => { reject(error) })
+      }).catch(error => {
+        console.log(error);
+        reject(error) });
+  })
+}
+
+function getFromInsta(provider, api, token) {
+  return new Promise ((resolve, reject) => {
+    console.log('Enter in getFromInsta with token ' + token)
+    axios.get(`${api}?access_token=${token}`)
+      .then(response => {
+        console.log('Obtain a response')
+        userModel(provider, response.data.data, token)
           .then(user => {
             user.oauth = true;
             user.profilIsFill= false;
@@ -81,11 +101,8 @@ function userModel(provider, data, token) {
       case 'insta':
         console.log(data)
         var user = {
-          email: data.email,
-          userName: data.login,
-          picture: data.image_url,
-          name: data.last_name,
-          firstname: data.first_name,
+          userName: data.username,
+          picture: data.profile_picture,
         }
         resolve(user)
         break;

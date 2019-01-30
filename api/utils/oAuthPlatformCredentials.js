@@ -69,8 +69,11 @@ function instagramCredentials() {
       },
       auth: {
        tokenHost: 'https://api.instagram.com',
-       tokenPath: '/oauth/accessToken'
-      }
+       tokenPath: '/oauth/access_token'
+     },
+     options: {
+       authorizationMethod: 'body',
+     }
     }
      resolve(credentials)
     })
