@@ -1,4 +1,5 @@
 const axios = require('axios');
+const cheerio = require('cheerio');
 
 const MovieManager = require('../models/movieManager');
 
@@ -18,7 +19,7 @@ function EztvPageCount() {
 }
 
 function checkMovie(data) {
-  MovieManager.exist(data.imdb_id)
+  MovieManager.exist(`tt${data.imdb_id}`)
   .then(status => {
     if (!status) { addMovie(data) }
   })
@@ -34,26 +35,56 @@ function getCover(cover) {
   })
 }
 
-function addMovie(data) {
-  getCover(data.large_screenshot).then(coverChecked => {
-    let movie = {
-      imdbId: 'tt'+data.imdb_id,
-      title: data.title,
-      season: data.season,
-      episode: data.episode,
-      cover: coverChecked,
-      dateReleased: data.date_released_unix,
-      seeds: data.seeds
-    }
-    torrent = {
-      hash: data.hash,
-      seeds: data.seeds,
-      peers: data.peers
-    }
-    MovieManager.createMovie(movie, torrent).then(created => {
-      getBetterCover(movie.imdbId)
-    })
+function extraData(id) {
+  return new Promise ((resolve, reject) => {
+    let url = `https://www.imdb.com/title/tt${id}/`;
+    console.log(url)
+    axios.get(url).then(response => {
+      const $ = cheerio.load(response.data);
+      const extra = {
+        title: $('.title_wrapper').find('h1').text().trim().split('(')[0],
+        rating: $('.ratingValue').find('span').text().trim().split('/')[0],
+        poster: $('.poster').find('img').attr('src'),
+        director: $('.credit_summary_item').find('a').first().text(),
+        writer: $('.credit_summary_item').find('a').eq(1).text(),
+        stars: $('.credit_summary_item').eq(2).find('a').append(",").text().split(',',3),
+        summary: $('.summary_text').text().trim()
+      }
+      resolve(extra);
+    }).catch(error => { reject(error) })
   })
+}
+
+
+function addMovie(data) {
+  if(data.imdb_id) {
+    extraData(data.imdb_id).then(extra => {
+      if (!extra.poster) {
+        extra.poster = 'https://www.quantabiodesign.com/wp-content/uploads/No-Photo-Available.jpg'
+      }
+      let movie = {
+        imdbId: 'tt'+data.imdb_id,
+        title: data.title,
+        season: data.season,
+        episode: data.episode,
+        rating: extra.rating,
+        director: extra.director,
+        writer: extra.writer,
+        synopsis: extra.summary,
+        cover: extra.poster,
+        dateReleased: data.date_released_unix,
+        seeds: data.seeds,
+        torrents: {
+          hash: data.hash,
+          seeds: data.seeds,
+          peers: data.peers
+        }
+      }
+      MovieManager.createMovie(movie).then(created => {
+         getBetterCover(movie.imdbId)
+      })
+    }).catch(error => { console.log(error) })
+  }
 }
 
 function getBetterCover(id) { // 40 requetes toutes les 10 s voir comment faire
@@ -65,20 +96,26 @@ function getBetterCover(id) { // 40 requetes toutes les 10 s voir comment faire
       movie = {
         cover: base + coverResult.data.tv_results[0].poster_path
       }
-      MovieManager.update(id, movie).then(result => {
-      })
+      if (coverResult.data.tv_results[0].poster_path) {
+        MovieManager.update(id, movie).then(result => {
+        })
+      }
     }
-  })
+  }).catch(error => console.log(error))
 }
 
 function getPage(page) {
-  return new Promise (resolve => {
+  return new Promise ((resolve, reject) => {
+    // limit 5
     axios.get('https://eztv.io/api/get-torrents?limit=5&page='+page)
     .then(response => {
       for (var i = 0; i < response.data.torrents.length; i++) {
         checkMovie(response.data.torrents[i]);
       }
-      setTimeout(resolve, 1500)
+      setTimeout(resolve, 2500)
+    }).catch(error => {
+      console.log(error);
+      reject(error);
     })
   })
 }

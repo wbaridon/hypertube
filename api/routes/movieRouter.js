@@ -7,11 +7,11 @@ const MovieManager = require('../models/movieManager');
 movieRouter
   .post('/getMovie' , function(req, res) {
     console.log(req.body.id);
-    getMoreData(req.body.id).then(done => {
+  //  getMoreData(req.body.id).then(done => {
       MovieManager.getMovie(req.body.id).then(result => {
         res.status(200).send(result);
       }).catch(error => res.status(404).send('errorInTheDb'))
-    })
+  //  })
   })
   .post('/list', function(req,res) {
     let filter = req.body.filter;

@@ -17,17 +17,10 @@ module.exports.getMovieByTitle = function (title) {
   })
 }
 
-module.exports.createMovie = function (data,torrent) {
+module.exports.createMovie = function (data) {
   return new Promise ((resolve, reject) => {
-    var movie = new Movie({
-      imdbId: data.imdbId,
-      title: data.title,
-      year: data.year,
-      cover: data.cover,
-      synopsis: data.synopsis,
-      seeds: data.seeds
-    })
-    movie.torrents.push(torrent)
+    var movie = new Movie(data)
+    //movie.torrents.push(torrent)
     movie.save().then(function(){
       resolve();
     })

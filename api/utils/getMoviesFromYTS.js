@@ -1,4 +1,5 @@
 const axios = require('axios');
+const cheerio = require('cheerio');
 
 const MovieManager = require('../models/movieManager');
 
@@ -24,38 +25,63 @@ function checkMovie(data) {
   })
 }
 
-function addMovie(data) {
+function extraData(id) {
+  return new Promise ((resolve, reject) => {
+    let url = `https://www.imdb.com/title/${id}/`;
+    axios.get(url).then(response => {
+      const $ = cheerio.load(response.data);
+      const extra = {
+        title: $('.title_wrapper').find('h1').text().trim().split('(')[0],
+        rating: $('.ratingValue').find('span').text().trim().split('/')[0],
+        poster: $('.poster').find('img').attr('src'),
+        director: $('.credit_summary_item').find('a').first().text(),
+        writer: $('.credit_summary_item').find('a').eq(1).text(),
+        stars: $('.credit_summary_item').eq(2).find('a').append(",").text().split(',',3),
+        summary: $('.summary_text').text().trim()
+      }
+      resolve(extra);
+    }).catch(error => reject(error))
+  })
+}
 
+function addMovie(data) {
+  extraData(data.imdb_code).then(extra => {
     let movie = {
       imdbId: data.imdb_code,
-      title: data.title,
+      title: extra.title,
+      imbdbRating: extra.rating,
+      director: extra.director,
+      actors: extra.stars,
+      writer: extra.writer,
       year: data.year,
-      cover: data.large_cover_image,
-      synopsis: data.synopsis,
-      seeds: data.torrents[0].seeds
-    }
-    torrent = {
-      language: data.language,
-      hash: data.torrents[0].hash,
-      quality: data.torrents[0].quality,
+      cover: extra.poster,
+      synopsis: extra.summary,
       seeds: data.torrents[0].seeds,
-      peers: data.torrents[0].peers
+      torrents: {
+        language: data.language,
+        hash: data.torrents[0].hash,
+        quality: data.torrents[0].quality,
+        seeds: data.torrents[0].seeds,
+        peers: data.torrents[0].peers
+      }
     }
 
-    MovieManager.createMovie(movie, torrent).then(created => {
-
+    MovieManager.createMovie(movie).then(created => {
     })
-
+  }).catch(error => console.log(error))
 }
 
 function getPage(page) {
-  return new Promise (resolve => {
+  return new Promise ((resolve, reject) => { /* remettre limite a 50 */
     axios.get('https://yts.am/api/v2/list_movies.json?limit=50&order_by=desc&page='+page)
     .then(response => {
       for (var i = 0; i < response.data.data.movies.length; i++) {
         checkMovie(response.data.data.movies[i]);
       }
       setTimeout(resolve, 2500)
+    }).catch(error => {
+      console.log(error);
+      reject(error);
     })
   })
 }
