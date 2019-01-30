@@ -38,7 +38,6 @@ function getCover(cover) {
 function extraData(id) {
   return new Promise ((resolve, reject) => {
     let url = `https://www.imdb.com/title/tt${id}/`;
-    console.log(url)
     axios.get(url).then(response => {
       const $ = cheerio.load(response.data);
       const extra = {
