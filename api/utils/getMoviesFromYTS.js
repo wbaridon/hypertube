@@ -38,9 +38,10 @@ function extraData(id) {
         writer: $('.credit_summary_item').find('a').eq(1).text(),
         stars: $('.credit_summary_item').eq(2).find('a').append(",").text().split(',',3),
         summary: $('.summary_text').text().trim(),
-        runtime: $('#titleDetails').find('time').text()
-
+        runtime: $('#titleDetails').find('time').text(),
+        genre: $('#titleStoryLine').find('div').eq(2).find('a').append(",").text().trim().split(',')
       }
+      console.log(extra.genre)
       resolve(extra);
     }).catch(error => reject(error))
   })
@@ -55,6 +56,7 @@ function addMovie(data) {
       director: extra.director,
       runtime: extra.runtime,
       actors: extra.stars,
+      genre: extra.genre,
       writer: extra.writer,
       year: data.year,
       cover: extra.poster,
@@ -69,14 +71,14 @@ function addMovie(data) {
       }
     }
 
-    MovieManager.createMovie(movie).then(created => {
-    })
+   MovieManager.createMovie(movie).then(created => {
+  })
   }).catch(error => console.log(error))
 }
 
 function getPage(page) {
   return new Promise ((resolve, reject) => { /* remettre limite a 50 */
-    axios.get('https://yts.am/api/v2/list_movies.json?limit=50&order_by=desc&page='+page)
+    axios.get('https://yts.am/api/v2/list_movies.json?limit=1&order_by=desc&page='+page)
     .then(response => {
       for (var i = 0; i < response.data.data.movies.length; i++) {
         checkMovie(response.data.data.movies[i]);
@@ -97,6 +99,7 @@ async function getAllPages(pages) {
 }
 function getNewMovies() {
   YtsPageCount().then(pages => {
+    pages= 1
     getAllPages(pages);
   })
 }
