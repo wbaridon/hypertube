@@ -35,12 +35,6 @@ const providers = [
     url: AUTHGITLAB,
   },
   {
-    name: 'Linkedin',
-    icon: linkedinIcon,
-    tooltip: 'login.provider.linkedin',
-    url: AUTHLINKEDIN,
-  },
-  {
     name: 'Instagram',
     icon: instagramIcon,
     tooltip: 'login.provider.instagram',
