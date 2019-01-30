@@ -37,7 +37,9 @@ function extraData(id) {
         director: $('.credit_summary_item').find('a').first().text(),
         writer: $('.credit_summary_item').find('a').eq(1).text(),
         stars: $('.credit_summary_item').eq(2).find('a').append(",").text().split(',',3),
-        summary: $('.summary_text').text().trim()
+        summary: $('.summary_text').text().trim(),
+        runtime: $('#titleDetails').find('time').text()
+
       }
       resolve(extra);
     }).catch(error => reject(error))
@@ -49,8 +51,9 @@ function addMovie(data) {
     let movie = {
       imdbId: data.imdb_code,
       title: extra.title,
-      imbdbRating: extra.rating,
+      imdbRating: extra.rating,
       director: extra.director,
+      runtime: extra.runtime,
       actors: extra.stars,
       writer: extra.writer,
       year: data.year,
