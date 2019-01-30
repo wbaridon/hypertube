@@ -26,7 +26,7 @@ const MovieSchema = new Schema({
   episode: Number,
   public: String,
   runtime: String,
-  genre: Array,
+  genre: String,
   director: String,
   writer: String,
   actors: Array,

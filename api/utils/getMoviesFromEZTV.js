@@ -48,7 +48,8 @@ function extraData(id) {
         writer: $('.credit_summary_item').find('a').eq(1).text(),
         stars: $('.credit_summary_item').eq(2).find('a').append(",").text().split(',',3),
         summary: $('.summary_text').text().trim(),
-        runtime: $('#titleDetails').find('time').text()
+        runtime: $('#titleDetails').find('time').text(),
+      //  genre: $('#titleStoryLine').find('div').eq(2).find('a').text().trim().split(' ')
       }
       resolve(extra);
     }).catch(error => { reject(error) })
@@ -68,6 +69,7 @@ function addMovie(data) {
         season: data.season,
         episode: data.episode,
         rating: extra.rating,
+      //  genre: extra.genre,
         director: extra.director,
         runtime: extra.runtime,
         writer: extra.writer,
