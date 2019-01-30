@@ -26,6 +26,9 @@ function getUser(provider, token) {
       case 'linkedin':
         getFrom(provider, 'https://api.linkedin.com/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
+      case 'gitlab':
+        getFrom(provider, 'https://gitlab.com/api/v4/user', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        break;
     }
   });
 }
@@ -94,6 +97,15 @@ function userModel(provider, data, token) {
           picture: data.image_url,
           name: data.last_name,
           firstname: data.first_name,
+        }
+        resolve(user)
+        break;
+      case 'gitlab':
+        console.log(data)
+        var user = {
+          email: data.email,
+          userName: data.username,
+          picture: data.avatar_url,
         }
         resolve(user)
         break;

@@ -30,9 +30,12 @@ function gitlabCredentials() {
         secret: gitlabSecret,
       },
       auth: {
-       tokenHost: 'http://gitlab.com/api/v4/',
+       tokenHost: 'https://gitlab.com/',
        tokenPath: '/oauth/token'
-      }
+     },
+     options: {
+       authorizationMethod: 'body',
+     }
     }
      resolve(credentials)
     })
