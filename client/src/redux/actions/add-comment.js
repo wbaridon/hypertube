@@ -19,10 +19,11 @@ export const addCommentError = () => ({
   type: ADD_COMMENT_ERROR,
 });
 
-export const newCommentA = (userName, comment, timeStamp) => {
+export const newCommentA = (token, comment, idMovie) => {
+  // console.log(token, comment, idMovie);
   return (dispatch) => {
     dispatch(addCommentStart());
-    return addCommentAPI(userName, comment, timeStamp)
+    return addCommentAPI(token, comment, idMovie)
       .then(
         (result) => {
           dispatch(addCommentSuccess(result));

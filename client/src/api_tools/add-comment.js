@@ -1,13 +1,13 @@
 import Axios from 'axios';
 
-export default function addCommentAPI(userName, comment, timeStamp) {
+export default function addCommentAPI(token, comment, idMovie) {
   return Axios({
     method: 'post',
     url: 'http://localhost:3000/comments/add',
     data: {
-      username: userName,
+      token,
       comment,
-      time: timeStamp,
+      idMovie,
     },
     timeout: TIMEOUT_API,
   });

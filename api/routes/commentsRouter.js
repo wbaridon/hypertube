@@ -10,7 +10,8 @@ commentsRouter
     return ('ok');
   })
   .post('/delete' , function(req, res) {
-
+    console.log("wakanda");
+    return ("oui");
   })
 
 module.exports = commentsRouter;

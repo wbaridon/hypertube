@@ -22,7 +22,6 @@ import Comments from './comments';
 
 const styles = {
   movie_info: {
-    // width: '100%',
     margin: 'auto',
   },
   info_container: {
@@ -36,12 +35,12 @@ class Movie extends React.Component {
     const {
       getMovie,
     } = this.props;
-    const {match } = this.props;
+    const { match } = this.props;
     getMovie(match.params.id_movie);
   }
 
   render() {
-    const  { classes, movie } = this.props;
+    const { classes, movie } = this.props;
     console.log(movie);
     return (
       movie ? (
@@ -69,20 +68,11 @@ class Movie extends React.Component {
                   image={movie.cover}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>  
-                <CardContent>
+              <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
+                <CardContent style={{ margin: 'auto' }}>
                   <Typography variant="h5">{movie.title}</Typography>
-                  <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography variant="h5">Synopsis</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <Typography inline variant="subtitle1">
-                        {movie.synopsis}
-                      </Typography>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
-                  <Typography variant="subtitle1"></Typography>
+                  <Typography variant="subtitle1">{movie.synopsis}</Typography>
+                  <br />
                   <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
                   <Typography inline variant="subtitle1">{movie.year}</Typography>
                   <br />
@@ -107,9 +97,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
           </Card>
-          <Grid container item xs={12} justify="center">
-            <Comments comments={movie.comments} />
-          </Grid>
+          <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
         <Grid>
@@ -126,6 +114,8 @@ Movie.propTypes = {
       id_movie: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  classes: PropTypes.shape({}).isRequired,
+  getMovie: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
