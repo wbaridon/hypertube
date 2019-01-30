@@ -16,12 +16,17 @@ movieRouter
   .post('/list', function(req,res) {
     let filter = req.body.filter;
     let limit = (filter.to - filter.from);
+    let sort = 'seeds'
+    var reverse = -1;
+    if (req.body.filter.reverse) {
+      reverse = 1;
+    }
     console.log('Limite : '+limit);
     // Manque le sort et le reverse -1 ou 1
     /*limit = 5;
     start = 0;
     const filter = { searchString: 'The' }*/
-    MovieManager.getList(filter.searchString, filter.from, limit).then(result => {
+    MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse).then(result => {
       res.status(200).send(result)
     })
   })

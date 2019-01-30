@@ -32,6 +32,7 @@ function addMovie(data) {
       year: data.year,
       cover: data.large_cover_image,
       synopsis: data.synopsis,
+      seeds: data.torrents[0].seeds
     }
     torrent = {
       language: data.language,

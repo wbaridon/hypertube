@@ -25,6 +25,7 @@ module.exports.createMovie = function (data,torrent) {
       year: data.year,
       cover: data.cover,
       synopsis: data.synopsis,
+      seeds: data.seeds
     })
     movie.torrents.push(torrent)
     movie.save().then(function(){
@@ -33,9 +34,10 @@ module.exports.createMovie = function (data,torrent) {
   })
 }
 
-module.exports.getList = function (query, start, limit) {
+module.exports.getList = function (query, start, limit, sort, reverse) {
   return new Promise ((resolve, reject) => {
-    Movie.find({'title': { $regex: query, $options: 'i'} }).skip(start).limit(limit)
+    Movie.find({'title': { $regex: query, $options: 'i'} })
+    .skip(start).limit(limit).sort({[sort]: [reverse]})
     .then(function(result){ resolve(result) },
     (err) => {console.log(err)}
     )

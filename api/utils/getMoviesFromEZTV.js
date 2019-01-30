@@ -43,6 +43,7 @@ function addMovie(data) {
       episode: data.episode,
       cover: coverChecked,
       dateReleased: data.date_released_unix,
+      seeds: data.seeds
     }
     torrent = {
       hash: data.hash,

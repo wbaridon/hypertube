@@ -31,6 +31,7 @@ const MovieSchema = new Schema({
   actors: String,
   awards: String,
   imdbRating: String,
+  seeds: Number,
   torrents: [TorrentsSchema],
   comments: [CommentsSchema]
 });

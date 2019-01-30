@@ -80,6 +80,7 @@ userRouter
   .post('/getAllUsers', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       UserManager.getAllId().then(result => {
+        console.log(result)
         res.status(200).send(result)
       })
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
