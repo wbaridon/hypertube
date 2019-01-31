@@ -5,10 +5,10 @@ export default function addCommentAPI(token, comment, idMovie) {
     method: 'post',
     url: 'http://localhost:3000/comments/add',
     data: {
-      token,
       comment,
       idMovie,
     },
+    headers: { Authorization: `Bearer ${token}` },
     timeout: TIMEOUT_API,
   });
 }
