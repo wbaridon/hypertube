@@ -29,6 +29,7 @@ torrentRouter
     engine.files.forEach((current) => {
       let mime = getExtention(current.name);
       if (!isVideo(mime)) {
+        console.log(mime + ' is not a valid movie file extention');
         return;
       } else if (file && current.length < file.length) {
         return;
@@ -58,10 +59,18 @@ torrentRouter
       : fileSize-1
       const chunksize = (endByte-startByte)+1
       // Create video stream from startByte to endByte
-      var stream = file.createReadStream({
-        start: startByte,
-        end: endByte
-      })
+      var stream = file.createReadStream(
+        {
+          start: startByte,
+          end: endByte
+        }
+      )
+      // ffmpeg(stream)
+      // // You may pass a pipe() options object when using a stream
+      // .outputOptions('-movflags frag_keyframe+empty_moov')
+      // .outputFormat('mp4')
+      // .output(res)
+
       const head = {
         'Content-Range': `bytes ${startByte}-${endByte}/${fileSize}`,
         'Accept-Ranges': 'bytes',
