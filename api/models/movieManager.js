@@ -20,9 +20,9 @@ module.exports.getMovieByTitle = function (title) {
 module.exports.createMovie = function (data) {
   return new Promise ((resolve, reject) => {
     var movie = new Movie(data)
-    //movie.torrents.push(torrent)
-    movie.save().then(function(){
-      resolve();
+    movie.save()
+    .then(success => { resolve('createMovie.sucess'); },
+      error => { reject('createMovie.error');
     })
   })
 }
