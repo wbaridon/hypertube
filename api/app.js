@@ -33,7 +33,7 @@ app.use('/comments', commentsRouter);
 
 app.listen(port, function () {
     yts.launcher()
-  //  eztv.launcher()
+    eztv.launcher()
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
