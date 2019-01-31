@@ -53,3 +53,13 @@ module.exports.update = function (id, data) {
     )
   })
 }
+
+
+module.exports.addComment = function (id, data) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOneAndUpdate({'imdbId': id}, {$push: {comments: data}})
+    .then(function(result){ resolve() },
+    (err) => {console.log(err)}
+    )
+  })
+}
