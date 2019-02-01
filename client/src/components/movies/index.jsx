@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Grid, withWidth } from '@material-ui/core';
+import {
+  Grid,
+  withWidth,
+  Fab,
+  withStyles,
+} from '@material-ui/core';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Waypoint from 'react-waypoint';
 import debounce from 'lodash.debounce';
 import {
@@ -54,12 +60,23 @@ const getMaxImageWidth = (width) => {
   };
 };
 
+const styles = {
+  fab: {
+    position: 'fixed',
+    bottom: '70px',
+    right: '20px',
+  },
+};
+
 class Movies extends Component {
   constructor() {
     super();
     this.state = {
       searchString: '',
+      sortSelection: 'alphabetical',
+      reversedSort: false,
       currentMovie: null,
+      top: false,
     };
 
     this.renderMovies = this.renderMovies.bind(this);
@@ -67,15 +84,27 @@ class Movies extends Component {
     this.loadMoreItems = this.loadMoreItems.bind(this);
     this.handleSearchStringChange = this.handleSearchStringChange.bind(this);
     this.debounceSearchStringChange = debounce(this.debounceSearchStringChange, 300);
+    this.handleTopSpan = this.handleTopSpan.bind(this);
   }
 
   componentDidMount() {
     document.getElementById('searchBar').focus();
+    const options = {
+      root: document.querySelector('#scrollArea'),
+      rootMargin: '0px',
+      threshold: 1.0,
+    };
+
+    const observer = new IntersectionObserver(this.handleTopSpan, options);
+    observer.observe(document.getElementById('top'));
   }
 
   onHoverMovie(movieId) {
     this.setState({ currentMovie: movieId });
-    console.log(movieId);
+  }
+
+  handleTopSpan(entries) {
+    this.setState({ top: entries[0].isIntersecting });
   }
 
   loadMoreItems() {
@@ -96,7 +125,6 @@ class Movies extends Component {
 
   debounceSearchStringChange() {
     const { clearMoviesHandle } = this.props;
-    console.log(this.state);
     clearMoviesHandle();
     this.loadMoreItems();
   }
@@ -150,13 +178,28 @@ class Movies extends Component {
   render() {
     const {
       searchString,
+      sortSelection,
+      reversedSort,
+      top,
     } = this.state;
+    const {
+      classes,
+    } = this.props;
     return (
       <div>
-        <SearchBar handleSearchStringChange={this.handleSearchStringChange} searchString={searchString} />
+        {!top ? <Fab className={classes.fab} onClick={() => document.getElementById('top').scrollIntoView()}><ArrowUpward /></Fab> : null}
+        <SearchBar
+          handleSearchStringChange={this.handleSearchStringChange}
+          searchString={searchString}
+          toggleMenu={this.handleMenuOpen}
+          sortSelection={sortSelection}
+          reversedSort={reversedSort}
+        />
+        <span id="top" style={{ position: 'absolute', top: '0px' }} />
         <Grid container style={{ marginTop: '70px' }} spacing={0} justify="center">
           {this.renderMovies()}
         </Grid>
+
         {this.renderWaypoint()}
       </div>
     );
@@ -193,4 +236,4 @@ const mapDispatchToProps = dispatch => ({
   clearMoviesHandle: () => dispatch(clearMoviesA()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)((withWidth()(Movies)));
+export default connect(mapStateToProps, mapDispatchToProps)((withStyles(styles)(withWidth()(Movies))));

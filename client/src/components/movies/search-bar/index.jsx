@@ -30,7 +30,21 @@ function SearchBar({
   return (
     <Paper className={classes.searchBar}>
       <TextField
-        startAdornment={<InputAdornment position="start">{sortSelection}</InputAdornment>}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">{sortSelection}</InputAdornment>,
+          endAdornment:
+            (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="Toggle password visibility"
+                  onClick={toggleMenu}
+                >
+                  <Sort />
+                </IconButton>
+              </InputAdornment>
+            ),
+        }
+        }
         classes={{ focused: classes.searchBarFocused }}
         id="searchBar"
         tabIndex={-1}
@@ -39,18 +53,7 @@ function SearchBar({
         fullWidth
         value={searchString}
         onChange={handleSearchStringChange}
-        endAdornment={
-          (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="Toggle password visibility"
-                onClick={toggleMenu}
-              >
-                <Sort />
-              </IconButton>
-            </InputAdornment>
-          )
-        }
+
       />
     </Paper>
   );
