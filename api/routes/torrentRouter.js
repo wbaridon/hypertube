@@ -1,7 +1,10 @@
 const express = require('express');
 const torrentRouter = express.Router();
 const torrentStream = require('torrent-stream');
+
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 const mimeTypes = require('../utils/mimeTypes.js');
 
 function getExtention(fileName) {
@@ -50,7 +53,7 @@ torrentRouter
     const converter = ffmpeg()
       .input(stream)
       .outputOptions('-movflags frag_keyframe+empty_moov')
-      // .outputFormat('mp4')
+     .outputFormat('mp4')
       .output(res)
       .on('codecData', (codecData) => {
          console.log('fluent-ffmpeg Notice: CodecData:', codecData);
