@@ -24,20 +24,14 @@ class Oauth extends Component {
 
   componentWillMount() {
     const { provider, code } = this.state;
-    const { handleoAuthUser, location, handleGoogleOauth } = this.props;
+    const { handleoAuthUser, location } = this.props;
+    let googleCode;
 
     if (provider) {
-      console.log(provider, code);
       if (provider === 'google') {
-        const accessToken = qs.parse(location.hash, { ignoreQueryPrefix: true }).access_token;
-        const tokenType = qs.parse(location.hash, { ignoreQueryPrefix: true }).token_type;
-        const expiresIn = qs.parse(location.hash, { ignoreQueryPrefix: true }).expires_in;
-        const { scope } = qs.parse(location.hash, { ignoreQueryPrefix: true });
-        handleGoogleOauth(provider, accessToken, tokenType, expiresIn, scope);
+        googleCode = qs.parse(location.hash, { ignoreQueryPrefix: true }).access_token;
       }
-      else if (code) {
-        handleoAuthUser(provider, code);
-      }
+      handleoAuthUser(provider, code || googleCode);
     }
   }
 
@@ -53,14 +47,12 @@ Oauth.propTypes = {
     search: PropTypes.string.isRequired,
   }).isRequired,
   handleoAuthUser: PropTypes.func.isRequired,
-  handleGoogleOauth: PropTypes.func.isRequired,
 };
 
 Oauth.url = '/oauth';
 
 const mapDispatchToProps = dispatch => ({
   handleoAuthUser: (provider, code) => dispatch(oAuthUserA(provider, code)),
-  handleGoogleOauth: (provider, accessToken, tokenType, expiresIn, scope) => dispatch(oAuthUserGoogleA(provider, accessToken, tokenType, expiresIn, scope)),
 });
 
 export default connect(null, mapDispatchToProps)(withRouter(Oauth));

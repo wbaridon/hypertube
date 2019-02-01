@@ -60,8 +60,6 @@ const getMaxImageWidth = (width) => {
   };
 };
 
-// Setup isScrolling variable
-
 
 const styles = {
   fab: {
@@ -186,7 +184,6 @@ class Movies extends Component {
           onBlur={() => this.onHoverMovie(null)}
           onMouseLeave={() => this.onHoverMovie(null)}
           onMouseEnter={() => this.onHoverMovie(movie._id)}
-          onMouseOver={() => this.onHoverMovie(movie._id)}
           onFocus={() => this.onHoverMovie(movie._id)}
           key={movie._id}
         >
