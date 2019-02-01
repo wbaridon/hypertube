@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as qs from 'query-string';
-import { oAuthUserA } from '../../redux/actions/oauth-user';
+import { oAuthUserA, oAuthUserGoogleA } from 'Actions';
 
 function getProvider(url) {
   const parts = url.split('/');
@@ -18,16 +18,27 @@ class Oauth extends Component {
 
     this.state = {
       provider: getProvider(props.location.pathname),
-      code: qs.parse(props.location.search, { ignoreQueryPrefix: true }).code || '',
+      code: qs.parse(props.location.search, { ignoreQueryPrefix: true }).code || null,
     };
   }
 
   componentWillMount() {
     const { provider, code } = this.state;
-    const { handleoAuthUser } = this.props;
-    if (provider && code) {
+    const { handleoAuthUser, location, handleGoogleOauth } = this.props;
+
+    if (provider) {
       console.log(provider, code);
-      handleoAuthUser(provider, code);
+      if (provider === 'google') {
+        const accessToken = qs.parse(location.hash, { ignoreQueryPrefix: true }).access_token;
+        const tokenType = qs.parse(location.hash, { ignoreQueryPrefix: true }).token_type;
+        const expiresIn = qs.parse(location.hash, { ignoreQueryPrefix: true }).expires_in;
+        const { scope } = qs.parse(location.hash, { ignoreQueryPrefix: true });
+        console.log(provider, accessToken, tokenType, expiresIn, scope);
+        handleGoogleOauth(provider, accessToken, tokenType, expiresIn, scope);
+      }
+      else if (code) {
+        handleoAuthUser(provider, code);
+      }
     }
   }
 
@@ -43,12 +54,14 @@ Oauth.propTypes = {
     search: PropTypes.string.isRequired,
   }).isRequired,
   handleoAuthUser: PropTypes.func.isRequired,
+  handleGoogleOauth: PropTypes.func.isRequired,
 };
 
 Oauth.url = '/oauth';
 
 const mapDispatchToProps = dispatch => ({
   handleoAuthUser: (provider, code) => dispatch(oAuthUserA(provider, code)),
+  handleGoogleOauth: (provider, accessToken, tokenType, expiresIn, scope) => dispatch(oAuthUserGoogleA(provider, accessToken, tokenType, expiresIn, scope)),
 });
 
 export default connect(null, mapDispatchToProps)(withRouter(Oauth));

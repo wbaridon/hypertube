@@ -5,6 +5,7 @@ import {
   OAUTH_USER_ERROR,
 } from './action-types';
 import { getUserInfoPrivateA } from './get-user-info-private';
+import oAuthUserGoogleAPI from '../../api_tools/oauth-user-google';
 
 function createCookie(name, value, days) {
   let expires;
@@ -44,3 +45,18 @@ export const oAuthUserA = (provider, code) => {
       );
   };
 };
+
+export const oAuthUserGoogleA = (provider, accessToken, tokenType, expiresIn, scope) => {
+  return (dispatch) => {
+    dispatch(oAuthUserStart());
+    return oAuthUserGoogleAPI(provider, accessToken, tokenType, expiresIn, scope)
+      .then(
+        (result) => {
+          dispatch(oAuthUserSuccess(result.data));
+          createCookie('userToken', result.data.token, 7);
+          getUserInfoPrivateA(result.data.token, dispatch);
+        },
+        error => dispatch(oAuthUserError(error)),
+      );
+  };
+}
