@@ -14,8 +14,9 @@ const enUS = {
     comments: 'Comments',
     noComments: 'There is not comments yet !',
     commentInput: 'Say something',
-    worte: 'wrote',
-    at: 'at',
+    wrote: ' wrote:',
+    at: ' at ',
+    the: 'The ',
   },
   resetPassword: {
     title: 'Hi, if you\'ve forgotten your password, enter your email below!',

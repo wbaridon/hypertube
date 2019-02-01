@@ -72,27 +72,53 @@ class Movie extends React.Component {
                 <CardContent style={{ margin: 'auto' }}>
                   <Typography variant="h5">{movie.title}</Typography>
                   <Typography variant="subtitle1">{movie.synopsis}</Typography>
-                  <br />
-                  <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
-                  <Typography inline variant="subtitle1">{movie.year}</Typography>
-                  <br />
-                  <Typography inline variant="h5"><FormattedMessage id="movie.runtime" /></Typography>
-                  <Typography inline variant="subtitle1">{movie.runtime}</Typography>
-                  <br />
-                  <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
-                  <Typography inline variant="subtitle1">{movie.genre}</Typography>
-                  <br />
-                  <Typography inline variant="h5"><FormattedMessage id="movie.director" /></Typography>
-                  <Typography inline variant="subtitle1">{movie.director}</Typography>
-                  <br />
-                  <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
-                  <Typography inline variant="subtitle1">{movie.actors}</Typography>
-                  <br />
-                  <Typography inline variant="h5"><FormattedMessage id="movie.awards" /></Typography>
-                  <Typography inline variant="subtitle1">{movie.awards}</Typography>
-                  <br />
-                  <Typography inline variant="h5"><FormattedMessage id="movie.rating" /></Typography>
-                  <Typography inline variant="subtitle1">{movie.imdbRating}</Typography>
+                  {
+                     movie.year ? (
+                       <div>
+                         <br />
+                         <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
+                         <Typography inline variant="subtitle1">{movie.year}</Typography>
+                       </div>
+                     ) : (null)
+                  }
+               
+                  {
+                     movie.length > 0 ? (
+                       <div>
+                         <br />
+                         <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
+                         <Typography inline variant="subtitle1">{movie.genre + ' '}</Typography>
+                       </div>
+                     ) : (null)
+                  }
+                  {
+                    movie.director ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.director" /></Typography>
+                        <Typography inline variant="subtitle1">{movie.director}</Typography>   
+                      </div>
+                    ) : (null)
+                  }
+                  {
+                    movie.actors.length > 0 ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
+                        <Typography inline variant="subtitle1">{movie.actors + ' '}</Typography>
+                      </div>
+                    ) : (null)
+                  }
+                  {
+                    movie.imdbRating ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.rating" /></Typography>
+                        <Typography inline variant="subtitle1">{movie.imdbRating}</Typography>
+                      </div>
+                    ) : (null)
+                  }
+                 
                 </CardContent>
               </Grid>
             </Grid>

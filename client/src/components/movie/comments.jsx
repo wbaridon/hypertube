@@ -20,7 +20,6 @@ import Close from '@material-ui/icons/Close';
 class Comments extends React.Component {
   constructor() {
     super();
-    this.myRef = React.createRef();
     this.state = {
       newComment: '',
     };
@@ -34,27 +33,45 @@ class Comments extends React.Component {
       newComment,
     } = this.state;
     const {
+      userName,
       handleNewComment,
       token,
       idMovie,
+      comments,
+      success,
     } = this.props;
-    const test = this.myRef;
-    console.log(token);
-    console.log(test);
-    this.setState({ newComment: '' });
-    handleNewComment(token, newComment, idMovie);
+    console.log(newComment.length);
+    if (newComment.length > 1) {
+      const d = new Date();
+      console.log(success);
+      handleNewComment(token, newComment, idMovie);
+      // if (success === true) {
+        comments.push({
+          _id: d, comment: newComment, postedOn: d, userName,
+        });
+      // }
+      this.setState({ newComment: '' });
+    }
   }
 
   handleFieldChange(value) {
     this.setState({ newComment: value });
   }
 
-  handleDelete(e) {
+  handleDelete(id, comment) {
     const {
       handleDeleteComment,
+      token,
     } = this.props;
-    console.log(e);
-    handleDeleteComment('test');
+    handleDeleteComment(id, comment, token);
+  }
+
+  formatDate(n) {
+    var m = new Date(n).getMinutes().toString();
+    var h = new Date(n).getHours().toString();
+    h < 10 ? (h = '0' + h) : (null);
+    m < 10 ? (m = '0' + m) : (null);
+    return (h + ':' + m) 
   }
 
   render() {
@@ -64,29 +81,32 @@ class Comments extends React.Component {
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>
-          <Typography variant="h6"><FormattedMessage id="movie.comments" /></Typography>
+          <Typography variant="h6" style={{ marginBottom: '10px' }}><FormattedMessage id="movie.comments" /></Typography>
           {comments.length !== 0 ? comments.map(comment => (
-            <Paper key={comment.timestamp}>
+            <Paper key={comment._id} style={{ padding: '10px' }}>
               <Grid container wrap="nowrap" spacing={16}>
                 <Grid item>
                   <Avatar>W</Avatar>
                 </Grid>
                 <Grid item>
                   <Typography>
-                    {comment.username}
+                    {comment.userName}
                     <FormattedMessage id="movie.wrote" />
                   </Typography>
                   <Typography>
                     {comment.comment}
                   </Typography>
+                  <br />
                   <Typography>
+                    <FormattedMessage id="movie.the" />
+                    { new Date(comment.postedOn).toLocaleDateString('fr-FR') }
                     <FormattedMessage id="movie.at" />
-                    {comment.timestamp}
+                    { this.formatDate(comment.postedOn).toString() }
                   </Typography>
-                  <IconButton onClick={e => this.handleDelete(e)}>
-                    <Close />
-                  </IconButton>
                 </Grid>
+                <IconButton onClick={e => this.handleDelete(comment._id, comment.comment)}>
+                  <Close />
+                </IconButton>
               </Grid>
             </Paper>
           ))
@@ -102,7 +122,6 @@ class Comments extends React.Component {
                 </InputLabel>
                 <OutlinedInput
                   value={newComment}
-                  ref={this.myRef}
                   onChange={e => this.handleFieldChange(e.target.value)}
                   name="newcomment"
                   type="string"
@@ -128,16 +147,19 @@ Comments.propTypes = {
   token: PropTypes.string.isRequired,
   handleNewComment: PropTypes.func.isRequired,
   handleDeleteComment: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired,
+  // success: PropTypes.boolean.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
   handleNewComment: (token, newComment, idMovie) => dispatch(newCommentA(token, newComment, idMovie)),
-  handleDeleteComment: idComment => dispatch(deleteCommentA(idComment)),
-
+  handleDeleteComment: (idComment, comment, token) => dispatch(deleteCommentA(idComment, comment, token)),
 });
 
 const mapStateToProps = state => ({
   token: state.user.token,
+  userName: state.user.userName,
+  success: state.comment.success,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);
