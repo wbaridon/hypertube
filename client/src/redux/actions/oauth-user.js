@@ -45,18 +45,3 @@ export const oAuthUserA = (provider, code) => {
       );
   };
 };
-
-export const oAuthUserGoogleA = (provider, accessToken, tokenType, expiresIn, scope) => {
-  return (dispatch) => {
-    dispatch(oAuthUserStart());
-    return oAuthUserGoogleAPI(provider, accessToken, tokenType, expiresIn, scope)
-      .then(
-        (result) => {
-          dispatch(oAuthUserSuccess(result.data));
-          createCookie('userToken', result.data.token, 7);
-          getUserInfoPrivateA(result.data.token, dispatch);
-        },
-        error => dispatch(oAuthUserError(error)),
-      );
-  };
-}

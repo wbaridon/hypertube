@@ -26,11 +26,26 @@ function SearchBar({
   classes,
   toggleMenu,
   sortSelection,
+  reversedSort,
 }) {
   return (
     <Paper className={classes.searchBar}>
       <TextField
-        startAdornment={<InputAdornment position="start">{sortSelection}</InputAdornment>}
+        InputProps={{
+          startAdornment: <InputAdornment position="start">{sortSelection}{reversedSort ? 'reversed' : ''}</InputAdornment>,
+          endAdornment:
+            (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="Toggle password visibility"
+                  onClick={toggleMenu}
+                >
+                  <Sort />
+                </IconButton>
+              </InputAdornment>
+            ),
+        }
+        }
         classes={{ focused: classes.searchBarFocused }}
         id="searchBar"
         tabIndex={-1}
@@ -39,18 +54,7 @@ function SearchBar({
         fullWidth
         value={searchString}
         onChange={handleSearchStringChange}
-        endAdornment={
-          (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="Toggle password visibility"
-                onClick={toggleMenu}
-              >
-                <Sort />
-              </IconButton>
-            </InputAdornment>
-          )
-        }
+
       />
     </Paper>
   );
@@ -60,6 +64,7 @@ SearchBar.propTypes = {
   searchString: PropTypes.string.isRequired,
   handleSearchStringChange: PropTypes.func.isRequired,
   sortSelection: PropTypes.string.isRequired,
+  reversedSort: PropTypes.bool.isRequired,
   toggleMenu: PropTypes.func.isRequired,
   classes: PropTypes.shape({}).isRequired,
 };
