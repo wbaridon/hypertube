@@ -4,6 +4,7 @@
   "description": "API Hypertube",
   "main": "app.js",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.17",
     "argon2": "^0.19.3",
     "axios": "^0.18.0",
     "axios-cloudflare": "^1.0.2",
