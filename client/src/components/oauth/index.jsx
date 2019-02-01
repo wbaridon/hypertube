@@ -33,7 +33,6 @@ class Oauth extends Component {
         const tokenType = qs.parse(location.hash, { ignoreQueryPrefix: true }).token_type;
         const expiresIn = qs.parse(location.hash, { ignoreQueryPrefix: true }).expires_in;
         const { scope } = qs.parse(location.hash, { ignoreQueryPrefix: true });
-        console.log(provider, accessToken, tokenType, expiresIn, scope);
         handleGoogleOauth(provider, accessToken, tokenType, expiresIn, scope);
       }
       else if (code) {
