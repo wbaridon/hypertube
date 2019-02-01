@@ -60,6 +60,9 @@ const getMaxImageWidth = (width) => {
   };
 };
 
+// Setup isScrolling variable
+
+
 const styles = {
   fab: {
     position: 'fixed',
@@ -77,6 +80,8 @@ class Movies extends Component {
       reversedSort: false,
       currentMovie: null,
       top: false,
+      scrolling: false,
+      menuOpen: false,
     };
 
     this.renderMovies = this.renderMovies.bind(this);
@@ -85,6 +90,8 @@ class Movies extends Component {
     this.handleSearchStringChange = this.handleSearchStringChange.bind(this);
     this.debounceSearchStringChange = debounce(this.debounceSearchStringChange, 300);
     this.handleTopSpan = this.handleTopSpan.bind(this);
+    this.handleScrollToTop = this.handleScrollToTop.bind(this);
+    this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
   }
 
   componentDidMount() {
@@ -94,17 +101,30 @@ class Movies extends Component {
       rootMargin: '0px',
       threshold: 1.0,
     };
-
     const observer = new IntersectionObserver(this.handleTopSpan, options);
     observer.observe(document.getElementById('top'));
+    let timeout;
+    window.addEventListener('scroll', () => {
+      this.debounceScrolling();
+      window.clearTimeout(timeout);
+      timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
+    }, false);
   }
 
   onHoverMovie(movieId) {
-    this.setState({ currentMovie: movieId });
+    const { scrolling } = this.state;
+    if (!scrolling) {
+      this.setState({ currentMovie: movieId });
+    }
   }
 
   handleTopSpan(entries) {
-    this.setState({ top: entries[0].isIntersecting });
+    this.setState({ top: entries[0].isIntersecting, scrolling: false });
+  }
+
+  handleScrollToTop() {
+    document.getElementById('top').scrollIntoView();
+    this.setState({ scrolling: true });
   }
 
   loadMoreItems() {
@@ -118,8 +138,8 @@ class Movies extends Component {
     } = this.state;
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
-    request.filter.from = page * 10;
-    request.filter.to = (page + 1) * 10;
+    request.filter.from = page * 50;
+    request.filter.to = (page + 1) * 50;
     getMoviePageHandle(token, request);
   }
 
@@ -133,6 +153,10 @@ class Movies extends Component {
     this.setState({ searchString: event.target.value }, () => {
       this.debounceSearchStringChange();
     });
+  }
+
+  toggleMenu() {
+    this.setState({ menuOpen: true });
   }
 
   renderWaypoint() {
@@ -187,7 +211,7 @@ class Movies extends Component {
     } = this.props;
     return (
       <div>
-        {!top ? <Fab className={classes.fab} onClick={() => document.getElementById('top').scrollIntoView()}><ArrowUpward /></Fab> : null}
+        {!top ? <Fab className={classes.fab} onClick={this.handleScrollToTop}><ArrowUpward /></Fab> : null}
         <SearchBar
           handleSearchStringChange={this.handleSearchStringChange}
           searchString={searchString}

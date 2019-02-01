@@ -62,7 +62,7 @@ class Movie extends React.Component {
                     {
                       margin: 'auto', width: '70%', maxWidth: '500px', marginBottom: '20px'
                     }
-                    }
+                  }
                   title="movie cover"
                   component="img"
                   image={movie.cover}
@@ -100,10 +100,10 @@ class Movie extends React.Component {
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
-        <Grid>
-          <Typography>Nop</Typography>
-        </Grid>
-      )
+          <Grid>
+            <Typography>Nop</Typography>
+          </Grid>
+        )
     );
   }
 }
