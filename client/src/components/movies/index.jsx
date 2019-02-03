@@ -67,6 +67,7 @@ class Movies extends Component {
     this.loadMoreItems = this.loadMoreItems.bind(this);
     this.handleSearchStringChange = this.handleSearchStringChange.bind(this);
     this.debounceSearchStringChange = debounce(this.debounceSearchStringChange, 300);
+    this.onHoverMovie = this.onHoverMovie.bind(this);
   }
 
   componentDidMount() {
@@ -120,9 +121,15 @@ class Movies extends Component {
   }
 
   renderMovies() {
-    const { movies, width } = this.props;
+    const { movies, width, mobile } = this.props;
     const { currentMovie } = this.state;
     const dimensions = getMaxImageWidth(width);
+    const smallScreenDimensions = {};
+    console.log(mobile);
+    if (width === 'xs') {
+      smallScreenDimensions.width = dimensions.width * 2;
+      smallScreenDimensions.height = dimensions.height * 2;
+    }
     if (movies.length === 0) {
       return (<div>No movies yet</div>);
     }
@@ -130,16 +137,17 @@ class Movies extends Component {
       return (
         <Grid
           item
-          style={{ height: dimensions.height, width: dimensions.width }}
-          onBlur={() => this.onHoverMovie(null)}
-          onMouseLeave={() => this.onHoverMovie(null)}
-          onMouseEnter={() => this.onHoverMovie(movie._id)}
-          onMouseOver={() => this.onHoverMovie(movie._id)}
-          onFocus={() => this.onHoverMovie(movie._id)}
+          style={{ height: width === 'xs' && currentMovie === movie._id ? smallScreenDimensions.height : dimensions.height, width: width === 'xs' && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
+          onBlur={mobile ? null : () => { this.onHoverMovie(null); console.log('onblur'); }}
+          onClick={mobile ? () => { this.onHoverMovie(movie._id); console.log('onCLick'); } : null}
+          onMouseLeave={!mobile ? () => { this.onHoverMovie(null); console.log('onMouseleave'); } : null}
+          onMouseEnter={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onMouseEnter'); } : null}
+          onMouseOver={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onMouseover'); } : null}
+          onFocus={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onFocus'); } : null}
           key={movie._id}
         >
           {
-            currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} {...movie} />
+            currentMovie === movie._id ? <ActiveMovieCard closeMovie={() => this.onHoverMovie(null)} dimensions={width === 'xs' ? smallScreenDimensions : dimensions} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />
           }
         </Grid>);
@@ -171,6 +179,7 @@ Movies.propTypes = {
   getMoviePageHandle: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
+  mobile: PropTypes.bool.isRequired,
 };
 
 Movies.defaultProps = {
@@ -185,6 +194,7 @@ const mapStateToProps = state => ({
   page: state.movies.currentPage,
   noMoreMovies: state.movies.noMoreMovies,
   token: state.user.token,
+  mobile: state.user.isMobile,
 });
 
 const mapDispatchToProps = dispatch => ({
