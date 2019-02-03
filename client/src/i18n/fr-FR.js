@@ -3,6 +3,20 @@ const flatten = require('flat');
 
 
 const frFR = {
+  movie: {
+    year: 'Année: ',
+    runtime: 'Durée: ',
+    genre: 'Genre: ',
+    director: 'Réalisateur: ',
+    actors: 'Acteurs: ',
+    awards: 'Prix: ',
+    rating: 'Note: ',
+    comments: 'Commentaires',
+    noComments: 'Pas encore de commantaires :(',
+    commentInput: 'Commenter',
+    worte: 'a ecrit',
+    at: 'Le ',
+  },
   login: {
     userName: 'Nom d\'Utilisateur',
     email: 'Email',

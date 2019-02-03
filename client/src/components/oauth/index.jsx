@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as qs from 'query-string';
-import { oAuthUserA } from '../../redux/actions/oauth-user';
+import { oAuthUserA, oAuthUserGoogleA } from 'Actions';
 
 function getProvider(url) {
   const parts = url.split('/');
@@ -18,16 +18,20 @@ class Oauth extends Component {
 
     this.state = {
       provider: getProvider(props.location.pathname),
-      code: qs.parse(props.location.search, { ignoreQueryPrefix: true }).code || '',
+      code: qs.parse(props.location.search, { ignoreQueryPrefix: true }).code || null,
     };
   }
 
   componentWillMount() {
     const { provider, code } = this.state;
-    const { handleoAuthUser } = this.props;
-    if (provider && code) {
-      console.log(provider, code);
-      handleoAuthUser(provider, code);
+    const { handleoAuthUser, location } = this.props;
+    let googleCode;
+
+    if (provider) {
+      if (provider === 'google') {
+        googleCode = qs.parse(location.hash, { ignoreQueryPrefix: true }).access_token;
+      }
+      handleoAuthUser(provider, code || googleCode);
     }
   }
 

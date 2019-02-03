@@ -55,6 +55,7 @@ userRouter
     } else { res.status(400).send({ error: 'registration.undefinedPictureIssue' }) }
   })
   .post('/login', (req, res) => {
+    console.log(req.body)
     const user = {
       userName: req.body.userName,
       password: req.body.password
@@ -79,6 +80,7 @@ userRouter
   .post('/getAllUsers', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       UserManager.getAllId().then(result => {
+        console.log(result)
         res.status(200).send(result)
       })
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))

@@ -5,6 +5,7 @@ import {
   OAUTH_USER_ERROR,
 } from './action-types';
 import { getUserInfoPrivateA } from './get-user-info-private';
+import oAuthUserGoogleAPI from '../../api_tools/oauth-user-google';
 
 function createCookie(name, value, days) {
   let expires;

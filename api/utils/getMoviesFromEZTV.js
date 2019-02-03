@@ -1,58 +1,95 @@
 const axios = require('axios');
+const cheerio = require('cheerio');
 
 const MovieManager = require('../models/movieManager');
 
 function getNewMovies() {
   EztvPageCount().then(pages => {
     getAllPages(pages);
-  })
+  }).catch(error => console.log(error))
 }
 
 function EztvPageCount() {
   return new Promise ((resolve, reject) => {
-    axios.get('https://eztv.io/api/get-torrents?limit=100')
+    axios.get('https://eztv.io/api/get-torrents?limit=5')
     .then(response => {
       resolve(Math.ceil(response.data.torrents_count  / response.data.limit));
-    }).catch(error => reject(error));
+    }).catch(error => reject('EztvPageCount.serviceUnaivailable'));
   });
 }
 
-function checkMovie(data) {
-  MovieManager.exist(data.imdb_id)
-  .then(status => {
-    if (!status) { addMovie(data) }
-  })
+async function getAllPages(pages) {
+  for (var i = 1; i <= pages; i++) {
+      await getPage(i);
+  }
 }
 
-function getCover(cover) {
+function getPage(page) {
   return new Promise ((resolve, reject) => {
-    if (cover.match('^http:')) {
-      resolve(cover);
-    } else {
-      resolve('http:'+cover);
-    }
+    axios.get('https://eztv.io/api/get-torrents?limit=5&page='+page)
+    .then(response => {
+      for (var i = 0; i < response.data.torrents.length; i++) {
+        checkMovie(response.data.torrents[i]);
+      }
+      setTimeout(resolve, 2500)
+    }).catch(error => { reject(error); })
   })
 }
 
-function addMovie(data) {
-  getCover(data.large_screenshot).then(coverChecked => {
+function checkMovie(data) {
+  MovieManager.exist(`tt${data.imdb_id}`)
+  .then(status => {
+    if (!status) { formatMovieData(data) }
+  })
+}
+
+function formatMovieData(data) {
+  if (data.imdb_id) {
     let movie = {
       imdbId: 'tt'+data.imdb_id,
       title: data.title,
       season: data.season,
       episode: data.episode,
-      cover: coverChecked,
       dateReleased: data.date_released_unix,
-    }
-    torrent = {
-      hash: data.hash,
       seeds: data.seeds,
-      peers: data.peers
+      torrents: {
+        language: 'English',
+        hash: data.hash,
+        seeds: data.seeds,
+        peers: data.peers
+      }
     }
-    MovieManager.createMovie(movie, torrent).then(created => {
-      getBetterCover(movie.imdbId)
-    })
+    getExtraData(movie)
+  }
+}
+
+function checkCover(url) {
+  return new Promise ((resolve, reject) => {
+    axios.get(url)
+    .then(cover => {
+      if (cover.status == 200) { resolve('cover.Exist'); }
+    }, error => { reject('cover.notFound') })
   })
+}
+
+function getExtraData(movie) {
+ let url = `https://www.imdb.com/title/${movie.imdbId}/`;
+  axios.get(url)
+    .then(response => {
+        const $ = cheerio.load(response.data);
+        movie.title = $('.title_wrapper').find('h1').text().split('(')[0].trim();
+        movie.rating = $('.ratingValue').find('span').text().split('/')[0].trim();
+        movie.cover = $('.poster').find('img').attr('src');
+        movie.synopsis = $('.summary_text').text().trim();
+        movie.runtime = $('#titleDetails').find('time').text().split(' ')[0].trim();
+        if (!movie.cover) { movie.cover = 'https://www.quantabiodesign.com/wp-content/uploads/No-Photo-Available.jpg' }
+       addMovie(movie)
+  }).catch(error => console.log(error + 'getExtraData.getExtraDataUnaivailable'))
+}
+
+function addMovie(movie) {
+  MovieManager.createMovie(movie)
+  .then(success => {  getBetterCover(movie.imdbId) }, error => { console.log(error)})
 }
 
 function getBetterCover(id) { // 40 requetes toutes les 10 s voir comment faire
@@ -64,33 +101,12 @@ function getBetterCover(id) { // 40 requetes toutes les 10 s voir comment faire
       movie = {
         cover: base + coverResult.data.tv_results[0].poster_path
       }
-      MovieManager.update(id, movie).then(result => {
-      })
-    }
-  })
-}
-
-function getPage(page) {
-  return new Promise (resolve => {
-    axios.get('https://eztv.io/api/get-torrents?limit=5&page='+page)
-    .then(response => {
-      for (var i = 0; i < response.data.torrents.length; i++) {
-        checkMovie(response.data.torrents[i]);
+      if (coverResult.data.tv_results[0].poster_path) {
+        MovieManager.update(id, movie).then(result => {
+        })
       }
-      setTimeout(resolve, 1500)
-    })
-  })
+    }
+  }).catch(error => console.log(error))
 }
 
-async function getAllPages(pages) {
-  for (var i = 1; i <= pages; i++) {
-  //  console.log('EZTV Check Page '+ i)
-    await getPage(i);
-  }
-}
-function getNewMovies() {
-  EztvPageCount().then(pages => {
-    getAllPages(pages);
-  })
-}
 module.exports.launcher = getNewMovies;

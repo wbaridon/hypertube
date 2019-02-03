@@ -30,9 +30,12 @@ function gitlabCredentials() {
         secret: gitlabSecret,
       },
       auth: {
-       tokenHost: 'http://gitlab.com/api/v4/',
+       tokenHost: 'https://gitlab.com/',
        tokenPath: '/oauth/token'
-      }
+     },
+     options: {
+       authorizationMethod: 'body',
+     }
     }
      resolve(credentials)
     })
@@ -48,6 +51,9 @@ function linkedinCredentials() {
       auth: {
         tokenHost: 'https://www.linkedin.com',
         tokenPath: '/oauth/v2/accessToken'
+      },
+      options: {
+        authorizationMethod: 'body',
       }
     }
      resolve(credentials)
@@ -63,8 +69,11 @@ function instagramCredentials() {
       },
       auth: {
        tokenHost: 'https://api.instagram.com',
-       tokenPath: '/oauth/accessToken'
-      }
+       tokenPath: '/oauth/access_token'
+     },
+     options: {
+       authorizationMethod: 'body',
+     }
     }
      resolve(credentials)
     })

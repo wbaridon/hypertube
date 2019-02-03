@@ -46,7 +46,8 @@
       "import/no-dynamic-require": "off",
       "arrow-body-style": "off",
       "no-plusplus": "off",
-      "no-underscore-dangle": "off"
+      "no-underscore-dangle": "off",
+      "brace-style": "off"
     },
     "settings": {
       "import/resolver": {

@@ -38,6 +38,8 @@ import {
 } from './sidebar';
 import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
+import { newCommentA } from './add-comment';
+import { deleteCommentA } from './delete-comment';
 
 export const setMobileBooleanA = isMobile => ({
   type: SET_MOBILE_BOOLEAN,
@@ -104,5 +106,7 @@ export {
   changeUserValueA,
   changeUserPasswordA,
   getMoviePageA,
-  getMovieDataA
+  getMovieDataA,
+  newCommentA,
+  deleteCommentA,
 };

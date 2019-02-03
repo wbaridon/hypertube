@@ -25,12 +25,14 @@ const MovieSchema = new Schema({
   season: Number,
   episode: Number,
   public: String,
-  runtime: String,
-  genre: String,
+  runtime: Number,
+  genre: Array,
   director: String,
-  actors: String,
+  writer: String,
+  actors: Array,
   awards: String,
-  imdbRating: String,
+  imdbRating: Number,
+  seeds: Number,
   torrents: [TorrentsSchema],
   comments: [CommentsSchema]
 });

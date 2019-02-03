@@ -17,25 +17,20 @@ module.exports.getMovieByTitle = function (title) {
   })
 }
 
-module.exports.createMovie = function (data,torrent) {
+module.exports.createMovie = function (data) {
   return new Promise ((resolve, reject) => {
-    var movie = new Movie({
-      imdbId: data.imdbId,
-      title: data.title,
-      year: data.year,
-      cover: data.cover,
-      synopsis: data.synopsis,
-    })
-    movie.torrents.push(torrent)
-    movie.save().then(function(){
-      resolve();
+    var movie = new Movie(data)
+    movie.save()
+    .then(success => { resolve('createMovie.sucess'); },
+      error => { reject('createMovie.error');
     })
   })
 }
 
-module.exports.getList = function (query, start, limit) {
+module.exports.getList = function (query, start, limit, sort, reverse) {
   return new Promise ((resolve, reject) => {
-    Movie.find({'title': { $regex: query, $options: 'i'} }).skip(start).limit(limit)
+    Movie.find({'title': { $regex: query, $options: 'i'} })
+    .skip(start).limit(limit).sort({[sort]: [reverse]})
     .then(function(result){ resolve(result) },
     (err) => {console.log(err)}
     )
@@ -53,6 +48,16 @@ module.exports.exist = function (imdbId) {
 module.exports.update = function (id, data) {
   return new Promise ((resolve, reject) => {
     Movie.findOneAndUpdate({'imdbId': id}, data)
+    .then(function(result){ resolve() },
+    (err) => {console.log(err)}
+    )
+  })
+}
+
+
+module.exports.addComment = function (id, data) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOneAndUpdate({'imdbId': id}, {$push: {comments: data}})
     .then(function(result){ resolve() },
     (err) => {console.log(err)}
     )

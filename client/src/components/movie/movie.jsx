@@ -1,54 +1,135 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getMovieDataA } from 'Actions';
+import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import {
   Typography,
   Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Comments from './comments';
+
+const styles = {
+  movie_info: {
+    margin: 'auto',
+  },
+  info_container: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+};
 
 class Movie extends React.Component {
   componentWillMount() {
     const {
-      idMovie,
       getMovie,
     } = this.props;
-    const {match } = this.props;
+    const { match } = this.props;
     getMovie(match.params.id_movie);
   }
 
   render() {
-    const comments = [
-      {
-        username: 'abc',
-        comment: 'love this movie',
-        timestamp: 20410242221,
-      },
-      {
-        username: 'abc',
-        comment: 'love this movie too wow what a coincidence',
-        timestamp: 204101231232,
-      }, {
-        username: 'efg',
-        comment: 'love this movie as well lol',
-        timestamp: 20410242241,
-      },
-    ];
-    const  { movie, } = this.props;
+    const { classes, movie } = this.props;
     console.log(movie);
     return (
       movie ? (
-        <Grid>
-        <Typography>Success !</Typography>
-        <Comments comments={comments} />
+        <Grid
+          container
+          className={classes.movie_info}
+          spacing={8}
+          justify="center"
+          alignItems="center"
+        >
+          <Card>
+            <Grid container>
+              <Grid item xs={12} sm={6}>
+                <IconButton component={Link} to="/movies">
+                  <ArrowBack />
+                </IconButton>
+                <CardMedia
+                  style={
+                    {
+                      margin: 'auto', width: '70%', maxWidth: '500px', marginBottom: '20px'
+                    }
+                  }
+                  title="movie cover"
+                  component="img"
+                  image={movie.cover}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
+                <CardContent style={{ margin: 'auto' }}>
+                  <Typography variant="h5">{movie.title}</Typography>
+                  <Typography variant="subtitle1">{movie.synopsis}</Typography>
+                  {
+                     movie.year ? (
+                       <div>
+                         <br />
+                         <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
+                         <Typography inline variant="subtitle1">{movie.year}</Typography>
+                       </div>
+                     ) : (null)
+                  }
+               
+                  {
+                     movie.length > 0 ? (
+                       <div>
+                         <br />
+                         <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
+                         <Typography inline variant="subtitle1">{movie.genre + ' '}</Typography>
+                       </div>
+                     ) : (null)
+                  }
+                  {
+                    movie.director ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.director" /></Typography>
+                        <Typography inline variant="subtitle1">{movie.director}</Typography>   
+                      </div>
+                    ) : (null)
+                  }
+                  {
+                    movie.actors.length > 0 ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
+                        <Typography inline variant="subtitle1">{movie.actors + ' '}</Typography>
+                      </div>
+                    ) : (null)
+                  }
+                  {
+                    movie.imdbRating ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.rating" /></Typography>
+                        <Typography inline variant="subtitle1">{movie.imdbRating}</Typography>
+                      </div>
+                    ) : (null)
+                  }
+                 
+                </CardContent>
+              </Grid>
+            </Grid>
+          </Card>
+          <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
-        <Grid>
-        <Typography>error</Typography>
-        <Comments comments={comments} />
-        </Grid>
-      )
+          <Grid>
+            <Typography>Nop</Typography>
+          </Grid>
+        )
     );
   }
 }
@@ -59,15 +140,17 @@ Movie.propTypes = {
       id_movie: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  classes: PropTypes.shape({}).isRequired,
+  getMovie: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  getMovie: (idMovie) => dispatch(getMovieDataA(idMovie)),
+  getMovie: idMovie => dispatch(getMovieDataA(idMovie)),
 });
 
 const mapStateToProps = state => ({
-  // movie: state.movie.data,
+  movie: state.movie.data,
 });
 
 Movie.url = '/movie/:id_movie';
-export default connect(mapStateToProps, mapDispatchToProps)(Movie);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Movie));

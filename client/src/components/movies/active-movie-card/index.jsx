@@ -9,6 +9,7 @@ import {
   Paper,
   CardContent,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 class ActiveMovieCard extends React.Component {
   constructor() {
@@ -21,12 +22,13 @@ class ActiveMovieCard extends React.Component {
   }
 
   setImageFalse() {
-    console.log('worked');
+    // console.log('worked');
     this.setState({ image: false });
   }
 
   render() {
     const {
+      imdbId,
       title,
       year,
       cover,
@@ -97,7 +99,7 @@ class ActiveMovieCard extends React.Component {
                 minWidth: 0,
               }}
             >
-              <Typography style={{ minHeight: 0, overflowY: 'auto' }}>
+              <Typography style={{ minHeight: 0, overflowY: 'hidden' }}>
                 {synopsis}
               </Typography>
             </Grid>
@@ -111,7 +113,7 @@ class ActiveMovieCard extends React.Component {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button>
+                  <Button component={Link} to={`/movie/${imdbId}`}>
                     <Typography variant="button" noWrap>
                       watch now
                     </Typography>
