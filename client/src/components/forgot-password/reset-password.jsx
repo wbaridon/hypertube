@@ -47,6 +47,7 @@ function ResetPassword({
         </Grid>
         <Grid item>
           <TextField
+            type="password"
             label={intl.formatMessage({ id: 'resetPassword.newPassword' })}
             value={newPassword}
             onChange={e => handleFieldChange('newPassword', e.target.value)}
@@ -54,6 +55,7 @@ function ResetPassword({
         </Grid>
         <Grid item>
           <TextField
+            type="password"
             label={intl.formatMessage({ id: 'resetPassword.newPasswordRepeat' })}
             value={newPasswordRepeat}
             onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)}

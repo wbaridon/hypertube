@@ -79,7 +79,7 @@ export default function user(state = defaultUserState, action) {
     case SET_MOBILE_BOOLEAN:
       return {
         ...state,
-        isMobile: action.isMobile,
+        isMobile: action.isMobile !== null ? action.isMobile : false,
       };
     default:
       return state;

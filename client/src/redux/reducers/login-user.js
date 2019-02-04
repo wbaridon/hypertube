@@ -13,6 +13,7 @@ import {
 const defaultLoginState = {
   loading: false,
   success: false,
+  errored: false,
   redirectUrl: null,
 };
 
@@ -22,18 +23,21 @@ export default function loginUser(state = defaultLoginState, action) {
       return {
         ...state,
         loading: true,
+        errored: false,
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
         loading: false,
         success: true,
+        errored: false,
       };
     case LOGIN_ERROR:
       return {
         ...state,
         loading: false,
         success: false,
+        errored: true,
       };
     case OAUTH_USER:
       return {
@@ -45,12 +49,14 @@ export default function loginUser(state = defaultLoginState, action) {
         ...state,
         loading: false,
         success: true,
+        errored: false,
       };
     case OAUTH_USER_ERROR:
       return {
         ...state,
         loading: false,
         success: false,
+        errored: true,
       };
     case LOGOUT:
       return {
