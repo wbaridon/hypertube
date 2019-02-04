@@ -139,7 +139,7 @@ userRouter
         }
         UserManager.updateUserField({'userName': user}, {'picture': racine + 'images/' + req.file.filename})
         .then((updated) => {
-          res.status(200).send({picture: req.file.filename, user: token.user, success: 'picture.Updated'})
+          res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated'})
         })
       }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
