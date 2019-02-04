@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
@@ -11,11 +11,15 @@ import {
   checkUserInCookieA,
   clearErrorA,
   clearSuccessA,
+  setMobileBooleanA,
 } from 'Actions';
+import MobileDetect from 'mobile-detect';
 import CurrentRoute from './components/routing/current-route';
 import Header from './components/header/header';
 import Footer from './components/header/footer';
 import Sidebar from './components/sidebar';
+
+const md = new MobileDetect(window.navigator.userAgent);
 
 function pxToRem(value) {
   return `${value / 16}rem`;
@@ -131,6 +135,7 @@ function mapDispatchToProps(dispatch) {
     checkUser: () => dispatch(checkUserInCookieA(document.cookie)),
     clearErrorHandler: () => dispatch(clearErrorA()),
     clearSuccessHandler: () => dispatch(clearSuccessA()),
+    isMobileHandle: isMobile => dispatch(setMobileBooleanA(isMobile)),
   });
 }
 
@@ -140,10 +145,12 @@ class App extends React.Component {
     const {
       user,
       checkUser,
+      isMobileHandle,
     } = this.props;
     if (!user.token && !user.tokenFetched) {
       checkUser();
     }
+    isMobileHandle(md.mobile());
   }
 
   componentDidUpdate = () => {
@@ -197,6 +204,7 @@ App.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired,
   clearErrorHandler: PropTypes.func.isRequired,
   clearSuccessHandler: PropTypes.func.isRequired,
+  isMobileHandle: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,

@@ -7,6 +7,7 @@ import {
   DELETE_USER_FROM_USER_LIST,
   ADD_USER_TO_USER_LIST,
   CLEAR_MOVIES,
+  SET_MOBILE_BOOLEAN,
 } from './action-types';
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
@@ -39,6 +40,11 @@ import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
 import { newCommentA } from './add-comment';
 import { deleteCommentA } from './delete-comment';
+
+export const setMobileBooleanA = isMobile => ({
+  type: SET_MOBILE_BOOLEAN,
+  isMobile,
+});
 
 export const clearMoviesA = () => ({
   type: CLEAR_MOVIES,

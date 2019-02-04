@@ -87,9 +87,11 @@ class Movies extends Component {
     this.loadMoreItems = this.loadMoreItems.bind(this);
     this.handleSearchStringChange = this.handleSearchStringChange.bind(this);
     this.debounceSearchStringChange = debounce(this.debounceSearchStringChange, 300);
+    this.onHoverMovie = this.onHoverMovie.bind(this);
     this.handleTopSpan = this.handleTopSpan.bind(this);
     this.handleScrollToTop = this.handleScrollToTop.bind(this);
     this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
+    this.scrollListener = this.scrollListener.bind(this);
   }
 
   componentDidMount() {
@@ -101,19 +103,33 @@ class Movies extends Component {
     };
     const observer = new IntersectionObserver(this.handleTopSpan, options);
     observer.observe(document.getElementById('top'));
-    let timeout;
-    window.addEventListener('scroll', () => {
-      this.debounceScrolling();
-      window.clearTimeout(timeout);
-      timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
-    }, false);
+    window.addEventListener('scroll', this.scrollListener, false);
   }
 
-  onHoverMovie(movieId) {
-    const { scrolling } = this.state;
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.scrollListener);
+    window.clearTimeout(this.timeout);
+  }
+
+  onHoverMovie(movieId, toggle, scrollTo, event) {
+    const { scrolling, currentMovie } = this.state;
     if (!scrolling) {
-      this.setState({ currentMovie: movieId });
+      if (toggle && currentMovie === movieId) {
+        this.setState({ currentMovie: null });
+        event.target.scrollIntoView({ block: 'center' });
+      } else {
+        this.setState({ currentMovie: movieId });
+        if (scrollTo) {
+          setTimeout(() => document.getElementById('active-card').scrollIntoView({ block: 'center' }), 50);
+        }
+      }
     }
+  }
+
+  scrollListener() {
+    this.debounceScrolling();
+    window.clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
   }
 
   handleTopSpan(entries) {
@@ -170,9 +186,14 @@ class Movies extends Component {
   }
 
   renderMovies() {
-    const { movies, width } = this.props;
+    const { movies, width, mobile } = this.props;
     const { currentMovie } = this.state;
     const dimensions = getMaxImageWidth(width);
+    const smallScreenDimensions = {};
+    if (width === 'xs') {
+      smallScreenDimensions.width = dimensions.width * 2;
+      smallScreenDimensions.height = dimensions.height * 2;
+    }
     if (movies.length === 0) {
       return (<div>No movies yet</div>);
     }
@@ -180,16 +201,17 @@ class Movies extends Component {
       return (
         <Grid
           item
-          style={{ height: dimensions.height, width: dimensions.width }}
-          onBlur={() => this.onHoverMovie(null)}
-          onMouseLeave={() => this.onHoverMovie(null)}
-          onMouseEnter={() => this.onHoverMovie(movie._id)}
-          onMouseOver={() => this.onHoverMovie(movie._id)}
-          onFocus={() => this.onHoverMovie(movie._id)}
+          style={{ height: width === 'xs' && currentMovie === movie._id ? smallScreenDimensions.height : dimensions.height, width: width === 'xs' && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
+          onBlur={mobile ? null : () => { this.onHoverMovie(null); console.log('onblur'); }}
+          onClick={mobile ? (e) => { this.onHoverMovie(movie._id, true, true, e); console.log('onCLick'); } : null}
+          onMouseLeave={!mobile ? () => { this.onHoverMovie(null); console.log('onMouseleave'); } : null}
+          onMouseEnter={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onMouseEnter'); } : null}
+          onMouseOver={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onMouseover'); } : null}
+          onFocus={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onFocus'); } : null}
           key={movie._id}
         >
           {
-            currentMovie === movie._id ? <ActiveMovieCard dimensions={dimensions} {...movie} />
+            currentMovie === movie._id ? <ActiveMovieCard closeMovie={mobile ? () => this.onHoverMovie(null) : null} dimensions={width === 'xs' ? smallScreenDimensions : dimensions} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />
           }
         </Grid>
@@ -237,6 +259,7 @@ Movies.propTypes = {
   getMoviePageHandle: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
+  mobile: PropTypes.bool.isRequired,
 };
 
 Movies.defaultProps = {
@@ -251,6 +274,7 @@ const mapStateToProps = state => ({
   page: state.movies.currentPage,
   noMoreMovies: state.movies.noMoreMovies,
   token: state.user.token,
+  mobile: state.user.isMobile,
 });
 
 const mapDispatchToProps = dispatch => ({

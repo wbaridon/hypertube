@@ -9,6 +9,7 @@ import {
   SET_USER,
   CHANGE_USER_VALUE,
   CLEAR_USER,
+  SET_MOBILE_BOOLEAN,
 } from 'Actions/action-types';
 
 const defaultUserState = {
@@ -20,6 +21,7 @@ const defaultUserState = {
   tokenValid: false,
   dataFetched: false,
   token: null,
+  isMobile: false,
 };
 
 export default function user(state = defaultUserState, action) {
@@ -74,7 +76,11 @@ export default function user(state = defaultUserState, action) {
         ...state,
         tokenValid: false,
       };
-
+    case SET_MOBILE_BOOLEAN:
+      return {
+        ...state,
+        isMobile: action.isMobile,
+      };
     default:
       return state;
   }

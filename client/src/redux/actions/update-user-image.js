@@ -25,7 +25,6 @@ export const updateUserImageA = (token, form) => {
     return updateUserImageAPI(token, form)
       .then(
         (result) => {
-          console.log(result);
           dispatch(changeUserValueA('picture', result.data.picture));
           dispatch(deleteUserFromUserListA(result.data.user));
           getUserInfoA(token, result.data.user, dispatch);

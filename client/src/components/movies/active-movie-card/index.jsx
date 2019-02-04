@@ -34,6 +34,7 @@ class ActiveMovieCard extends React.Component {
       cover,
       synopsis,
       dimensions,
+      closeMovie,
     } = this.props;
     const { image } = this.state;
     if (image && cover) {
@@ -45,6 +46,7 @@ class ActiveMovieCard extends React.Component {
             height: dimensions.height,
             padding: 5,
           }}
+          id="active-card"
         >
 
           {dimensions.width <= 175 && title.length > 16 ? null : (
@@ -65,7 +67,7 @@ class ActiveMovieCard extends React.Component {
             </Paper>
           )
           }
-          <Grid container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
+          <Grid onClick={closeMovie} container style={{ height: dimensions.height }} direction="column" wrap="nowrap">
             {
               dimensions.width <= 175 && title.length > 16
                 ? (
@@ -136,6 +138,7 @@ ActiveMovieCard.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
   }).isRequired,
+  closeMovie: PropTypes.func.isRequired,
 };
 
 export default ActiveMovieCard;
