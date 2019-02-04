@@ -15,7 +15,9 @@ commentsRouter
             postedOn: Date.now()
           }
         MovieManager.addComment(req.body.idMovie, comments).then(success => {
-            res.status(200).send()
+          MovieManager.getMovie(req.body.idMovie).then(result => {
+            res.status(200).send(result);
+          }).catch(error => res.status(404).send('errorInTheDb'))
         }).catch(error => res.status(400).json({error: 'addComment.errorInTheDb'}))
       } else { res.status(400).json({error: 'addComment.emptyComment'}) }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
