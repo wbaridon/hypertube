@@ -118,6 +118,7 @@ userRouter
         checkUserInput(req.body, token.user)
         .then(success => {
           CheckProfilIsFill(token.user).then(check => {
+            if (check === true) { sucess.profilIsFill = true }
             res.status(200).send(success);
           })
         }, error => {
@@ -243,9 +244,8 @@ function CheckProfilIsFill(login) {
     UserManager.getUser(login).then(user => {
       if (user.profilIsFill === false) {
         if (user.userName && user.firstName && user.lastName && user.email) {
-          console.log('is fill')
           UserManager.updateUserField({'userName': login},{'profilIsFill': true})
-          .then(isFill => { resolve() }).catch(error => { console.log(error)})
+          .then(isFill => { resolve(true) }).catch(error => { console.log(error)})
         } else { resolve(); }
       } else { resolve() }
     })
