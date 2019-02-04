@@ -201,17 +201,17 @@ class Movies extends Component {
       return (
         <Grid
           item
-          style={{ height: width === 'xs' && currentMovie === movie._id ? smallScreenDimensions.height : dimensions.height, width: width === 'xs' && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
-          onBlur={mobile ? null : () => { this.onHoverMovie(null); console.log('onblur'); }}
-          onClick={mobile ? (e) => { this.onHoverMovie(movie._id, true, true, e); console.log('onCLick'); } : null}
-          onMouseLeave={!mobile ? () => { this.onHoverMovie(null); console.log('onMouseleave'); } : null}
-          onMouseEnter={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onMouseEnter'); } : null}
-          onMouseOver={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onMouseover'); } : null}
-          onFocus={!mobile ? () => { this.onHoverMovie(movie._id); console.log('onFocus'); } : null}
+          style={{ height: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.height : dimensions.height, width: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
+          onBlur={mobile ? null : (e) => { e.preventDefault(); this.onHoverMovie(null); console.log('onblur'); }}
+          onClick={mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id, true, true, e); console.log('onCLick'); } : null}
+          onMouseLeave={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(null); console.log('onMouseleave'); } : null}
+          onMouseEnter={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); console.log('onMouseEnter'); } : null}
+          onMouseOver={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); console.log('onMouseover'); } : null}
+          onFocus={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); console.log('onFocus'); } : null}
           key={movie._id}
         >
           {
-            currentMovie === movie._id ? <ActiveMovieCard closeMovie={mobile ? () => this.onHoverMovie(null) : null} dimensions={width === 'xs' ? smallScreenDimensions : dimensions} {...movie} />
+            currentMovie === movie._id ? <ActiveMovieCard closeMovie={mobile ? () => this.onHoverMovie(null) : null} dimensions={width === 'xs' && mobile ? smallScreenDimensions : dimensions} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />
           }
         </Grid>
