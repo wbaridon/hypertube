@@ -6,7 +6,8 @@ import {
   InputAdornment,
   IconButton,
 } from '@material-ui/core';
-import Sort from '@material-ui/icons/Sort';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -27,20 +28,21 @@ function SearchBar({
   toggleMenu,
   sortSelection,
   reversedSort,
+  toggleReverseSort,
 }) {
   return (
     <Paper className={classes.searchBar}>
       <TextField
         InputProps={{
-          startAdornment: <InputAdornment position="start">{sortSelection}{reversedSort ? 'reversed' : ''}</InputAdornment>,
+          startAdornment: <InputAdornment position="start">{sortSelection}</InputAdornment>,
           endAdornment:
             (
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="Toggle password visibility"
-                  onClick={toggleMenu}
+                  aria-label="Reverse"
+                  onClick={toggleReverseSort}
                 >
-                  <Sort />
+                  {reversedSort ? <ArrowUpward /> : <ArrowDownward />}
                 </IconButton>
               </InputAdornment>
             ),
@@ -66,6 +68,7 @@ SearchBar.propTypes = {
   sortSelection: PropTypes.string.isRequired,
   reversedSort: PropTypes.bool.isRequired,
   toggleMenu: PropTypes.func.isRequired,
+  toggleReverseSort: PropTypes.func.isRequired,
   classes: PropTypes.shape({}).isRequired,
 };
 
