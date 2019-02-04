@@ -11,45 +11,50 @@ const UserManager = require('../models/userManager');
 
 oAuthRouter
   .post('/login', (req, res) => {
-    console.log(req.body)
-    console.log('OAuth: Login enter for ' + req.body.provider)
     getCredentials(req.body.provider).then(credentials => {
-      console.log('Credentials for token: ' + req.body.clientCode)
-      console.log(credentials)
       getToken(req.body.provider, '/oauth', req.body.clientCode, credentials)
       .then(token => {
-        console.log('possede token: ' + token)
-        oauthGet.user(req.body.provider, token)
-          .then(user => {
-            console.log('ici')
-            UserManager.getUserByMail(user.email).then(getResult => {
+        oauthGet.user(req.body.provider, token).then(user => {
+          user.userName = 'wbaridon'
+          UserManager.getUserByMail(user.email).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
               console.log('no user')
               userNameIsFree(user.userName).then(isFree => {
+                user.userName = isFree;
                 UserManager.createUser(user, callback => {
                   tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
-                })
-              }).catch(isBusy => {
-                console.log('isBusy')
-                  delete user.userName
-                  UserManager.createUser(user, callback => {
-                    tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
-                  })
                 })
               })
             })
          }).catch(error => res.status(400).send(error));
       }).catch(error => res.status(400).send(error))
+    })
   })
 
-function userNameIsFree (userName) {
+function userNameIsFree (username) {
   return new Promise ((resolve, reject) => {
-    UserManager.getUser(userName).then(user => {
-      reject();
-    }, isFree => { resolve(); })
+    UserManager.getUser(username).then(user => {
+      console.log('find username')
+    }, isFree => { resolve(username) })
   })
 }
+/*
+function findNewUsername (username, i) {
+  return new Promise ((resolve, reject) => {
+    let check = 1;
+    var i = 0;
+    while (check === 1) {
+      i++;
+      result = await checkUsername(username + i);
+      console.log(result)
+    }
+  })
+}*/
+/*
+async function checkUsername (username, test) {
+
+}*/
 
 function getToken(provider, path, clientCode, credentials) {
   return new Promise((resolve, reject) => {
