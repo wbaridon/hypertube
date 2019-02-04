@@ -132,6 +132,7 @@ function userModel(provider, data, token) {
       case 'google':
         console.log(data)
         var user = {
+          userName: data.given_name,
           picture: data.picture,
         }
         resolve(user)

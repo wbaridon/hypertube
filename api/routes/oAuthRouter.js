@@ -15,11 +15,9 @@ oAuthRouter
       getToken(req.body.provider, '/oauth', req.body.clientCode, credentials)
       .then(token => {
         oauthGet.user(req.body.provider, token).then(user => {
-          user.userName = 'wbaridon'
           UserManager.getUserByMail(user.email).then(getResult => {
               tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
-              console.log('no user')
               userNameIsFree(user.userName).then(isFree => {
                 user.userName = isFree;
                 UserManager.createUser(user, callback => {
@@ -35,33 +33,37 @@ oAuthRouter
 function userNameIsFree (username) {
   return new Promise ((resolve, reject) => {
     UserManager.getUser(username).then(user => {
-      console.log('find username')
+      findNewUsername(username, result => {
+        resolve(result)
+      })
     }, isFree => { resolve(username) })
   })
 }
-/*
-function findNewUsername (username, i) {
-  return new Promise ((resolve, reject) => {
-    let check = 1;
-    var i = 0;
-    while (check === 1) {
-      i++;
-      result = await checkUsername(username + i);
-      console.log(result)
-    }
-  })
-}*/
-/*
-async function checkUsername (username, test) {
 
-}*/
+async function findNewUsername(username, result) {
+  let check = 1;
+  var i = 0;
+  while (check === 1) {
+    i++;
+    var ret = await checkUsername(`${username}${i}`);
+    if (ret) {
+      check = 0;
+      result(ret)
+    }
+ }
+}
+
+function checkUsername(username) {
+  return new Promise ((resolve, reject) => {
+    UserManager.getUser(username).then(user => {
+      resolve()
+    }, isFree => { resolve(username) })
+  })
+}
 
 function getToken(provider, path, clientCode, credentials) {
   return new Promise((resolve, reject) => {
-    console.log('GetToken begin')
-    console.log(provider)
     getCredentials(provider, credentials).then(credentials => {
-      console.log('obtain creds')
       const oauth2 = require('simple-oauth2').create(credentials);
       const tokenConfig = {
         code: clientCode,
@@ -70,11 +72,7 @@ function getToken(provider, path, clientCode, credentials) {
       if (provider === 'google') {
         tokenConfig.grant_type = 'authorization_code';
       }
-      console.log(credentials)
-      console.log(tokenConfig)
-      console.log('Before auth code')
       oauth2.authorizationCode.getToken(tokenConfig).then(result => {
-        //console.log(result)
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
          resolve(token);

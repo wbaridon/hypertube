@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 
 function set(user) {
   return new Promise((resolve, error) => {
-    console.log('ici')
-    console.log(user)
     const token = jwt.sign({ user: user.userName, }, 'HypertubeSecretKey', { expiresIn: '1d' });
     resolve(token);
   })
