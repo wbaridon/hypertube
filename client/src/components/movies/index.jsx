@@ -63,6 +63,7 @@ const getMaxImageWidth = (width) => {
 
 const styles = {
   fab: {
+    zIndex: 100,
     position: 'fixed',
     bottom: '70px',
     right: '20px',
@@ -92,6 +93,7 @@ class Movies extends Component {
     this.handleScrollToTop = this.handleScrollToTop.bind(this);
     this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
     this.scrollListener = this.scrollListener.bind(this);
+    this.toggleReverseSort = this.toggleReverseSort.bind(this);
   }
 
   componentDidMount() {
@@ -149,9 +151,11 @@ class Movies extends Component {
     } = this.props;
     const {
       searchString,
+      reversedSort,
     } = this.state;
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
+    request.filter.reverse = reversedSort;
     request.filter.from = page * 50;
     request.filter.to = (page + 1) * 50;
     getMoviePageHandle(token, request);
@@ -169,8 +173,9 @@ class Movies extends Component {
     });
   }
 
-  toggleMenu() {
-    this.setState({ menuOpen: true });
+  toggleReverseSort() {
+    const { reversedSort } = this.state;
+    this.setState({ reversedSort: !reversedSort });
   }
 
   renderWaypoint() {
@@ -235,9 +240,10 @@ class Movies extends Component {
         <SearchBar
           handleSearchStringChange={this.handleSearchStringChange}
           searchString={searchString}
-          toggleMenu={this.handleMenuOpen}
+          // toggleMenu={this.handleMenuOpen}
           sortSelection={sortSelection}
           reversedSort={reversedSort}
+          toggleReverseSort={this.toggleReverseSort}
         />
         <span id="top" style={{ position: 'absolute', top: '0px' }} />
         <Grid container style={{ marginTop: '70px' }} spacing={0} justify="center">
