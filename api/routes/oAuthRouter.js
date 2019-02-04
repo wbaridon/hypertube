@@ -76,7 +76,7 @@ function getToken(provider, path, clientCode, credentials) {
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
          resolve(token);
-       }).catch (error => { console.log(error); reject({'error': 'registerOauth.accessTokenError'}); })
+       }).catch (error => { reject({'error': 'registerOauth.accessTokenError'}); })
     });
   });
 }

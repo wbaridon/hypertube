@@ -127,7 +127,6 @@ userRouter
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
-    console.log(req.body)
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       let oldPic =  './assets/images/' + req.body.oldImageUrl
@@ -240,7 +239,6 @@ function updateField(field, value, user, callback) {
 
 function CheckProfilIsFill(login) {
   return new Promise ((resolve, reject) => {
-    console.log(login)
     UserManager.getUser(login).then(user => {
       if (user.profilIsFill === false) {
         if (user.userName && user.firstName && user.lastName && user.email) {
