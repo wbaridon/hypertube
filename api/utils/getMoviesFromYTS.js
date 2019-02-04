@@ -45,6 +45,7 @@ function checkMovie(data) {
 
 function formatMovieData(data) {
   let movie = {
+    type: 'movie',
     imdbId: data.imdb_code,
     title: data.title,
     year: data.year,

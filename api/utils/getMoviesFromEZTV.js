@@ -46,6 +46,7 @@ function checkMovie(data) {
 function formatMovieData(data) {
   if (data.imdb_id) {
     let movie = {
+      type: 'serie',
       imdbId: 'tt'+data.imdb_id,
       title: data.title,
       season: data.season,

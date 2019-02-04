@@ -16,6 +16,7 @@ const CommentsSchema = new Schema({
 });
 
 const MovieSchema = new Schema({
+  type: String,
   cover: String,
   imdbId: String,
   title: String,
