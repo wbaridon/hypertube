@@ -46,6 +46,7 @@ class ActiveMovieCard extends React.Component {
             height: dimensions.height,
             padding: 5,
           }}
+          id="active-card"
         >
 
           {dimensions.width <= 175 && title.length > 16 ? null : (

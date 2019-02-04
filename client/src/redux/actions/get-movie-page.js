@@ -20,7 +20,6 @@ export const getMoviePageError = () => ({
 });
 
 export const getMoviePageA = (token, request) => {
-  console.log(request);
   return (dispatch) => {
     dispatch(getMoviePageStart());
     return getMoviePageAPI(token, request)
