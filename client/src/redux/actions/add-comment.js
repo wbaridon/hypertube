@@ -25,8 +25,8 @@ export const newCommentA = (token, comment, idMovie) => {
     dispatch(addCommentStart());
     return addCommentAPI(token, comment, idMovie)
       .then(
-        (result) => {
-          dispatch(addCommentSuccess(result));
+        (response) => {
+          dispatch(addCommentSuccess(response.data));
         },
         (error) => {
           dispatch(setErrorA(error.message));

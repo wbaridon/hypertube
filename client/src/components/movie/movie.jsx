@@ -126,10 +126,10 @@ class Movie extends React.Component {
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
-          <Grid>
-            <Typography>Nop</Typography>
-          </Grid>
-        )
+        <Grid>
+          <Typography>Nop</Typography>
+        </Grid>
+      )
     );
   }
 }

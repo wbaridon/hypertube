@@ -33,23 +33,13 @@ class Comments extends React.Component {
       newComment,
     } = this.state;
     const {
-      userName,
       handleNewComment,
       token,
       idMovie,
-      comments,
-      success,
     } = this.props;
     console.log(newComment.length);
     if (newComment.length > 1) {
-      const d = new Date();
-      console.log(success);
       handleNewComment(token, newComment, idMovie);
-      // if (success === true) {
-        comments.push({
-          _id: d, comment: newComment, postedOn: d, userName,
-        });
-      // }
       this.setState({ newComment: '' });
     }
   }
@@ -75,25 +65,32 @@ class Comments extends React.Component {
   }
 
   render() {
-    const { comments } = this.props;
+    const { comments, actualComments } = this.props;
     const { newComment } = this.state;
-    console.log(comments);
+    let displayedComments;
+    actualComments ? (
+      displayedComments = actualComments.result.comments
+    ) : (
+      displayedComments = comments
+    );
+    console.log(displayedComments);
+
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>
           <Typography variant="h6" style={{ marginBottom: '10px' }}><FormattedMessage id="movie.comments" /></Typography>
-          {comments.length !== 0 ? comments.map(comment => (
+          {displayedComments.length !== 0 ? displayedComments.map(comment => (
             <Paper key={comment._id} style={{ padding: '10px' }}>
               <Grid container wrap="nowrap" spacing={16}>
                 <Grid item>
                   <Avatar>W</Avatar>
                 </Grid>
-                <Grid item>
+                <Grid item style={{ maxWidth: '75%' }}>
                   <Typography>
                     {comment.userName}
                     <FormattedMessage id="movie.wrote" />
                   </Typography>
-                  <Typography>
+                  <Typography noWrap>
                     {comment.comment}
                   </Typography>
                   <br />
@@ -147,7 +144,7 @@ Comments.propTypes = {
   token: PropTypes.string.isRequired,
   handleNewComment: PropTypes.func.isRequired,
   handleDeleteComment: PropTypes.func.isRequired,
-  userName: PropTypes.string.isRequired,
+  // userName: PropTypes.string.isRequired,
   // success: PropTypes.boolean.isRequired,
 };
 
@@ -160,6 +157,7 @@ const mapStateToProps = state => ({
   token: state.user.token,
   userName: state.user.userName,
   success: state.comment.success,
+  actualComments: state.comment.data,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);
