@@ -175,7 +175,12 @@ class Movies extends Component {
 
   toggleReverseSort() {
     const { reversedSort } = this.state;
-    this.setState({ reversedSort: !reversedSort });
+    const { clearMoviesHandle } = this.props;
+    this.setState({ reversedSort: !reversedSort },
+      () => {
+        clearMoviesHandle();
+        this.loadMoreItems();
+      });
   }
 
   renderWaypoint() {
