@@ -73,7 +73,7 @@ userRouter
   .post('/logout', (req, res) => {
     BlackListManager.add(req.body, callback => {
       res.status(200).send({success: 'logout.tokenDestroy'})
-    })
+    }).catch(error => {})
   })
   .post('/getAllUsers', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
@@ -110,7 +110,7 @@ userRouter
         delete newUser._id
         delete newUser.password
         res.send(newUser)
-      })
+      }).catch(err => res.status(400).json({ error: 'getUser.noUsername' }))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/updateUser', (req, res) => {
