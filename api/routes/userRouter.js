@@ -24,7 +24,6 @@ const BlackListManager = require('../models/blackListManager');
 
 userRouter
   .post('/register', upload.single('image'), (req, res, next) => {
-    console.log(req.file)
     if (req.file) {
       var user = {
         email: req.body.email,
@@ -55,7 +54,6 @@ userRouter
     } else { res.status(400).send({ error: 'registration.undefinedPictureIssue' }) }
   })
   .post('/login', (req, res) => {
-    console.log(req.body)
     const user = {
       userName: req.body.userName,
       password: req.body.password

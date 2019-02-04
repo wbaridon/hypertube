@@ -105,6 +105,9 @@ function googleCredentials() {
       auth: {
        tokenHost: 'https://www.googleapis.com',
        tokenPath: '/oauth2/v4/token'
+     },
+      options: {
+        authorizationMethod: 'body',
       }
     }
      resolve(credentials)
@@ -133,3 +136,4 @@ module.exports.fortytwo = fortytwoCredentials;
 module.exports.gitlab = gitlabCredentials;
 module.exports.instagram = instagramCredentials;
 module.exports.facebook = facebookCredentials;
+module.exports.google = googleCredentials;

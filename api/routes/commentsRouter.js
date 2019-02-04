@@ -24,7 +24,7 @@ commentsRouter
   })
   .post('/delete' , function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
-      console.log("wakanda");
+      console.log(req.body)
       // Besoin de l'imdbId, username et comment ... En back on setup le timestamp
       res.status(200).send('A faire')
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))

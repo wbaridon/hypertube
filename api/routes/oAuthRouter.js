@@ -11,6 +11,7 @@ const UserManager = require('../models/userManager');
 
 oAuthRouter
   .post('/login', (req, res) => {
+    console.log(req.body)
     console.log('OAuth: Login enter for ' + req.body.provider)
     getCredentials(req.body.provider).then(credentials => {
       console.log('Credentials for token: ' + req.body.clientCode)
@@ -53,16 +54,22 @@ function userNameIsFree (userName) {
 function getToken(provider, path, clientCode, credentials) {
   return new Promise((resolve, reject) => {
     console.log('GetToken begin')
+    console.log(provider)
     getCredentials(provider, credentials).then(credentials => {
+      console.log('obtain creds')
       const oauth2 = require('simple-oauth2').create(credentials);
       const tokenConfig = {
         code: clientCode,
         redirect_uri: `http://localhost:8080${path}/${provider}`,
       };
+      if (provider === 'google') {
+        tokenConfig.grant_type = 'authorization_code';
+      }
       console.log(credentials)
       console.log(tokenConfig)
+      console.log('Before auth code')
       oauth2.authorizationCode.getToken(tokenConfig).then(result => {
-        console.log(result)
+        //console.log(result)
          const accessToken = oauth2.accessToken.create(result);
          const token = accessToken.token.access_token
          resolve(token);
@@ -79,6 +86,7 @@ function getCredentials(provider) {
    else if (provider === 'linkedin') { platformCredentials.linkedin().then(credentials => resolve (credentials)) }
    else if (provider === 'insta') { platformCredentials.instagram().then(credentials => resolve (credentials)) }
    else if (provider === '42') { platformCredentials.fortytwo().then(credentials => resolve (credentials)) }
+   else if (provider === 'google') { platformCredentials.google().then(credentials => resolve (credentials)) }
   })
 }
 

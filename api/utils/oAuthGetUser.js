@@ -29,6 +29,9 @@ function getUser(provider, token) {
       case 'gitlab':
         getFrom(provider, 'https://gitlab.com/api/v4/user', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
+      case 'google':
+        getFrom(provider, 'https://www.googleapis.com/oauth2/v2/userinfo', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        break;
     }
   });
 }
@@ -123,6 +126,13 @@ function userModel(provider, data, token) {
           email: data.email,
           userName: data.username,
           picture: data.avatar_url,
+        }
+        resolve(user)
+        break;
+      case 'google':
+        console.log(data)
+        var user = {
+          picture: data.picture,
         }
         resolve(user)
         break;
