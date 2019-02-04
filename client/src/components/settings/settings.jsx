@@ -30,6 +30,7 @@ class Settings extends Component {
         firstName: props.user.firstName,
         lastName: props.user.lastName,
         locale: props.user.locale,
+        oauth: props.user.oauth,
         darkTheme: props.user.darkTheme,
       },
       anchorEl: null,

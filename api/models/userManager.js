@@ -58,7 +58,6 @@ module.exports.updateUser = function (field, value, newUser) {
   })
 }
 module.exports.updateUserField = function (req, update) {
-  console.log(req, update);
   return new Promise ((resolve, reject) => {
     User.findOneAndUpdate(req, update)
     .then(function(result){ resolve() },

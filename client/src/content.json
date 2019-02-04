@@ -3,7 +3,7 @@
   "oAuth": {
     "fortytwo": "https://api.intra.42.fr/oauth/authorize?client_id=5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth%2F42&response_type=code",
     "github": "https://github.com/login/oauth/authorize?scope=user&client_id=ca9256d31baf98f55288",
-    "google": "https://accounts.google.com/o/oauth2/v2/auth?client_id=796040540786-mcs3ojd9c07558mkatt5m1j185pol941.apps.googleusercontent.com&redirect_uri=http://localhost:8080/oauth/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&https://www.googleapis.com/auth/userinfo.email&access_type=offline",
+    "google": "https://accounts.google.com/o/oauth2/v2/auth?client_id=796040540786-mcs3ojd9c07558mkatt5m1j185pol941.apps.googleusercontent.com&redirect_uri=http://localhost:8080/oauth/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email&access_type=offline",
     "facebook": "https://www.facebook.com/v3.2/dialog/oauth?client_id=341372270033534&redirect_uri=http://localhost:8080/oauth/fb",
     "gitlab": "https://gitlab.com/oauth/authorize?client_id=1c49170c746af4b8e95b546c04573e1800e5e4eabb67aaac224c81da4d81e431&redirect_uri=http://localhost:8080/oauth/gitlab&response_type=code&state=gitlabAuth",
     "instagram": "https://api.instagram.com/oauth/authorize/?client_id=eefa38fddc824ece9c7ea855506fd2d5&redirect_uri=http://localhost:8080/oauth/insta&response_type=code"

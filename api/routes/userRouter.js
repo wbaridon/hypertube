@@ -139,7 +139,7 @@ userRouter
         }
         UserManager.updateUserField({'userName': user}, {'picture': racine + 'images/' + req.file.filename})
         .then((updated) => {
-          res.status(200).send({picture: req.file.filename, user: token.user, success: 'picture.Updated'})
+          res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated'})
         })
       }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
@@ -198,11 +198,10 @@ function checkUserInput(data, user) {
         case 'email':
           if (data.value.match('.+@.+\..+')) {
             UserManager.getUserByMail(data.value).then(res => {
-              if (res) { reject('update.emailAlreadyExist') }
-              else {
+             reject('update.emailAlreadyExist')
+            }, noMail => {
                 updateField(data.field, data.value, user, callback => {
                   resolve(callback) });
-              }
             })
           } else { reject('update.badValue')}
           break;

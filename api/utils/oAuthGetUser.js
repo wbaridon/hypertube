@@ -20,7 +20,7 @@ function getUser(provider, token) {
         getFrom(provider, 'https://gitlab.com/api/v4/user', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
       case 'google':
-        getFrom(provider, 'https://www.googleapis.com/oauth2/v2/userinfo', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        getFrom(provider, 'https://www.googleapis.com/userinfo/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
     }
   });
@@ -109,6 +109,7 @@ function userModel(provider, data, token) {
         break;
       case 'google':
         var user = {
+          email: data.email,
           userName: data.given_name,
           picture: data.picture,
         }

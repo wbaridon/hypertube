@@ -32,12 +32,11 @@ app.use('/movie', movieRouter);
 app.use('/comments', commentsRouter);
 
 app.listen(port, function () {
-    yts.launcher()
-    eztv.launcher()
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-/*var getNewMovies = schedule.scheduleJob('42 * * * *', function(){
-  console.log('Execute cette fonction a chaque fois que la minute est 42');
-
-});*/
+var getNewMovies = schedule.scheduleJob('0 0 * * *', function(){
+  // Execute la fonction a 0h
+  yts.launcher()
+  eztv.launcher()
+});

@@ -115,7 +115,7 @@ function ChangePasswordDumb({
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
-                  <Button fullWidth className={classes.buttonSubmit} type="submit">
+                  <Button fullWidth className={classes.buttonSubmit} type="submit" onClick={handleSubmit}>
                     Submit
                   </Button>
                 </Grid>
