@@ -15,5 +15,5 @@ module.exports.add = function (data, callback) {
   })
   blackList.save().then(function(){
     callback()
-  })
+  }).catch(err => {})
 }

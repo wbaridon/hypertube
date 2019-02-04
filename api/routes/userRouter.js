@@ -73,7 +73,7 @@ userRouter
   .post('/logout', (req, res) => {
     BlackListManager.add(req.body, callback => {
       res.status(200).send({success: 'logout.tokenDestroy'})
-    }).catch(error => {})
+    })
   })
   .post('/getAllUsers', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {

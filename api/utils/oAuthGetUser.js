@@ -5,7 +5,6 @@ function getUser(provider, token) {
     switch (provider) {
       case 'github':
         getFrom(provider, 'https://api.github.com/user', token).then(user => {
-          console.log(user)
           resolve(user) }).catch(error => { reject(error) });
         break;
       case '42':
