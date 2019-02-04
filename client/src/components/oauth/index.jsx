@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as qs from 'query-string';
-import { oAuthUserA, oAuthUserGoogleA } from 'Actions';
+import { oAuthUserA } from 'Actions';
+import LoadingDots from '../loading-dots';
 
 function getProvider(url) {
   const parts = url.split('/');
@@ -37,7 +38,8 @@ class Oauth extends Component {
 
 
   render() {
-    return (<div>test</div>);
+    const { success, errored } = this.props;
+    return (success ? <Redirect to="/" /> : errored ? <Redirect to="/register"/> : <LoadingDots />);
   }
 }
 
@@ -47,12 +49,19 @@ Oauth.propTypes = {
     search: PropTypes.string.isRequired,
   }).isRequired,
   handleoAuthUser: PropTypes.func.isRequired,
+  success: PropTypes.bool.isRequired,
+  errored: PropTypes.bool.isRequired,
 };
 
 Oauth.url = '/oauth';
+
+const mapStateToProps = state => ({
+  success: state.loginUser.success,
+  errored: state.loginUser.errored,
+})
 
 const mapDispatchToProps = dispatch => ({
   handleoAuthUser: (provider, code) => dispatch(oAuthUserA(provider, code)),
 });
 
-export default connect(null, mapDispatchToProps)(withRouter(Oauth));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Oauth));
