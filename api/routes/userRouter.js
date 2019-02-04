@@ -117,7 +117,9 @@ userRouter
     tokenManager.decode(req.headers.authorization).then(token => {
         checkUserInput(req.body, token.user)
         .then(success => {
-          res.status(200).send(success);
+          CheckProfilIsFill(token.user).then(check => {
+            res.status(200).send(success);
+          })
         }, error => {
           res.status(400).send(error);
         })
@@ -234,4 +236,20 @@ function updateField(field, value, user, callback) {
       callback({[field]: value, 'user': user, 'success': [field]+'.updated'});
     })
 }
+
+function CheckProfilIsFill(login) {
+  return new Promise ((resolve, reject) => {
+    console.log(login)
+    UserManager.getUser(login).then(user => {
+      if (user.profilIsFill === false) {
+        if (user.userName && user.firstName && user.lastName && user.email) {
+          console.log('is fill')
+          UserManager.updateUserField({'userName': login},{'profilIsFill': true})
+          .then(isFill => { resolve() }).catch(error => { console.log(error)})
+        } else { resolve(); }
+      } else { resolve() }
+    })
+  })
+}
+
 module.exports = userRouter;
