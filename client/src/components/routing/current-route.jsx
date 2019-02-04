@@ -17,7 +17,9 @@ import Movies from '../movies';
 
 const mapStateToProps = state => ({
   authed: state.user.tokenValid && state.user.dataFetched,
+  profilIsFill: state.user.data.profilIsFill,
   protectedRouteLoading: state.protectedRouteLoading,
+  dataFetched: state.user.dataFetched,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,6 +32,8 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
   authed,
   protectedRouteLoading,
   setErrorHandler,
+  profilIsFill,
+  dataFetched,
   ...rest
 }) => (<Route
   {...rest}
@@ -39,6 +43,9 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
     }
     if (!protectedRouteLoading && authed !== true) {
       return (<Redirect to={{ pathname: '/', state: { from: props.location.pathname } }} />); // eslint-disable-line
+    }
+    if (!protectedRouteLoading && authed && dataFetched && !profilIsFill && props.location.pathname !== '/settings') {
+      return (<Redirect to="/settings" />);
     }
     return (<Component {...props} />);
   }}

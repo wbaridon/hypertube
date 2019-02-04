@@ -39,7 +39,10 @@ class Oauth extends Component {
 
   render() {
     const { success, errored } = this.props;
-    return (success ? <Redirect to="/" /> : errored ? <Redirect to="/register"/> : <LoadingDots />);
+    if (success || errored) {
+      return (<Redirect to="/" />);
+    }
+    return (<LoadingDots />);
   }
 }
 
