@@ -19,10 +19,10 @@ export const deleteCommentError = () => ({
   type: DELETE_COMMENT_ERROR,
 });
 
-export const deleteCommentA = (idComment, comment, token) => {
+export const deleteCommentA = (idMovie, idComment, comment, token) => {
   return (dispatch) => {
     dispatch(deleteCommentStart());
-    return deleteCommentAPI(idComment, comment, token)
+    return deleteCommentAPI(idMovie, idComment, comment, token)
       .then(
         (result) => {
           dispatch(deleteCommentSuccess(result));

@@ -48,12 +48,13 @@ class Comments extends React.Component {
     this.setState({ newComment: value });
   }
 
-  handleDelete(id, comment) {
+  handleDelete(idComment, comment) {
     const {
       handleDeleteComment,
       token,
+      idMovie,
     } = this.props;
-    handleDeleteComment(id, comment, token);
+    handleDeleteComment(idMovie, idComment, comment, token);
   }
 
   formatDate(n) {
@@ -150,7 +151,7 @@ Comments.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   handleNewComment: (token, newComment, idMovie) => dispatch(newCommentA(token, newComment, idMovie)),
-  handleDeleteComment: (idComment, comment, token) => dispatch(deleteCommentA(idComment, comment, token)),
+  handleDeleteComment: (idMovie, idComment, comment, token) => dispatch(deleteCommentA(idMovie, idComment, comment, token)),
 });
 
 const mapStateToProps = state => ({

@@ -81,7 +81,6 @@ class Movie extends React.Component {
                        </div>
                      ) : (null)
                   }
-               
                   {
                      movie.length > 0 ? (
                        <div>

@@ -23,7 +23,7 @@ export default function comment(state = defaultaddCommentState, action) {
       return {
         loading: false,
         success: true,
-        data: action,
+        data: action.comment,
       };
     case ADD_COMMENT_ERROR:
       return {
