@@ -41,7 +41,7 @@ class Movie extends React.Component {
 
   render() {
     const { classes, movie } = this.props;
-    console.log(movie);
+    // console.log(movie);
     return (
       movie ? (
         <Grid

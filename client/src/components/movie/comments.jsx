@@ -37,7 +37,6 @@ class Comments extends React.Component {
       token,
       idMovie,
     } = this.props;
-    console.log(newComment.length);
     if (newComment.length > 1) {
       handleNewComment(token, newComment, idMovie);
       this.setState({ newComment: '' });
@@ -70,12 +69,12 @@ class Comments extends React.Component {
     const { newComment } = this.state;
     let displayedComments;
     actualComments ? (
-      displayedComments = actualComments.result.comments
+      displayedComments = actualComments.comments
     ) : (
       displayedComments = comments
     );
-    console.log(displayedComments);
-
+    // displayedComments = comments;   
+    console.log(actualComments);
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>
@@ -87,20 +86,19 @@ class Comments extends React.Component {
                   <Avatar>W</Avatar>
                 </Grid>
                 <Grid item style={{ maxWidth: '75%' }}>
-                  <Typography>
+                  <Typography variant="subtitle1">
                     {comment.userName}
-                    <FormattedMessage id="movie.wrote" />
-                  </Typography>
-                  <Typography noWrap>
-                    {comment.comment}
-                  </Typography>
-                  <br />
-                  <Typography>
                     <FormattedMessage id="movie.the" />
                     { new Date(comment.postedOn).toLocaleDateString('fr-FR') }
                     <FormattedMessage id="movie.at" />
                     { this.formatDate(comment.postedOn).toString() }
+                    {/* <FormattedMessage id="movie.wrote" /> */}
                   </Typography>
+                  <br />
+                  <Typography noWrap variant="subtitle2">
+                    {comment.comment}
+                  </Typography>
+                  <br />
                 </Grid>
                 <IconButton onClick={e => this.handleDelete(comment._id, comment.comment)}>
                   <Close />
