@@ -1,5 +1,21 @@
 import * as EmailValidator from 'email-validator';
+import PasswordValidator from 'password-validator';
 import { dataURItoBlob } from './image-handle-functions';
+
+const schema = new PasswordValidator();
+schema
+  .is().min(8)
+  .is().max(30)
+  .has()
+  .uppercase()
+  .has()
+  .lowercase()
+  .has()
+  .digits()
+  .has()
+  .not()
+  .spaces();
+
 
 const textError = (string) => {
   let error = false;
@@ -42,12 +58,7 @@ const handlers = {
     return (errors);
   },
   password: (password) => {
-    const errors = [];
-    if (password.length < 6) {
-      errors.push('register.error.passwordLengthTooShort');
-    } else if (password.length > 16) {
-      errors.push('register.error.passwordLengthTooLong');
-    }
+    const errors = schema.validate(password, { list: true });
     return (errors);
   },
 

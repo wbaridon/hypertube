@@ -33,6 +33,7 @@ function SearchBar({
   return (
     <Paper className={classes.searchBar}>
       <TextField
+        autoComplete="off"
         InputProps={{
           startAdornment: <InputAdornment position="start">{sortSelection}</InputAdornment>,
           endAdornment:
