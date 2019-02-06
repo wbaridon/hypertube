@@ -65,16 +65,15 @@ class Comments extends React.Component {
   }
 
   render() {
-    const { comments, actualComments } = this.props;
+    const { comments, actualComments, userName } = this.props;
     const { newComment } = this.state;
     let displayedComments;
     actualComments ? (
-      displayedComments = actualComments.comments
+      displayedComments = actualComments
     ) : (
       displayedComments = comments
     );
-    // displayedComments = comments;   
-    console.log(actualComments);
+    // console.log(displayedComments);
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>
@@ -83,26 +82,29 @@ class Comments extends React.Component {
             <Paper key={comment._id} style={{ padding: '10px' }}>
               <Grid container wrap="nowrap" spacing={16}>
                 <Grid item>
-                  <Avatar>W</Avatar>
+                  <Avatar alt="profilpic" src={comment.picture} />
                 </Grid>
-                <Grid item style={{ maxWidth: '75%' }}>
+                <Grid item style={{ width: '100%' }}>
                   <Typography variant="subtitle1">
                     {comment.userName}
                     <FormattedMessage id="movie.the" />
                     { new Date(comment.postedOn).toLocaleDateString('fr-FR') }
                     <FormattedMessage id="movie.at" />
                     { this.formatDate(comment.postedOn).toString() }
-                    {/* <FormattedMessage id="movie.wrote" /> */}
                   </Typography>
                   <br />
-                  <Typography noWrap variant="subtitle2">
+                  <Typography variant="subtitle2">
                     {comment.comment}
                   </Typography>
                   <br />
                 </Grid>
-                <IconButton onClick={e => this.handleDelete(comment._id, comment.comment)}>
-                  <Close />
-                </IconButton>
+                {
+                  comment.userName === userName ? (
+                    <IconButton style={{ margin: '10px' }} onClick={e => this.handleDelete(comment._id, comment.comment)}>
+                      <Close />
+                    </IconButton>
+                  ) : (null)
+                }
               </Grid>
             </Paper>
           ))
@@ -143,8 +145,7 @@ Comments.propTypes = {
   token: PropTypes.string.isRequired,
   handleNewComment: PropTypes.func.isRequired,
   handleDeleteComment: PropTypes.func.isRequired,
-  // userName: PropTypes.string.isRequired,
-  // success: PropTypes.boolean.isRequired,
+  userName: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -154,7 +155,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   token: state.user.token,
-  userName: state.user.userName,
+  userName: state.user.data.userName,
   success: state.comment.success,
   actualComments: state.comment.data,
 });

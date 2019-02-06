@@ -11,6 +11,7 @@ import {
   Chip,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import {addWatchlistA } from 'Actions';
 
 class ActiveMovieCard extends React.Component {
   constructor() {

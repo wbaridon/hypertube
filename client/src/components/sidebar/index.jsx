@@ -20,6 +20,7 @@ import People from '@material-ui/icons/People';
 import { FormattedMessage } from 'react-intl';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Settings from '@material-ui/icons/Settings';
+import Listicon from '@material-ui/icons/List';
 import Close from '@material-ui/icons/Close';
 import Register from '../register/register';
 import Providers from '../providers';
@@ -62,6 +63,9 @@ function Sidebar({
             </IconButton>
             <IconButton component={Link} to="/settings" onClick={handleClose}>
               <Settings />
+            </IconButton>
+            <IconButton component={Link} to="/watchlist" onClick={handleClose}>
+              <Listicon />
             </IconButton>
             {/* <Login /> */}
             {/* <Settings /> */}
