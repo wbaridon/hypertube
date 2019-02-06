@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Clear from '@material-ui/icons/Clear';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -29,6 +30,7 @@ function SearchBar({
   sortSelection,
   reversedSort,
   toggleReverseSort,
+  clearState,
 }) {
   return (
     <Paper className={classes.searchBar}>
@@ -44,6 +46,12 @@ function SearchBar({
                   onClick={toggleReverseSort}
                 >
                   {reversedSort ? <ArrowUpward /> : <ArrowDownward />}
+                </IconButton>
+                <IconButton
+                  aria-label="Reverse"
+                  onClick={clearState}
+                >
+                  <Clear />
                 </IconButton>
               </InputAdornment>
             ),
@@ -70,6 +78,7 @@ SearchBar.propTypes = {
   reversedSort: PropTypes.bool.isRequired,
   toggleMenu: PropTypes.func.isRequired,
   toggleReverseSort: PropTypes.func.isRequired,
+  clearState: PropTypes.func.isRequired,
   classes: PropTypes.shape({}).isRequired,
 };
 

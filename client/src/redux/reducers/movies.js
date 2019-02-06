@@ -3,6 +3,7 @@ import {
   GET_MOVIE_PAGE_SUCCESS,
   GET_MOVIE_PAGE_ERROR,
   CLEAR_MOVIES,
+  SET_MOVIE_PAGE_STATE,
 } from 'Actions/action-types';
 
 const defaultMoviesState = {
@@ -11,10 +12,24 @@ const defaultMoviesState = {
   pageSize: 5,
   loading: false,
   noMoreMovies: false,
+  moviePageState: {
+    searchString: '',
+    sortSelection: 'alphabetical',
+    reversedSort: false,
+    currentMovie: null,
+    top: false,
+    scrolling: false,
+    menuOpen: false,
+  },
 };
 
 export default function movies(state = defaultMoviesState, action) {
   switch (action.type) {
+    case SET_MOVIE_PAGE_STATE:
+      return {
+        ...state,
+        moviePageState: action.currentState,
+      };
     case GET_MOVIE_PAGE:
       return {
         ...state,

@@ -8,6 +8,7 @@ import {
   ADD_USER_TO_USER_LIST,
   CLEAR_MOVIES,
   SET_MOBILE_BOOLEAN,
+  SET_MOVIE_PAGE_STATE,
 } from './action-types';
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
@@ -44,6 +45,11 @@ import { deleteCommentA } from './delete-comment';
 // import { addWatchlistA } from './add_watchlist';
 // import { deleteWatchlistA } from './delete_watchlist';
 // import { getWatchlistA } from './get_watchlist';
+
+export const setMoviePageStateA = currentState => ({
+  type: SET_MOVIE_PAGE_STATE,
+  currentState,
+});
 
 export const setMobileBooleanA = isMobile => ({
   type: SET_MOBILE_BOOLEAN,
