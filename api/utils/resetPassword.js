@@ -23,6 +23,7 @@ passwordHash = (pass, callback) => {
 }
 
 sendMail = user => {
+  //console.log(user)
 	var tunnel = mail.createTransport ({
 		service: 'gmail',
 		auth: {
@@ -55,17 +56,17 @@ function afterMail(email, key, newPW, client) {
             })
           }
           else
-            client.status(400).send('reset.HashAndKeyNotCorresponding')
+            client.status(400).send({error:'reset.HashAndKeyNotCorresponding'})
           })
-    }).catch(err => { client.status(400).send("resetPassword.noPasswordChangedAvailable") })
+    }).catch(err => { client.status(400).send({error:"resetPassword.noPasswordChangedAvailable"}) })
 }
 
 beforeMail = (client, email) => {
     UserManager.getUserByMail(email).then(res => {
       if (!res)
-        client.status(400).send('resetPassword.noUser')
+        client.status(400).send({error:'resetPassword.noUser'})
       else {
-        if (res.oauth) { client.status(400).send('resetPassword.notAvailableforOAuthAccount')}
+        if (res.oauth) { client.status(400).send({error:'resetPassword.notAvailableforOAuthAccount'})}
         else {
           sendMail({
             email: email,
@@ -76,7 +77,7 @@ beforeMail = (client, email) => {
           client.status(200).send('resetPassword.emailSent')
         }
       }
-    }).catch(error => { client.status(400).send('resetPassword.noUser') })
+    }).catch(error => { client.status(400).send({error:'resetPassword.noUser'}) })
 }
 
 module.exports.reset= resetPassword;
