@@ -19,6 +19,7 @@ const oAuthRouter = require('./routes/oAuthRouter');
 const libraryRouter = require('./routes/libraryRouter');
 const movieRouter = require('./routes/movieRouter');
 const commentsRouter = require('./routes/commentsRouter');
+const watchListRouter = require('./routes/watchListRouter');
 const torrentRouter = require('./routes/torrentRouter');
 const yts = require('./utils/getMoviesFromYTS');
 const eztv = require('./utils/getMoviesFromEZTV');
@@ -30,6 +31,7 @@ app.use('/oAuth', oAuthRouter);
 app.use('/video', torrentRouter);
 app.use('/movie', movieRouter);
 app.use('/comments', commentsRouter);
+app.use('/watchList', watchListRouter);
 
 app.listen(port, function () {
   console.log(`Server running at http://${hostname}:${port}/`);
