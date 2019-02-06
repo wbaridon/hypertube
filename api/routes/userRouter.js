@@ -194,8 +194,10 @@ function checkUserInput(data, user) {
           })
           break;
         case 'firstName':
-        updateField(data.field, data.value, user, callback => {
-          resolve(callback) });
+          if (data.value) {
+            updateField(data.field, data.value, user, callback => {
+              resolve(callback) });
+          } else { reject('update.emptyUsername')}
           break;
         case 'lastName':
         updateField(data.field, data.value, user, callback => {
