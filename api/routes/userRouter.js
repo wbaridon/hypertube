@@ -64,10 +64,10 @@ userRouter
             if (match) {
               tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
-          })
+          }).catch(err => console.log(err))
       }, noSuchUser => {
         res.status(400).send({ error: 'login.noUser' })
-      })
+      }).catch(err => res.status(400).send({error: 'login.oAuthAccount'}))
     } else { res.status(400).send({ error: 'login.emptyPasswordOrLogin' }) }
   })
   .post('/logout', (req, res) => {
