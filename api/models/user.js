@@ -5,6 +5,10 @@ const MovieHistorySchema = new Schema({
   id: Number
 });
 
+const WatchListSchema = new Schema({
+  id: Number
+});
+
 const UserSchema = new Schema({
   email: String,
   userName: String,
@@ -16,7 +20,8 @@ const UserSchema = new Schema({
   darkTheme: Boolean,
   oauth: Boolean,
   profilIsFill: Boolean,
-  moviesHistory: [MovieHistorySchema]
+  moviesHistory: [MovieHistorySchema],
+  watchList: [WatchListSchema]
 });
 
 const User = mongoose.model('user', UserSchema);
