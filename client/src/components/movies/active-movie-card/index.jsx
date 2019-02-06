@@ -106,9 +106,7 @@ class ActiveMovieCard extends React.Component {
                 {synopsis}
               </Typography>
             </Grid>
-            <Grid item>
-              <Chip label={`Rating: ${imdbRating}`} />
-            </Grid>
+            { imdbRating ? <Grid item><Chip label={`Rating: ${imdbRating}`} /></Grid> : null }
             <Grid item style={{ paddingBottom: 10 }}>
               <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
                 <Grid item>
