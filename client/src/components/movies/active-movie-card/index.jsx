@@ -11,7 +11,6 @@ import {
   Chip,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import {addWatchlistA } from 'Actions';
 
 class ActiveMovieCard extends React.Component {
   constructor() {
@@ -30,6 +29,7 @@ class ActiveMovieCard extends React.Component {
 
   render() {
     const {
+      token,
       imdbId,
       title,
       year,
@@ -38,6 +38,7 @@ class ActiveMovieCard extends React.Component {
       dimensions,
       closeMovie,
       imdbRating,
+      addWatchList,
     } = this.props;
     const { image } = this.state;
     if (image && cover) {
@@ -112,7 +113,7 @@ class ActiveMovieCard extends React.Component {
               <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
                 <Grid item>
                   <Button>
-                    <Typography variant="button" noWrap>
+                    <Typography variant="button" noWrap onClick={() => { addWatchList(token, imdbId); }}>
                       + to list
                     </Typography>
                   </Button>
@@ -134,6 +135,7 @@ class ActiveMovieCard extends React.Component {
   }
 }
 ActiveMovieCard.propTypes = {
+  token: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   cover: PropTypes.string.isRequired,
@@ -144,6 +146,7 @@ ActiveMovieCard.propTypes = {
   }).isRequired,
   closeMovie: PropTypes.func.isRequired,
   imdbRating: PropTypes.number.isRequired,
+  addWatchList: PropTypes.func.isRequired,
 };
 
 export default ActiveMovieCard;

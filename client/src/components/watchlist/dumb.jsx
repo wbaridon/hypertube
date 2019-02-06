@@ -10,7 +10,7 @@ function DumbWatchlist({
         Watchlist
       </Typography>
       <br />
-      <Typography variant='h3'>
+      <Typography variant="h3">
         Quels films dois tu regarder ?
       </Typography>
     </Grid>

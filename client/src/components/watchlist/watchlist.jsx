@@ -9,12 +9,28 @@ import {
   IconButton,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
+import {
+  getWatchListA,
+  deleteWatchListA,
+} from 'Actions';
 import DumbWatchlist from './dumb';
+import MovieCard from '../movies/movie-card';
 
-class Watchlist extends React.Component {
-  
+class WatchList extends React.Component {
+  componentWillMount() {
+    const {
+      getWatchList,
+      token,
+    } = this.props;
+    console.log(token);
+    getWatchList(token);
+  }
+
   render() {
-    
+    const {
+      watchList,
+    } = this.props;
+    // console.log(watchList);
     return (
       <Grid>
         <DumbWatchlist />
@@ -23,5 +39,20 @@ class Watchlist extends React.Component {
   }
 }
 
-Watchlist.url = '/watchlist';
-export default Watchlist;
+WatchList.PropTypes = {
+  token: PropTypes.string.isRequired,
+  getWatchList: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = dispatch => ({
+  getWatchList: token => dispatch(getWatchListA(token)),
+  deleteWatchList: (token, idMovie) => dispatch(deleteWatchListA(token, idMovie)),
+});
+
+const mapStateToProps = state => ({
+  watchList: state,
+  token: state.user.token,
+});
+
+WatchList.url = '/watchlist';
+export default connect(mapStateToProps, mapDispatchToProps)(WatchList);

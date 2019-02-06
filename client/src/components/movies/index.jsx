@@ -13,11 +13,12 @@ import debounce from 'lodash.debounce';
 import {
   getMoviePageA,
   clearMoviesA,
+  addWatchListA,
+  deleteWatchListA,
 } from 'Actions';
 import MovieCard from './movie-card';
 import ActiveMovieCard from './active-movie-card';
 import SearchBar from './search-bar';
-
 
 const defaultRequestShape = {
   filter: {
@@ -195,7 +196,14 @@ class Movies extends Component {
   }
 
   renderMovies() {
-    const { movies, width, mobile } = this.props;
+    const {
+      movies,
+      width,
+      mobile,
+      addWatchList,
+      deleteWatchList,
+      token,
+    } = this.props;
     const { currentMovie } = this.state;
     const dimensions = getMaxImageWidth(width);
     const smallScreenDimensions = {};
@@ -220,7 +228,7 @@ class Movies extends Component {
           key={movie._id}
         >
           {
-            currentMovie === movie._id ? <ActiveMovieCard closeMovie={mobile ? () => this.onHoverMovie(null) : null} dimensions={width === 'xs' && mobile ? smallScreenDimensions : dimensions} {...movie} />
+            currentMovie === movie._id ? <ActiveMovieCard closeMovie={mobile ? () => this.onHoverMovie(null) : null} dimensions={width === 'xs' && mobile ? smallScreenDimensions : dimensions} addWatchList={addWatchList} token={token} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />
           }
         </Grid>
@@ -290,6 +298,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getMoviePageHandle: (token, request) => dispatch(getMoviePageA(token, request)),
   clearMoviesHandle: () => dispatch(clearMoviesA()),
+  addWatchList: (token, idMovie) => dispatch(addWatchListA(token, idMovie)),
+  deleteWatchList: (token, idMovie) => dispatch(deleteWatchListA(token, idMovie)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)((withStyles(styles)(withWidth()(Movies))));

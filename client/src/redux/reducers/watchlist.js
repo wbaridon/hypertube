@@ -10,12 +10,12 @@ import {
   GET_WATCHLIST_ERROR,
 } from 'Actions/action-types';
 
-const defaultWatchlistState = {
+const defaultWatchListState = {
   loading: false,
   success: false,
 };
 
-export default function watchlist(state = defaultWatchlistState, action) {
+export default function watchList(state = defaultWatchListState, action) {
   switch (action.type) {
     case ADD_WATCHLIST:
       return {
@@ -61,9 +61,8 @@ export default function watchlist(state = defaultWatchlistState, action) {
         data: action,
       };
     case GET_WATCHLIST_ERROR:
-      return defaultWatchlistState;
+      return defaultWatchListState;
     default:
       return state;
-      
-  }
+    }
 }

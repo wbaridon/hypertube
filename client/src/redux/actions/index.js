@@ -41,9 +41,9 @@ import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
 import { newCommentA } from './add-comment';
 import { deleteCommentA } from './delete-comment';
-// import { addWatchlistA } from './add_watchlist';
-// import { deleteWatchlistA } from './delete_watchlist';
-// import { getWatchlistA } from './get_watchlist';
+import { addWatchListA } from './add-watchlist';
+import { deleteWatchListA } from './delete-watchlist';
+import { getWatchListA } from './get-watchlist';
 
 export const setMobileBooleanA = isMobile => ({
   type: SET_MOBILE_BOOLEAN,
@@ -113,8 +113,8 @@ export {
   getMovieDataA,
   newCommentA,
   deleteCommentA,
-  // addWatchlistA,
-  // deleteWatchlistA,
-  // getWatchlistA,
+  addWatchListA,
+  deleteWatchListA,
+  getWatchListA,
   sendHashA,
 };

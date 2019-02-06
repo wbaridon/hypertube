@@ -65,7 +65,11 @@ class Comments extends React.Component {
   }
 
   render() {
-    const { comments, actualComments, userName } = this.props;
+    const {
+      comments,
+      actualComments,
+      userName
+    } = this.props;
     const { newComment } = this.state;
     let displayedComments;
     actualComments ? (
@@ -100,7 +104,7 @@ class Comments extends React.Component {
                 </Grid>
                 {
                   comment.userName === userName ? (
-                    <IconButton style={{ margin: '10px' }} onClick={e => this.handleDelete(comment._id, comment.comment)}>
+                    <IconButton style={{ margin: '10px' }} onClick={() => this.handleDelete(comment._id, comment.comment)}>
                       <Close />
                     </IconButton>
                   ) : (null)

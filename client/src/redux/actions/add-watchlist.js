@@ -1,4 +1,4 @@
-import addWatchlistAPI from 'API/add-watchlist';
+import addWatchListAPI from 'API/add-watchlist';
 import {
   ADD_WATCHLIST,
   ADD_WATCHLIST_SUCCESS,
@@ -6,31 +6,30 @@ import {
 } from './action-types';
 import { setErrorA } from '.';
 
-export const addWatchlistStart = () => ({
+export const addWatchListStart = () => ({
   type: ADD_WATCHLIST,
 });
 
-export const addWatchlistSuccess = result => ({
+export const addWatchListSuccess = result => ({
   type: ADD_WATCHLIST_SUCCESS,
   result,
 });
 
-export const addWatchlistError = () => ({
+export const addWatchListError = () => ({
   type: ADD_WATCHLIST_ERROR,
 });
 
-export const addWatchlistA = (token, idMovie) => {
-  // console.log(token, comment, idMovie);
+export const addWatchListA = (token, idMovie) => {
   return (dispatch) => {
-    dispatch(addWatchlistStart());
-    return addWatchlistAPI(token, idMovie)
+    dispatch(addWatchListStart());
+    return addWatchListAPI(token, idMovie)
       .then(
         (response) => {
-          dispatch(addWatchlistSuccess(response.data));
+          dispatch(addWatchListSuccess(response.data));
         },
         (error) => {
           dispatch(setErrorA(error.response.data));
-          dispatch(addWatchlistError());
+          dispatch(addWatchListError());
         },
       );
   };
