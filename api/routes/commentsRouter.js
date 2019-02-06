@@ -29,8 +29,19 @@ commentsRouter
   .post('/delete' , function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
       console.log(req.body)
+      console.log('ici')
+      let idMovie = req.body.idMovie;
+      let idComment = req.body.idComment;
+      console.log(token)
+      MovieManager.deleteComment(idMovie, idComment)
+      .then(resolve => { console.log('fini') })
+      .catch(error => { console.log('erreur')})
+      /*MovieManager.deleteComment(req.body.idMovie, req.body.idComment).then(result => {
+        console.log('ok')
+              res.status(200).send('A faire')
+      }).catch(error => { console.log(error) })*/
+      console.log('la')
       // Besoin de l'imdbId, username et comment ... En back on setup le timestamp
-      res.status(200).send('A faire')
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
 
