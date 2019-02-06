@@ -20,7 +20,7 @@ commentsRouter
           MovieManager.addComment(req.body.idMovie, comments).then(success => {
             MovieManager.getMovie(req.body.idMovie).then(result => {
               res.status(200).send(result);
-            }).catch(error => res.status(404).send('errorInTheDb'))
+            }).catch(error => res.status(404).send({error:'errorInTheDb'}))
           }).catch(error => res.status(400).json({error: 'addComment.errorInTheDb'}))
         }).catch(error => res.status(400).json({error: 'getAvatarLink.noSuchUser'}))
       } else { res.status(400).json({error: 'addComment.emptyComment'}) }
@@ -43,7 +43,7 @@ function getAvatarLink(username) {
   return new Promise ((resolve, reject) => {
     UserManager.getUser(username).then(user => {
       resolve(user.picture)
-    }).catch(error => reject('getAvatarLink.noSuchUser'))
+    }).catch(error => reject({error: 'getAvatarLink.noSuchUser'}))
   })
 }
 
@@ -53,7 +53,7 @@ function userIsAuthorComment(idMovie, user, idComment) {
       .then(result => {
         if (result.userName === user) {
           resolve()
-        } else { reject('deleteComment.userIsNotAuthor') }
+        } else { reject({error: 'deleteComment.userIsNotAuthor'}) }
       }).catch(error => reject(error))
   })
 }
