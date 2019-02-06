@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MovieHistorySchema = new Schema({
-  id: Number
+  id: String
 });
 
 const WatchListSchema = new Schema({
-  id: Number
+  id: String
 });
 
 const UserSchema = new Schema({
