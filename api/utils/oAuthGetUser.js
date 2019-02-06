@@ -1,4 +1,5 @@
 const axios = require('axios');
+const fs = require('fs');
 
 function getUser(provider, token) {
   return new Promise ((resolve, reject) => {
@@ -75,9 +76,13 @@ function userModel(provider, data, token) {
         resolve(user)
         break;
       case 'fb':
-        axios.get(`https://graph.facebook.com/v3.2/me/picture?redirect=0&width=178&height=180`, { headers: {"Authorization": `Bearer ${token}`}})
+        axios.get(`https://graph.facebook.com/v3.2/me/picture?width=178&height=180`, { headers: {"Authorization": `Bearer ${token}`}})
         .then(pic => {
+        //  console.log(pic.data)
+
+        //  fs.writeFile(`../assets/images/${data}.id`, result.data).catch(err => console.log(err))
           //pic nous retourne une url d'une image a download et save
+          console.log('ici')
           let firstname = data.name.split(' ')[0]
           let name = data.name.split(' ')[1]
           var user = {
@@ -88,7 +93,7 @@ function userModel(provider, data, token) {
             firstName: firstname,
           }
           resolve(user)
-        }).catch(error => reject(error))
+          }).catch(error => reject(error))
         break;
       case 'github':
         axios.get(`https://api.github.com/user/emails`, { headers: {"Authorization": `Bearer ${token}`}})
