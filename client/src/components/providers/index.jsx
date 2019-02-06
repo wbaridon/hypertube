@@ -5,7 +5,7 @@ import githubIcon from 'Assets/icons/github.png';
 import fortytwoIcon from 'Assets/icons/42.png';
 import gitlabIcon from 'Assets/icons/gitlab.png';
 import instagramIcon from 'Assets/icons/instagram.png';
-import linkedinIcon from 'Assets/icons/linkedin.png';
+import facebookIcon from 'Assets/icons/facebook.png';
 import { Button, Avatar, Grid } from '@material-ui/core';
 
 
@@ -39,6 +39,11 @@ const providers = [
     icon: instagramIcon,
     tooltip: 'login.provider.instagram',
     url: AUTHINSTAGRAM,
+  }, {
+    name: 'Facebook',
+    icon: facebookIcon,
+    tooltip: 'login.provider.facebook',
+    url: AUTHFACEBOOK,
   },
 ];
 

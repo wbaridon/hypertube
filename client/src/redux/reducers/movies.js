@@ -39,6 +39,7 @@ export default function movies(state = defaultMoviesState, action) {
         currentPage: 0,
         movies: [],
         noMoreMovies: false,
+        loading: false,
       };
     default:
       return state;

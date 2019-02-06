@@ -69,8 +69,8 @@ function userModel(provider, data, token) {
           email: data.email,
           userName: data.login,
           picture: data.image_url,
-          name: data.last_name,
-          firstname: data.first_name,
+          lastName: data.last_name,
+          firstName: data.first_name,
         }
         resolve(user)
         break;

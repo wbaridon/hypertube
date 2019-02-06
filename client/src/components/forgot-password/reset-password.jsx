@@ -45,6 +45,7 @@ function ResetPassword({
   email,
   intl,
   classes,
+  clearAll,
 }) {
   return (
     <form action="">
@@ -79,11 +80,16 @@ function ResetPassword({
             />
           </Tooltip>
         </Grid>
-        <Grid item className={classes.lastItem}>
+        <Grid item>
           <Button type="submit" onClick={handleSubmit}>
             <Typography>
               <FormattedMessage id="resetPassword.submit" />
             </Typography>
+          </Button>
+        </Grid>
+        <Grid item className={classes.lastItem}>
+          <Button onClick={clearAll}>
+            <FormattedMessage id="resetPassword.clearAll" />
           </Button>
         </Grid>
       </Grid>
@@ -104,6 +110,7 @@ ResetPassword.propTypes = {
     firstItem: PropTypes.string.isRequired,
     lastItem: PropTypes.string.isRequired,
   }).isRequired,
+  clearAll: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

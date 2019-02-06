@@ -5,7 +5,7 @@ module.exports.getUser = function (userName) {
   return new Promise ((resolve, reject) => {
     User.findOne({'userName': userName}).then(function(result){
       if (result === null) {
-        reject('getUser.noSuchUser');
+        reject({error: 'getUser.noSuchUser'});
       }
       resolve(result);
     })
@@ -16,7 +16,7 @@ module.exports.getUserByMail = function (email) {
   return new Promise ((resolve, reject) => {
     User.findOne({'email': email}).then(function(result){
       if (result === null) {
-        reject('getUserByMail.noSuchUser');
+        reject({error: 'getUserByMail.noSuchUser'});
       }
       resolve(result)
     })
@@ -72,5 +72,24 @@ module.exports.getAllId = function () {
     .then(function(result){ resolve(result) },
     (err) => {}
     )
+  })
+}
+
+module.exports.movieSeen = function (user, data) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOneAndUpdate({'userName': user}, {$push: {moviesHistory: data}})
+    .then(function(result){ resolve() },
+    (err) => {console.log(err)}
+    )
+  })
+}
+
+module.exports.movieUnseen = function (user, movieId) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOneAndUpdate({ 'userName': user}, { $pull: { moviesHistory: { id: movieId } }}).then(done => {
+      Movie.findOne({ userName: user }).then(movie => {
+        resolve(movie.moviesHistory)
+      }).catch(error => reject(error))
+    }).catch(error => reject(error))
   })
 }

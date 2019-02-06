@@ -68,6 +68,7 @@ export const checkUserInCookieA = (cookie) => {
             dispatch(protectedRouteFinishedA());
           },
           () => {
+            console.log("error getting user with token from cookie");
             deleteCookie('userToken');
             dispatch(checkUserInCookieError());
             dispatch(protectedRouteFinishedA());

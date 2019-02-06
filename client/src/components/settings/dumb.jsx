@@ -49,7 +49,7 @@ function DumbSettings({
             <Typography><FormattedMessage id="settings.userName" /></Typography>
           </Grid>
           <Grid item className={classes.field}>
-            <TextField fullWidth disabled value={userName} />
+            <TextField fullWidth value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
           </Grid>
         </Grid>
       </Grid>
