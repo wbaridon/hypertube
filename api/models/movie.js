@@ -12,7 +12,8 @@ const TorrentsSchema = new Schema({
 const CommentsSchema = new Schema({
   userName: String,
   comment: String,
-  postedOn: Number
+  postedOn: Number,
+  picture: String
 });
 
 const MovieSchema = new Schema({
