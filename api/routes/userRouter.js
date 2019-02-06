@@ -121,7 +121,7 @@ userRouter
           })
         }, error => {
           res.status(400).send(error);
-        })
+        }).catch(err => console.log(err))
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
@@ -186,22 +186,30 @@ function checkUserInput(data, user) {
             resolve(callback) });
           break;
         case 'userName':
-          UserManager.getUser(data.value).then(res => {
-           reject('update.userAlreadyExist')
-          }, noUser => {
-              updateField(data.field, data.value, user, callback => {
-                resolve(callback) });
-          })
+          if (data.value) {
+            UserManager.getUser(data.value).then(res => {
+             reject('update.userAlreadyExist')
+            }, noUser => {
+              user.userName = data.value;
+              tokenManager.set(user).then(token => {
+                updateField(data.field, data.value, user, callback => {
+                  resolve(token, callback)
+                });
+              })
+            })
+          } else { reject('update.emptyUsername')}
           break;
         case 'firstName':
           if (data.value) {
             updateField(data.field, data.value, user, callback => {
               resolve(callback) });
-          } else { reject('update.emptyUsername')}
+          } else { reject('update.emptyFirstName')}
           break;
         case 'lastName':
+          if (data.value) {
         updateField(data.field, data.value, user, callback => {
           resolve(callback) });
+        } else { reject('update.emptyLastName')}
           break;
         case 'email':
           if (data.value.match('.+@.+\..+')) {

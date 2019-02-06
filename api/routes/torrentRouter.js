@@ -56,7 +56,19 @@ torrentRouter
 
     file.select();
     console.log('filename:', file.name)
-    var stream = file.createReadStream()
+
+    const pathFolder = `../torrents/${req.query.videoHash}`;
+    // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
+    // req.torrent.data = {
+    //   path: `${pathFolder}/${file.path}`,
+    //   enSubFilePath,
+    //   frSubFilePath,
+    //   name: file.name,
+    //   size: file.length,
+    //   torrentDate: new Date(),
+    // };
+
+    const stream = file.createReadStream()
 
     const converter = ffmpeg()
       .input(stream)
