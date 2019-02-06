@@ -20,15 +20,19 @@ export const getUserInfoPrivateError = () => ({
 
 export const getUserInfoPrivateA = (token, dispatch) => {
   dispatch(getUserInfoPrivateStart());
-  return userInfoPrivateAPI(token)
-    .then(
-      (response) => {
-        dispatch(getUserInfoPrivateSuccess());
-        dispatch(setUserA(response.data, token));
-      },
-      (error) => {
-        dispatch(setErrorA(error.message));
-        dispatch(getUserInfoPrivateError());
-      },
-    );
+  return new Promise((resolve, reject) => {
+    userInfoPrivateAPI(token)
+      .then(
+        (response) => {
+          dispatch(getUserInfoPrivateSuccess());
+          dispatch(setUserA(response.data, token));
+          resolve();
+        },
+        (error) => {
+          dispatch(setErrorA(error.response.data.error));
+          dispatch(getUserInfoPrivateError());
+          reject();
+        },
+      );
+  });
 };

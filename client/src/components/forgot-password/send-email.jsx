@@ -31,6 +31,7 @@ function SendEmail({
   intl,
   classes,
   sendEmailLoading,
+  clearAll,
 }) {
   if (sendEmailLoading) {
     return (<LoadingDots />);
@@ -50,11 +51,16 @@ function SendEmail({
             onChange={e => handleFieldChange('email', e.target.value)}
           />
         </Grid>
-        <Grid item className={classes.lastItem}>
+        <Grid item>
           <Button type="submit" onClick={e => handleSubmit(e)}>
             <Typography>
               <FormattedMessage id="resetPassword.submit" />
             </Typography>
+          </Button>
+        </Grid>
+        <Grid item className={classes.lastItem}>
+          <Button onClick={clearAll}>
+            <FormattedMessage id="resetPassword.clearAll" />
           </Button>
         </Grid>
       </Grid>
@@ -72,6 +78,7 @@ SendEmail.propTypes = {
     lastItem: PropTypes.string.isRequired,
   }).isRequired,
   sendEmailLoading: PropTypes.bool.isRequired,
+  clearAll: PropTypes.func.isRequired,
 };
 
 

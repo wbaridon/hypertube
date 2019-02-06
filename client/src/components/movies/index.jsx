@@ -158,13 +158,13 @@ class Movies extends Component {
     request.filter.reverse = reversedSort;
     request.filter.from = page * 50;
     request.filter.to = (page + 1) * 50;
+    console.log(request);
     getMoviePageHandle(token, request);
   }
 
   debounceSearchStringChange() {
     const { clearMoviesHandle } = this.props;
     clearMoviesHandle();
-    this.loadMoreItems();
   }
 
   handleSearchStringChange(event) {
@@ -179,7 +179,6 @@ class Movies extends Component {
     this.setState({ reversedSort: !reversedSort },
       () => {
         clearMoviesHandle();
-        this.loadMoreItems();
       });
   }
 

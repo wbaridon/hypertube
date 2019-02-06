@@ -43,6 +43,23 @@ class ForgotPassword extends Component {
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleResetPasswordSubmit = this.handleResetPasswordSubmit.bind(this);
     this.handleSendEmailSubmit = this.handleSendEmailSubmit.bind(this);
+    this.clearAll = this.clearAll.bind(this);
+  }
+
+  clearAll() {
+    const { history } = this.props;
+    history.replace({
+      pathname: '/forgot',
+      state: {},
+    });
+    this.setState({
+      email: '',
+      key: '',
+      newPassword: '',
+      newPasswordRepeat: '',
+      newPasswordError: [],
+      newPasswordRepeatError: [],
+    });    
   }
 
   isValidPassword(newPassword, newPasswordRepeat) {
@@ -111,6 +128,7 @@ class ForgotPassword extends Component {
                 email={email}
                 handleFieldChange={this.handleFieldChange}
                 handleSubmit={this.handleSendEmailSubmit}
+                clearAll={this.clearAll}
               />
             ) : (
               <ResetPassword
@@ -121,6 +139,7 @@ class ForgotPassword extends Component {
                 newPasswordRepeatError={newPasswordRepeatError}
                 handleFieldChange={this.handleFieldChange}
                 handleSubmit={this.handleResetPasswordSubmit}
+                clearAll={this.clearAll}
               />)
         }
       </div>
@@ -134,6 +153,9 @@ ForgotPassword.propTypes = {
   }).isRequired,
   handlePasswordReset: PropTypes.func.isRequired,
   handleSendEmail: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+
+  }).isRequired,
 };
 
 ForgotPassword.url = '/forgot';
