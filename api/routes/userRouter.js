@@ -186,22 +186,26 @@ function checkUserInput(data, user) {
             resolve(callback) });
           break;
         case 'userName':
-          UserManager.getUser(data.value).then(res => {
-           reject('update.userAlreadyExist')
-          }, noUser => {
-              updateField(data.field, data.value, user, callback => {
-                resolve(callback) });
-          })
+          if (data.value) {
+            UserManager.getUser(data.value).then(res => {
+             reject('update.userAlreadyExist')
+            }, noUser => {
+                updateField(data.field, data.value, user, callback => {
+                  resolve(callback) });
+            })
+          } else { reject('update.emptyUsername')}
           break;
         case 'firstName':
           if (data.value) {
             updateField(data.field, data.value, user, callback => {
               resolve(callback) });
-          } else { reject('update.emptyUsername')}
+          } else { reject('update.emptyFirstName')}
           break;
         case 'lastName':
+          if (data.value) {
         updateField(data.field, data.value, user, callback => {
           resolve(callback) });
+        } else { reject('update.emptyLastName')}
           break;
         case 'email':
           if (data.value.match('.+@.+\..+')) {
