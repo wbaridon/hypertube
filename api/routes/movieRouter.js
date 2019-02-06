@@ -8,7 +8,7 @@ movieRouter
   .post('/getMovie' , function(req, res) {
       MovieManager.getMovie(req.body.id).then(result => {
         res.status(200).send(result);
-      }).catch(error => res.status(404).send('errorInTheDb'))
+      }).catch(error => res.status(404).send({error:'errorInTheDb'}))
   })
   .post('/list', function(req,res) {
     let filter = req.body.filter;
