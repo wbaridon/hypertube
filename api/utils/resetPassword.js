@@ -62,7 +62,6 @@ function afterMail(email, key, newPW, client) {
 
 beforeMail = (client, email) => {
     UserManager.getUserByMail(email).then(res => {
-      console.log('ici')
       if (!res)
         client.status(400).send('resetPassword.noUser')
       else {
