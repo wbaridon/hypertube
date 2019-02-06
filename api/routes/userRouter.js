@@ -64,10 +64,10 @@ userRouter
             if (match) {
               tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
             } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
-          })
+          }).catch(err => console.log(err))
       }, noSuchUser => {
         res.status(400).send({ error: 'login.noUser' })
-      })
+      }).catch(err => res.status(400).send({error: 'login.oAuthAccount'}))
     } else { res.status(400).send({ error: 'login.emptyPasswordOrLogin' }) }
   })
   .post('/logout', (req, res) => {
@@ -78,7 +78,6 @@ userRouter
   .post('/getAllUsers', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       UserManager.getAllId().then(result => {
-        console.log(result)
         res.status(200).send(result)
       })
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
@@ -88,7 +87,6 @@ userRouter
     // Reçoit un login et retourne les infos public de ce dernier
       let userName = req.body.userName;
       UserManager.getUser(userName).then(getResult => {
-        console.log(getResult);
         const user = {
           userName: getResult.userName,
           picture: getResult.picture,
@@ -116,10 +114,10 @@ userRouter
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
         checkUserInput(req.body, token.user)
-        .then(success => {
+        .then(sucess => {
           CheckProfilIsFill(token.user).then(check => {
             if (check === true) { sucess.profilIsFill = true }
-            res.status(200).send(success);
+            res.status(200).send(sucess);
           })
         }, error => {
           res.status(400).send(error);
@@ -186,6 +184,14 @@ function checkUserInput(data, user) {
         case 'locale':
           updateField(data.field, data.value, user, callback => {
             resolve(callback) });
+          break;
+        case 'userName':
+          UserManager.getUser(data.value).then(res => {
+           reject('update.userAlreadyExist')
+          }, noUser => {
+              updateField(data.field, data.value, user, callback => {
+                resolve(callback) });
+          })
           break;
         case 'firstName':
         updateField(data.field, data.value, user, callback => {

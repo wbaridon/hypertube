@@ -8,12 +8,7 @@ function resetPassword(req, res) {
     global.host = req.headers.origin
     if (req.body.email && req.body.key && req.body.pass1 && req.body.pass2) { // AFTER MAIL
       if (req.body.pass1 === req.body.pass2) {
-        afterMail(req.body.email, req.body.key, req.body.pass1)
-        .then(success => {
-          resolve({status: 1, success: 'password.changed'})
-        }, error => {
-          resolve({status: 0, error: 'password.notCorresponding'})
-        })
+        afterMail(req.body.email, req.body.key, req.body.pass1, res)
       } else { resolve({status: 0, error: 'password.notCorresponding'}) }
     } else if (req.body.email) { // BEFORE MAIL
         beforeMail(res, req.body.email)
@@ -50,40 +45,38 @@ sendMail = user => {
 	})
 }
 
-function afterMail(email, key, newPW) {
-  return new Promise ((resolve, reject) => {
+function afterMail(email, key, newPW, client) {
     UserManager.getUserByMail(email).then(user => {
-      if (user) {
         passwordHash(user.locale + user.password + email + user.userName, hash => {
           if (hash === key) {
             argon2.hash(newPW).then(hash => {
             UserManager.updateUserField({'email': email}, {'password': hash})
-              resolve('Password changed')
+              client.status(200).send('resetPassword.passwordChanged')
             })
           }
           else
-            reject('Hash and key not corresponding')
+            client.status(400).send('reset.HashAndKeyNotCorresponding')
           })
-      }
-      else { reject("No password resetting to do.") }
-    })
-  })
+    }).catch(err => { client.status(400).send("resetPassword.noPasswordChangedAvailable") })
 }
 
 beforeMail = (client, email) => {
     UserManager.getUserByMail(email).then(res => {
       if (!res)
-        client.send("This user doesn't exists");
+        client.status(400).send('resetPassword.noUser')
       else {
-        sendMail({
-          email: email,
-          locale: res.locale,
-          userName: res.userName,
-          password: res.password
-         });
-        client.send('Un email vient de vous etre envoye')
+        if (res.oauth) { client.status(400).send('resetPassword.notAvailableforOAuthAccount')}
+        else {
+          sendMail({
+            email: email,
+            locale: res.locale,
+            userName: res.userName,
+            password: res.password
+           });
+          client.status(200).send('resetPassword.emailSent')
+        }
       }
-    })
+    }).catch(error => { client.status(400).send('resetPassword.noUser') })
 }
 
 module.exports.reset= resetPassword;

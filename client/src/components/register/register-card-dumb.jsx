@@ -219,7 +219,7 @@ class RegisterCardDumb extends React.Component {
               className="registerInputs"
               autoComplete="current-password"
               fullWidth
-              error={passwordError.length !== 0}
+              error={passwordError.length !== 0 && password.length !== 0}
               id="filled-adornment-password"
               variant="filled"
               type={showPassword ? 'text' : 'password'}
@@ -239,7 +239,7 @@ class RegisterCardDumb extends React.Component {
                   </InputAdornment>
                 ),
               }}
-              helperText={passwordError.length ? this.mergeErrors(passwordError) : ' '}
+              helperText={passwordError.length && password.length !== 0 ? this.mergeErrors(passwordError) : ' '}
             />
             <Switch checked={locale === 'en'} onChange={toggleLocale} />
             <Typography>{locale}</Typography>

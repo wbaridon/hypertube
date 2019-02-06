@@ -5,6 +5,7 @@ import {
   Button,
   Typography,
   Grid,
+  Tooltip,
 } from '@material-ui/core';
 import {
   injectIntl,
@@ -13,6 +14,7 @@ import {
 } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+
 
 const styles = {
   firstItem: {
@@ -23,9 +25,21 @@ const styles = {
   },
 };
 
+const errorArrayToString = (errorArray, formatMessage) => {
+  const newArray = [];
+  errorArray.forEach((item) => {
+    const newItem = formatMessage({ id: `changePassword.${item}` });
+    newArray.push(newItem);
+  });
+  const ret = newArray.join(',');
+  return (ret);
+};
+
 function ResetPassword({
   newPassword,
   newPasswordRepeat,
+  newPasswordError,
+  newPasswordRepeatError,
   handleFieldChange,
   handleSubmit,
   email,
@@ -46,20 +60,24 @@ function ResetPassword({
           </Typography>
         </Grid>
         <Grid item>
-          <TextField
-            type="password"
-            label={intl.formatMessage({ id: 'resetPassword.newPassword' })}
-            value={newPassword}
-            onChange={e => handleFieldChange('newPassword', e.target.value)}
-          />
+          <Tooltip placement="top" open={newPasswordError.length !== 0} title={errorArrayToString(newPasswordError, intl.formatMessage)}>
+            <TextField
+              type="password"
+              label={intl.formatMessage({ id: 'resetPassword.newPassword' })}
+              value={newPassword}
+              onChange={e => handleFieldChange('newPassword', e.target.value)}
+            />
+          </Tooltip>
         </Grid>
         <Grid item>
-          <TextField
-            type="password"
-            label={intl.formatMessage({ id: 'resetPassword.newPasswordRepeat' })}
-            value={newPasswordRepeat}
-            onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)}
-          />
+          <Tooltip placement="top" open={newPasswordRepeatError.length !== 0} title={errorArrayToString(newPasswordRepeatError, intl.formatMessage)}>
+            <TextField
+              type="password"
+              label={intl.formatMessage({ id: 'resetPassword.newPasswordRepeat' })}
+              value={newPasswordRepeat}
+              onChange={e => handleFieldChange('newPasswordRepeat', e.target.value)}
+            />
+          </Tooltip>
         </Grid>
         <Grid item className={classes.lastItem}>
           <Button type="submit" onClick={handleSubmit}>
@@ -75,7 +93,9 @@ function ResetPassword({
 
 ResetPassword.propTypes = {
   newPassword: PropTypes.string.isRequired,
+  newPasswordError: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   newPasswordRepeat: PropTypes.string.isRequired,
+  newPasswordRepeatError: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   handleFieldChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
