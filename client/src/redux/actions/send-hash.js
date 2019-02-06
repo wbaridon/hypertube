@@ -1,4 +1,4 @@
-import sendHashAPI from 'API/add-comment';
+import sendHashAPI from 'API/send-hash';
 import {
   SEND_HASH,
   SEND_HASH_SUCCESS,

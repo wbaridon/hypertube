@@ -115,7 +115,6 @@ class Movie extends React.Component {
                       </div>
                     ) : (null)
                   }
-                 
                 </CardContent>
               </Grid>
             </Grid>
