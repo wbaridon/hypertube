@@ -78,7 +78,6 @@ userRouter
   .post('/getAllUsers', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       UserManager.getAllId().then(result => {
-        console.log(result)
         res.status(200).send(result)
       })
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
@@ -88,7 +87,6 @@ userRouter
     // Reçoit un login et retourne les infos public de ce dernier
       let userName = req.body.userName;
       UserManager.getUser(userName).then(getResult => {
-        console.log(getResult);
         const user = {
           userName: getResult.userName,
           picture: getResult.picture,
@@ -186,6 +184,14 @@ function checkUserInput(data, user) {
         case 'locale':
           updateField(data.field, data.value, user, callback => {
             resolve(callback) });
+          break;
+        case 'userName':
+          UserManager.getUser(data.value).then(res => {
+           reject('update.userAlreadyExist')
+          }, noUser => {
+              updateField(data.field, data.value, user, callback => {
+                resolve(callback) });
+          })
           break;
         case 'firstName':
         updateField(data.field, data.value, user, callback => {
