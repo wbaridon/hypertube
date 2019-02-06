@@ -16,7 +16,7 @@ oAuthRouter
       .then(token => {
         oauthGet.user(req.body.provider, token).then(user => {
           UserManager.getUserByMail(user.email).then(getResult => {
-              tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
+              tokenManager.set(getResult).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
               userNameIsFree(user.userName).then(isFree => {
                 user.userName = isFree;

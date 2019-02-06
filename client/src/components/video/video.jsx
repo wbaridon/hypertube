@@ -15,6 +15,7 @@ class Video extends React.Component {
     super(props);
     this.state = {
       videoHash: qs.parse(props.location.search, { ignoreQueryPrefix: true }).videoHash,
+      timeoutDone: false,
     };
     const {
       sendHash,
@@ -22,6 +23,27 @@ class Video extends React.Component {
     } = this.props;
     console.log(hash.hash);
     sendHash(hash.hash);
+<<<<<<< HEAD
+  }
+
+  componentDidMount() {
+    document.getElementById('videoPlayer').play();
+=======
+>>>>>>> b54eaebb8130f2abc30ca48dfbd707f8e7c38c5d
+  }
+
+  componentDidMount() {
+    this.timeout = setTimeout(() => {
+      this.setState({ timeoutDone: true },
+        () => {
+          document.getElementById('videoPlayer').play();
+          console.log('timeout done');
+        });
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   render() {

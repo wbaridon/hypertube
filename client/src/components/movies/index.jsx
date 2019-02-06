@@ -14,7 +14,7 @@ import {
   getMoviePageA,
   clearMoviesA,
   addWatchListA,
-  deleteWatchListA,
+  setMoviePageStateA,
 } from 'Actions';
 import MovieCard from './movie-card';
 import ActiveMovieCard from './active-movie-card';
@@ -72,17 +72,9 @@ const styles = {
 };
 
 class Movies extends Component {
-  constructor() {
-    super();
-    this.state = {
-      searchString: '',
-      sortSelection: 'alphabetical',
-      reversedSort: false,
-      currentMovie: null,
-      top: false,
-      scrolling: false,
-      menuOpen: false,
-    };
+  constructor(props) {
+    super(props);
+    this.state = props.moviePageState;
 
     this.renderMovies = this.renderMovies.bind(this);
     this.renderWaypoint = this.renderWaypoint.bind(this);
@@ -95,6 +87,7 @@ class Movies extends Component {
     this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
     this.scrollListener = this.scrollListener.bind(this);
     this.toggleReverseSort = this.toggleReverseSort.bind(this);
+    this.clearState = this.clearState.bind(this);
   }
 
   componentDidMount() {
@@ -110,8 +103,10 @@ class Movies extends Component {
   }
 
   componentWillUnmount() {
+    const { setMoviePageStateHandler } = this.props;
     window.removeEventListener('scroll', this.scrollListener);
     window.clearTimeout(this.timeout);
+    setMoviePageStateHandler(this.state);
   }
 
   onHoverMovie(movieId, toggle, scrollTo, event) {
@@ -133,6 +128,21 @@ class Movies extends Component {
     this.debounceScrolling();
     window.clearTimeout(this.timeout);
     this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
+  }
+
+  clearState() {
+    this.setState({
+      searchString: '',
+      sortSelection: 'alphabetical',
+      reversedSort: false,
+      currentMovie: null,
+      top: false,
+      scrolling: false,
+      menuOpen: false,
+    }, () => {
+      const { clearMoviesHandle } = this.props;
+      clearMoviesHandle();
+    });
   }
 
   handleTopSpan(entries) {
@@ -183,12 +193,14 @@ class Movies extends Component {
       });
   }
 
+
   renderWaypoint() {
-    const { loading, noMoreMovies } = this.props;
+    const { loading, noMoreMovies, page } = this.props;
     if (!loading && !noMoreMovies) {
       return (
         <Waypoint
           onEnter={this.loadMoreItems}
+          key={page}
         />
       );
     }
@@ -256,6 +268,7 @@ class Movies extends Component {
           sortSelection={sortSelection}
           reversedSort={reversedSort}
           toggleReverseSort={this.toggleReverseSort}
+          clearState={this.clearState}
         />
         <span id="top" style={{ position: 'absolute', top: '0px' }} />
         <Grid container style={{ marginTop: '70px' }} spacing={0} justify="center">
@@ -293,13 +306,14 @@ const mapStateToProps = state => ({
   noMoreMovies: state.movies.noMoreMovies,
   token: state.user.token,
   mobile: state.user.isMobile,
+  moviePageState: state.movies.moviePageState,
 });
 
 const mapDispatchToProps = dispatch => ({
   getMoviePageHandle: (token, request) => dispatch(getMoviePageA(token, request)),
   clearMoviesHandle: () => dispatch(clearMoviesA()),
   addWatchList: (token, idMovie) => dispatch(addWatchListA(token, idMovie)),
-  deleteWatchList: (token, idMovie) => dispatch(deleteWatchListA(token, idMovie)),
+  setMoviePageStateHandler: state => dispatch(setMoviePageStateA(state)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)((withStyles(styles)(withWidth()(Movies))));

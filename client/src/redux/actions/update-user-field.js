@@ -4,7 +4,7 @@ import {
   UPDATE_USER_FIELD_SUCCESS,
   UPDATE_USER_FIELD_ERROR,
 } from './action-types';
-import { setErrorA, changeUserValueA } from '.';
+import { setErrorA, changeUserValueA, setSuccessA } from '.';
 
 export const updateUserFieldStart = () => ({
   type: UPDATE_USER_FIELD,
@@ -25,8 +25,16 @@ export const updateUserFieldA = (token, field, value) => {
     return updateUserFieldAPI(token, field, value)
       .then(
         (result) => {
+          console.log(result);
           dispatch(updateUserFieldSuccess(result));
           dispatch(changeUserValueA(field, value));
+          if (field === 'userName') {
+            updateUserTokenA(result.data.token);
+          }
+          if (result.data.profilIsFill) {
+            dispatch(changeUserValueA('profilIsFill', result.data.profilIsFill));
+            dispatch(setSuccessA('register.profileIsFilled'));
+          }
         },
         (error) => {
           dispatch(setErrorA(error.message));

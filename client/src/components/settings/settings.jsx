@@ -47,6 +47,7 @@ class Settings extends Component {
       lastName: debounce((token, field, value) => props.updateFieldHandle(token, field, value), 1500),
       locale: (token, field, value) => props.updateFieldHandle(token, field, value),
       darkTheme: (token, field, value) => props.updateFieldHandle(token, field, value),
+      image: debounce((token, form) => props.updateImageHandle(token, form), 1000),
     };
   }
 
@@ -77,7 +78,8 @@ class Settings extends Component {
     const img = dataURItoBlob(image.rawData);
     form.append('image', img);
     form.append('oldImageUrl', picture);
-    updateImageHandle(token, form);
+    this.setState({ picture: image });
+    this.debounced.image(token, form);
   }
 
   render() {
@@ -86,7 +88,7 @@ class Settings extends Component {
     return (
       <Grid container spacing={0} direction="column" alignItems="center" justify="center" alignContent="center">
         <Grid item className={classes.content}>
-          <ImageChanger imageUrl={picture} handleImageChange={this.handleImageChange} />
+          <ImageChanger imageUrl={picture && picture.rawData ? picture.rawData : picture} handleImageChange={this.handleImageChange} />
         </Grid>
         <Grid item className={classes.content}>
           <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />

@@ -37,7 +37,7 @@ function rotateCounterClockwise() {
     orientation = 2;
   }
   image.orientation = orientation;
-  this.handleImageAdd(image.inputFile, false, image);
+  this.handleImageAdd(image.inputFile, true, image);
 }
 
 function rotateClockwise() {
@@ -61,7 +61,7 @@ function rotateClockwise() {
     orientation = 2;
   }
   image.orientation = orientation;
-  this.handleImageAdd(image.inputFile, false, image);
+  this.handleImageAdd(image.inputFile, true, image);
 }
 
 function flip() {
@@ -85,7 +85,7 @@ function flip() {
     orientation = 3;
   }
   image.orientation = orientation;
-  this.handleImageAdd(image.inputFile, false, image);
+  this.handleImageAdd(image.inputFile, true, image);
 }
 
 function dataURItoBlob(dataURI) {
@@ -109,7 +109,7 @@ function dataURItoBlob(dataURI) {
   return new Blob([ia], { type: mimeString });
 }
 
-function handleImageAdd(rawImage, newImage = false, stateImage = null) {
+function handleImageAdd(rawImage, debounceChanges = false, stateImage = null, newImage = false) {
   if (!rawImage || !rawImage.type.match(/image\/(?:jpg|jpeg|png|gif)/)) {
     return;
   }
@@ -221,7 +221,7 @@ function handleImageAdd(rawImage, newImage = false, stateImage = null) {
       image.rawData = dataURL;
       image.verticalOffset = verticalOffset;
       this.setState({ image }, () => {
-        if (newImage) {
+        if (debounceChanges) {
           handleImageChange(image);
         }
       });
