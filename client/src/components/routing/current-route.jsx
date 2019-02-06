@@ -26,6 +26,26 @@ const mapDispatchToProps = dispatch => ({
   setErrorHandler: routeUrl => dispatch(setErrorA('navigation.error.notAuthed', `: ${routeUrl}`)),
 });
 
+const PublicOnlyRoute = connect(mapStateToProps, mapDispatchToProps)(({
+  component:
+  Component,
+  authed,
+  protectedRouteLoading,
+  setErrorHandler,
+  profilIsFill,
+  dataFetched,
+  ...rest
+}) => (<Route
+  {...rest}
+  render={(props) => {
+    if (authed === true) {
+      return (<Redirect to="/" />);
+    }
+    return (<Component {...props} />);
+  }}
+/>
+));
+
 const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
   component:
   Component,
@@ -56,15 +76,15 @@ function CurrentRoute() {
   return (
     <div style={{ marginBottom: 70, marginTop: 15 }}>
       <Switch>
-        <Route path={Oauth.url} component={Oauth} />
-        <Route path={Video.url} component={Video} />
+        <PublicOnlyRoute path={Oauth.url} component={Oauth} />
+        <PrivateRoute path={Video.url} component={Video} />
         <PrivateRoute path={Movies.url} component={Movies} />
         <PrivateRoute path={User.url} component={User} />
         <PrivateRoute path={Users.url} component={Users} />
         <PrivateRoute path={Settings.url} component={Settings} />
-        <Route path={Movie.url} component={Movie} />
-        <Route path={ForgotPassword.url} component={ForgotPassword} />
-        <Route path={Register.url} component={Register} />
+        <PrivateRoute path={Movie.url} component={Movie} />
+        <PublicOnlyRoute path={ForgotPassword.url} component={ForgotPassword} />
+        <PublicOnlyRoute path={Register.url} component={Register} />
         <Route exact path={Home.url} component={Home} />
         <Redirect path="*" to={Home.url} />
         <Route component={Home} />

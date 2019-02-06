@@ -29,7 +29,7 @@ export const newCommentA = (token, comment, idMovie) => {
           dispatch(addCommentSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA(error.message));
+          dispatch(setErrorA(error.response.data));
           dispatch(addCommentError());
         },
       );
