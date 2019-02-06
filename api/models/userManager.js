@@ -16,7 +16,7 @@ module.exports.getUserByMail = function (email) {
   return new Promise ((resolve, reject) => {
     User.findOne({'email': email}).then(function(result){
       if (result === null) {
-        reject('getUser.noSuchUser');
+        reject('getUserByMail.noSuchUser');
       }
       resolve(result)
     })
@@ -34,7 +34,7 @@ module.exports.createUser = function (data, callback) {
   var user = new User({
     email: data.email,
     userName: data.userName,
-    picture: data.picture, // Voir comment le faire
+    picture: data.picture,
     lastName: data.lastName,
     firstName: data.firstName,
     password: data.password,

@@ -22,6 +22,9 @@ function getUser(provider, token) {
       case 'google':
         getFrom(provider, 'https://www.googleapis.com/userinfo/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
+      case 'fb':
+        getFrom(provider, 'https://graph.facebook.com/v3.2/me?fields=name,email', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        break;
     }
   });
 }
@@ -70,6 +73,22 @@ function userModel(provider, data, token) {
           firstname: data.first_name,
         }
         resolve(user)
+        break;
+      case 'fb':
+        axios.get(`https://graph.facebook.com/v3.2/me/picture?redirect=0&width=178&height=180`, { headers: {"Authorization": `Bearer ${token}`}})
+        .then(pic => {
+          //pic nous retourne une url d'une image a download et save
+          let firstname = data.name.split(' ')[0]
+          let name = data.name.split(' ')[1]
+          var user = {
+            email: data.email,
+            userName: data.id,
+          //  picture: data.image_url,
+            lastName: name,
+            firstName: firstname,
+          }
+          resolve(user)
+        }).catch(error => reject(error))
         break;
       case 'github':
         axios.get(`https://api.github.com/user/emails`, { headers: {"Authorization": `Bearer ${token}`}})
