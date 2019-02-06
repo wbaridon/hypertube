@@ -20,8 +20,11 @@ oAuthRouter
             }, noSuchUser => {
               userNameIsFree(user.userName).then(isFree => {
                 user.userName = isFree;
+                if (user.lastName && user.firstName && user.email && user.userName) {
+                  user.profilIsFill = true
+                } else { user.profilIsFill = false }
                 UserManager.createUser(user, callback => {
-                  tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
+                  tokenManager.set(user).then(token => { res.send({ token, profilIsFill: user.profileIsFill }); })
                 })
               })
             })
