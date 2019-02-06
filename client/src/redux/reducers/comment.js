@@ -23,7 +23,7 @@ export default function comment(state = defaultaddCommentState, action) {
       return {
         loading: false,
         success: true,
-        data: action.result,
+        data: action.result.comments,
       };
     case ADD_COMMENT_ERROR:
       return {
@@ -39,6 +39,7 @@ export default function comment(state = defaultaddCommentState, action) {
       return {
         loading: false,
         success: true,
+        data: action.result,
       };
     case DELETE_COMMENT_ERROR:
       return {

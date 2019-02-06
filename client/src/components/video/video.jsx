@@ -22,10 +22,13 @@ class Video extends React.Component {
     } = this.props;
     console.log(hash.hash);
     sendHash(hash.hash);
+<<<<<<< HEAD
   }
 
   componentDidMount() {
     document.getElementById('videoPlayer').play();
+=======
+>>>>>>> b54eaebb8130f2abc30ca48dfbd707f8e7c38c5d
   }
 
   render() {

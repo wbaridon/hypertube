@@ -18,6 +18,7 @@ import changeUserPassword from './change-user-password';
 import movies from './movies';
 import movie from './movie';
 import comment from './comment';
+import watchlist from './watchlist';
 
 const darkTheme = (state = false, action) => {
   switch (action.type) {
@@ -83,4 +84,5 @@ export default combineReducers({
   movies,
   movie,
   comment,
+  watchlist,
 });

@@ -16,12 +16,15 @@ oAuthRouter
       .then(token => {
         oauthGet.user(req.body.provider, token).then(user => {
           UserManager.getUserByMail(user.email).then(getResult => {
-              tokenManager.set(user).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
+              tokenManager.set(getResult).then(token => { res.send({ token, profilIsFill: getResult.profilIsFill }); })
             }, noSuchUser => {
               userNameIsFree(user.userName).then(isFree => {
                 user.userName = isFree;
+                if (user.lastName && user.firstName && user.email && user.userName) {
+                  user.profilIsFill = true
+                } else { user.profilIsFill = false }
                 UserManager.createUser(user, callback => {
-                  tokenManager.set(user).then(token => { res.send({ token, profilIsFill: false }); })
+                  tokenManager.set(user).then(token => { res.send({ token, profilIsFill: user.profileIsFill }); })
                 })
               })
             })
