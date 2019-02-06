@@ -121,7 +121,7 @@ userRouter
           })
         }, error => {
           res.status(400).send(error);
-        })
+        }).catch(err => console.log(err))
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
@@ -190,8 +190,12 @@ function checkUserInput(data, user) {
             UserManager.getUser(data.value).then(res => {
              reject('update.userAlreadyExist')
             }, noUser => {
+              user.userName = data.value;
+              tokenManager.set(user).then(token => {
                 updateField(data.field, data.value, user, callback => {
-                  resolve(callback) });
+                  resolve(token, callback)
+                });
+              })
             })
           } else { reject('update.emptyUsername')}
           break;
