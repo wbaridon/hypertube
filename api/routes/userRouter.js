@@ -116,10 +116,10 @@ userRouter
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
         checkUserInput(req.body, token.user)
-        .then(success => {
+        .then(sucess => {
           CheckProfilIsFill(token.user).then(check => {
             if (check === true) { sucess.profilIsFill = true }
-            res.status(200).send(success);
+            res.status(200).send(sucess);
           })
         }, error => {
           res.status(400).send(error);
