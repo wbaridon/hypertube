@@ -23,7 +23,6 @@ passwordHash = (pass, callback) => {
 }
 
 sendMail = user => {
-  //console.log(user)
 	var tunnel = mail.createTransport ({
 		service: 'gmail',
 		auth: {
@@ -32,17 +31,20 @@ sendMail = user => {
 		}
 	})
 	passwordHash(user.locale + user.password + user.email + user.userName, hash => {
-		var mailOptions = {
+		var mailOptionsFR = {
 			from: 'matchawb@gmail.com',
 			to: user.email,
 			subject: 'Reset de votre mot de passe',
-            text: 'Bonjour , vous avez demande une reinitialisation de votre mot de passe. Veuillez cliquer sur ce lien pour acceder au formulaire de reinitialisation: ' +  global.host + '/forgot?email=' + user.email + '&key=' + hash
-        }
-		tunnel.sendMail(mailOptions, function(err, info){
-			if (err) {
-			} else {
-			}
-		})
+      text: 'Bonjour , vous avez demande une reinitialisation de votre mot de passe. Veuillez cliquer sur ce lien pour acceder au formulaire de reinitialisation: ' +  global.host + '/forgot?email=' + user.email + '&key=' + hash
+    }
+    var mailOptionsEN = {
+      from: 'matchawb@gmail.com',
+      to: user.email,
+      subject: '[Hypertube] - Password Reset',
+      text: 'Hi, If you want reset your password please click on this link: ' +  global.host + '/forgot?email=' + user.email + '&key=' + hash
+    }
+    if (user.locale === 'fr') { tunnel.sendMail(mailOptionsFR) }
+    else { tunnel.sendMail(mailOptionsEN) }
 	})
 }
 
