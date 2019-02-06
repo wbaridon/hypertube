@@ -71,10 +71,9 @@ class Comments extends React.Component {
     actualComments ? (
       displayedComments = actualComments
     ) : (
-      console.log("comments"),
       displayedComments = comments
     );
-    console.log(displayedComments);
+    // console.log(displayedComments);
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>

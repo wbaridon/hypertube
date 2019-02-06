@@ -10,15 +10,13 @@ import {
   CardContent,
   CardMedia,
   IconButton,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Comments from './comments';
+import Video from '../video/video';
 
 const styles = {
   movie_info: {
@@ -34,8 +32,8 @@ class Movie extends React.Component {
   componentWillMount() {
     const {
       getMovie,
+      match,
     } = this.props;
-    const { match } = this.props;
     getMovie(match.params.id_movie);
   }
 
@@ -122,6 +120,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
           </Card>
+          <Video />
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (

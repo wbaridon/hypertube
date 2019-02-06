@@ -16,6 +16,7 @@ import { oAuthUserA } from './oauth-user';
 import { getUserInfoPrivateA } from './get-user-info-private';
 import { setUserA, clearUserA, changeUserValueA } from './current-user';
 import { sendEmailA } from './send-email';
+import { sendHashA } from './send-hash';
 import { resetPasswordA } from './reset-password';
 import { updateUserFieldA } from './update-user-field';
 import { updateUserImageA } from './update-user-image';
@@ -40,6 +41,9 @@ import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
 import { newCommentA } from './add-comment';
 import { deleteCommentA } from './delete-comment';
+// import { addWatchlistA } from './add_watchlist';
+// import { deleteWatchlistA } from './delete_watchlist';
+// import { getWatchlistA } from './get_watchlist';
 
 export const setMobileBooleanA = isMobile => ({
   type: SET_MOBILE_BOOLEAN,
@@ -109,4 +113,8 @@ export {
   getMovieDataA,
   newCommentA,
   deleteCommentA,
+  // addWatchlistA,
+  // deleteWatchlistA,
+  // getWatchlistA,
+  sendHashA,
 };
