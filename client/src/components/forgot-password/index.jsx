@@ -59,7 +59,7 @@ class ForgotPassword extends Component {
       newPasswordRepeat: '',
       newPasswordError: [],
       newPasswordRepeatError: [],
-    });    
+    });
   }
 
   isValidPassword(newPassword, newPasswordRepeat) {
