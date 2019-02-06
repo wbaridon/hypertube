@@ -8,6 +8,7 @@ import {
   Button,
   Paper,
   CardContent,
+  Chip,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
@@ -35,6 +36,7 @@ class ActiveMovieCard extends React.Component {
       synopsis,
       dimensions,
       closeMovie,
+      imdbRating,
     } = this.props;
     const { image } = this.state;
     if (image && cover) {
@@ -104,6 +106,9 @@ class ActiveMovieCard extends React.Component {
                 {synopsis}
               </Typography>
             </Grid>
+            <Grid item>
+              <Chip label={`Rating: ${imdbRating}`} />
+            </Grid>
             <Grid item style={{ paddingBottom: 10 }}>
               <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
                 <Grid item>
@@ -139,6 +144,7 @@ ActiveMovieCard.propTypes = {
     height: PropTypes.number.isRequired,
   }).isRequired,
   closeMovie: PropTypes.func.isRequired,
+  imdbRating: PropTypes.number.isRequired,
 };
 
 export default ActiveMovieCard;
