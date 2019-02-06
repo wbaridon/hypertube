@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import * as qs from 'query-string';
-
+import { connect } from 'react-redux';
+import { sendHashA } from 'Actions';
 
 const styles = {
 
@@ -15,6 +16,12 @@ class Video extends React.Component {
     this.state = {
       videoHash: qs.parse(props.location.search, { ignoreQueryPrefix: true }).videoHash,
     };
+    const {
+      sendHash,
+      hash,
+    } = this.props;
+    console.log(hash.hash);
+    sendHash(hash.hash);
   }
 
   componentDidMount() {
@@ -35,11 +42,22 @@ class Video extends React.Component {
 }
 
 Video.propTypes = {
+  sendHash: PropTypes.func.isRequired,
+  hash: PropTypes.string.isRequired,
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string.isRequired,
   }).isRequired,
 };
 
+const mapDispatchToProps = dispatch => ({
+  sendHash: hash => dispatch(sendHashA(hash)),
+});
+
+const mapStateToProps = state => ({
+  hash: state.movie.data.torrents[0],
+});
+
 Video.url = '/video';
-export default withRouter(withStyles(styles)(Video));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Video)));
+// export default connect(mapStateToProps, mapDispatchToProps)(Video);
