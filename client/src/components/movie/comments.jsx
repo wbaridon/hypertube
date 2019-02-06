@@ -69,7 +69,7 @@ class Comments extends React.Component {
     const { newComment } = this.state;
     let displayedComments;
     actualComments ? (
-      displayedComments = actualComments.comments
+      displayedComments = actualComments
     ) : (
       console.log("comments"),
       displayedComments = comments
