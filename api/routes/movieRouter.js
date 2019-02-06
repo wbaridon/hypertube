@@ -26,5 +26,15 @@ movieRouter
       res.status(200).send(result)
     })
   })
+  .post('/seen', function(req, res) {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      console.log('seen')
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+  })
+  .post('/unseen', function(req, res) {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      console.log('unseen')
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+  })
 
 module.exports = movieRouter;
