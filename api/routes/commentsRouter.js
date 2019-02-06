@@ -28,21 +28,14 @@ commentsRouter
   })
   .post('/delete' , function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
-      console.log(req.body)
-      console.log('ici')
       let idMovie = req.body.idMovie;
       let idComment = req.body.idComment;
-      console.log(token)
-      MovieManager.deleteComment(idMovie, idComment)
-      .then(resolve => { console.log('fini') })
-      .catch(error => { console.log('erreur')})
-      /*MovieManager.deleteComment(req.body.idMovie, req.body.idComment).then(result => {
-        console.log('ok')
-              res.status(200).send('A faire')
-      }).catch(error => { console.log(error) })*/
-      console.log('la')
-      // Besoin de l'imdbId, username et comment ... En back on setup le timestamp
-    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+      userIsAuthorComment(idMovie, token.user, idComment).then(isAuthor => {
+        MovieManager.deleteComment(idMovie, idComment)
+            .then(resolve => { res.status(200).send(resolve) })
+            .catch(error => { console.log(error)})
+      }).catch(error => res.status(400).send(error))
+    }).catch(err => { res.status(400).json({ error: 'token.invalidToken' })})
   })
 
 function getAvatarLink(username) {
@@ -50,6 +43,17 @@ function getAvatarLink(username) {
     UserManager.getUser(username).then(user => {
       resolve(user.picture)
     }).catch(error => reject('getAvatarLink.noSuchUser'))
+  })
+}
+
+function userIsAuthorComment(idMovie, user, idComment) {
+  return new Promise ((resolve, reject) => {
+    MovieManager.getComment(idMovie, idComment)
+      .then(result => {
+        if (result.userName === user) {
+          resolve()
+        } else { reject('deleteComment.userIsNotAuthor') }
+      }).catch(error => reject(error))
   })
 }
 module.exports = commentsRouter;

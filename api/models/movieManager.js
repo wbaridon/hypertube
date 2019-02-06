@@ -63,12 +63,17 @@ module.exports.addComment = function (id, data) {
 }
 
 module.exports.deleteComment = function (movieId, commentId) {
-  return new promise ((resolve, reject) => {
-    console.log('arrive pour delete')
-    resolve()
-  /*  Movie.updateOne({ 'imdbId': movie}, { $pullAll: { uid: id } }).then(done => {
-      console.log(done)
+  return new Promise ((resolve, reject) => {
+    Movie.findOneAndUpdate({ 'imdbId': movieId}, { $pull: { comments: { _id: commentId } }}).then(done => {
       resolve(done)
-    }).catch(error => console.log(error))*/
+    }).catch(error => reject(error))
+  })
+}
+
+module.exports.getComment = function (movieId, commentId) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOne({ imdbId: movieId }).then(movie => {
+      resolve(movie.comments.id(commentId))
+    }).catch(error => reject(error))
   })
 }
