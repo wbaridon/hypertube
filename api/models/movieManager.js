@@ -65,7 +65,9 @@ module.exports.addComment = function (id, data) {
 module.exports.deleteComment = function (movieId, commentId) {
   return new Promise ((resolve, reject) => {
     Movie.findOneAndUpdate({ 'imdbId': movieId}, { $pull: { comments: { _id: commentId } }}).then(done => {
-      resolve(done)
+      Movie.findOne({ imdbId: movieId }).then(movie => {
+        resolve(movie.comments)
+      }).catch(error => reject(error))
     }).catch(error => reject(error))
   })
 }

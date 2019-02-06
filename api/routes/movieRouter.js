@@ -8,7 +8,7 @@ movieRouter
   .post('/getMovie' , function(req, res) {
       MovieManager.getMovie(req.body.id).then(result => {
         res.status(200).send(result);
-      }).catch(error => res.status(404).send('errorInTheDb'))
+      }).catch(error => res.status(404).send({error:'errorInTheDb'}))
   })
   .post('/list', function(req,res) {
     let filter = req.body.filter;
@@ -25,6 +25,16 @@ movieRouter
     MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse).then(result => {
       res.status(200).send(result)
     })
+  })
+  .post('/seen', function(req, res) {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      console.log('seen')
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+  })
+  .post('/unseen', function(req, res) {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      console.log('unseen')
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
 
 module.exports = movieRouter;

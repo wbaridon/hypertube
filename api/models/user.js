@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MovieHistorySchema = new Schema({
-  id: Number
+  id: String
+});
+
+const WatchListSchema = new Schema({
+  id: String
 });
 
 const UserSchema = new Schema({
@@ -16,7 +20,8 @@ const UserSchema = new Schema({
   darkTheme: Boolean,
   oauth: Boolean,
   profilIsFill: Boolean,
-  moviesHistory: [MovieHistorySchema]
+  moviesHistory: [MovieHistorySchema],
+  watchList: [WatchListSchema]
 });
 
 const User = mongoose.model('user', UserSchema);

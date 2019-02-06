@@ -31,17 +31,20 @@ sendMail = user => {
 		}
 	})
 	passwordHash(user.locale + user.password + user.email + user.userName, hash => {
-		var mailOptions = {
+		var mailOptionsFR = {
 			from: 'matchawb@gmail.com',
 			to: user.email,
 			subject: 'Reset de votre mot de passe',
-            text: 'Bonjour , vous avez demande une reinitialisation de votre mot de passe. Veuillez cliquer sur ce lien pour acceder au formulaire de reinitialisation: ' +  global.host + '/forgot?email=' + user.email + '&key=' + hash
-        }
-		tunnel.sendMail(mailOptions, function(err, info){
-			if (err) {
-			} else {
-			}
-		})
+      text: 'Bonjour , vous avez demande une reinitialisation de votre mot de passe. Veuillez cliquer sur ce lien pour acceder au formulaire de reinitialisation: ' +  global.host + '/forgot?email=' + user.email + '&key=' + hash
+    }
+    var mailOptionsEN = {
+      from: 'matchawb@gmail.com',
+      to: user.email,
+      subject: '[Hypertube] - Password Reset',
+      text: 'Hi, If you want reset your password please click on this link: ' +  global.host + '/forgot?email=' + user.email + '&key=' + hash
+    }
+    if (user.locale === 'fr') { tunnel.sendMail(mailOptionsFR) }
+    else { tunnel.sendMail(mailOptionsEN) }
 	})
 }
 
@@ -55,17 +58,17 @@ function afterMail(email, key, newPW, client) {
             })
           }
           else
-            client.status(400).send('reset.HashAndKeyNotCorresponding')
+            client.status(400).send({error:'reset.HashAndKeyNotCorresponding'})
           })
-    }).catch(err => { client.status(400).send("resetPassword.noPasswordChangedAvailable") })
+    }).catch(err => { client.status(400).send({error:"resetPassword.noPasswordChangedAvailable"}) })
 }
 
 beforeMail = (client, email) => {
     UserManager.getUserByMail(email).then(res => {
       if (!res)
-        client.status(400).send('resetPassword.noUser')
+        client.status(400).send({error:'resetPassword.noUser'})
       else {
-        if (res.oauth) { client.status(400).send('resetPassword.notAvailableforOAuthAccount')}
+        if (res.oauth) { client.status(400).send({error:'resetPassword.notAvailableforOAuthAccount'})}
         else {
           sendMail({
             email: email,
@@ -76,7 +79,7 @@ beforeMail = (client, email) => {
           client.status(200).send('resetPassword.emailSent')
         }
       }
-    }).catch(error => { client.status(400).send('resetPassword.noUser') })
+    }).catch(error => { client.status(400).send({error:'resetPassword.noUser'}) })
 }
 
 module.exports.reset= resetPassword;
