@@ -29,7 +29,7 @@ export const sendEmailA = (form) => {
           dispatch(sendEmailSuccess(result));
         },
         (error) => {
-          dispatch(setErrorA(error.message));
+          dispatch(setErrorA(error.response.data));
           dispatch(sendEmailError());
         },
       );

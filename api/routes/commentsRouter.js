@@ -32,7 +32,8 @@ commentsRouter
       let idComment = req.body.idComment;
       userIsAuthorComment(idMovie, token.user, idComment).then(isAuthor => {
         MovieManager.deleteComment(idMovie, idComment)
-            .then(resolve => { res.status(200).send(resolve) })
+            .then(resolve => {
+              res.status(200).send(resolve) })
             .catch(error => { console.log(error)})
       }).catch(error => res.status(400).send(error))
     }).catch(err => { res.status(400).json({ error: 'token.invalidToken' })})
