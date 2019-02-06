@@ -17,6 +17,10 @@ class Video extends React.Component {
     };
   }
 
+  componentDidMount() {
+    document.getElementById('videoPlayer').play();
+  }
+
   render() {
     const { videoHash } = this.state;
     return (
