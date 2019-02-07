@@ -20,6 +20,8 @@ export const addWatchListError = () => ({
 });
 
 export const addWatchListA = (token, idMovie) => {
+  console.log(idMovie);
+  console.log(token);
   return (dispatch) => {
     dispatch(addWatchListStart());
     return addWatchListAPI(token, idMovie)

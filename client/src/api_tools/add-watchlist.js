@@ -5,7 +5,7 @@ export default function addWatchListAPI(token, idMovie) {
     method: 'post',
     url: 'http://localhost:3000/watchList/add',
     data: {
-      idMovie,
+      movieId: idMovie,
     },
     headers: { Authorization: `Bearer ${token}` },
     timeout: TIMEOUT_API,
