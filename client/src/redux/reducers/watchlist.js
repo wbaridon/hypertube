@@ -58,7 +58,7 @@ export default function watchList(state = defaultWatchListState, action) {
       return {
         loading: false,
         success: true,
-        data: action,
+        data: action.result,
       };
     case GET_WATCHLIST_ERROR:
       return defaultWatchListState;

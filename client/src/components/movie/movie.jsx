@@ -126,7 +126,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
           </Card>
-          <Video />
+          {/* <Video /> */}
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
@@ -139,6 +139,7 @@ class Movie extends React.Component {
 }
 
 Movie.propTypes = {
+  token: PropTypes.string.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id_movie: PropTypes.string.isRequired,

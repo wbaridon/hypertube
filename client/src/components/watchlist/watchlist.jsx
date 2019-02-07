@@ -30,11 +30,24 @@ class WatchList extends React.Component {
     const {
       watchList,
     } = this.props;
-    // console.log(watchList);
+    console.log(watchList);
     return (
       <Grid>
-        <DumbWatchlist />
-      </Grid>
+        <Typography variant="h2">
+          Watchlist
+        </Typography>
+        <br />
+        <Typography variant="h3">
+          Quels films dois tu regarder ?
+        </Typography>
+        {
+          watchList ? (
+            <Grid>
+              <DumbWatchlist watchList={watchList} />
+            </Grid>
+          ) : (null)
+        }
+      </Grid> 
     );
   }
 }
@@ -42,6 +55,8 @@ class WatchList extends React.Component {
 WatchList.PropTypes = {
   token: PropTypes.string.isRequired,
   getWatchList: PropTypes.func.isRequired,
+  watchList: PropTypes.shape({
+  }).isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -52,6 +67,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   watchList: state,
   token: state.user.token,
+  watchList: state.watchList.data,
 });
 
 WatchList.url = '/watchlist';
