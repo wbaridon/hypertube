@@ -45,6 +45,8 @@ import { deleteCommentA } from './delete-comment';
 import { addWatchListA } from './add-watchlist';
 import { deleteWatchListA } from './delete-watchlist';
 import { getWatchListA } from './get-watchlist';
+import { seenA } from './seen';
+import { unseenA } from './unseen';
 
 export const setMoviePageStateA = currentState => ({
   type: SET_MOVIE_PAGE_STATE,
@@ -123,4 +125,6 @@ export {
   deleteWatchListA,
   getWatchListA,
   sendHashA,
+  seenA,
+  unseenA,
 };

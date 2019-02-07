@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getMovieDataA } from 'Actions';
+import { getMovieDataA, seenA, unseenA } from 'Actions';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -39,7 +39,7 @@ class Movie extends React.Component {
   }
 
   render() {
-    const { classes, movie } = this.props;
+    const { classes, movie, token, seen, unseen, } = this.props;
     // console.log(movie);
     return (
       movie ? (
@@ -52,6 +52,12 @@ class Movie extends React.Component {
         >
           <Card>
             <Grid container>
+              <IconButton onClick={() => seen(token, movie.imdbId)}>
+                seen
+              </IconButton>
+              <IconButton onClick={() => unseen(token, movie.imdbId)}>
+                unseen
+              </IconButton>
               <Grid item xs={12} sm={6}>
                 <IconButton component={Link} to="/movies">
                   <ArrowBack />
@@ -144,6 +150,8 @@ Movie.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   getMovie: (idMovie, token) => dispatch(getMovieDataA(idMovie, token)),
+  seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
+  unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
 });
 
 const mapStateToProps = state => ({
