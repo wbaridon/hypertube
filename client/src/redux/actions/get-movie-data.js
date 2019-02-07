@@ -19,10 +19,10 @@ export const getMovieError = () => ({
   type: GET_MOVIE_DATA_ERROR,
 });
 
-export const getMovieDataA = (idMovie) => {
+export const getMovieDataA = (idMovie, token) => {
   return (dispatch) => {
     dispatch(getMovieStart());
-    return movieAPI(idMovie)
+    return movieAPI(idMovie, token)
       .then(
         (response) => {
           dispatch(getMovieSuccess(response.data));

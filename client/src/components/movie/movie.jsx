@@ -31,10 +31,11 @@ const styles = {
 class Movie extends React.Component {
   componentWillMount() {
     const {
+      token,
       getMovie,
       match,
     } = this.props;
-    getMovie(match.params.id_movie);
+    getMovie(match.params.id_movie, token);
   }
 
   render() {
@@ -142,11 +143,12 @@ Movie.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  getMovie: idMovie => dispatch(getMovieDataA(idMovie)),
+  getMovie: (idMovie, token) => dispatch(getMovieDataA(idMovie, token)),
 });
 
 const mapStateToProps = state => ({
   movie: state.movie.data,
+  token: state.user.token,
 });
 
 Movie.url = '/movie/:id_movie';
