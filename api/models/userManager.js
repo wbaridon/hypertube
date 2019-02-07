@@ -77,7 +77,7 @@ module.exports.getAllId = function () {
 
 module.exports.movieSeen = function (user, data) {
   return new Promise ((resolve, reject) => {
-    Movie.findOneAndUpdate({'userName': user}, {$push: {moviesHistory: data}})
+    User.findOneAndUpdate({'userName': user}, {$push: {moviesHistory: data}})
     .then(function(result){ resolve() },
     (err) => {console.log(err)}
     )
@@ -86,8 +86,8 @@ module.exports.movieSeen = function (user, data) {
 
 module.exports.movieUnseen = function (user, movieId) {
   return new Promise ((resolve, reject) => {
-    Movie.findOneAndUpdate({ 'userName': user}, { $pull: { moviesHistory: { id: movieId } }}).then(done => {
-      Movie.findOne({ userName: user }).then(movie => {
+    User.findOneAndUpdate({ 'userName': user}, { $pull: { moviesHistory: { id: movieId } }}).then(done => {
+      User.findOne({ userName: user }).then(movie => {
         resolve(movie.moviesHistory)
       }).catch(error => reject(error))
     }).catch(error => reject(error))
@@ -96,8 +96,9 @@ module.exports.movieUnseen = function (user, movieId) {
 
 module.exports.getSeenStatus = function (username, id) {
   return new Promise ((resolve, reject) => {
-    Movie.findOne({ userName: username}).then(history => {
-      console.log(history.moviesHistory.imdbId(id))
+    User.findOne({ userName: username}).then(history => {
+    console.log(history)
+      console.log(history.moviesHistory)
       resolve(history.moviesHistory)
     }).catch(error => reject(error))
   })
@@ -105,7 +106,7 @@ module.exports.getSeenStatus = function (username, id) {
 
 module.exports.addToList = function (user, data) {
   return new Promise ((resolve, reject) => {
-    Movie.findOneAndUpdate({'userName': user}, {$push: {watchList: data}})
+    User.findOneAndUpdate({'userName': user}, {$push: {watchList: data}})
     .then(function(result){ resolve() },
     (err) => {console.log(err)}
     )
@@ -113,8 +114,8 @@ module.exports.addToList = function (user, data) {
 }
 module.exports.removeFromList = function (user, movieId) {
   return new Promise ((resolve, reject) => {
-    Movie.findOneAndUpdate({ 'userName': user}, { $pull: { watchList: { id: movieId } }}).then(done => {
-      Movie.findOne({ userName: user }).then(movie => {
+    User.findOneAndUpdate({ 'userName': user}, { $pull: { watchList: { id: movieId } }}).then(done => {
+      User.findOne({ userName: user }).then(movie => {
         resolve(movie.watchList)
       }).catch(error => reject(error))
     }).catch(error => reject(error))
@@ -123,7 +124,7 @@ module.exports.removeFromList = function (user, movieId) {
 
 module.exports.getWatchList = function (username) {
   return new Promise ((resolve, reject) => {
-    Movie.findOne({ userName: username }).then(towatch => {
+    User.findOne({ userName: username }).then(towatch => {
       resolve(towatch.watchList)
     }).catch(error => reject(error))
   })
