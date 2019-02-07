@@ -40,7 +40,7 @@ movieRouter
         .catch(error => { res.status(400).send({error: 'movieSeen.Error'})})
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
-  .post('/unSeen', function(req, res) {
+  .post('/unseen', function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       let movieId = req.body.movieId
