@@ -93,3 +93,29 @@ module.exports.movieUnseen = function (user, movieId) {
     }).catch(error => reject(error))
   })
 }
+
+module.exports.addToList = function (user, data) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOneAndUpdate({'userName': user}, {$push: {watchList: data}})
+    .then(function(result){ resolve() },
+    (err) => {console.log(err)}
+    )
+  })
+}
+module.exports.removeFromList = function (user, movieId) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOneAndUpdate({ 'userName': user}, { $pull: { watchList: { id: movieId } }}).then(done => {
+      Movie.findOne({ userName: user }).then(movie => {
+        resolve(movie.watchList)
+      }).catch(error => reject(error))
+    }).catch(error => reject(error))
+  })
+}
+
+module.exports.getWatchList = function (username) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOne({ userName: username }).then(towatch => {
+      resolve(towatch.watchList)
+    }).catch(error => reject(error))
+  })
+}
