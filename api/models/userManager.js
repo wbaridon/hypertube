@@ -94,6 +94,15 @@ module.exports.movieUnseen = function (user, movieId) {
   })
 }
 
+module.exports.getSeenStatus = function (username, id) {
+  return new Promise ((resolve, reject) => {
+    Movie.findOne({ userName: username}).then(history => {
+      console.log(history.moviesHistory.imdbId(id))
+      resolve(history.moviesHistory)
+    }).catch(error => reject(error))
+  })
+}
+
 module.exports.addToList = function (user, data) {
   return new Promise ((resolve, reject) => {
     Movie.findOneAndUpdate({'userName': user}, {$push: {watchList: data}})

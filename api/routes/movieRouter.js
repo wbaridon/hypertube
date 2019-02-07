@@ -1,15 +1,21 @@
 const express = require('express');
 const movieRouter = express.Router();
 const axios = require('axios');
+const tokenManager = require('../utils/token');
 
 const MovieManager = require('../models/movieManager');
 const UserManager = require('../models/userManager');
 
 movieRouter
   .post('/getMovie' , function(req, res) {
+    tokenManager.decode(req.headers.authorization).then(token => {
       MovieManager.getMovie(req.body.id).then(result => {
+        UserManager.getSeenStatus(token.user, result.imdbId).then(history => {
+          console.log(history)
+        })
         res.status(200).send(result);
       }).catch(error => res.status(404).send({error:'errorInTheDb'}))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/list', function(req,res) {
     let filter = req.body.filter;
