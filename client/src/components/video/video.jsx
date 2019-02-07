@@ -7,16 +7,12 @@ import { connect } from 'react-redux';
 import { sendHashA } from 'Actions';
 
 const styles = {
-
+  
 };
 
 class Video extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      videoHash: qs.parse(props.location.search, { ignoreQueryPrefix: true }).videoHash,
-      timeoutDone: false,
-    };
     const {
       sendHash,
       hash,
@@ -26,25 +22,14 @@ class Video extends React.Component {
   }
 
   componentDidMount() {
-    this.timeout = setTimeout(() => {
-      this.setState({ timeoutDone: true },
-        () => {
-          document.getElementById('videoPlayer').play();
-          console.log('timeout done');
-        });
-    }, 5000);
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timeout);
+    document.getElementById('videoPlayer').play();
   }
 
   render() {
-    const { videoHash } = this.state;
     return (
       <React.Fragment>
         <video id="videoPlayer" controls muted>
-          <source src={`http://localhost:3000/video?videoHash=${videoHash}`} />
+          <source src={`http://localhost:3000/video?videoHash=${this.props.hash.hash}`} />
           <track kind="captions" default />
         </video>
       </React.Fragment>

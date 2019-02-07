@@ -1,5 +1,6 @@
 const axios = require('axios');
 const fs = require('fs');
+const uuidv1 = require('uuid/v1');
 
 function getUser(provider, token) {
   return new Promise ((resolve, reject) => {
@@ -82,7 +83,6 @@ function userModel(provider, data, token) {
 
         //  fs.writeFile(`../assets/images/${data}.id`, result.data).catch(err => console.log(err))
           //pic nous retourne une url d'une image a download et save
-          console.log('ici')
           let firstname = data.name.split(' ')[0]
           let name = data.name.split(' ')[1]
           var user = {
@@ -98,66 +98,81 @@ function userModel(provider, data, token) {
       case 'github':
         axios.get(`https://api.github.com/user/emails`, { headers: {"Authorization": `Bearer ${token}`}})
         .then(emails => {
-          console.log(data.avatar_url)
-          downloadImage(data.avatar_url).then(test => {
-            console.log(test)
-          }).catch(err => console.log(err))
-          var user = {
-           email: emails.data[0].email,
-           userName: data.login,
-           lastName: data.name,
-           picture: data.avatar_url
-          }
-          resolve(user)
+          downloadImage(data.avatar_url).then(pic => {
+            var user = {
+               email: emails.data[0].email,
+               userName: data.login,
+               lastName: data.name,
+               picture: pic
+             }
+              resolve(user)
+          }).catch(err => reject(err))
         }).catch(error => { reject(error) });
         break;
       case 'insta':
-        var user = {
-          userName: data.username,
-          picture: data.profile_picture,
-        }
-        resolve(user)
-        break;
-      case 'linkedin':
-        var user = {
-          email: data.email,
-          userName: data.login,
-          picture: data.image_url,
-          name: data.last_name,
-          firstname: data.first_name,
-        }
-        resolve(user)
+        downloadImage(data.profile_picture).then(pic => {
+          let firstname = data.full_name.split(' ')[0]
+          let name = data.full_name.split(' ')[1]
+          var user = {
+            userName: data.username,
+            picture: pic,
+            lastName: name,
+            firstName: firstname,
+            email: data.username+ '@instagram.com'
+          }
+          resolve(user)
+        }).catch(err => reject(err))
         break;
       case 'gitlab':
-        var user = {
-          email: data.email,
-          userName: data.username,
-          picture: data.avatar_url,
-        }
-        resolve(user)
+        downloadImage(data.avatar_url).then(pic => {
+          let firstname = data.name.split(' ')[0]
+          let name = data.name.split(' ')[1]
+          var user = {
+            email: data.email,
+            userName: data.username,
+            picture: pic,
+            lastName: name,
+            firstName: firstname
+          }
+          resolve(user)
+        }).catch(err => reject(err))
         break;
       case 'google':
-        var user = {
-          email: data.email,
-          userName: data.given_name,
-          picture: data.picture,
-        }
-        resolve(user)
+        downloadImage(data.picture).then(pic => {
+          let firstname = data.name.split(' ')[0]
+          let name = data.name.split(' ')[1]
+          var user = {
+            email: data.email,
+            userName: data.given_name,
+            picture: pic,
+            lastName: name,
+            firstName: firstname
+          }
+          resolve(user)
+        }).catch(err => reject(err))
         break;
     }
   })
 }
 
 function downloadImage(url){
-return new Promise((resolve, reject) => {
-  var stream = function(){
-        axios.get('https://images-na.ssl-images-amazon.com/images/I/31TsfgL0mzL._AC_SY200_.jpg').then(res =>{
-          fs.write('assets/test.jpg', res.data, function() {
-            console.log('ok')
-          })
-        })
-    }
-stream();
-})
+  return new Promise((resolve, reject) => {
+    axios.get(url,{
+      responseType: 'stream'
+    })
+    .then(res => {
+      let path = 'assets/images/';
+      let filename = uuidv1();
+      let extension = getExtention(res.headers['content-type'])
+      res.data.pipe(fs.createWriteStream(path + filename + extension))
+      resolve('http://localhost:3000/images/'+ filename + extension)
+    }).catch(error => reject('downloadImage.imageNotUploaded'))
+  })
 }
+
+function getExtention(fileName) {
+  let extension = fileName.substring(fileName.lastIndexOf('/'));
+  return extension.replace('/', '.')
+}
+
 module.exports.user = getUser;
