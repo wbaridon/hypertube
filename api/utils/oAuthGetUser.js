@@ -98,9 +98,14 @@ function userModel(provider, data, token) {
       case 'github':
         axios.get(`https://api.github.com/user/emails`, { headers: {"Authorization": `Bearer ${token}`}})
         .then(emails => {
+          console.log(data.avatar_url)
+          downloadImage(data.avatar_url).then(test => {
+            console.log(test)
+          }).catch(err => console.log(err))
           var user = {
            email: emails.data[0].email,
            userName: data.login,
+           lastName: data.name,
            picture: data.avatar_url
           }
           resolve(user)
@@ -143,4 +148,16 @@ function userModel(provider, data, token) {
   })
 }
 
+function downloadImage(url){
+return new Promise((resolve, reject) => {
+  var stream = function(){
+        axios.get('https://images-na.ssl-images-amazon.com/images/I/31TsfgL0mzL._AC_SY200_.jpg').then(res =>{
+          fs.write('assets/test.jpg', res.data, function() {
+            console.log('ok')
+          })
+        })
+    }
+stream();
+})
+}
 module.exports.user = getUser;
