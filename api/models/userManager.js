@@ -96,9 +96,8 @@ module.exports.movieUnseen = function (user, movieId) {
 
 module.exports.getSeenStatus = function (username, id) {
   return new Promise ((resolve, reject) => {
-    User.findOne({ userName: username}).then(history => {
-      console.log(history.moviesHistory.id(id))
-      resolve(history.moviesHistory)
+    User.findOne({ userName: username, 'moviesHistory.id': id}).then(history => {
+      resolve(history)
     }).catch(error => reject(error))
   })
 }
