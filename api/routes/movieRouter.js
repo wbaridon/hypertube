@@ -11,9 +11,10 @@ movieRouter
     tokenManager.decode(req.headers.authorization).then(token => {
       MovieManager.getMovie(req.body.id).then(result => {
         UserManager.getSeenStatus(token.user, result.imdbId).then(history => {
-          console.log(history)
-        })
-        res.status(200).send(result);
+          if (history) { result.seen = true }
+          else { result.seen = false }
+          res.status(200).send(result);
+        }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
       }).catch(error => res.status(404).send({error:'errorInTheDb'}))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
@@ -25,10 +26,8 @@ movieRouter
     if (req.body.filter.reverse) {
       reverse = 1;
     }
-    // Manque le sort et le reverse -1 ou 1
-    /*limit = 5;
-    start = 0;
-    const filter = { searchString: 'The' }*/
+    // Manque le sort et
+    /* const filter = { searchString: 'The' }*/
     MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse).then(result => {
       res.status(200).send(result)
     })
@@ -48,7 +47,7 @@ movieRouter
       let movieId = req.body.movieId
       UserManager.movieUnseen(user, movieId)
         .then(result => { res.status(200).send(result) })
-        .catch(error => { res.status(400).send({error: 'movieUnSeen.Error'})})
+        .catch(error => { res.status(400).send({error: 'movieUnseen.Error'})})
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
 
