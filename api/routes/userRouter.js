@@ -4,6 +4,7 @@ const argon2 = require('argon2');
 const multer = require('multer');
 const crypto = require('crypto');
 const fs = require('fs');
+const validator = require("email-validator");
 const resetPassword = require('../utils/resetPassword');
 const tokenManager = require('../utils/token');
 const { racine } = require('../config/env');
@@ -121,7 +122,13 @@ userRouter
             res.status(200).send(sucess);
           })
         }, error => {
-          res.status(400).send(error);
+          UserManager.getUser(token.user).then(status => {
+            let reply = {
+              error: error,
+              value: status[req.body.field]
+            }
+            res.status(400).send(reply);
+          }).catch(err =>   res.status(400).send({error: 'getUser.impossible'}))
         }).catch(err => console.log(err))
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
@@ -138,7 +145,11 @@ userRouter
         }
         UserManager.updateUserField({'userName': user}, {'picture': racine + 'images/' + req.file.filename})
         .then((updated) => {
-          res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated'})
+          CheckProfilIsFill(token.user).then(check => {
+            if (check === true) { profilIsFill = true }
+            else { profilIsFill = false }
+            res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', profilIsFill })
+          })
         })
       }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
@@ -213,14 +224,15 @@ function checkUserInput(data, user) {
         } else { reject('update.emptyLastName')}
           break;
         case 'email':
-          if (data.value.match('.+@.+\..+')) {
+          if (validator.validate(data.value)) {
             UserManager.getUserByMail(data.value).then(res => {
              reject('update.emailAlreadyExist')
             }, noMail => {
                 updateField(data.field, data.value, user, callback => {
                   resolve(callback) });
             })
-          } else { reject('update.badValue')}
+          } else {
+            reject('update.badValue')}
           break;
         case 'password':
           if (data.pass1 == data.pass2) {
@@ -257,7 +269,7 @@ function CheckProfilIsFill(login) {
   return new Promise ((resolve, reject) => {
     UserManager.getUser(login).then(user => {
       if (user.profilIsFill === false) {
-        if (user.userName && user.firstName && user.lastName && user.email) {
+        if (user.userName && user.firstName && user.lastName && user.email && user.picture) {
           UserManager.updateUserField({'userName': login},{'profilIsFill': true})
           .then(isFill => { resolve(true) }).catch(error => { console.log(error)})
         } else { resolve(); }

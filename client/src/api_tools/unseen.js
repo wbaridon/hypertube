@@ -1,9 +1,11 @@
 import Axios from 'axios';
 
-export default function addWatchListAPI(token, idMovie) {
+export default function unseenAPI(token, idMovie) {
+  console.log(token);
+  console.log(idMovie);
   return Axios({
     method: 'post',
-    url: 'http://localhost:3000/watchList/add',
+    url: 'http://localhost:3000/movie/unseen',
     data: {
       movieId: idMovie,
     },

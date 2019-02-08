@@ -1,3 +1,9 @@
+export const SEEN = 'SEEN';
+export const SEEN_SUCCES = 'SEEN_SUCCESS';
+export const SEEN_ERROR = 'SEEN_ERROR';
+export const UNSEEN = 'UNSEEN';
+export const UNSEEN_SUCCESS = 'UNSEEN_SUCCESS';
+export const UNSEEN_ERROR = 'UNSEEN_ERROR';
 export const ADD_USER_TO_USER_LIST = 'ADD_USER_TO_USER_LIST';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const DELETE_COMMENT_ERROR = 'DELETE_COMMENT_ERROR';
