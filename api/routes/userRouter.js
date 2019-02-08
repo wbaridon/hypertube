@@ -123,7 +123,11 @@ userRouter
           })
         }, error => {
           UserManager.getUser(token.user).then(status => {
-            res.status(400).send(error, status[req.body.field]);
+            let reply = {
+              error: error,
+              value: status[req.body.field]
+            }
+            res.status(400).send(reply);
           }).catch(err =>   res.status(400).send({error: 'getUser.impossible'}))
         }).catch(err => console.log(err))
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
