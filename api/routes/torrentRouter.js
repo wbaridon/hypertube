@@ -60,7 +60,7 @@ torrentRouter
     file.select();
     console.log('filename:', file.name)
 
-    const pathFolder = fs.createWriteStream(`./torrents/${hash}`);
+    const pathFolder = fs.createWriteStream(`assets/torrents/${file.name}`);
     // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
     // req.torrent.data = {
     //   path: `${pathFolder}/${file.path}`,
