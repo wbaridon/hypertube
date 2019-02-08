@@ -121,7 +121,9 @@ userRouter
             res.status(200).send(sucess);
           })
         }, error => {
-          res.status(400).send(error);
+          UserManager.getUser(token.user).then(status => {
+            res.status(400).send(error, status);
+          }).catch(err =>   res.status(400).send({error: 'getUser.impossible'})
         }).catch(err => console.log(err))
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
@@ -213,8 +215,7 @@ function checkUserInput(data, user) {
         } else { reject('update.emptyLastName')}
           break;
         case 'email':
-          if (data.value.match('.+@.+\..+')) {
-            console.log('ici')
+          if (data.value.match(/.+@.+\..+/)) {
             UserManager.getUserByMail(data.value).then(res => {
              reject('update.emailAlreadyExist')
             }, noMail => {
