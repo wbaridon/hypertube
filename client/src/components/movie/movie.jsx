@@ -125,7 +125,6 @@ class Movie extends React.Component {
                 </CardContent>
               </Grid>
             </Grid>
-            <Video /> // To fix (does not fit to the page)
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
