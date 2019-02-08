@@ -94,7 +94,7 @@ class Movie extends React.Component {
                       <div>
                         <br />
                         <Typography inline variant="h5"><FormattedMessage id="movie.director" /></Typography>
-                        <Typography inline variant="subtitle1">{movie.director}</Typography>   
+                        <Typography inline variant="subtitle1">{movie.director}</Typography>
                       </div>
                     ) : (null)
                   }
@@ -119,8 +119,8 @@ class Movie extends React.Component {
                 </CardContent>
               </Grid>
             </Grid>
+            <Video /> // To fix (does not fit to the page)
           </Card>
-          <Video />
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
