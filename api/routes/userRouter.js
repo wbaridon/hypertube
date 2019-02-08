@@ -142,9 +142,9 @@ userRouter
         UserManager.updateUserField({'userName': user}, {'picture': racine + 'images/' + req.file.filename})
         .then((updated) => {
           CheckProfilIsFill(token.user).then(check => {
-            if (check === true) { success.profilIsFill = true }
-            else { success.profilIsFill = false }
-            res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', profileIsFill:success.profilIsFill})
+            if (check === true) { profilIsFill = true }
+            else { profilIsFill = false }
+            res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', profilIsFill })
           })
         })
       }
