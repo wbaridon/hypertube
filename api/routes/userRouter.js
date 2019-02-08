@@ -202,7 +202,9 @@ function checkUserInput(data, user) {
             UserManager.getUser(data.value).then(res => {
              reject('update.userAlreadyExist')
             }, noUser => {
-              user.userName = data.value;
+              user = {
+                userName: data.value
+              }
               tokenManager.set(user).then(token => {
                 updateField(data.field, data.value, user, callback => {
                   resolve(token, callback)
