@@ -11,9 +11,10 @@ movieRouter
     tokenManager.decode(req.headers.authorization).then(token => {
       MovieManager.getMovie(req.body.id).then(result => {
         UserManager.getSeenStatus(token.user, result.imdbId).then(history => {
-          if (history) { result.seen = true }
-          else { result.seen = false }
-          res.status(200).send(result);
+          const myMovie = result.toObject();
+          if (history) { myMovie.seen = true }
+          else { myMovie.seen = false }
+          res.status(200).send(myMovie);
         }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
       }).catch(error => res.status(404).send({error:'errorInTheDb'}))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))

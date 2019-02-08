@@ -9,6 +9,7 @@ import {
   CLEAR_MOVIES,
   SET_MOBILE_BOOLEAN,
   SET_MOVIE_PAGE_STATE,
+  UPDATE_USER_TOKEN,
 } from './action-types';
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
@@ -33,6 +34,8 @@ import {
   clearErrorA,
   setSuccessA,
   clearSuccessA,
+  setWarningA,
+  clearWarningA,
 } from './notifications';
 import {
   openSidebarA,
@@ -93,6 +96,11 @@ export const protectedRouteFinishedA = () => ({
   type: PROTECTED_ROUTE_FINISHED,
 });
 
+export const updateUserTokenA = token => ({
+  type: UPDATE_USER_TOKEN,
+  token,
+});
+
 export {
   loginUserA,
   logoutUserA,
@@ -103,6 +111,8 @@ export {
   clearUserA,
   setErrorA,
   clearErrorA,
+  setWarningA,
+  clearWarningA,
   setSuccessA,
   clearSuccessA,
   checkUserInCookieA,

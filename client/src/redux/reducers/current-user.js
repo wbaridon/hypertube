@@ -11,6 +11,7 @@ import {
   CLEAR_USER,
   SET_MOBILE_BOOLEAN,
 } from 'Actions/action-types';
+import { UPDATE_USER_TOKEN } from '../actions/action-types';
 
 const defaultUserState = {
   data: {
@@ -80,6 +81,12 @@ export default function user(state = defaultUserState, action) {
       return {
         ...state,
         isMobile: action.isMobile !== null ? action.isMobile : false,
+      };
+    case UPDATE_USER_TOKEN:
+      return {
+        ...state,
+        token: action.token,
+        tokenValid: true,
       };
     default:
       return state;
