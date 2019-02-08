@@ -46,7 +46,9 @@ export const updateUserFieldA = (token, field, value) => {
           if (field === 'userName') {
             console.log('test');
             dispatch(updateUserTokenA(result.data));
+            console.log(document.cookie);
             createCookie('userToken', result.data, 7);
+            console.log(document.cookie);
           }
           if (result.data.profilIsFill) {
             dispatch(changeUserValueA('profilIsFill', result.data.profilIsFill));
