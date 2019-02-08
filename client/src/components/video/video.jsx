@@ -26,8 +26,8 @@ class Video extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <video id="videoPlayer" controls muted preload="auto">
-          <source src={`http://localhost:3000/video?videoHash=${this.props.hash.hash}`} />
+        <video id="videoPlayer" controls muted preload="auto"style={{ margin: 'auto', width: '100%' }} >
+          {/* <source src={`http://localhost:3000/video?videoHash=${this.props.hash.hash}`} /> */}
           <track kind="captions" default />
         </video>
       </React.Fragment>

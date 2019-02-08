@@ -52,12 +52,7 @@ class Movie extends React.Component {
         >
           <Card>
             <Grid container>
-              <IconButton onClick={() => seen(token, movie.imdbId)}>
-                seen
-              </IconButton>
-              <IconButton onClick={() => unseen(token, movie.imdbId)}>
-                unseen
-              </IconButton>
+           
               <Grid item xs={12} sm={6}>
                 <IconButton component={Link} to="/movies">
                   <ArrowBack />
@@ -72,6 +67,12 @@ class Movie extends React.Component {
                   component="img"
                   image={movie.cover}
                 />
+                <IconButton onClick={() => seen(token, movie.imdbId)}>
+                  mark as seen
+                </IconButton>
+                <IconButton onClick={() => unseen(token, movie.imdbId)}>
+                  mark as unseen
+                </IconButton>
               </Grid>
               <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
                 <CardContent style={{ margin: 'auto' }}>
@@ -125,7 +126,9 @@ class Movie extends React.Component {
                 </CardContent>
               </Grid>
             </Grid>
-            <Video /> // To fix (does not fit to the page)
+            <Grid>
+              <Video />
+            </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
