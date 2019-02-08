@@ -122,8 +122,8 @@ userRouter
           })
         }, error => {
           UserManager.getUser(token.user).then(status => {
-            res.status(400).send(error, status);
-          }).catch(err =>   res.status(400).send({error: 'getUser.impossible'})
+            res.status(400).send(error, status[req.body.field]);
+          }).catch(err =>   res.status(400).send({error: 'getUser.impossible'}))
         }).catch(err => console.log(err))
       }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
@@ -140,7 +140,11 @@ userRouter
         }
         UserManager.updateUserField({'userName': user}, {'picture': racine + 'images/' + req.file.filename})
         .then((updated) => {
-          res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated'})
+          CheckProfilIsFill(token.user).then(check => {
+            if (check === true) { success.profilIsFill = true }
+            else { success.profilIsFill = false }
+            res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', 'success.profileIsFill':success.profilIsFill})
+          })
         })
       }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
