@@ -214,6 +214,7 @@ function checkUserInput(data, user) {
           break;
         case 'email':
           if (data.value.match('.+@.+\..+')) {
+            console.log('ici')
             UserManager.getUserByMail(data.value).then(res => {
              reject('update.emailAlreadyExist')
             }, noMail => {
@@ -257,7 +258,7 @@ function CheckProfilIsFill(login) {
   return new Promise ((resolve, reject) => {
     UserManager.getUser(login).then(user => {
       if (user.profilIsFill === false) {
-        if (user.userName && user.firstName && user.lastName && user.email) {
+        if (user.userName && user.firstName && user.lastName && user.email && user.picture) {
           UserManager.updateUserField({'userName': login},{'profilIsFill': true})
           .then(isFill => { resolve(true) }).catch(error => { console.log(error)})
         } else { resolve(); }
