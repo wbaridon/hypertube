@@ -3,6 +3,9 @@ const flatten = require('flat');
 
 
 const enUS = {
+  searchBar: {
+    sortBy: 'Sort',
+  },
   movie: {
     year: 'Year: ',
     runtime: 'Runtime: ',

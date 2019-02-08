@@ -28,7 +28,7 @@ export const changeUserPasswordA = (token, currentPassword, newPassword, newPass
           dispatch(changeUserPasswordSuccess(result));
         },
         (error) => {
-          dispatch(setErrorA(error.message));
+          dispatch(setErrorA(error.response.data.error));
           dispatch(changeUserPasswordError());
         },
       );

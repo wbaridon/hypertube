@@ -74,7 +74,10 @@ const styles = {
 class Movies extends Component {
   constructor(props) {
     super(props);
-    this.state = props.moviePageState;
+    this.state = {
+      ...props.moviePageState,
+      anchorEl: null,
+    };
 
     this.renderMovies = this.renderMovies.bind(this);
     this.renderWaypoint = this.renderWaypoint.bind(this);
@@ -82,6 +85,8 @@ class Movies extends Component {
     this.handleSearchStringChange = this.handleSearchStringChange.bind(this);
     this.debounceSearchStringChange = debounce(this.debounceSearchStringChange, 300);
     this.onHoverMovie = this.onHoverMovie.bind(this);
+    this.handleMenuOpen = this.handleMenuOpen.bind(this);
+    this.handleMenuClose = this.handleMenuClose.bind(this);
     this.handleTopSpan = this.handleTopSpan.bind(this);
     this.handleScrollToTop = this.handleScrollToTop.bind(this);
     this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
@@ -162,10 +167,12 @@ class Movies extends Component {
     } = this.props;
     const {
       searchString,
+      sortSelection,
       reversedSort,
     } = this.state;
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
+    request.filter.sortBy = sortSelection;
     request.filter.reverse = reversedSort;
     request.filter.from = page * 50;
     request.filter.to = (page + 1) * 50;
@@ -193,6 +200,20 @@ class Movies extends Component {
       });
   }
 
+  handleMenuOpen(event) {
+    this.setState({ anchorEl: event.target });
+  }
+
+  handleMenuClose(chosenValue = null) {
+    if (chosenValue) {
+      const { clearMoviesHandle } = this.props;
+      this.setState({ sortSelection: chosenValue },
+        () => {
+          clearMoviesHandle();
+        });
+    }
+    this.setState({ anchorEl: null });
+  }
 
   renderWaypoint() {
     const { loading, noMoreMovies, page } = this.props;
@@ -254,6 +275,7 @@ class Movies extends Component {
       sortSelection,
       reversedSort,
       top,
+      anchorEl,
     } = this.state;
     const {
       classes,
@@ -264,11 +286,13 @@ class Movies extends Component {
         <SearchBar
           handleSearchStringChange={this.handleSearchStringChange}
           searchString={searchString}
-          // toggleMenu={this.handleMenuOpen}
+          openMenu={this.handleMenuOpen}
+          closeMenu={this.handleMenuClose}
           sortSelection={sortSelection}
           reversedSort={reversedSort}
           toggleReverseSort={this.toggleReverseSort}
           clearState={this.clearState}
+          anchorEl={anchorEl}
         />
         <span id="top" style={{ position: 'absolute', top: '0px' }} />
         <Grid container style={{ marginTop: '70px' }} spacing={0} justify="center">

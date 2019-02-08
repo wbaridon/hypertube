@@ -4,6 +4,9 @@
   --autocomplete-primary-color: #000;
   --autocomplete-primary-background-color: #fff;
 }
+body {
+  padding: 0px !important;
+}
 
 /* ::-webkit-scrollbar { 
   display: none; 
