@@ -25,7 +25,7 @@ function getUser(provider, token) {
         getFrom(provider, 'https://www.googleapis.com/userinfo/v2/me', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
       case 'fb':
-        getFrom(provider, 'https://graph.facebook.com/v3.2/me?fields=name,email', token).then(user => { resolve(user) }).catch(error => { reject(error) });
+        getFrom(provider, 'https://graph.facebook.com/v3.2/me?fields=email,first_name,last_name,picture.width(360).height(360){url},id', token).then(user => { resolve(user) }).catch(error => { reject(error) });
         break;
     }
   });
@@ -77,23 +77,20 @@ function userModel(provider, data, token) {
         resolve(user)
         break;
       case 'fb':
-        axios.get(`https://graph.facebook.com/v3.2/me/picture?width=178&height=180`, { headers: {"Authorization": `Bearer ${token}`}})
-        .then(pic => {
-        //  console.log(pic.data)
-
-        //  fs.writeFile(`../assets/images/${data}.id`, result.data).catch(err => console.log(err))
-          //pic nous retourne une url d'une image a download et save
-          let firstname = data.name.split(' ')[0]
-          let name = data.name.split(' ')[1]
+        let picture = data.picture.data.url
+        downloadImage(picture).then(pic => {
+          if (!data.email) {
+            data.email = data.id + '@facebook.com'
+          }
           var user = {
             email: data.email,
             userName: data.id,
-          //  picture: data.image_url,
-            lastName: name,
-            firstName: firstname,
+            picture: pic,
+            lastName: data.last_name,
+            firstName: data.first_name,
           }
           resolve(user)
-          }).catch(error => reject(error))
+        }).catch(error => { reject(error) });
         break;
       case 'github':
         axios.get(`https://api.github.com/user/emails`, { headers: {"Authorization": `Bearer ${token}`}})
