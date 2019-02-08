@@ -221,14 +221,14 @@ function checkUserInput(data, user) {
           break;
         case 'email':
           if (validator.validate(data.value)) {
-            console.log('test')
             UserManager.getUserByMail(data.value).then(res => {
              reject('update.emailAlreadyExist')
             }, noMail => {
                 updateField(data.field, data.value, user, callback => {
                   resolve(callback) });
             })
-          } else { reject('update.badValue')}
+          } else {
+            reject('update.badValue')}
           break;
         case 'password':
           if (data.pass1 == data.pass2) {
