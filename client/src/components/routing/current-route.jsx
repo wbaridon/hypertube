@@ -84,7 +84,7 @@ function CurrentRoute() {
         <PrivateRoute path={Users.url} component={Users} />
         <PrivateRoute path={Settings.url} component={Settings} />
         <PrivateRoute path={WatchList.url} component={WatchList} />
-        <Route path={Movie.url} component={Movie} />
+        <PrivateRoute path={Movie.url} component={Movie} />
         <Route path={ForgotPassword.url} component={ForgotPassword} />
         <Route path={Register.url} component={Register} />
         <Route exact path={Home.url} component={Home} />

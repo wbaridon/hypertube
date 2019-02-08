@@ -4,11 +4,13 @@ import {
   CLEAR_ERROR,
   CLEAR_SUCCESS,
 } from 'Actions/action-types';
+import { SET_WARNING, CLEAR_WARNING } from '../actions/action-types';
 
 
 const defaultNotificationState = {
   error: null,
   success: null,
+  warning: null,
   data: null,
 };
 
@@ -36,6 +38,18 @@ export default function notifications(state = defaultNotificationState, action) 
       return {
         ...state,
         success: null,
+        data: null,
+      };
+    case SET_WARNING:
+      return {
+        ...state,
+        warning: action.warning,
+        data: action.data,
+      };
+    case CLEAR_WARNING:
+      return {
+        ...state,
+        warning: null,
         data: null,
       };
     default:

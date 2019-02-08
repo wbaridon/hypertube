@@ -4,7 +4,7 @@ import {
   GET_USER_INFO_PRIVATE_SUCCESS,
   GET_USER_INFO_PRIVATE_ERROR,
 } from './action-types';
-import { setUserA, setErrorA } from '.';
+import { setUserA, setErrorA, protectedRouteFinishedA } from '.';
 
 export const getUserInfoPrivateStart = () => ({
   type: GET_USER_INFO_PRIVATE,
@@ -26,10 +26,12 @@ export const getUserInfoPrivateA = (token, dispatch) => {
         (response) => {
           dispatch(getUserInfoPrivateSuccess());
           dispatch(setUserA(response.data, token));
+          dispatch(protectedRouteFinishedA());
           resolve();
         },
         (error) => {
-          dispatch(setErrorA(error.response.data.error));
+          dispatch(setErrorA(error.response ? error.response.error : 'cantConnectToDb'));
+          dispatch(protectedRouteFinishedA());
           dispatch(getUserInfoPrivateError());
           reject();
         },

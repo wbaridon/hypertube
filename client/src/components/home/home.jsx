@@ -6,7 +6,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  setErrorA,
+  setWarningA,
 } from '../../redux/actions';
 
 const myStyles = theme => ({
@@ -22,7 +22,7 @@ const myStyles = theme => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setErrorHandler: routeUrl => dispatch(setErrorA('navigation.error.notAuthed', `: ${routeUrl}`)),
+  setErrorHandler: routeUrl => dispatch(setWarningA('navigation.error.notAuthed', `: ${routeUrl}`)),
 });
 
 const mapStateToProps = state => ({
