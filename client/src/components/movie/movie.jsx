@@ -52,7 +52,6 @@ class Movie extends React.Component {
         >
           <Card>
             <Grid container>
-           
               <Grid item xs={12} sm={6}>
                 <IconButton component={Link} to="/movies">
                   <ArrowBack />
@@ -67,12 +66,15 @@ class Movie extends React.Component {
                   component="img"
                   image={movie.cover}
                 />
-                <IconButton onClick={() => seen(token, movie.imdbId)}>
-                  mark as seen
-                </IconButton>
-                <IconButton onClick={() => unseen(token, movie.imdbId)}>
-                  mark as unseen
-                </IconButton>
+                {movie.seen ? (
+                  <IconButton onClick={() => unseen(token, movie.imdbId)}>
+                    mark as unseen
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={() => seen(token, movie.imdbId)}>
+                    mark as seen
+                  </IconButton>
+                )}
               </Grid>
               <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
                 <CardContent style={{ margin: 'auto' }}>
@@ -92,7 +94,7 @@ class Movie extends React.Component {
                        <div>
                          <br />
                          <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
-                         <Typography inline variant="subtitle1">{movie.genre + ' '}</Typography>
+                         <Typography inline variant="subtitle1">{`${movie.genre}' '`}</Typography>
                        </div>
                      ) : (null)
                   }
@@ -110,7 +112,7 @@ class Movie extends React.Component {
                       <div>
                         <br />
                         <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
-                        <Typography inline variant="subtitle1">{movie.actors + ' '}</Typography>
+                        <Typography inline variant="subtitle1">{`${movie.actors}' '`}</Typography>
                       </div>
                     ) : (null)
                   }
@@ -150,6 +152,8 @@ Movie.propTypes = {
   }).isRequired,
   classes: PropTypes.shape({}).isRequired,
   getMovie: PropTypes.func.isRequired,
+  seen: PropTypes.func.isRequired,
+  unseen: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({

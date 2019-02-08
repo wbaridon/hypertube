@@ -45,11 +45,12 @@ import { getMoviePageA } from './get-movie-page';
 import { getMovieDataA } from './get-movie-data';
 import { newCommentA } from './add-comment';
 import { deleteCommentA } from './delete-comment';
-import { addWatchListA } from './add-watchlist';
-import { deleteWatchListA } from './delete-watchlist';
-import { getWatchListA } from './get-watchlist';
+import { addWatchListA } from './add-watch-list';
+import { deleteWatchListA } from './delete-watch-list';
+import { getWatchListA } from './get-watch-list';
 import { seenA } from './seen';
 import { unseenA } from './unseen';
+import { updateWatchListA } from './update-watch-list';
 
 export const setMoviePageStateA = currentState => ({
   type: SET_MOVIE_PAGE_STATE,
@@ -137,4 +138,5 @@ export {
   sendHashA,
   seenA,
   unseenA,
+  updateWatchListA,
 };

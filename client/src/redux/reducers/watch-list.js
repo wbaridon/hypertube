@@ -1,4 +1,7 @@
 import {
+  UPDATE_WATCHLIST,
+  UPDATE_WATCHLIST_SUCCESS,
+  UPDATE_WATCHLIST_ERROR,
   ADD_WATCHLIST,
   ADD_WATCHLIST_SUCCESS,
   ADD_WATCHLIST_ERROR,
@@ -62,7 +65,37 @@ export default function watchList(state = defaultWatchListState, action) {
       };
     case GET_WATCHLIST_ERROR:
       return defaultWatchListState;
+    case UPDATE_WATCHLIST:
+      return {
+        ...state,
+        moviesdata: {
+          ...state.watchlist,
+          [action.idMovie]: {
+            title: '',
+          },
+        },
+        loading: true,
+      };
+    case UPDATE_WATCHLIST_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        ...state,
+        moviesdata: {
+          // ...state.watchlist,
+          [action.idMovie]: action.result,
+        },
+      };
+    case UPDATE_WATCHLIST_ERROR:
+      return {
+        ...state,
+        moviesdata: {
+          // ...state.watchlist,
+          [action.idMovie]: null,
+        },
+        loading: true,
+      };
     default:
       return state;
-    }
+  }
 }

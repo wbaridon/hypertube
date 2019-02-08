@@ -71,15 +71,7 @@ torrentRouter
 
     file.select();
 
-<<<<<<< HEAD
-    if (alreadyDownloaded(engine, res)) {
-      return;
-    }
-
-    const writeStream = fs.createWriteStream(`assets/torrents/${file.name}`);
-=======
     const pathFolder = fs.createWriteStream(`assets/torrents/${file.name}`);
->>>>>>> 88e67ddb21aeb4c730ca41259ead05a82c4f330d
     // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
     // req.torrent.data = {
     //   path: `${pathFolder}/${file.path}`,

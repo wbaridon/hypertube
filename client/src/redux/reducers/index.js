@@ -18,7 +18,7 @@ import changeUserPassword from './change-user-password';
 import movies from './movies';
 import movie from './movie';
 import comment from './comment';
-import watchList from './watchlist';
+import watchList from './watch-list';
 
 const darkTheme = (state = false, action) => {
   switch (action.type) {
