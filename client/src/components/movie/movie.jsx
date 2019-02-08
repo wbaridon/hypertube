@@ -127,10 +127,6 @@ class Movie extends React.Component {
             </Grid>
             <Video /> // To fix (does not fit to the page)
           </Card>
-<<<<<<< HEAD
-=======
-          {/* <Video /> */}
->>>>>>> 4e974ad50725e2944176bc3e5a7600f7b67912b8
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
