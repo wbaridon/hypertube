@@ -34,6 +34,8 @@ import {
   clearErrorA,
   setSuccessA,
   clearSuccessA,
+  setWarningA,
+  clearWarningA,
 } from './notifications';
 import {
   openSidebarA,
@@ -109,6 +111,8 @@ export {
   clearUserA,
   setErrorA,
   clearErrorA,
+  setWarningA,
+  clearWarningA,
   setSuccessA,
   clearSuccessA,
   checkUserInCookieA,

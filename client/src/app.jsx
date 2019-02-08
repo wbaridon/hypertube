@@ -12,6 +12,7 @@ import {
   clearErrorA,
   clearSuccessA,
   setMobileBooleanA,
+  clearWarningA,
 } from 'Actions';
 import MobileDetect from 'mobile-detect';
 import CurrentRoute from './components/routing/current-route';
@@ -127,6 +128,7 @@ function mapStateToProps(state) {
     user: state.user,
     error: state.notifications.error,
     success: state.notifications.success,
+    warning: state.notifications.warning,
     data: state.notifications.data,
   };
 }
@@ -135,6 +137,7 @@ function mapDispatchToProps(dispatch) {
     checkUser: () => dispatch(checkUserInCookieA(document.cookie)),
     clearErrorHandler: () => dispatch(clearErrorA()),
     clearSuccessHandler: () => dispatch(clearSuccessA()),
+    clearWarningHandler: () => dispatch(clearWarningA()),
     isMobileHandle: isMobile => dispatch(setMobileBooleanA(isMobile)),
   });
 }
@@ -160,7 +163,9 @@ class App extends React.Component {
       intl,
       clearErrorHandler,
       clearSuccessHandler,
+      clearWarningHandler,
       success,
+      warning,
       data,
     } = this.props;
     if (error) {
@@ -170,6 +175,10 @@ class App extends React.Component {
     if (success) {
       enqueueSnackbar(`${intl.formatMessage({ id: success })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'success' });
       clearSuccessHandler();
+    }
+    if (warning) {
+      enqueueSnackbar(`${intl.formatMessage({ id: warning })}${data ? ': ' : ''}${data}`, { autoHideDuration: 1300, variant: 'warning' });
+      clearWarningHandler();
     }
   }
 
@@ -204,17 +213,20 @@ App.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired,
   clearErrorHandler: PropTypes.func.isRequired,
   clearSuccessHandler: PropTypes.func.isRequired,
+  clearWarningHandler: PropTypes.func.isRequired,
   isMobileHandle: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,
   data: PropTypes.string,
+  warning: PropTypes.string,
 };
 
 App.defaultProps = {
   error: '',
   success: '',
   data: '',
+  warning: '',
 };
 
 export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(App)));
