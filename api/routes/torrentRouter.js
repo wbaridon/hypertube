@@ -26,7 +26,6 @@ function findVideoFile(engine) {
   engine.files.forEach((current) => {
     let mime = getExtention(current.name);
     if (!isVideo(mime)) {
-      console.log(mime + ' is not a valid movie file extention');
       return;
     } else if (file && current.length < file.length) {
       return;
@@ -45,6 +44,19 @@ function containsVideo(file, engine, res) {
   }
 }
 
+function alreadyDownloaded(engine, res) {
+  const test = 'musique.mp4';
+
+  if (fs.existsSync(`./torrents/${test}`)) {
+    console.log('Movie already exists');
+    const stream = fs.createReadStream(`./torrents/${test}`);
+    stream.pipe(res);
+    return true;
+  } else {
+    return false;
+  }
+}
+
 torrentRouter
   .get('/', async (req, res) => {
 
@@ -58,9 +70,12 @@ torrentRouter
     containsVideo(file, engine, res);
 
     file.select();
-    console.log('filename:', file.name)
 
-    const pathFolder = fs.createWriteStream(`./torrents/${hash}`);
+    if (alreadyDownloaded(engine, res)) {
+      return;
+    }
+
+    const writeStream = fs.createWriteStream(`./torrents/${file.name}`);
     // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
     // req.torrent.data = {
     //   path: `${pathFolder}/${file.path}`,
@@ -84,6 +99,9 @@ torrentRouter
       })
       .on('start', (cmd) => { console.log('fluent-ffmpeg: Started:', cmd); })
       .on('progress', (progress) => { console.log('fluent-ffmpeg: Progress:', progress.timemark, 'converted'); })
+      .on('end', function() {
+        console.log('Finished processing');
+      })
       .on('error', (err, stdout, stderr) => {
          console.log('ffmpeg, file:', file.path, ' Error:', '\nErr:', err, '\nStdOut:', stdout, '\nStdErr:', stderr);
       });
@@ -97,29 +115,32 @@ torrentRouter
 
     res.pipe(converter);
 
-    stream.pipe(pathFolder);
+    stream.pipe(writeStream);
 
     res.on('close', () => {
+      console.log('page closes, all processes killed');
       converter.kill();
+      stream.destroy();
+      writeStream.destroy();
     })
-    // engine.on('idle', () => {
-    //   // Set to "SEEN" in database
-    //   console.log(engine.swarm.downloaded);
-    //   const pathFolder = `./torrents/${hash}`;
-    //   // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
-    //   // req.torrent.data = {
-    //   //   path: `${pathFolder}/${file.path}`,
-    //   //   enSubFilePath,
-    //   //   frSubFilePath,
-    //   //   name: file.name,
-    //   //   size: file.length,
-    //   //   torrentDate: new Date(),
-    //   // };
-    //   fs.appendFile(pathFolder, file.data, function (err) {
-    //     if (err) throw err;
-    //     console.log("File movie saved");
-    //   });
-    // });
+    engine.on('idle', () => {
+      // Set to "SEEN" in database
+      console.log(engine.swarm.downloaded);
+      const pathFolder = `./torrents/${hash}`;
+      // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
+      // req.torrent.data = {
+      //   path: `${pathFolder}/${file.path}`,
+      //   enSubFilePath,
+      //   frSubFilePath,
+      //   name: file.name,
+      //   size: file.length,
+      //   torrentDate: new Date(),
+      // };
+      fs.appendFile(pathFolder, file.data, function (err) {
+        if (err) throw err;
+        console.log("File movie saved");
+      });
+    });
   });
 })
 
