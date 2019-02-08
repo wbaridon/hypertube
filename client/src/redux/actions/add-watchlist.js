@@ -28,7 +28,7 @@ export const addWatchListA = (token, idMovie) => {
           dispatch(addWatchListSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA(error.response.data));
+          dispatch(setErrorA(error.response.data.error));
           dispatch(addWatchListError());
         },
       );
