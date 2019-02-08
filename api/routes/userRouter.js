@@ -202,10 +202,10 @@ function checkUserInput(data, user) {
             UserManager.getUser(data.value).then(res => {
              reject('update.userAlreadyExist')
             }, noUser => {
-              user = {
+              newUser = {
                 userName: data.value
               }
-              tokenManager.set(user).then(token => {
+              tokenManager.set(newUser).then(token => {
                 updateField(data.field, data.value, user, callback => {
                   resolve(token, callback)
                 });
@@ -215,13 +215,13 @@ function checkUserInput(data, user) {
           break;
         case 'firstName':
           if (data.value) {
-            updateField(data.field, data.value, user, callback => {
+            updateField(data.field, data.value.trim(), user, callback => {
               resolve(callback) });
           } else { reject('update.emptyFirstName')}
           break;
         case 'lastName':
           if (data.value) {
-        updateField(data.field, data.value, user, callback => {
+        updateField(data.field, data.value.trim(), user, callback => {
           resolve(callback) });
         } else { reject('update.emptyLastName')}
           break;
@@ -264,7 +264,7 @@ function updateField(field, value, user, callback) {
   UserManager.updateUserField({'userName': user}, {[field]: value})
     .then(updated => {
       callback({[field]: value, 'user': user, 'success': [field]+'.updated'});
-    })
+    }).catch(err => console.log(err))
 }
 
 function CheckProfilIsFill(login) {
