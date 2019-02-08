@@ -9,6 +9,7 @@ import {
   CLEAR_MOVIES,
   SET_MOBILE_BOOLEAN,
   SET_MOVIE_PAGE_STATE,
+  UPDATE_USER_TOKEN,
 } from './action-types';
 import { loginUserA } from './login-user';
 import { logoutUserA } from './logout-user';
@@ -91,6 +92,11 @@ export const protectedRouteLoadingA = () => ({
 
 export const protectedRouteFinishedA = () => ({
   type: PROTECTED_ROUTE_FINISHED,
+});
+
+export const updateUserTokenA = token => ({
+  type: UPDATE_USER_TOKEN,
+  token,
 });
 
 export {

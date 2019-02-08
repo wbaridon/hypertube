@@ -1,3 +1,4 @@
+var fs = require('fs');
 const express = require('express');
 const torrentRouter = express.Router();
 const torrentStream = require('torrent-stream');
@@ -47,7 +48,9 @@ function containsVideo(file, engine, res) {
 torrentRouter
   .get('/', async (req, res) => {
 
-  const torrent_magnet = getMagnet(req.query.videoHash);
+  const hash = req.query.videoHash;
+
+  const torrent_magnet = getMagnet(hash);
   var engine = torrentStream(torrent_magnet);
 
   engine.on('ready', function() {
@@ -57,7 +60,7 @@ torrentRouter
     file.select();
     console.log('filename:', file.name)
 
-    const pathFolder = `../torrents/${req.query.videoHash}`;
+    const pathFolder = fs.createWriteStream(`./torrents/${hash}`);
     // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
     // req.torrent.data = {
     //   path: `${pathFolder}/${file.path}`,
@@ -68,6 +71,7 @@ torrentRouter
     //   torrentDate: new Date(),
     // };
 
+
     const stream = file.createReadStream()
 
     const converter = ffmpeg()
@@ -76,10 +80,10 @@ torrentRouter
       .outputFormat('mp4')
       .output(res)
       .on('codecData', (codecData) => {
-         console.log('fluent-ffmpeg Notice: CodecData:', codecData);
+         console.log('fluent-ffmpeg: CodecData:', codecData);
       })
-      .on('start', (cmd) => { console.log('fluent-ffmpeg Notice: Started:', cmd); })
-      .on('progress', (progress) => { console.log('fluent-ffmpeg Notice: Progress:', progress.timemark, 'converted'); })
+      .on('start', (cmd) => { console.log('fluent-ffmpeg: Started:', cmd); })
+      .on('progress', (progress) => { console.log('fluent-ffmpeg: Progress:', progress.timemark, 'converted'); })
       .on('error', (err, stdout, stderr) => {
          console.log('ffmpeg, file:', file.path, ' Error:', '\nErr:', err, '\nStdOut:', stdout, '\nStdErr:', stderr);
       });
@@ -93,9 +97,29 @@ torrentRouter
 
     res.pipe(converter);
 
+    stream.pipe(pathFolder);
+
     res.on('close', () => {
       converter.kill();
     })
+    // engine.on('idle', () => {
+    //   // Set to "SEEN" in database
+    //   console.log(engine.swarm.downloaded);
+    //   const pathFolder = `./torrents/${hash}`;
+    //   // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
+    //   // req.torrent.data = {
+    //   //   path: `${pathFolder}/${file.path}`,
+    //   //   enSubFilePath,
+    //   //   frSubFilePath,
+    //   //   name: file.name,
+    //   //   size: file.length,
+    //   //   torrentDate: new Date(),
+    //   // };
+    //   fs.appendFile(pathFolder, file.data, function (err) {
+    //     if (err) throw err;
+    //     console.log("File movie saved");
+    //   });
+    // });
   });
 })
 

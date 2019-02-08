@@ -7,18 +7,16 @@ import { connect } from 'react-redux';
 import { sendHashA } from 'Actions';
 
 const styles = {
-  
+
 };
 
 class Video extends React.Component {
   constructor(props) {
     super(props);
     const {
-      sendHash,
       hash,
     } = this.props;
     console.log(hash.hash);
-    sendHash(hash.hash);
   }
 
   componentDidMount() {
@@ -28,7 +26,7 @@ class Video extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <video id="videoPlayer" controls muted>
+        <video id="videoPlayer" controls muted preload="auto">
           <source src={`http://localhost:3000/video?videoHash=${this.props.hash.hash}`} />
           <track kind="captions" default />
         </video>
@@ -38,7 +36,6 @@ class Video extends React.Component {
 }
 
 Video.propTypes = {
-  sendHash: PropTypes.func.isRequired,
   hash: PropTypes.string.isRequired,
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({
@@ -46,14 +43,10 @@ Video.propTypes = {
   }).isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  sendHash: hash => dispatch(sendHashA(hash)),
-});
-
 const mapStateToProps = state => ({
   hash: state.movie.data.torrents[0],
 });
 
 Video.url = '/video';
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Video)));
+export default connect(mapStateToProps)(withRouter(withStyles(styles)(Video)));
 // export default connect(mapStateToProps, mapDispatchToProps)(Video);

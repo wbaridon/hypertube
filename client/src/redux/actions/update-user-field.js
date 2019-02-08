@@ -4,7 +4,22 @@ import {
   UPDATE_USER_FIELD_SUCCESS,
   UPDATE_USER_FIELD_ERROR,
 } from './action-types';
-import { setErrorA, changeUserValueA, setSuccessA } from '.';
+import {
+  setErrorA,
+  changeUserValueA,
+  setSuccessA,
+  updateUserTokenA,
+} from '.';
+
+function createCookie(name, value, days) {
+  let expires;
+  if (days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = `; expires=${date.toGMTString()}`;
+  } else expires = '';
+  document.cookie = `${name}=${value}${expires}; path=/`;
+}
 
 export const updateUserFieldStart = () => ({
   type: UPDATE_USER_FIELD,
@@ -29,7 +44,11 @@ export const updateUserFieldA = (token, field, value) => {
           dispatch(updateUserFieldSuccess(result));
           dispatch(changeUserValueA(field, value));
           if (field === 'userName') {
-            updateUserTokenA(result.data.token);
+            console.log('test');
+            dispatch(updateUserTokenA(result.data));
+            console.log(document.cookie);
+            createCookie('userToken', result.data, 7);
+            console.log(document.cookie);
           }
           if (result.data.profilIsFill) {
             dispatch(changeUserValueA('profilIsFill', result.data.profilIsFill));
