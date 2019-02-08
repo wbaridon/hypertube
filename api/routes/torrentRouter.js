@@ -47,9 +47,9 @@ function containsVideo(file, engine, res) {
 function alreadyDownloaded(engine, res) {
   const test = 'musique.mp4';
 
-  if (fs.existsSync(`./torrents/${test}`)) {
+  if (fs.existsSync(`assets/torrents/${test}`)) {
     console.log('Movie already exists');
-    const stream = fs.createReadStream(`./torrents/${test}`);
+    const stream = fs.createReadStream(`assets/torrents/${test}`);
     stream.pipe(res);
     return true;
   } else {
@@ -71,15 +71,11 @@ torrentRouter
 
     file.select();
 
-<<<<<<< HEAD
     if (alreadyDownloaded(engine, res)) {
       return;
     }
 
     const writeStream = fs.createWriteStream(`assets/torrents/${file.name}`);
-=======
-    const pathFolder = fs.createWriteStream(`assets/torrents/${file.name}`);
->>>>>>> 88e67ddb21aeb4c730ca41259ead05a82c4f330d
     // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
     // req.torrent.data = {
     //   path: `${pathFolder}/${file.path}`,
@@ -130,7 +126,7 @@ torrentRouter
     engine.on('idle', () => {
       // Set to "SEEN" in database
       console.log(engine.swarm.downloaded);
-      const pathFolder = `./torrents/${hash}`;
+      const pathFolder = `assets/torrents/${hash}`;
       // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
       // req.torrent.data = {
       //   path: `${pathFolder}/${file.path}`,
