@@ -4,6 +4,7 @@ const argon2 = require('argon2');
 const multer = require('multer');
 const crypto = require('crypto');
 const fs = require('fs');
+const validator = require("email-validator");
 const resetPassword = require('../utils/resetPassword');
 const tokenManager = require('../utils/token');
 const { racine } = require('../config/env');
@@ -143,7 +144,7 @@ userRouter
           CheckProfilIsFill(token.user).then(check => {
             if (check === true) { success.profilIsFill = true }
             else { success.profilIsFill = false }
-            res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', 'success.profileIsFill':success.profilIsFill})
+            res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', profileIsFill:success.profilIsFill})
           })
         })
       }
@@ -219,7 +220,8 @@ function checkUserInput(data, user) {
         } else { reject('update.emptyLastName')}
           break;
         case 'email':
-          if (data.value.match(/.+@.+\..+/)) {
+          if (validator.validate(data.value)) {
+            console.log('test')
             UserManager.getUserByMail(data.value).then(res => {
              reject('update.emailAlreadyExist')
             }, noMail => {

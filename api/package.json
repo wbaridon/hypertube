@@ -14,6 +14,7 @@
     "crypto": "^1.0.1",
     "dev-null": "^0.1.1",
     "dotenv": "^6.2.0",
+    "email-validator": "^2.0.4",
     "express": "^4.16.4",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "0.0.1-security",
