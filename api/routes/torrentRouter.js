@@ -58,7 +58,7 @@ function alreadyDownloaded(engine, res) {
 }
 
 torrentRouter
-  .get('/', async (req, res) => {
+  .get('/e', async (req, res) => {
 
   const hash = req.query.videoHash;
 
