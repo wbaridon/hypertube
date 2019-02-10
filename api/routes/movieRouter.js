@@ -23,10 +23,14 @@ movieRouter
     let filter = req.body.filter;
     let limit = (filter.to - filter.from);
     let sort = 'seeds'
+    if (filter.sortBy === 'rating') { sort = 'imdbRating' }
+    if (filter.sortBy === 'alphabetical') { sort = 'title' }
+    if (filter.sortBy === 'date') { sort = 'year' }
     var reverse = -1;
     if (req.body.filter.reverse) {
       reverse = 1;
     }
+    console.log(filter)
     // Manque le sort et
     /* const filter = { searchString: 'The' }*/
     MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse).then(result => {
