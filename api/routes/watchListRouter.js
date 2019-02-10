@@ -32,7 +32,6 @@ watchListRouter
       UserManager.getWatchList(user)
         .then(result => {
           getMovieList(result, user, callback => {
-            console.log(callback)
             res.status(200).send(callback)
           })
          })

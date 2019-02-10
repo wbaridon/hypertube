@@ -127,3 +127,11 @@ module.exports.getWatchList = function (username) {
     }).catch(error => reject(error))
   })
 }
+
+module.exports.getWatchListbyId = function (username, id) {
+  return new Promise ((resolve, reject) => {
+    User.findOne({ userName: username, 'watchList.id': id}).then(result => {
+      resolve(result)
+    }).catch(error => reject(error))
+  })
+}
