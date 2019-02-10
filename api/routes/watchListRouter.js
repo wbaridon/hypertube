@@ -30,9 +30,34 @@ watchListRouter
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       UserManager.getWatchList(user)
-        .then(result => { res.status(200).send(result) })
+        .then(result => {
+          getMovieList(result, user, callback => {
+            console.log(callback)
+            res.status(200).send(callback)
+          })
+         })
         .catch(error => { res.status(400).send({error: 'getList.Error'})})
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
 
+async function getMovieList(data, user, callback) {
+  let array = []
+  for (var i = 0; i < data.length; i++) {
+    array[i] = await getTheMovie(data[i].id, user)
+  }
+  callback(array)
+}
+
+function getTheMovie(id, user) {
+  return new Promise ((resolve, reject) => {
+    MovieManager.getMovie(id).then(result => {
+      UserManager.getSeenStatus(user, result.imdbId).then(history => {
+        const myMovie = result.toObject();
+        if (history) { myMovie.seen = true }
+        else { myMovie.seen = false }
+        resolve(myMovie);
+      }).catch(err => rehect('getSeenStatus.notAvailable'))
+    }).catch(error => reject('errorInTheDb'))
+  })
+}
 module.exports = watchListRouter;
