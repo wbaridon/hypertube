@@ -35,3 +35,4 @@ Renvoi ensuite les data de l'user au front
 - Bouton to the top
 - Supression des commentaires
 - Avatar sur les commentaires
+- WatchList Feature
