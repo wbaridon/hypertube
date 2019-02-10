@@ -10,7 +10,7 @@ import {
 
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { getMovieDataA, seenA, unseenA } from 'Actions';
+import { seenA, unseenA } from 'Actions';
 import { Link } from 'react-router-dom';
 import LoadingDots from '../loading-dots';
 
@@ -20,72 +20,78 @@ class WatchListMovie extends React.Component {
     super(props);
 
     const {
-      idMovie,
       updateWatchList,
+      idMovie,
       token,
+      watchList,
     } = this.props;
-    updateWatchList(idMovie, token);
+
+    // watchList ? (
+    //   watchList.map(movie => updateWatchList(movie.id, token))
+    // ) :  (null);
   }
 
   render() {
     const {
+      moviesData,
       token,
       idMovie,
-      movie,
       seen,
       unseen,
     } = this.props;
-    // console.log(movie);
-    return (
-      movie ? (
-        <TableRow key={idMovie}>
-          <TableCell>
-            <Typography noWrap>{movie.title}</Typography>
-            
-          </TableCell>
-          <TableCell>
-            {movie.seen ? (
-              <Button onClick={() => unseen(token, movie.imdbId)}>
-                <Typography noWrap>mark as unseen</Typography>
-              </Button>
-            ) : (
-              <Button onClick={() => seen(token, movie.imdbId)}>
-                <Typography noWrap>mark as seen</Typography>
-              </Button>
-            )}
-          </TableCell>
-          <TableCell>
-            <Button component={Link} to={`/movie/${idMovie}`}>
-              <Typography variant="button" noWrap>
-                watch now
-              </Typography>
-            </Button>
-          </TableCell>
+    let tab;
+    moviesData ? (tab = moviesData) : (tab = [])
 
-        </TableRow>
+    console.log(tab);
+    return (
+      tab.length !== 0 ? (
+        tab.map(movie => (
+          <TableRow key={idMovie}>
+            <TableCell>
+              <Typography noWrap>{movie.title}</Typography>            
+            </TableCell>
+            <TableCell>
+              {movie.seen ? (
+                <Button onClick={() => unseen(token, movie.imdbId)}>
+                  <Typography noWrap>mark as unseen</Typography>
+                </Button>
+              ) : (
+                <Button onClick={() => seen(token, movie.imdbId)}>
+                  <Typography noWrap>mark as seen</Typography>
+                </Button>
+              )}
+            </TableCell>
+            <TableCell>
+              <Button component={Link} to={`/movie/${idMovie}`}>
+                <Typography variant="button" noWrap>
+                  watch now
+                </Typography>
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))
       ) : (
-        <LoadingDots />
+        null
       )
     );
   }
 }
 const mapDispatchToProps = dispatch => ({
-  getMovie: (idMovie, token) => dispatch(getMovieDataA(idMovie, token)),
   seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
   unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
 });
 
 const mapStateToProps = state => ({
-  movie: state.movie.data,
+  moviesData: state.watchList.moviesData,
 });
 
 WatchListMovie.propTypes = {
-  movie: PropTypes.shape({}).isRequired,
+  // moviesData: PropTypes.shape({}).isRequired,
   updateWatchList: PropTypes.func.isRequired,
   seen: PropTypes.func.isRequired,
   unseen: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
-  idMovie: PropTypes.string.isRequired,
+  // idMovie: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WatchListMovie);

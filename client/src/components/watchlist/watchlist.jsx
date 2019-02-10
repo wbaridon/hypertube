@@ -29,14 +29,8 @@ class WatchList extends React.Component {
       token,
       watchList,
     } = this.props;
-    console.log(token);
     getWatchList(token);
-    // watchList ? (
-    //   watchList.map(movie => (
-    //     updateWatchList(movie.imdbId, token),
-    //     console.log(movie)
-    //   ))
-    // ) : (null);
+   
   }
 
   render() {
@@ -44,11 +38,19 @@ class WatchList extends React.Component {
       token,
       watchList,
       updateWatchList,
+      moviesData,
     } = this.props;
+    // watchList ? (
+    //   watchList.map(movie => (
+    //     updateWatchList(movie.imdbId, token),
+    //     console.log(movie)
+    //   ))
+    //   // this.setState({watchList.data: ''})
+    // ) : (null);
     console.log(watchList);
     return (
       <Paper>
-        <Typography variant="title">
+        <Typography variant="h5">
           Watchlist
         </Typography>
         <br />
@@ -59,8 +61,10 @@ class WatchList extends React.Component {
           <TableBody>
             {
               watchList ? (
-                watchList.map(movie => <WatchListMovie token={token} idMovie={movie.id} updateWatchList={updateWatchList} />)
-              ) : <LoadingDots />
+                <WatchListMovie watchList={watchList} token={token} updateWatchList={updateWatchList} />
+              ) : (
+                null
+              )
             }
           </TableBody>
         </Table>
@@ -68,13 +72,6 @@ class WatchList extends React.Component {
     );
   }
 }
-
-WatchList.propTypes = {
-  token: PropTypes.string.isRequired,
-  getWatchList: PropTypes.func.isRequired,
-  watchList: PropTypes.shape({}).isRequired,
-  updateWatchList: PropTypes.func.isRequired,
-};
 
 const mapDispatchToProps = dispatch => ({
   updateWatchList: (idMovie, token) => dispatch(updateWatchListA(idMovie, token)),
@@ -85,7 +82,15 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   token: state.user.token,
   watchList: state.watchList.data,
+  // moviesData: state.watchList.moviesData,
 });
+
+WatchList.propTypes = {
+  // watchList: PropTypes.shape({}).isRequired,
+  token: PropTypes.string.isRequired,
+  getWatchList: PropTypes.func.isRequired,
+  updateWatchList: PropTypes.func.isRequired,
+};
 
 WatchList.url = '/watchlist';
 export default connect(mapStateToProps, mapDispatchToProps)(WatchList);

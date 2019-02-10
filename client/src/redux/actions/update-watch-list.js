@@ -5,24 +5,24 @@ import {
   UPDATE_WATCHLIST_ERROR,
 } from './action-types';
 import { setErrorA } from '.';
-import { resolve } from 'q';
 
-export const updateWatchListStart = () => ({
+export const updateWatchListStart = idMovie => ({
   type: UPDATE_WATCHLIST,
+  idMovie,
 });
 
-export const updateWatchListSuccess = result => ({
+export const updateWatchListSuccess = (idMovie, movieData) => ({
   type: UPDATE_WATCHLIST_SUCCESS,
-  result,
+  idMovie,
+  movieData,
 });
 
-export const updateWatchListError = () => ({
+export const updateWatchListError = idMovie => ({
   type: UPDATE_WATCHLIST_ERROR,
+  idMovie,
 });
 
 export const updateWatchListA = (idMovie, token) => {
-  console.log(idMovie);
-  console.log(token);
   return (dispatch) => {
     dispatch(updateWatchListStart(idMovie));
     return movieAPI(idMovie, token)

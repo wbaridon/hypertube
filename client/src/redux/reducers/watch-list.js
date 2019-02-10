@@ -68,32 +68,22 @@ export default function watchList(state = defaultWatchListState, action) {
     case UPDATE_WATCHLIST:
       return {
         ...state,
-        moviesdata: {
-          ...state.watchlist,
-          [action.idMovie]: {
-            title: '',
-          },
+        moviesData: {
+          ...state.watchList,
         },
-        loading: true,
       };
     case UPDATE_WATCHLIST_SUCCESS:
       return {
-        loading: false,
-        success: true,
         ...state,
-        moviesdata: {
-          // ...state.watchlist,
-          [action.idMovie]: action.result,
-        },
+        moviesData: [...state.moviesData, action.movieData],
       };
     case UPDATE_WATCHLIST_ERROR:
       return {
         ...state,
-        moviesdata: {
-          // ...state.watchlist,
+        moviesData: {
+          ...state.watchlist,
           [action.idMovie]: null,
         },
-        loading: true,
       };
     default:
       return state;
