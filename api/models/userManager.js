@@ -104,7 +104,7 @@ module.exports.getSeenStatus = function (username, id) {
 
 module.exports.addToList = function (user, data) {
   return new Promise ((resolve, reject) => {
-    User.findOneAndUpdate({'userName': user}, {$push: {watchList: data}})
+    User.findOneAndUpdate({'userName': user, 'watchList.id': {$ne: data.id}}, {$push: {watchList: data}})
     .then(function(result){ resolve() },
     (err) => {console.log(err)}
     )
