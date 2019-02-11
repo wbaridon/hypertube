@@ -11,7 +11,6 @@ watchListRouter
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       let movieId = req.body.movieId
-      console.log(req.body)
       UserManager.addToList(user, {id: movieId})
         .then(result => { res.status(200).send(result) })
         .catch(error => { res.status(400).send({error: 'addToList.Error'})})

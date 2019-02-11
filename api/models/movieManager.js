@@ -80,3 +80,11 @@ module.exports.getComment = function (movieId, commentId) {
     }).catch(error => reject(error))
   })
 }
+
+module.exports.getMovieOnServer = function (expireDate) {
+  return new Promise ((resolve, reject) => {
+    Movie.find({movieOnServer: true, lastSeen: { $lt: expireDate }}).then(movie => {
+      resolve(movie)
+    }).catch(error => reject(error))
+  })
+}
