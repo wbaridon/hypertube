@@ -114,9 +114,13 @@ userRouter
   })
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
-        checkUserInput(req.body, token.user)
+        data = {
+          field: req.body.field,
+          value: req.body.value.trim()
+        }
+        checkUserInput(data, token.user)
         .then(sucess => {
-          if (req.body.field === 'userName') { token.user = req.body.value}
+          if (data.field === 'userName') { token.user = data.value}
           CheckProfilIsFill(token.user).then(check => {
             if (check === true) { sucess.profilIsFill = true }
             res.status(200).send(sucess);
