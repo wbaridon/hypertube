@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  TableCell,
+  Button,
   Typography,
   Grid,
   Card,
@@ -12,41 +14,39 @@ import {
   TableBody,
   Paper,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
+  seenA,
+  unseenA,
   getWatchListA,
   deleteWatchListA,
-  updateWatchListA,
 } from 'Actions';
 import WatchListMovie from './watch-list-movie';
 import LoadingDots from '../loading-dots';
-
+import MovieCard from '../movies/movie-card';
 
 class WatchList extends React.Component {
   componentWillMount() {
     const {
       getWatchList,
       token,
-      watchList,
     } = this.props;
     getWatchList(token);
-   
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log(prevProps);
   }
 
   render() {
     const {
       token,
       watchList,
-      updateWatchList,
-      moviesData,
+      unseen,
+      seen,
+      deleteWatchList
     } = this.props;
-    // watchList ? (
-    //   watchList.map(movie => (
-    //     updateWatchList(movie.imdbId, token),
-    //     console.log(movie)
-    //   ))
-    //   // this.setState({watchList.data: ''})
-    // ) : (null);
     console.log(watchList);
     return (
       <Paper>
@@ -61,7 +61,38 @@ class WatchList extends React.Component {
           <TableBody>
             {
               watchList ? (
-                <WatchListMovie watchList={watchList} token={token} updateWatchList={updateWatchList} />
+                watchList.map(movie => (
+                  <TableRow key={movie.imdbId}>
+                    <TableCell>
+                      <Typography noWrap>{movie.title}</Typography>            
+                    </TableCell>
+                    <TableCell>
+                      {movie.seen ? (
+                        <Button onClick={() => unseen(token, movie.imdbId)}>
+                          <Typography noWrap>mark as unseen</Typography>
+                        </Button>
+                      ) : (
+                        <Button onClick={() => seen(token, movie.imdbId)}>
+                          <Typography noWrap>mark as seen</Typography>
+                        </Button>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button component={Link} to={`/movie/${movie.imdbId}`}>
+                        <Typography variant="button" noWrap>
+                          watch now
+                        </Typography>
+                      </Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button onClick={() => deleteWatchList(token, movie.imdbId)}>
+                        <Typography variant="button" noWrap>
+                          Remove from list
+                        </Typography>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
               ) : (
                 null
               )
@@ -74,22 +105,26 @@ class WatchList extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  updateWatchList: (idMovie, token) => dispatch(updateWatchListA(idMovie, token)),
   getWatchList: token => dispatch(getWatchListA(token)),
   deleteWatchList: (token, idMovie) => dispatch(deleteWatchListA(token, idMovie)),
+  seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
+  unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
+
 });
 
 const mapStateToProps = state => ({
   token: state.user.token,
   watchList: state.watchList.data,
-  // moviesData: state.watchList.moviesData,
 });
 
 WatchList.propTypes = {
-  // watchList: PropTypes.shape({}).isRequired,
+  seen: PropTypes.func.isRequired,
+  unseen: PropTypes.func.isRequired,
+  // watchList: PropTypes.arr.isRequired,
   token: PropTypes.string.isRequired,
   getWatchList: PropTypes.func.isRequired,
-  updateWatchList: PropTypes.func.isRequired,
+  deleteWatchList: PropTypes.func.isRequired,
+  watchList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 WatchList.url = '/watchlist';
