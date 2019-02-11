@@ -64,7 +64,7 @@ function SearchBar({
                 <br />
                 <Typography variant="caption">{sortSelection}</Typography>
               </Button>
-              <ValuePicker {...valuePickerValues} />
+              { sortSelection !== 'popular' ? <ValuePicker {...valuePickerValues} /> : null}
               <Menu
                 ModalClasses={{ root: classes.root }}
                 id="select-filter-menu"
@@ -72,6 +72,7 @@ function SearchBar({
                 open={Boolean(anchorEl)}
                 onClose={() => closeMenu()}
               >
+                <MenuItem onClick={() => closeMenu('popular')}>Popular</MenuItem>
                 <MenuItem onClick={() => closeMenu('alphabetical')}>Alphabetical</MenuItem>
                 <MenuItem onClick={() => closeMenu('date')}>Date</MenuItem>
                 <MenuItem onClick={() => closeMenu('rating')}>Rating</MenuItem>
@@ -103,7 +104,7 @@ function SearchBar({
         classes={{ focused: classes.searchBarFocused }}
         id="searchBar"
         tabIndex={-1}
-        placeholder="Search for movie titles, directors, writers, etc..."
+        placeholder="Search for movies..."
         variant="outlined"
         fullWidth
         value={searchString}

@@ -8,6 +8,8 @@ const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 const mimeTypes = require('../utils/mimeTypes.js');
 
+const MovieManager = require('../models/movieManager');
+
 function getExtention(fileName) {
   return fileName.substring(fileName.lastIndexOf('.'));
 }
@@ -44,21 +46,25 @@ function containsVideo(file, engine, res) {
   }
 }
 
-function alreadyDownloaded(engine, res) {
-  const test = 'musique.mp4';
-
-  if (fs.existsSync(`./torrents/${test}`)) {
+function alreadyDownloaded(engine, res, file) {
+  if (fs.existsSync(`assets/torrents/${file.name}`)) {
     console.log('Movie already exists');
-    const stream = fs.createReadStream(`./torrents/${test}`);
+    const data = { lastSeen: Date.now() }
+    const stream = fs.createReadStream(`assets/torrents/${file.name}`);
     stream.pipe(res);
+    MovieManager.update(id, data)
     return true;
   } else {
+    const data = { lastSeen: Date.now(),
+      movieOnServer: true,
+      file: 'assets/torrents/' + file.name }
+    MovieManager.update(id, data)
     return false;
   }
 }
 
 torrentRouter
-  .get('/e', async (req, res) => {
+  .get('/', async (req, res) => {
 
   const hash = req.query.videoHash;
 
@@ -71,20 +77,12 @@ torrentRouter
 
     file.select();
 
+    if (alreadyDownloaded(engine, res, file) === false) {
+      return;
+    }
+
     const pathFolder = fs.createWriteStream(`assets/torrents/${file.name}`);
-    // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
-    // req.torrent.data = {
-    //   path: `${pathFolder}/${file.path}`,
-    //   enSubFilePath,
-    //   frSubFilePath,
-    //   name: file.name,
-    //   size: file.length,
-    //   torrentDate: new Date(),
-    // };
-
-
     const stream = file.createReadStream()
-
     const converter = ffmpeg()
       .input(stream)
       .outputOptions('-movflags frag_keyframe+empty_moov')
@@ -110,7 +108,6 @@ torrentRouter
     .run();
 
     res.pipe(converter);
-
     stream.pipe(writeStream);
 
     res.on('close', () => {
@@ -120,21 +117,11 @@ torrentRouter
       writeStream.destroy();
     })
     engine.on('idle', () => {
-      // Set to "SEEN" in database
       console.log(engine.swarm.downloaded);
-      const pathFolder = `./torrents/${hash}`;
-      // const { frSubFilePath, enSubFilePath } = await createSubFile(req.idImdb, req.torrent.hash);
-      // req.torrent.data = {
-      //   path: `${pathFolder}/${file.path}`,
-      //   enSubFilePath,
-      //   frSubFilePath,
-      //   name: file.name,
-      //   size: file.length,
-      //   torrentDate: new Date(),
-      // };
+      const pathFolder = `assets/torrents/${hash}`;
       fs.appendFile(pathFolder, file.data, function (err) {
         if (err) throw err;
-        console.log("File movie saved");
+        console.log("Movie file saved");
       });
     });
   });
