@@ -78,11 +78,11 @@ torrentRouter
 
     file.select();
 
-    if (alreadyDownloaded(engine, res, file, id) === false) {
+    if (alreadyDownloaded(engine, res, file, id) === true) {
       return;
     }
 
-    const pathFolder = fs.createWriteStream(`assets/torrents/${file.name}`);
+    const writeStream = fs.createWriteStream(`assets/torrents/${file.name}`);
     const stream = file.createReadStream()
     const converter = ffmpeg()
       .input(stream)
