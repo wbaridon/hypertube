@@ -43,7 +43,7 @@ movieRouter
       let user = token.user
       let movieId = req.body.movieId
       UserManager.movieSeen(user, {id: movieId})
-        .then(result => { res.status(200).send(result) })
+        .then(result => { res.status(200).send({seen: true}) })
         .catch(error => { res.status(400).send({error: 'movieSeen.Error'})})
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
@@ -52,7 +52,7 @@ movieRouter
       let user = token.user
       let movieId = req.body.movieId
       UserManager.movieUnseen(user, movieId)
-        .then(result => { res.status(200).send(result) })
+        .then(result => { res.status(200).send({seen: false}) })
         .catch(error => { res.status(400).send({error: 'movieUnseen.Error'})})
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
