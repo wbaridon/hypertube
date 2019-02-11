@@ -33,7 +33,8 @@ movieRouter
         from: filter.sortBySliderValues.min,
         to: filter.sortBySliderValues.max
       }
-      if (filter.sortBy === 'popularity' || filter.sortBy === 'alphabetical') {
+      console.log(filter)
+      if (filter.sortBy === 'popular' || filter.sortBy === 'alphabetical') {
         let sliderSort = {
           field: 'imdbRating',
           from: 0,
