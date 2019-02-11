@@ -11,7 +11,10 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'nowrap',
-    alignItems: 'space-between',
+  },
+  input: {
+    paddingTop: '0px',
+    paddingBottom: '0px',
   },
 };
 
@@ -23,12 +26,12 @@ function ValuePicker({
   handleValueChange,
   classes,
 }) {
-  console.log(minValue, maxValue, currentLowValue, currentHighValue)
   return (
     <div className={classes.root}>
       <TextField
         multiline={false}
         className={classes.textField}
+        inputProps={{ className: classes.input }}
         variant="outlined"
         label={`${minValue}`}
         value={currentLowValue}
@@ -37,6 +40,7 @@ function ValuePicker({
       <TextField
         multiline={false}
         className={classes.textField}
+        inputProps={{ className: classes.input }}
         variant="outlined"
         label={`${maxValue}`}
         value={currentHighValue}
