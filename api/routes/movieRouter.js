@@ -10,10 +10,7 @@ movieRouter
   .post('/getMovie' , function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
       MovieManager.getMovie(req.body.id).then(result => {
-        UserManager.getSeenStatus(token.user, result.imdbId).then(history => {
-          const myMovie = result.toObject();
-          if (history) { myMovie.seen = true }
-          else { myMovie.seen = false }
+        getSeenStatus(token, result).then(myMovie => {
           res.status(200).send(myMovie);
         }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
       }).catch(error => res.status(404).send({error:'errorInTheDb'}))
@@ -33,7 +30,9 @@ movieRouter
       }
       MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse).then(result => {
         movieInTheUserList(token.user, result, callback => {
-          res.status(200).send(callback)
+          getSeenStatusList(token, callback, ret => {
+            res.status(200).send(ret)
+          })
         })
       })
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
@@ -74,4 +73,33 @@ movieRouter
     })
   }
 
+  async function getSeenStatusList(token, array, callback) {
+    var myArray = array
+    for (var i = 0; i < array.length; i++) {
+      myArray[i] = await getSeenStatusOnJson(token, array[i])
+    }
+    callback(myArray)
+  }
+
+  function getSeenStatus(token, data) {
+    return new Promise ((resolve, reject) => {
+      UserManager.getSeenStatus(token.user, data.imdbId).then(history => {
+        const myMovie = data.toObject();
+        if (history) { myMovie.seen = true }
+        else { myMovie.seen = false }
+        resolve(myMovie)
+      }).catch(err => reject(err))
+    })
+  }
+
+  function getSeenStatusOnJson(token, data) {
+    return new Promise ((resolve, reject) => {
+      UserManager.getSeenStatus(token.user, data.imdbId).then(history => {
+        const myMovie = data;
+        if (history) { myMovie.seen = true }
+        else { myMovie.seen = false }
+        resolve(myMovie)
+      }).catch(err => reject(err))
+    })
+  }
 module.exports = movieRouter;
