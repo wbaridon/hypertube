@@ -14,7 +14,7 @@ const defaultMoviesState = {
   noMoreMovies: false,
   moviePageState: {
     searchString: '',
-    sortSelection: 'alphabetical',
+    sortSelection: 'popular',
     valuePickerValues: {
       minValue: 0,
       maxValue: 25,
