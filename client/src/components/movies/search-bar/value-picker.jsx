@@ -5,58 +5,42 @@ import { TextField, withStyles } from '@material-ui/core';
 const styles = {
   textField: {
     width: '70px',
-    height: '24px',
+    height: '22px',
   },
   root: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'nowrap',
+    alignItems: 'space-between',
   },
 };
-
-function toggleLetterToNumber(numberOrLetter, toNumber = true) {
-  const az = /^[a-z]$/;
-  const AZ = /^[A-Z]$/;
-  const zeroTen = /^[0-9]+$/;
-  numberOrLetter = typeof numberOrLetter === 'string' ? numberOrLetter : numberOrLetter.toString();
-  if (numberOrLetter.match(az) && toNumber) {
-    return (numberOrLetter.charCodeAt() - 97).toString();
-  }
-  if (numberOrLetter.match(AZ) && toNumber) {
-    return (numberOrLetter.charCodeAt() - 65).toString();
-  }
-  if (numberOrLetter.match(zeroTen) && !toNumber) {
-    return String.fromCharCode(parseInt(numberOrLetter, 10) + 97);
-  }
-  return numberOrLetter;
-}
-
 
 function ValuePicker({
   minValue,
   maxValue,
   currentLowValue,
   currentHighValue,
-  isFloat,
-  isAlphabet,
   handleValueChange,
   classes,
 }) {
+  console.log(minValue, maxValue, currentLowValue, currentHighValue)
   return (
     <div className={classes.root}>
       <TextField
+        multiline={false}
         className={classes.textField}
         variant="outlined"
-        label={`${isAlphabet ? toggleLetterToNumber(minValue, false) : minValue}`}
+        label={`${minValue}`}
         value={currentLowValue}
-        onChange={e => handleValueChange('low', isAlphabet ? toggleLetterToNumber(e.target.value, true) : e.target.value)}
+        onChange={e => handleValueChange('low', e.target.value)}
       />
       <TextField
+        multiline={false}
         className={classes.textField}
         variant="outlined"
-        label={`${isAlphabet ? toggleLetterToNumber(maxValue, false) : maxValue}`}
+        label={`${maxValue}`}
         value={currentHighValue}
-        onChange={e => handleValueChange('high', isAlphabet ? toggleLetterToNumber(e.target.value, true) : e.target.value)}
+        onChange={e => handleValueChange('high', e.target.value)}
       />
     </div>
   );
@@ -68,14 +52,7 @@ ValuePicker.propTypes = {
   currentLowValue: PropTypes.node.isRequired,
   currentHighValue: PropTypes.node.isRequired,
   handleValueChange: PropTypes.func.isRequired,
-  isFloat: PropTypes.bool,
-  isAlphabet: PropTypes.bool,
   classes: PropTypes.shape({}).isRequired,
-};
-
-ValuePicker.defaultProps = {
-  isFloat: false,
-  isAlphabet: false,
 };
 
 export default withStyles(styles)(ValuePicker);

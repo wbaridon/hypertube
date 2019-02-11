@@ -64,7 +64,7 @@ function SearchBar({
                 <br />
                 <Typography variant="caption">{sortSelection}</Typography>
               </Button>
-              { sortSelection !== 'popular' ? <ValuePicker {...valuePickerValues} /> : null}
+              { sortSelection !== 'popular' && sortSelection !== 'alphabetical' ? <ValuePicker {...valuePickerValues} /> : null}
               <Menu
                 ModalClasses={{ root: classes.root }}
                 id="select-filter-menu"
@@ -82,7 +82,6 @@ function SearchBar({
           endAdornment:
             (
               <InputAdornment position="end">
-                <Typography variant="caption">{reversedSort ? 'asc' : 'dsc'}</Typography>
                 <IconButton
                   className={classes.smallButton}
                   aria-label="Reverse"
