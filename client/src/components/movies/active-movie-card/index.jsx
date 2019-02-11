@@ -137,9 +137,9 @@ class ActiveMovieCard extends React.Component {
 ActiveMovieCard.propTypes = {
   token: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  year: PropTypes.number.isRequired,
+  year: PropTypes.node,
   cover: PropTypes.string.isRequired,
-  synopsis: PropTypes.string.isRequired,
+  synopsis: PropTypes.node,
   dimensions: PropTypes.shape({
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -151,6 +151,8 @@ ActiveMovieCard.propTypes = {
 
 ActiveMovieCard.defaultProps = {
   closeMovie: () => {},
+  year: 1914,
+  synopsis: 'No summary available',
 };
 
 export default ActiveMovieCard;

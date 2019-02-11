@@ -46,7 +46,7 @@ function containsVideo(file, engine, res) {
   }
 }
 
-function alreadyDownloaded(engine, res, file) {
+function alreadyDownloaded(engine, res, file, id) {
   if (fs.existsSync(`assets/torrents/${file.name}`)) {
     console.log('Movie already exists');
     const data = { lastSeen: Date.now() }
@@ -67,6 +67,7 @@ torrentRouter
   .get('/', async (req, res) => {
 
   const hash = req.query.videoHash;
+  const id = req.query.id;
 
   const torrent_magnet = getMagnet(hash);
   var engine = torrentStream(torrent_magnet);
@@ -77,7 +78,7 @@ torrentRouter
 
     file.select();
 
-    if (alreadyDownloaded(engine, res, file) === false) {
+    if (alreadyDownloaded(engine, res, file, id) === false) {
       return;
     }
 
