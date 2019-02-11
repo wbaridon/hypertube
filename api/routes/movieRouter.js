@@ -35,7 +35,7 @@ movieRouter
       }
       if (filter.sortBy === 'popularity' || filter.sortBy === 'alphabetical') {
         let sliderSort = {
-          field: 'rating',
+          field: 'imdbRating',
           from: 0,
           to: 10
         }
