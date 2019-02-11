@@ -27,9 +27,9 @@ module.exports.createMovie = function (data) {
   })
 }
 
-module.exports.getList = function (query, start, limit, sort, reverse) {
+module.exports.getList = function (query, start, limit, sort, reverse, sliderSort) {
   return new Promise ((resolve, reject) => {
-    Movie.find({'title': { $regex: query, $options: 'i'} })
+    Movie.find({'title': { $regex: query, $options: 'i'}, [sliderSort.field]: {$gte: sliderSort.from, $lte: sliderSort.to } })
     .skip(start).limit(limit).sort({[sort]: [reverse]})
     .lean()
     .then(function(result){ resolve(result) },

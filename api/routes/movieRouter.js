@@ -28,7 +28,12 @@ movieRouter
       if (req.body.filter.reverse) {
         reverse = 1;
       }
-      MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse).then(result => {
+      let sliderSort = {
+        field: sort,
+        from: filter.sortBySliderValues.min,
+        to: filter.sortBySliderValues.max
+      }
+      MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse, sliderSort).then(result => {
         movieInTheUserList(token.user, result, callback => {
           getSeenStatusList(token, callback, ret => {
             res.status(200).send(ret)
