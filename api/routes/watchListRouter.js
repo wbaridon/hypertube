@@ -11,7 +11,6 @@ watchListRouter
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
       let movieId = req.body.movieId
-      console.log(req.body)
       UserManager.addToList(user, {id: movieId})
         .then(result => { res.status(200).send(result) })
         .catch(error => { res.status(400).send({error: 'addToList.Error'})})
@@ -22,7 +21,16 @@ watchListRouter
       let user = token.user
       let movieId = req.body.movieId
       UserManager.removeFromList(user, movieId)
-        .then(result => { res.status(200).send(result) })
+        .then(result => {
+          let user = token.user
+          UserManager.getWatchList(user)
+            .then(result => {
+              getMovieList(result, user, callback => {
+                res.status(200).send(callback)
+              })
+            })
+            .catch(error => { res.status(400).send({error: 'getList.Error'})})
+        })
         .catch(error => { res.status(400).send({error: 'removeFromList.Error'})})
     }).catch(err => { res.status(400).json({ error: 'token.invalidToken' })})
   })

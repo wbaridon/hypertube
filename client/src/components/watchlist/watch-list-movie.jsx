@@ -42,7 +42,7 @@ class WatchListMovie extends React.Component {
     let tab;
     moviesData ? (tab = moviesData) : (tab = [])
 
-    console.log(tab);
+    // console.log(tab);
     return (
       tab.length !== 0 ? (
         tab.map(movie => (

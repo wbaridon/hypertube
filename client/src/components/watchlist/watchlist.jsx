@@ -1,55 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Typography,
-  Grid,
   Card,
-  CardContent,
-  CardMedia,
-  IconButton,
+  Grid,
+  TableCell,
+  Button,
+  Typography,
   TableRow,
   Table,
   TableBody,
   Paper,
+  Avatar,
+  CardMedia,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
+  seenA,
+  unseenA,
   getWatchListA,
   deleteWatchListA,
-  updateWatchListA,
 } from 'Actions';
-import WatchListMovie from './watch-list-movie';
-import LoadingDots from '../loading-dots';
-
 
 class WatchList extends React.Component {
   componentWillMount() {
     const {
       getWatchList,
       token,
-      watchList,
     } = this.props;
     getWatchList(token);
-   
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log(prevProps);
   }
 
   render() {
     const {
       token,
       watchList,
-      updateWatchList,
-      moviesData,
+      unseen,
+      seen,
+      deleteWatchList,
     } = this.props;
-    // watchList ? (
-    //   watchList.map(movie => (
-    //     updateWatchList(movie.imdbId, token),
-    //     console.log(movie)
-    //   ))
-    //   // this.setState({watchList.data: ''})
-    // ) : (null);
     console.log(watchList);
     return (
-      <Paper>
+      <Paper >
         <Typography variant="h5">
           Watchlist
         </Typography>
@@ -57,39 +53,76 @@ class WatchList extends React.Component {
         <Typography variant="subtitle1">
           Quels films dois tu regarder ?
         </Typography>
-        <Table>
-          <TableBody>
+          <Grid container direction="colummn" style={{flexFlow:"column"}} >
             {
               watchList ? (
-                <WatchListMovie watchList={watchList} token={token} updateWatchList={updateWatchList} />
+                watchList.map(movie => (
+                  <Paper style={{margin: '15px'}}>
+                    <Grid item container direction="row" style={{flexFlow: 'row'}}>
+                      <img style={{maxHeight:'140px', width:'auto', height:'auto', marginRight: '15px'}} src={movie.cover} />
+                      <Grid item container direction="row" alignItems="center" justify="space-evenly" key={movie.imdbId}>
+                        {/* <Grid item>
+                          <Typography variant="subtitle1" noWrap>{movie.title}</Typography>
+                        </Grid > */}
+                        <Grid item>
+                          {movie.seen ? (
+                            <Button onClick={() => unseen(token, movie.imdbId)}>
+                              <Typography variant="button" noWrap>mark as unseen</Typography>
+                            </Button>
+                          ) : (
+                            <Button onClick={() => seen(token, movie.imdbId)}>
+                              <Typography variant="button" noWrap>mark as seen</Typography>
+                            </Button>
+                          )}
+                        </Grid >
+                        <Grid item>
+                          <Button component={Link} to={`/movie/${movie.imdbId}`}>
+                            <Typography variant="button" noWrap>
+                              watch now
+                            </Typography>
+                          </Button>
+                        </Grid >
+                        <Grid item>
+                          <Button onClick={() => deleteWatchList(token, movie.imdbId)}>
+                            <Typography variant="button" noWrap>
+                              Remove from list
+                            </Typography>
+                          </Button>
+                        </Grid >
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                ))
               ) : (
                 null
               )
             }
-          </TableBody>
-        </Table>
+          </Grid>
       </Paper>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  updateWatchList: (idMovie, token) => dispatch(updateWatchListA(idMovie, token)),
   getWatchList: token => dispatch(getWatchListA(token)),
   deleteWatchList: (token, idMovie) => dispatch(deleteWatchListA(token, idMovie)),
+  seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
+  unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
+
 });
 
 const mapStateToProps = state => ({
   token: state.user.token,
   watchList: state.watchList.data,
-  // moviesData: state.watchList.moviesData,
 });
 
 WatchList.propTypes = {
-  // watchList: PropTypes.shape({}).isRequired,
+  seen: PropTypes.func.isRequired,
+  unseen: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   getWatchList: PropTypes.func.isRequired,
-  updateWatchList: PropTypes.func.isRequired,
+  deleteWatchList: PropTypes.func.isRequired,
+  watchList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 WatchList.url = '/watchlist';
