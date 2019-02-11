@@ -23,6 +23,7 @@ const watchListRouter = require('./routes/watchListRouter');
 const torrentRouter = require('./routes/torrentRouter');
 const yts = require('./utils/getMoviesFromYTS');
 const eztv = require('./utils/getMoviesFromEZTV');
+const torrentStorage = require('./utils/torrentStorage');
 
 app.use(express.static('assets'))
 app.use('/user', userRouter);
@@ -35,10 +36,12 @@ app.use('/watchList', watchListRouter);
 
 app.listen(port, function () {
   console.log(`Server running at http://${hostname}:${port}/`);
+//  torrentStorage.deleteMovie()
 });
 
 var getNewMovies = schedule.scheduleJob('0 0 * * *', function(){
   // Execute la fonction a 0h
   yts.launcher()
   eztv.launcher()
+  torrentStorage.deleteMovie()
 });
