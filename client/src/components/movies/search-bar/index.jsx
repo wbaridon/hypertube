@@ -15,6 +15,7 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Clear from '@material-ui/icons/Clear';
 import { withStyles } from '@material-ui/core/styles';
 import { injectIntl, intlShape } from 'react-intl';
+import ValuePicker from './value-picker';
 
 const styles = {
   searchBar: {
@@ -38,81 +39,81 @@ const styles = {
   },
 };
 
-class SearchBar extends React.Component {
-  render() {
-    const {
-      searchString,
-      handleSearchStringChange,
-      classes,
-      openMenu,
-      sortSelection,
-      reversedSort,
-      toggleReverseSort,
-      clearState,
-      anchorEl,
-      closeMenu,
-      intl,
-    } = this.props;
-    return (
-      <Paper className={classes.searchBar}>
-        <TextField
-          autoComplete="off"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Button onClick={e => openMenu(e)}>
-                  <Typography noWrap>
-                    {intl.formatMessage({ id: 'searchBar.sortBy' })}
-                  </Typography>
-                </Button>
-                <Menu
-                  ModalClasses={{ root: classes.root }}
-                  id="select-filter-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={() => closeMenu()}
+function SearchBar({
+  searchString,
+  handleSearchStringChange,
+  valuePickerValues,
+  classes,
+  openMenu,
+  sortSelection,
+  reversedSort,
+  toggleReverseSort,
+  clearState,
+  anchorEl,
+  closeMenu,
+  intl,
+}) {
+  return (
+    <Paper className={classes.searchBar}>
+      <TextField
+        autoComplete="off"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Button onClick={e => openMenu(e)}>
+                <br />
+                <Typography variant="caption">{sortSelection}</Typography>
+              </Button>
+              <ValuePicker {...valuePickerValues} />
+              <Menu
+                ModalClasses={{ root: classes.root }}
+                id="select-filter-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={() => closeMenu()}
+              >
+                <MenuItem onClick={() => closeMenu('alphabetical')}>Alphabetical</MenuItem>
+                <MenuItem onClick={() => closeMenu('date')}>Date</MenuItem>
+                <MenuItem onClick={() => closeMenu('rating')}>Rating</MenuItem>
+              </Menu>
+            </InputAdornment>
+          ),
+          endAdornment:
+            (
+              <InputAdornment position="end">
+                <Typography variant="caption">{reversedSort ? 'asc' : 'dsc'}</Typography>
+                <IconButton
+                  className={classes.smallButton}
+                  aria-label="Reverse"
+                  onClick={toggleReverseSort}
                 >
-                  <MenuItem onClick={() => closeMenu('alphabetical')}>Alphabetical</MenuItem>
-                  <MenuItem onClick={() => closeMenu('date')}>Date</MenuItem>
-                  <MenuItem onClick={() => closeMenu('rating')}>Rating</MenuItem>
-                </Menu>
+                  {reversedSort ? <ArrowUpward /> : <ArrowDownward />}
+                </IconButton>
+                <IconButton
+                  className={classes.smallButton}
+                  aria-label="Reverse"
+                  onClick={clearState}
+                >
+                  <Clear />
+                </IconButton>
               </InputAdornment>
             ),
-            endAdornment:
-              (
-                <InputAdornment position="end">
-                  <IconButton
-                    className={classes.smallButton}
-                    aria-label="Reverse"
-                    onClick={toggleReverseSort}
-                  >
-                    {reversedSort ? <ArrowUpward /> : <ArrowDownward />}
-                  </IconButton>
-                  <IconButton
-                    className={classes.smallButton}
-                    aria-label="Reverse"
-                    onClick={clearState}
-                  >
-                    <Clear />
-                  </IconButton>
-                </InputAdornment>
-              ),
-          }
-          }
-          classes={{ focused: classes.searchBarFocused }}
-          id="searchBar"
-          tabIndex={-1}
-          placeholder="Search for movie titles, directors, writers, etc..."
-          variant="outlined"
-          fullWidth
-          value={searchString}
-          onChange={handleSearchStringChange}
+        }
+        }
+        classes={{ focused: classes.searchBarFocused }}
+        id="searchBar"
+        tabIndex={-1}
+        placeholder="Search for movie titles, directors, writers, etc..."
+        variant="outlined"
+        fullWidth
+        value={searchString}
+        onChange={handleSearchStringChange}
 
-        />
-      </Paper>
-    );
-  }
+      />
+    </Paper>
+  );
 }
+
 SearchBar.propTypes = {
   searchString: PropTypes.string.isRequired,
   handleSearchStringChange: PropTypes.func.isRequired,
@@ -123,8 +124,21 @@ SearchBar.propTypes = {
   clearState: PropTypes.func.isRequired,
   classes: PropTypes.shape({}).isRequired,
   closeMenu: PropTypes.func.isRequired,
-  anchorEl: PropTypes.shape({}).isRequired,
+  anchorEl: PropTypes.shape({}),
   intl: intlShape.isRequired,
+  valuePickerValues: PropTypes.shape({
+    minValue: PropTypes.number.isRequired,
+    maxValue: PropTypes.number.isRequired,
+    currentLowValue: PropTypes.node.isRequired,
+    currentHighValue: PropTypes.node.isRequired,
+    handleValueChange: PropTypes.func.isRequired,
+    isFloat: PropTypes.bool,
+    isAlphabet: PropTypes.bool,
+  }).isRequired,
+};
+
+SearchBar.defaultProps = {
+  anchorEl: null,
 };
 
 export default injectIntl(withStyles(styles)(SearchBar));

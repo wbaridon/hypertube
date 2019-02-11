@@ -71,6 +71,23 @@ const styles = {
   },
 };
 
+function toggleLetterToNumber(numberOrLetter, toNumber = true) {
+  const az = /^[a-z]$/;
+  const AZ = /^[A-Z]$/;
+  const zeroTen = /^[0-9]+$/;
+  numberOrLetter = typeof numberOrLetter === 'string' ? numberOrLetter : numberOrLetter.toString();
+  if (numberOrLetter.match(az) && toNumber) {
+    return (numberOrLetter.charCodeAt() - 97).toString();
+  }
+  if (numberOrLetter.match(AZ) && toNumber) {
+    return (numberOrLetter.charCodeAt() - 65).toString();
+  }
+  if (numberOrLetter.match(zeroTen) && !toNumber) {
+    return String.fromCharCode(parseInt(numberOrLetter, 10) + 97);
+  }
+  return numberOrLetter;
+}
+
 class Movies extends Component {
   constructor(props) {
     super(props);
@@ -78,7 +95,8 @@ class Movies extends Component {
       ...props.moviePageState,
       anchorEl: null,
     };
-
+    this.state.valuePickerValues.handleValueChange = this.handleValueChangeDebounced.bind(this);
+    this.handleValueChange = debounce(this.handleValueChange, 800, { leading: false, trailing: true });
     this.renderMovies = this.renderMovies.bind(this);
     this.renderWaypoint = this.renderWaypoint.bind(this);
     this.loadMoreItems = this.loadMoreItems.bind(this);
@@ -169,6 +187,7 @@ class Movies extends Component {
       searchString,
       sortSelection,
       reversedSort,
+      valuePickerValues,
     } = this.state;
     const request = defaultRequestShape;
     request.filter.searchString = searchString;
@@ -176,6 +195,10 @@ class Movies extends Component {
     request.filter.reverse = reversedSort;
     request.filter.from = page * 50;
     request.filter.to = (page + 1) * 50;
+    request.filter.sortBySliderValues = {
+      min: !valuePickerValues.isAlphabet ? parseFloat(valuePickerValues.currentLowValue) : valuePickerValues.currentLowValue,
+      max: !valuePickerValues.isAlphabet ? parseFloat(valuePickerValues.currentHighValue) : valuePickerValues.currentHighValue,
+    };
     console.log(request);
     getMoviePageHandle(token, request);
   }
@@ -188,6 +211,93 @@ class Movies extends Component {
   handleSearchStringChange(event) {
     this.setState({ searchString: event.target.value }, () => {
       this.debounceSearchStringChange();
+    });
+  }
+
+  handleValueChangeDebounced(whichOne, value) {
+    const { valuePickerValues } = this.state;
+    let {
+      currentLowValue,
+      currentHighValue,
+      isAlphabet,
+    } = valuePickerValues;
+    if (whichOne === 'low') {
+      currentLowValue = value;
+    } else {
+      currentHighValue = value;
+    }
+
+    this.setState({
+      valuePickerValues: {
+        ...valuePickerValues,
+        currentLowValue: isAlphabet ? toggleLetterToNumber(currentLowValue, false) : currentLowValue,
+        currentHighValue: isAlphabet ? toggleLetterToNumber(currentHighValue, false) : currentHighValue,
+      }
+    }, () => {
+      let v;
+      if (whichOne === 'low') {
+        v = this.state.valuePickerValues.currentLowValue;
+      } else {
+        v = this.state.valuePickerValues.currentHighValue;
+      }
+      this.handleValueChange(whichOne, v);
+    });
+  }
+
+  handleValueChange(whichOne, value) {
+    const { valuePickerValues } = this.state;
+    let {
+      currentLowValue,
+      currentHighValue,
+      minValue,
+      maxValue,
+      isAlphabet,
+      isFloat,
+    } = valuePickerValues;
+    console.log(value);
+    let myValue = value;
+    if (valuePickerValues.isAlphabet) {
+      myValue = toggleLetterToNumber(myValue, true);
+    }
+    myValue = !isFloat ? parseInt(myValue, 10) : parseFloat(parseFloat(myValue).toFixed(1));
+    if (isNaN(myValue)) {
+      myValue = whichOne === 'low' ? minValue : maxValue;
+    }
+    if (myValue > maxValue) {
+      myValue = maxValue;
+    } else if (myValue < minValue) {
+      myValue = minValue;
+    }
+    currentLowValue = typeof currentLowValue === 'number' ? currentLowValue : toggleLetterToNumber(currentLowValue, true);
+    currentHighValue = typeof currentHighValue === 'number' ? currentHighValue : toggleLetterToNumber(currentHighValue, true);
+    console.log(typeof currentLowValue, typeof currentHighValue, typeof myValue);
+    if (whichOne === 'low') {
+      if (myValue > currentHighValue) {
+        currentLowValue = currentHighValue;
+        currentHighValue = myValue;
+      } else {
+        currentLowValue = myValue;
+      }
+    }
+    else if (whichOne === 'high') {
+      if (myValue < currentLowValue) {
+        currentHighValue = currentLowValue;
+        currentLowValue = myValue;
+      } else {
+        currentHighValue = myValue;
+      }
+    }
+    currentLowValue = typeof currentLowValue === 'string' ? currentLowValue : currentLowValue.toString();
+    currentHighValue = typeof currentHighValue === 'string' ? currentHighValue : currentHighValue.toString();
+    this.setState({
+      valuePickerValues: {
+        ...valuePickerValues,
+        currentLowValue: isAlphabet ? (toggleLetterToNumber(currentLowValue, false)) : currentLowValue,
+        currentHighValue: isAlphabet ? (toggleLetterToNumber(currentHighValue, false)) : currentHighValue,
+      },
+    }, () => {
+      const { clearMoviesHandle } = this.props;
+      clearMoviesHandle();
     });
   }
 
@@ -206,8 +316,40 @@ class Movies extends Component {
 
   handleMenuClose(chosenValue = null) {
     if (chosenValue) {
+      let { valuePickerValues } = this.state;
+      if (chosenValue === 'alphabetical') {
+        valuePickerValues = {
+          ...valuePickerValues,
+          minValue: 0,
+          maxValue: 25,
+          currentLowValue: 'a',
+          currentHighValue: 'z',
+          isFloat: false,
+          isAlphabet: true,
+        };
+      } else if (chosenValue === 'rating') {
+        valuePickerValues = {
+          ...valuePickerValues,
+          minValue: 0.0,
+          maxValue: 10.0,
+          currentLowValue: 0.0,
+          currentHighValue: 10.0,
+          isFloat: true,
+          isAlphabet: false,
+        };
+      } else if (chosenValue === 'date') {
+        valuePickerValues = {
+          ...valuePickerValues,
+          minValue: 1970,
+          maxValue: 2019,
+          currentLowValue: 1970,
+          currentHighValue: 2019,
+          isFloat: false,
+          isAlphabet: false,
+        };
+      }
       const { clearMoviesHandle } = this.props;
-      this.setState({ sortSelection: chosenValue },
+      this.setState({ sortSelection: chosenValue, valuePickerValues },
         () => {
           clearMoviesHandle();
         });
@@ -252,12 +394,12 @@ class Movies extends Component {
         <Grid
           item
           style={{ height: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.height : dimensions.height, width: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
-          onBlur={mobile ? null : (e) => { e.preventDefault(); this.onHoverMovie(null); console.log('onblur'); }}
-          onClick={mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id, true, true, e); console.log('onCLick'); } : null}
-          onMouseLeave={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(null); console.log('onMouseleave'); } : null}
-          onMouseEnter={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); console.log('onMouseEnter'); } : null}
-          onMouseOver={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); console.log('onMouseover'); } : null}
-          onFocus={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); console.log('onFocus'); } : null}
+          onBlur={mobile ? null : (e) => { e.preventDefault(); this.onHoverMovie(null); }}
+          onClick={mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id, true, true, e); } : null}
+          onMouseLeave={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(null); } : null}
+          onMouseEnter={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); } : null}
+          onMouseOver={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); } : null}
+          onFocus={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); } : null}
           key={movie._id}
         >
           {
@@ -276,6 +418,7 @@ class Movies extends Component {
       reversedSort,
       top,
       anchorEl,
+      valuePickerValues,
     } = this.state;
     const {
       classes,
@@ -293,6 +436,7 @@ class Movies extends Component {
           toggleReverseSort={this.toggleReverseSort}
           clearState={this.clearState}
           anchorEl={anchorEl}
+          valuePickerValues={valuePickerValues}
         />
         <span id="top" style={{ position: 'absolute', top: '0px' }} />
         <Grid container style={{ marginTop: '70px' }} spacing={0} justify="center">
@@ -307,9 +451,7 @@ class Movies extends Component {
 
 
 Movies.propTypes = {
-  movies: PropTypes.arrayOf(PropTypes.shape({
-
-  })),
+  movies: PropTypes.arrayOf(PropTypes.shape({})),
   page: PropTypes.number.isRequired,
   getMoviePageHandle: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,

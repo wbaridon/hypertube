@@ -15,6 +15,14 @@ const defaultMoviesState = {
   moviePageState: {
     searchString: '',
     sortSelection: 'alphabetical',
+    valuePickerValues: {
+      minValue: 0,
+      maxValue: 25,
+      currentLowValue: 'a',
+      currentHighValue: 'z',
+      isFloat: false,
+      isAlphabet: true,
+    },
     reversedSort: false,
     currentMovie: null,
     top: false,

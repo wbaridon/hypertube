@@ -144,9 +144,13 @@ ActiveMovieCard.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
   }).isRequired,
-  closeMovie: PropTypes.func.isRequired,
+  closeMovie: PropTypes.func,
   imdbRating: PropTypes.number.isRequired,
   addWatchList: PropTypes.func.isRequired,
+};
+
+ActiveMovieCard.defaultProps = {
+  closeMovie: () => {},
 };
 
 export default ActiveMovieCard;
