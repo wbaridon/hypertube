@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Card,
+  Grid,
   TableCell,
   Button,
   Typography,
@@ -9,6 +11,7 @@ import {
   TableBody,
   Paper,
   Avatar,
+  CardMedia,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -42,7 +45,7 @@ class WatchList extends React.Component {
     } = this.props;
     console.log(watchList);
     return (
-      <Paper style={{width:'100%', overflowX: 'auto'}}>
+      <Paper >
         <Typography variant="h5">
           Watchlist
         </Typography>
@@ -50,51 +53,51 @@ class WatchList extends React.Component {
         <Typography variant="subtitle1">
           Quels films dois tu regarder ?
         </Typography>
-        <Table>
-          <TableBody>
+          <Grid container direction="colummn" style={{flexFlow:"column"}} >
             {
               watchList ? (
                 watchList.map(movie => (
-                  <TableRow key={movie.imdbId}>
-                    <TableCell>
-                      <Avatar alt="moviepic" src={movie.cover} />
-                    </TableCell>
-                    <TableCell>
-                      <Typography noWrap>{movie.title}</Typography>            
-                    </TableCell>
-                    <TableCell>
-                      {movie.seen ? (
-                        <Button onClick={() => unseen(token, movie.imdbId)}>
-                          <Typography noWrap>mark as unseen</Typography>
-                        </Button>
-                      ) : (
-                        <Button onClick={() => seen(token, movie.imdbId)}>
-                          <Typography noWrap>mark as seen</Typography>
-                        </Button>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Button component={Link} to={`/movie/${movie.imdbId}`}>
-                        <Typography variant="button" noWrap>
-                          watch now
-                        </Typography>
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button onClick={() => deleteWatchList(token, movie.imdbId)}>
-                        <Typography variant="button" noWrap>
-                          Remove from list
-                        </Typography>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                  <Paper style={{margin: '15px'}}>
+                    <Grid item container direction="row" style={{flexFlow: 'row'}}>
+                      <img style={{maxHeight:'140px', width:'auto', height:'auto', marginRight: '15px'}} src={movie.cover} />
+                      <Grid item container direction="row" alignItems="center" justify="space-evenly" key={movie.imdbId}>
+                        {/* <Grid item>
+                          <Typography variant="subtitle1" noWrap>{movie.title}</Typography>
+                        </Grid > */}
+                        <Grid item>
+                          {movie.seen ? (
+                            <Button onClick={() => unseen(token, movie.imdbId)}>
+                              <Typography variant="button" noWrap>mark as unseen</Typography>
+                            </Button>
+                          ) : (
+                            <Button onClick={() => seen(token, movie.imdbId)}>
+                              <Typography variant="button" noWrap>mark as seen</Typography>
+                            </Button>
+                          )}
+                        </Grid >
+                        <Grid item>
+                          <Button component={Link} to={`/movie/${movie.imdbId}`}>
+                            <Typography variant="button" noWrap>
+                              watch now
+                            </Typography>
+                          </Button>
+                        </Grid >
+                        <Grid item>
+                          <Button onClick={() => deleteWatchList(token, movie.imdbId)}>
+                            <Typography variant="button" noWrap>
+                              Remove from list
+                            </Typography>
+                          </Button>
+                        </Grid >
+                      </Grid>
+                    </Grid>
+                  </Paper>
                 ))
               ) : (
                 null
               )
             }
-          </TableBody>
-        </Table>
+          </Grid>
       </Paper>
     );
   }
