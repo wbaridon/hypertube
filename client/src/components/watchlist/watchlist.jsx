@@ -4,15 +4,11 @@ import {
   TableCell,
   Button,
   Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  IconButton,
   TableRow,
   Table,
   TableBody,
   Paper,
+  Avatar,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -22,9 +18,6 @@ import {
   getWatchListA,
   deleteWatchListA,
 } from 'Actions';
-import WatchListMovie from './watch-list-movie';
-import LoadingDots from '../loading-dots';
-import MovieCard from '../movies/movie-card';
 
 class WatchList extends React.Component {
   componentWillMount() {
@@ -45,11 +38,11 @@ class WatchList extends React.Component {
       watchList,
       unseen,
       seen,
-      deleteWatchList
+      deleteWatchList,
     } = this.props;
     console.log(watchList);
     return (
-      <Paper>
+      <Paper style={{width:'100%', overflowX: 'auto'}}>
         <Typography variant="h5">
           Watchlist
         </Typography>
@@ -63,6 +56,9 @@ class WatchList extends React.Component {
               watchList ? (
                 watchList.map(movie => (
                   <TableRow key={movie.imdbId}>
+                    <TableCell>
+                      <Avatar alt="moviepic" src={movie.cover} />
+                    </TableCell>
                     <TableCell>
                       <Typography noWrap>{movie.title}</Typography>            
                     </TableCell>
@@ -120,7 +116,6 @@ const mapStateToProps = state => ({
 WatchList.propTypes = {
   seen: PropTypes.func.isRequired,
   unseen: PropTypes.func.isRequired,
-  // watchList: PropTypes.arr.isRequired,
   token: PropTypes.string.isRequired,
   getWatchList: PropTypes.func.isRequired,
   deleteWatchList: PropTypes.func.isRequired,
