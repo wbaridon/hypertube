@@ -116,7 +116,7 @@ userRouter
     tokenManager.decode(req.headers.authorization).then(token => {
         data = {
           field: req.body.field,
-          value: req.body.value.trim()
+          value: typeof req.body.value === 'string' ? req.body.value.trim() : req.body.value,
         }
         checkUserInput(data, token.user)
         .then(sucess => {
