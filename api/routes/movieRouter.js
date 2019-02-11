@@ -33,6 +33,13 @@ movieRouter
         from: filter.sortBySliderValues.min,
         to: filter.sortBySliderValues.max
       }
+      if (sliderSort === 'popularity' || sliderSort === 'alphabetical') {
+        let sliderSort = {
+          field: 'rating',
+          from: 0,
+          to: 10
+        }
+      }
       MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse, sliderSort).then(result => {
         movieInTheUserList(token.user, result, callback => {
           getSeenStatusList(token, callback, ret => {
