@@ -33,13 +33,10 @@ movieRouter
         from: filter.sortBySliderValues.min,
         to: filter.sortBySliderValues.max
       }
-      console.log(filter)
       if (filter.sortBy === 'popular' || filter.sortBy === 'alphabetical') {
-        let sliderSort = {
-          field: 'imdbRating',
-          from: 0,
-          to: 10
-        }
+        sliderSort.field = 'imdbRating'
+        sliderSort.from = 0
+        sliderSort.to = 10
       }
       MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse, sliderSort).then(result => {
         movieInTheUserList(token.user, result, callback => {
