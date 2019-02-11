@@ -129,7 +129,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              <Video />
+              <Video hash={movie.torrents[0]} idMovie={movie.imdbId} />
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />

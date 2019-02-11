@@ -24,10 +24,15 @@ class Video extends React.Component {
   }
 
   render() {
+    const {
+      hash,
+      idMovie,
+    } = this.props;
+    console.log(idMovie);
     return (
       <React.Fragment>
         <video id="videoPlayer" controls muted preload="auto"style={{ margin: 'auto', width: '100%' }} >
-          { <source src={`http://localhost:3000/video?videoHash=${this.props.hash.hash}`} /> }
+          { <source src={`http://localhost:3000/video?videoHash=${hash.hash}&id=${idMovie}`} /> }
           <track kind="captions" default />
         </video>
       </React.Fragment>
@@ -37,6 +42,7 @@ class Video extends React.Component {
 
 Video.propTypes = {
   hash: PropTypes.string.isRequired,
+  idMovie: PropTypes.string.isRequired,
   classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({
     search: PropTypes.string.isRequired,
@@ -44,7 +50,7 @@ Video.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  hash: state.movie.data.torrents[0],
+  // hash: state.movie.data.torrents[0],
 });
 
 Video.url = '/video';
