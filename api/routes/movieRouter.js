@@ -31,20 +31,25 @@ movieRouter
       let sliderSort = {
         field: sort,
         from: filter.sortBySliderValues.min,
-        to: filter.sortBySliderValues.max
+        to: filter.sortBySliderValues.max,
       }
-      if (filter.sortBy === 'popular' || filter.sortBy === 'alphabetical') {
-        sliderSort.field = 'imdbRating'
-        sliderSort.from = 0
-        sliderSort.to = 10
-      }
-      MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse, sliderSort).then(result => {
-        movieInTheUserList(token.user, result, callback => {
-          getSeenStatusList(token, callback, ret => {
-            res.status(200).send(ret)
-          })
-        })
-      })
+     if (filter.sortBy === 'popular' || filter.sortBy === 'alphabetical') {
+       MovieManager.getList(filter.searchString, filter.from, limit, sort, reverse).then(result => {
+         movieInTheUserList(token.user, result, callback => {
+           getSeenStatusList(token, callback, ret => {
+             res.status(200).send(ret)
+           })
+         })
+       })
+     } else {
+       MovieManager.getListWithSlider(filter.searchString, filter.from, limit, sort, reverse, sliderSort).then(result => {
+         movieInTheUserList(token.user, result, callback => {
+           getSeenStatusList(token, callback, ret => {
+             res.status(200).send(ret)
+           })
+         })
+       })
+     }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/seen', function(req, res) {
