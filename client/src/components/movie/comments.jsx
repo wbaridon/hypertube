@@ -68,7 +68,7 @@ class Comments extends React.Component {
     const {
       comments,
       actualComments,
-      userName
+      userName,
     } = this.props;
     const { newComment } = this.state;
     let displayedComments;

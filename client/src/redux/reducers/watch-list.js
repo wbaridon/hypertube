@@ -1,7 +1,4 @@
 import {
-  UPDATE_WATCHLIST,
-  UPDATE_WATCHLIST_SUCCESS,
-  UPDATE_WATCHLIST_ERROR,
   ADD_WATCHLIST,
   ADD_WATCHLIST_SUCCESS,
   ADD_WATCHLIST_ERROR,
@@ -20,6 +17,20 @@ const defaultWatchListState = {
 
 export default function watchList(state = defaultWatchListState, action) {
   switch (action.type) {
+    // case SEEN_SUCCESS:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     success: true,
+    //     // data: [
+    //     //   ...state.data,
+    //     //   ...state.data.slice(0, action.n),
+    //     //   Object.assign(action.result, ...state.data[action.n]),
+    //     //   ...state.data.slice(action.n),
+    //     // ],
+    //     data: [...state.data, state.data[action.n].seen = true],
+    //     test: [state.data[action.n].seen],
+    //   };
     case ADD_WATCHLIST:
       return {
         ...state,
@@ -45,7 +56,7 @@ export default function watchList(state = defaultWatchListState, action) {
       return {
         loading: false,
         success: true,
-        data: action,
+        data: action.result,
       };
     case DELETE_WATCHLIST_ERROR:
       return {
@@ -65,26 +76,6 @@ export default function watchList(state = defaultWatchListState, action) {
       };
     case GET_WATCHLIST_ERROR:
       return defaultWatchListState;
-    case UPDATE_WATCHLIST:
-      return {
-        ...state,
-        moviesData: {
-          ...state.watchList,
-        },
-      };
-    case UPDATE_WATCHLIST_SUCCESS:
-      return {
-        ...state,
-        moviesData: [...state.moviesData, action.movieData],
-      };
-    case UPDATE_WATCHLIST_ERROR:
-      return {
-        ...state,
-        moviesData: {
-          ...state.watchlist,
-          [action.idMovie]: null,
-        },
-      };
     default:
       return state;
   }

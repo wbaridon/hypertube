@@ -38,6 +38,14 @@ class Movie extends React.Component {
     getMovie(match.params.id_movie, token);
   }
 
+  handleSeen(token, idMovie, bool) {
+    let { movie } = this.props;
+    const { seen } = this.props;
+    movie.seen = bool;
+    this.setState({ movie });
+    seen(token, idMovie);
+  }
+
   render() {
     const { classes, movie, token, seen, unseen, } = this.props;
     // console.log(movie);
@@ -67,11 +75,11 @@ class Movie extends React.Component {
                   image={movie.cover}
                 />
                 {movie.seen ? (
-                  <IconButton onClick={() => unseen(token, movie.imdbId)}>
+                  <IconButton onClick={() => this.handleSeen(token, movie.imdbId, false)}>
                     mark as unseen
                   </IconButton>
                 ) : (
-                  <IconButton onClick={() => seen(token, movie.imdbId)}>
+                  <IconButton onClick={() => this.handleSeen(token, movie.imdbId, true)}>
                     mark as seen
                   </IconButton>
                 )}
