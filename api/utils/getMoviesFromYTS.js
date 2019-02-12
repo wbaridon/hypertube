@@ -28,8 +28,10 @@ function getPage(page) {
   return new Promise ((resolve, reject) => {
     axios.get('https://yts.am/api/v2/list_movies.json?limit=50&order_by=desc&page='+page)
     .then(response => {
-      for (var i = 0; i < response.data.data.movies.length; i++) {
-        checkMovie(response.data.data.movies[i]);
+      if (response.data.data.movies) {
+        for (var i = 0; i < response.data.data.movies.length; i++) {
+          checkMovie(response.data.data.movies[i]);
+        }
       }
       setTimeout(resolve, 2500)
     }).catch(error => { reject(error); })
@@ -44,30 +46,30 @@ function checkMovie(data) {
 }
 
 function formatMovieData(data) {
-  let movie = {
-    type: 'movie',
-    imdbId: data.imdb_code,
-    title: data.title,
-    year: data.year,
-    imdbRating: data.rating,
-    genre: data.genres,
-    cover: data.large_cover_image,
-    seeds: data.torrents[0].seeds,
-    torrents: {
-      language: data.language,
-      hash: data.torrents[0].hash,
-      quality: data.torrents[0].quality,
+    let movie = {
+      type: 'movie',
+      imdbId: data.imdb_code,
+      title: data.title,
+      year: data.year,
+      imdbRating: data.rating,
+      genre: data.genres,
+      cover: data.large_cover_image,
       seeds: data.torrents[0].seeds,
-      peers: data.torrents[0].peers
+      torrents: {
+        language: data.language,
+        hash: data.torrents[0].hash,
+        quality: data.torrents[0].quality,
+        seeds: data.torrents[0].seeds,
+        peers: data.torrents[0].peers
+      }
     }
-  }
-    checkCover(movie.cover)
-    .then(coverExist => {
-      getExtraData(movie)
-    }, coverNotFound => {
-      delete movie.cover
-      getExtraData(movie)
-    })
+      checkCover(movie.cover)
+      .then(coverExist => {
+        getExtraData(movie)
+      }, coverNotFound => {
+        delete movie.cover
+        getExtraData(movie)
+      })
 }
 
 function checkCover(url) {
