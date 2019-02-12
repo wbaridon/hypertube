@@ -19,7 +19,6 @@ movieRouter
   .post('/list', function(req,res) {
     tokenManager.decode(req.headers.authorization).then(token => {
       let filter = req.body.filter;
-      console.log(filter)
       let limit = (filter.to - filter.from);
       let sort = 'seeds'
       if (filter.sortBy === 'rating') { sort = 'imdbRating' }
