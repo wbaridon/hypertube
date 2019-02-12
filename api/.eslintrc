@@ -1,0 +1,59 @@
+  {
+    "plugins": [
+      "only-warn"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "airbnb"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+      }
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "globals": {
+      "VERSION": true,
+      "HTMLTITLE": true,
+      "GOOGLE_API_KEY": true,
+      "AWS_CLOUDFRONT": true,
+      "TIMEOUT_API": true,
+      "AUTH42": true,
+      "AUTHGITHUB": true,
+      "AUTHGOOGLE": true,
+      "AUTHFACEBOOK": true,
+      "AUTHGITLAB": true,
+      "AUTHREDDIT": true,
+      "AUTHLINKEDIN": true,
+      "AUTHINSTAGRAM": true,
+      "PLACEHOLDER_IMAGE_MOVIE": true,
+      "BACKEND": true
+    },
+    "rules": {
+      "no-console": "off",
+      "no-trailing-spaces": "error",
+      "import/no-extraneous-dependencies": "[error, { devDependencies: true }]",
+      "global-require": "off",
+      "max-len": "off",
+      "import/no-dynamic-require": "off",
+      "arrow-body-style": "off",
+      "no-plusplus": "off",
+      "no-underscore-dangle": "off",
+      "brace-style": "off"
+    },
+    "settings": {
+      "import/resolver": {
+        "webpack": {
+          "config": "./webpack.config.js"
+        }
+      }
+    }
+  }
