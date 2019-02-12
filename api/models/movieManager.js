@@ -27,14 +27,26 @@ module.exports.createMovie = function (data) {
   })
 }
 
-module.exports.getList = function (query, start, limit, sort, reverse, sliderSort) {
+module.exports.getList = function (query, start, limit, sort, reverse) {
   return new Promise ((resolve, reject) => {
-    Movie.find({'title': { $regex: query, $options: 'i'}, [sliderSort.field]: {$gte: sliderSort.from, $lte: sliderSort.to } })
-    .skip(start).limit(limit).sort({[sort]: [reverse]})
-    .lean()
-    .then(function(result){ resolve(result) },
-    (err) => {console.log(err)}
-    )
+      console.log('inactif')
+      Movie.find({'title': { $regex: query, $options: 'i'} })
+      .skip(start).limit(limit).sort({[sort]: [reverse]})
+      .lean()
+      .then(function(result){ resolve(result) },
+      (err) => {console.log(err)}
+      )
+  })
+}
+
+module.exports.getListWithSlider = function (query, start, limit, sort, reverse, sliderSort) {
+  return new Promise ((resolve, reject) => {
+      Movie.find({'title': { $regex: query, $options: 'i'}, [sliderSort.field]: {$gte: sliderSort.from, $lte: sliderSort.to } })
+      .skip(start).limit(limit).sort({[sort]: [reverse]})
+      .lean()
+      .then(function(result){ resolve(result) },
+      (err) => {console.log(err)}
+      )
   })
 }
 
