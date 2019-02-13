@@ -118,7 +118,7 @@ function getExtraData(movie) {
         movie.synopsis = $('.summary_text').text().trim();
         movie.runtime = $('#titleDetails').find('time').text().split(' ')[0].trim();
         addMovie(movie)
-  }).catch(error => console.log(error + 'getExtraData.getExtraDataUnaivailable'))
+  }).catch(error => console.log('YTS.getExtraData.getExtraDataUnaivailable'))
 }
 
 function addMovie(movie) {

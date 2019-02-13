@@ -106,7 +106,7 @@ function getExtraData(movie) {
         movie.runtime = $('#titleDetails').find('time').text().split(' ')[0].trim();
         if (!movie.cover) { movie.cover = 'https://www.quantabiodesign.com/wp-content/uploads/No-Photo-Available.jpg' }
        addMovie(movie)
-  }).catch(error => console.log(error + 'getExtraData.getExtraDataUnaivailable'))
+  }).catch(error => console.log('EZTV.getExtraData.getExtraDataUnaivailable'))
 }
 
 function addMovie(movie) {
