@@ -20,7 +20,11 @@ function EztvPageCount() {
 
 async function getAllPages(pages) {
   for (var i = 1; i <= pages; i++) {
-      await getPage(i);
+      try {
+        await getPage(i);
+      } catch(e) {
+        console.log(e)
+      }
   }
 }
 
@@ -31,7 +35,7 @@ function getPage(page) {
       for (var i = 0; i < response.data.torrents.length; i++) {
         checkMovie(response.data.torrents[i]);
       }
-      setTimeout(resolve, 2500)
+      setTimeout(resolve, 3000)
     }).catch(error => { reject(error); })
   })
 }

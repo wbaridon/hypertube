@@ -278,8 +278,8 @@ function CheckProfilIsFill(login) {
         if (user.userName && user.firstName && user.lastName && user.email && user.picture) {
           UserManager.updateUserField({'userName': login},{'profilIsFill': true})
           .then(isFill => { resolve(true) }).catch(error => { console.log(error)})
-        } else { resolve(); }
-      } else { resolve() }
+        } else { resolve(false); }
+      } else { resolve(true) }
     })
   })
 }

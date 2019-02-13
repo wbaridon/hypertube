@@ -20,7 +20,11 @@ function YtsPageCount() {
 
 async function getAllPages(pages) {
   for (var i = 1; i <= pages; i++) {
+    try {
       await getPage(i);
+    } catch(e) {
+      console.log(e)
+    }
   }
 }
 
