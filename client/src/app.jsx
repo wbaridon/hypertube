@@ -71,6 +71,11 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
   },
+  props: {
+    MuiCard: {
+      square: true,
+    },
+  },
 });
 
 const darkTheme = createMuiTheme({
@@ -118,6 +123,14 @@ const darkTheme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
+  },
+  props: {
+    MuiCard: {
+      square: true,
+    },
+    MuiAppBar: {
+      elevation: 0,
+    },
   },
 });
 

@@ -4,7 +4,13 @@ import {
   UPDATE_USER_IMAGE_SUCCESS,
   UPDATE_USER_IMAGE_ERROR,
 } from './action-types';
-import { setErrorA, changeUserValueA, deleteUserFromUserListA, getUserInfoA, setSuccessA } from '.';
+import {
+  setErrorA,
+  changeUserValueA,
+  deleteUserFromUserListA,
+  getUserInfoA,
+  setSuccessA,
+} from '.';
 
 export const updateUserImageStart = () => ({
   type: UPDATE_USER_IMAGE,
@@ -26,6 +32,7 @@ export const updateUserImageA = (token, form) => {
       .then(
         (result) => {
           dispatch(changeUserValueA('picture', result.data.picture));
+          console.log(result.data);
           dispatch(changeUserValueA('profilIsFill', result.data.profilIsFill));
           dispatch(setSuccessA('register.profileIsFilled'));
           dispatch(deleteUserFromUserListA(result.data.user));

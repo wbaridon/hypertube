@@ -234,7 +234,7 @@ function handleImageAdd(rawImage, debounceChanges = false, stateImage = null, ne
 function offsetY(amount) {
   const { image } = this.state;
   image.verticalOffset += amount;
-  this.handleImageAdd(image.inputFile, false, image);
+  this.handleImageAdd(image.inputFile, true, image);
 }
 export {
   rotateClockwise,

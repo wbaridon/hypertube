@@ -12,10 +12,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
   cardMedia: {
-    height: '160px',
+    height: '320px',
   },
   userCard: {
-    width: '200px',
+    width: '320px',
   },
 };
 

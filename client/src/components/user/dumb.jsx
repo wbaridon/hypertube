@@ -5,15 +5,20 @@ import {
   CardContent,
   Typography,
   CardMedia,
+  Button,
+  Grid,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const styles = {
   card: {
-    maxWidth: 305,
+    marginTop: 30,
+    maxWidth: 320,
+    width: 320,
   },
   cardMedia: {
-    height: 305,
+    height: 320,
   },
 };
 
@@ -25,17 +30,36 @@ function UserDumb({
   classes,
 }) {
   return (
-    <Card className={classes.card}>
-      <CardMedia className={classes.cardMedia} image={picture} />
-      <CardContent>
-        <Typography>
-          {userName}
-        </Typography>
-        <Typography>
-          {`This user is called ${firstName} and their last name is ${lastName}, They probably like rowboats, hunting for doughnuts, and other such activities.`}
-        </Typography>
-      </CardContent>
-    </Card>
+    <span>
+      <Button
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '90px',
+          transform: 'translate(-50%, -50%)',
+          zIndex: '3',
+        }}
+      component={Link}
+      to="/users"
+      >
+        Back
+      </Button>
+      <Grid container direction="column" alignItems="center">
+        <Grid item>
+          <Card className={classes.card}>
+            <CardMedia className={classes.cardMedia} image={picture} />
+            <CardContent>
+              <Typography>
+                {userName}
+              </Typography>
+              <Typography>
+                {`This user is called ${firstName} and their last name is ${lastName}, They probably like rowboats, hunting for doughnuts, and other such activities.`}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </span>
   );
 }
 
