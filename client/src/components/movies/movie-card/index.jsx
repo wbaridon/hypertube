@@ -19,11 +19,14 @@ class MovieCard extends React.Component {
 
   render() {
     const {
+      seen,
       title,
       cover,
       dimensions,
     } = this.props;
     const { image } = this.state;
+    let test = '1';
+    seen ? test='0.3' : null;
     return (
       <Card style={{ width: dimensions.width, height: dimensions.height }}>
         {image ? (
@@ -31,6 +34,7 @@ class MovieCard extends React.Component {
             onError={this.setImageFalse}
             src={cover}
             style={{
+              opacity: test,
               width: dimensions.width,
               height: 'auto',
               boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.3)',
@@ -45,6 +49,7 @@ class MovieCard extends React.Component {
 }
 
 MovieCard.propTypes = {
+  seen: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   cover: PropTypes.string.isRequired,
   dimensions: PropTypes.shape({
