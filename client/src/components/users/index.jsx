@@ -19,7 +19,7 @@ class Users extends Component {
   render() {
     const { userList } = this.props;
     if (!userList) {
-      return (<div>What</div>);
+      return (<div>No Users</div>);
     }
     return (
       <Grid container spacing={8} justify="center" alignItems="center">
