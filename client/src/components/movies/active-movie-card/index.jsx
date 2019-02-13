@@ -27,6 +27,15 @@ class ActiveMovieCard extends React.Component {
     this.setState({ image: false });
   }
 
+  handleAddWatchList(token, imdbId, bool) {
+    let { movie } = this.props;
+    const { addWatchList, deleteWatchList } = this.props;
+    movie.watchList = bool;
+    this.setState({ movie });
+    bool == 'true' ? addWatchList(token, imdbId) : deleteWatchList(token, imdbId);
+    // console.log(movie);
+  }
+
   render() {
     const {
       token,
@@ -38,7 +47,7 @@ class ActiveMovieCard extends React.Component {
       dimensions,
       closeMovie,
       imdbRating,
-      addWatchList,
+      movie,
     } = this.props;
     const { image } = this.state;
     if (image && cover) {
@@ -113,9 +122,16 @@ class ActiveMovieCard extends React.Component {
               <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
                 <Grid item>
                   <Button>
-                    <Typography variant="button" noWrap onClick={() => { addWatchList(token, imdbId); }}>
+                    {movie.watchList === 'false' ? (
+                      <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'true'); }}>
                       + to list
-                    </Typography>
+                      </Typography>
+                    ):(
+                      <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'false'); }}>
+                      - to list
+                      </Typography>
+                    )}
+                    
                   </Button>
                 </Grid>
                 <Grid item>
@@ -147,6 +163,8 @@ ActiveMovieCard.propTypes = {
   closeMovie: PropTypes.func,
   imdbRating: PropTypes.number.isRequired,
   addWatchList: PropTypes.func.isRequired,
+  deleteWatchList: PropTypes.func.isRequired,
+  movie: PropTypes.shape({}).isRequired,
 };
 
 ActiveMovieCard.defaultProps = {

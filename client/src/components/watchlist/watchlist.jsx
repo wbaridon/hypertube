@@ -37,11 +37,11 @@ class WatchList extends React.Component {
 
   handleSeen(token, idMovie, n, bool) {
     let { watchList } = this.props;
-    const { seen } = this.props;
+    const { seen, unseen } = this.props;
     watchList[n].seen = bool;
     this.setState({ watchList });
-    seen(token, idMovie);
-  }
+    bool ? seen(token, idMovie) : unseen(token, idMovie) ;
+  } 
 
   render() {
     const {
@@ -49,7 +49,6 @@ class WatchList extends React.Component {
       watchList,
       deleteWatchList,
     } = this.props;
-    let i = 0;
     console.log(watchList);
     return (
       <Paper>
@@ -62,9 +61,9 @@ class WatchList extends React.Component {
         </Typography>
         <Grid container direction="column" style={{ flexFlow: 'column' }}>
           {
-            watchList ? (
+            watchList.length !== 0 ? (
               watchList.map(movie => (
-                <Paper style={{ margin: '15px' }}>
+                <Paper key={movie.imdbId} style={{ margin: '15px' }}>
                   <Grid item container direction="row" style={{ flexFlow: 'row' }}>
                     <img
                       alt="moviepic"
@@ -131,7 +130,6 @@ const mapStateToProps = state => ({
   token: state.user.token,
   watchList: state.watchList.data,
   test: state.watchList.dataa,
-  
 });
 
 WatchList.propTypes = {
@@ -140,7 +138,11 @@ WatchList.propTypes = {
   token: PropTypes.string.isRequired,
   getWatchList: PropTypes.func.isRequired,
   deleteWatchList: PropTypes.func.isRequired,
-  watchList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  watchList: PropTypes.arrayOf(PropTypes.shape({})),
+};
+
+WatchList.defaultProps = {
+  watchList: [],
 };
 
 WatchList.url = '/watchlist';

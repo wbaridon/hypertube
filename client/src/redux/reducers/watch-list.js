@@ -20,8 +20,6 @@ export default function watchList(state = defaultWatchListState, action) {
     // case SEEN_SUCCESS:
     //   return {
     //     ...state,
-    //     loading: false,
-    //     success: true,
     //     // data: [
     //     //   ...state.data,
     //     //   ...state.data.slice(0, action.n),
@@ -40,7 +38,6 @@ export default function watchList(state = defaultWatchListState, action) {
       return {
         loading: false,
         success: true,
-        data: action,
       };
     case ADD_WATCHLIST_ERROR:
       return {
@@ -56,7 +53,6 @@ export default function watchList(state = defaultWatchListState, action) {
       return {
         loading: false,
         success: true,
-        data: action.result,
       };
     case DELETE_WATCHLIST_ERROR:
       return {
@@ -67,6 +63,7 @@ export default function watchList(state = defaultWatchListState, action) {
       return {
         ...state,
         loading: true,
+        data: [],
       };
     case GET_WATCHLIST_SUCCESS:
       return {

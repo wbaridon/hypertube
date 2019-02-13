@@ -40,14 +40,14 @@ class Movie extends React.Component {
 
   handleSeen(token, idMovie, bool) {
     let { movie } = this.props;
-    const { seen } = this.props;
+    const { seen, unseen } = this.props;
     movie.seen = bool;
     this.setState({ movie });
-    seen(token, idMovie);
+    bool ? seen(token, idMovie) : unseen(token, idMovie) ; 
   }
 
   render() {
-    const { classes, movie, token, seen, unseen, } = this.props;
+    const { classes, movie, token } = this.props;
     // console.log(movie);
     return (
       movie ? (

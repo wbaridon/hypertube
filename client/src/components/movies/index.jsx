@@ -15,6 +15,7 @@ import {
   clearMoviesA,
   addWatchListA,
   setMoviePageStateA,
+  deleteWatchListA,
 } from 'Actions';
 import MovieCard from './movie-card';
 import ActiveMovieCard from './active-movie-card';
@@ -403,7 +404,7 @@ class Movies extends Component {
           key={movie._id}
         >
           {
-            currentMovie === movie._id ? <ActiveMovieCard closeMovie={mobile ? () => this.onHoverMovie(null) : null} dimensions={width === 'xs' && mobile ? smallScreenDimensions : dimensions} addWatchList={addWatchList} token={token} {...movie} />
+            currentMovie === movie._id ? <ActiveMovieCard closeMovie={mobile ? () => this.onHoverMovie(null) : null} dimensions={width === 'xs' && mobile ? smallScreenDimensions : dimensions} addWatchList={addWatchList} deleteWatchList={deleteWatchList} token={token} movie={movie} {...movie} />
               : <MovieCard dimensions={dimensions} {...movie} />
           }
         </Grid>
@@ -479,6 +480,7 @@ const mapDispatchToProps = dispatch => ({
   getMoviePageHandle: (token, request) => dispatch(getMoviePageA(token, request)),
   clearMoviesHandle: () => dispatch(clearMoviesA()),
   addWatchList: (token, idMovie) => dispatch(addWatchListA(token, idMovie)),
+  deleteWatchList: (token, idMovie) => dispatch(deleteWatchListA(token, idMovie)),
   setMoviePageStateHandler: state => dispatch(setMoviePageStateA(state)),
 });
 
