@@ -19,7 +19,7 @@ watchListRouter
   .post('/delete' , function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
-      let movieId = req.body.movieId
+      let movieId = req.body.idMovie
       UserManager.removeFromList(user, movieId)
         .then(result => {
           let user = token.user

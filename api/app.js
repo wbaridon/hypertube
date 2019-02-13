@@ -36,6 +36,8 @@ app.use('/watchList', watchListRouter);
 
 app.listen(port, function () {
   console.log(`Server running at http://${hostname}:${port}/`);
+  yts.launcher()
+  eztv.launcher()
 });
 
 var getNewMovies = schedule.scheduleJob('0 0 * * *', function(){
