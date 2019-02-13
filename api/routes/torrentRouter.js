@@ -41,12 +41,10 @@ function findVideoFile(engine) {
   return file;
 }
 
-function alreadyDownloaded(res, hash, id) {
-  if (fs.existsSync(`assets/torrents/${hash}.mp4`)) {
+function alreadyDownloaded(hash, id, file) {
+  if (fs.existsSync(`assets/torrents/${file.name}`)) {
     console.log('Movie already exists');
     const data = { lastSeen: Date.now() };
-    const stream = fs.createReadStream(`assets/torrents/${hash}.mp4`);
-    stream.pipe(res);
     MovieManager.update(id, data);
     return true;
   }
@@ -54,7 +52,7 @@ function alreadyDownloaded(res, hash, id) {
   const data = {
     lastSeen: Date.now(),
     movieOnServer: true,
-    file: `assets/torrents/${hash}.mp4`,
+    file: `assets/torrents/${file.name}`,
   };
   MovieManager.update(id, data);
   return false;
@@ -67,6 +65,7 @@ torrentRouter
       id,
     } = req.query;
     const hash = videoHash;
+    let downloaded = false;
     const torrentMagnet = getMagnet(hash);
     const engine = torrentStream(torrentMagnet);
 
@@ -80,11 +79,13 @@ torrentRouter
 
       file.select();
 
-      if (alreadyDownloaded(res, hash, id) === true) {
-        return null;
+      let stream = null;
+      if (alreadyDownloaded(hash, id, file) === true) {
+        downloaded = true;
+        stream = fs.createReadStream(`assets/torrents/${file.name}`);
+      } else {
+        stream = file.createReadStream();
       }
-
-      const stream = file.createReadStream();
       const converter = ffmpeg()
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
@@ -107,15 +108,20 @@ torrentRouter
         .videoCodec('libx264')
         .run();
 
-      const writeStream = fs.createWriteStream(`assets/torrents/${hash}.mp4`);
+      let writeStream = null;
+      if (!downloaded) {
+        writeStream = fs.createWriteStream(`assets/torrents/${file.name}`);
+        stream.pipe(writeStream);
+      }
       res.pipe(converter);
-      // stream.pipe(writeStream);
 
       res.on('close', () => {
         console.log('page closes, all processes killed');
         converter.kill();
         stream.destroy();
-        writeStream.destroy();
+        if (!downloaded) {
+          writeStream.destroy();
+        }
       });
       return null;
     });

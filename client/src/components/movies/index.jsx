@@ -26,7 +26,7 @@ const defaultRequestShape = {
     from: 0,
     to: 5,
     searchString: '',
-    sortBy: 'alphabetical',
+    sortBy: 'popular',
     reverse: false,
   },
 };
@@ -157,7 +157,7 @@ class Movies extends Component {
   clearState() {
     this.setState({
       searchString: '',
-      sortSelection: 'alphabetical',
+      sortSelection: 'popular',
       reversedSort: false,
       currentMovie: null,
       top: false,
