@@ -14,7 +14,6 @@ movieRouter
         getSeenStatus(token, result).then(myMovie => {
           getSubtitles.launcher(myMovie.imdbId).then(subtitles => {
             myMovie.subtitles = subtitles
-            console.log(myMovie)
             res.status(200).send(myMovie);
           }).catch(err => res.status(404).send({error:'getSubtitles.notAvailable'}))
         }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
