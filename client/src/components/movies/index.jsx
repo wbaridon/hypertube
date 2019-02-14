@@ -115,6 +115,7 @@ class Movies extends Component {
   }
 
   componentDidMount() {
+    const { currentMovie } = this.state;
     document.getElementById('searchBar').focus();
     const options = {
       root: document.querySelector('#scrollArea'),
@@ -124,6 +125,10 @@ class Movies extends Component {
     this.observer = new IntersectionObserver(this.handleTopSpan, options);
     this.observer.observe(document.getElementById('top'));
     window.addEventListener('scroll', this.scrollListener, false);
+    if (currentMovie !== null) {
+      document.getElementById('active-card').scrollIntoView({ block: 'center' });
+      this.setState({ scrolling: true });
+    }
   }
 
   componentWillUnmount() {
@@ -396,12 +401,12 @@ class Movies extends Component {
         <Grid
           item
           style={{ height: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.height : dimensions.height, width: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
-          onBlur={mobile ? null : (e) => { e.preventDefault(); this.onHoverMovie(null); }}
-          onClick={mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id, true, true, e); } : null}
-          onMouseLeave={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(null); } : null}
-          onMouseEnter={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); } : null}
-          onMouseOver={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); } : null}
-          onFocus={!mobile ? (e) => { e.preventDefault(); this.onHoverMovie(movie._id); } : null}
+          onBlur={mobile ? null : () => { this.onHoverMovie(null); }}
+          onClick={mobile ? (e) => { this.onHoverMovie(movie._id, true, true, e); } : null}
+          onMouseLeave={!mobile ? () => { this.onHoverMovie(null); } : null}
+          onMouseEnter={!mobile ? () => { this.onHoverMovie(movie._id); } : null}
+          onMouseOver={!mobile ? () => { this.onHoverMovie(movie._id); } : null}
+          onFocus={!mobile ? () => { this.onHoverMovie(movie._id); } : null}
           key={movie._id}
         >
           {
@@ -458,7 +463,7 @@ Movies.propTypes = {
   getMoviePageHandle: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
-  mobile: PropTypes.bool.isRequired,
+  mobile: PropTypes.string.isRequired,
 };
 
 Movies.defaultProps = {
