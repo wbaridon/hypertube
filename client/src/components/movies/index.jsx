@@ -239,7 +239,7 @@ class Movies extends Component {
         ...valuePickerValues,
         currentLowValue: isAlphabet ? toggleLetterToNumber(currentLowValue, false) : currentLowValue,
         currentHighValue: isAlphabet ? toggleLetterToNumber(currentHighValue, false) : currentHighValue,
-      }
+      },
     }, () => {
       let v;
       if (whichOne === 'low') {

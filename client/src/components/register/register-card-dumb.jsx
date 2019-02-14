@@ -229,7 +229,7 @@ class RegisterCardDumb extends React.Component {
               InputProps={{
                 className: classes.fixAutoComplete,
                 endAdornment: (
-                  <InputAdornment variant="filled" position="end">
+                  <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={handleClickShowPassword}

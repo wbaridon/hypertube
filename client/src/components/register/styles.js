@@ -65,6 +65,7 @@ const styles = theme => ({
   },
   card: {
     minWidth: '310px',
+    maxWidth: '310px',
   },
   flexFinish: {
     flexGrow: 1,

@@ -17,9 +17,31 @@ class ActiveMovieCard extends React.Component {
     super();
     this.state = {
       image: true,
+      style: {
+        opacity: 0.5,
+        transition: 'all 0.5s ease-in'
+      }
     };
 
     this.setImageFalse = this.setImageFalse.bind(this);
+    this.mountStyle = this.mountStyle.bind(this);
+  }
+
+  mountStyle() {
+    this.setState({
+      style: {
+        opacity: 1,
+        transition: 'all 0.5s ease-out',
+      },
+    })
+  }
+
+  componentDidMount() {
+    this.animation = setTimeout(this.mountStyle, 10) // call the into animation
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.animation);
   }
 
   setImageFalse() {
@@ -50,10 +72,12 @@ class ActiveMovieCard extends React.Component {
       movie,
     } = this.props;
     const { image } = this.state;
+    const { style } = this.state;
     if (image && cover) {
       return (
         <Card
           style={{
+            ...style,
             position: 'relative',
             width: dimensions.width,
             height: dimensions.height,
@@ -117,21 +141,21 @@ class ActiveMovieCard extends React.Component {
                 {synopsis}
               </Typography>
             </Grid>
-            { imdbRating ? <Grid item><Chip label={`Rating: ${imdbRating}`} /></Grid> : null }
+            {imdbRating ? <Grid item><Chip label={`Rating: ${imdbRating}`} /></Grid> : null}
             <Grid item style={{ paddingBottom: 10 }}>
               <Grid container wrap="nowrap" alignContent="space-between" alignItems="center">
                 <Grid item>
                   <Button>
                     {movie.watchList === 'false' ? (
                       <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'true'); }}>
-                      + to list
+                        + to list
                       </Typography>
-                    ):(
-                      <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'false'); }}>
-                      - to list
+                    ) : (
+                        <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'false'); }}>
+                          - to list
                       </Typography>
-                    )}
-                    
+                      )}
+
                   </Button>
                 </Grid>
                 <Grid item>
@@ -168,7 +192,7 @@ ActiveMovieCard.propTypes = {
 };
 
 ActiveMovieCard.defaultProps = {
-  closeMovie: () => {},
+  closeMovie: () => { },
   year: 1914,
   synopsis: 'No summary available',
 };
