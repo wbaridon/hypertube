@@ -1,17 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Card,
   Grid,
-  TableCell,
   Button,
   Typography,
-  TableRow,
-  Table,
-  TableBody,
   Paper,
-  Avatar,
-  CardMedia,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -89,7 +82,7 @@ class WatchList extends React.Component {
                             <Typography variant="button" noWrap>mark as seen</Typography>
                           </Button>
                         )}
-                      </Grid >
+                      </Grid>
                       <Grid item>
                         <Button component={Link} to={`/movie/${movie.imdbId}`}>
                           <Typography variant="button" noWrap>

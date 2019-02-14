@@ -17,6 +17,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Comments from './comments';
 import Video from '../video/video';
+import LoadingDots from '../loading-dots';
 
 const styles = {
   movie_info: {
@@ -43,7 +44,7 @@ class Movie extends React.Component {
     const { seen, unseen } = this.props;
     movie.seen = bool;
     this.setState({ movie });
-    bool ? seen(token, idMovie) : unseen(token, idMovie) ; 
+    bool ? seen(token, idMovie) : unseen(token, idMovie); 
   }
 
   render() {
@@ -137,19 +138,28 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              <Video hash={movie.torrents[0]} idMovie={movie.imdbId} />
+              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
-        <Grid>
-          <Typography>Nop</Typography>
-        </Grid>
+        null
       )
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  getMovie: (idMovie, token) => dispatch(getMovieDataA(idMovie, token)),
+  seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
+  unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
+});
+
+const mapStateToProps = state => ({
+  movie: state.movie.data,
+  token: state.user.token,
+});
 
 Movie.propTypes = {
   token: PropTypes.string.isRequired,
@@ -162,18 +172,12 @@ Movie.propTypes = {
   getMovie: PropTypes.func.isRequired,
   seen: PropTypes.func.isRequired,
   unseen: PropTypes.func.isRequired,
+  movie: PropTypes.shape({}),
 };
 
-const mapDispatchToProps = dispatch => ({
-  getMovie: (idMovie, token) => dispatch(getMovieDataA(idMovie, token)),
-  seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
-  unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
-});
-
-const mapStateToProps = state => ({
-  movie: state.movie.data,
-  token: state.user.token,
-});
+Movie.defaultProps = {
+  movie: null,
+};
 
 Movie.url = '/movie/:id_movie';
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Movie));
