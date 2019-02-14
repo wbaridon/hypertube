@@ -121,15 +121,16 @@ class Movies extends Component {
       rootMargin: '0px',
       threshold: 1.0,
     };
-    const observer = new IntersectionObserver(this.handleTopSpan, options);
-    observer.observe(document.getElementById('top'));
-    window.addEventListener('scroll', this.scrollListener, false);
+    this.observer = new IntersectionObserver(this.handleTopSpan, options);
+    this.observer.observe(document.getElementById('top'));
+    // window.addEventListener('scroll', this.scrollListener, false);
   }
 
   componentWillUnmount() {
     const { setMoviePageStateHandler } = this.props;
     window.removeEventListener('scroll', this.scrollListener);
     window.clearTimeout(this.timeout);
+    this.observer.unobserve(document.getElementById('top'));
     setMoviePageStateHandler(this.state);
   }
 
