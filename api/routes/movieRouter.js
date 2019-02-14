@@ -14,7 +14,7 @@ movieRouter
         getSeenStatus(token, result).then(myMovie => {
           getSubtitles.launcher(myMovie.imdbId).then(subtitles => {
             myMovie.subtitles = {
-              'en': subtitles.en
+              'en': subtitles.en,
               'fr': subtitles.fr
             }
             res.status(200).send(myMovie);
