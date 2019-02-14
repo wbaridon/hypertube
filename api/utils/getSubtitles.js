@@ -10,6 +10,7 @@ const OpenSubtitles = new OS({
 function getSubtitles(id) {
   return new Promise ((resolve, reject) => {
     let subtitles = []
+    if (!fs.existsSync('../assets/subtitles')){ fs.mkdirSync('../assets/subtitles'); }
       searchSubtitle(id, 'eng').then(done => {
         subtitles.en = true
         searchSubtitle(id, 'fre').then(alsoDone => {
