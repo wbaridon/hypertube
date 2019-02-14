@@ -9,6 +9,7 @@ const ffmpeg = require('fluent-ffmpeg');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 const mimeTypes = require('../utils/mimeTypes.js');
+const getSubtitles = require('../utils/getSubtitles')
 
 const MovieManager = require('../models/movieManager');
 
@@ -64,10 +65,16 @@ torrentRouter
       videoHash,
       id,
     } = req.query;
+    getSubtitles.launcher(id)
     const hash = videoHash;
+    console.log(hash)
     let downloaded = false;
     const torrentMagnet = getMagnet(hash);
-    const engine = torrentStream(torrentMagnet);
+    const engine = torrentStream(torrentMagnet, {
+      // Trouver un repertoire tmp qui bug pas
+      tmp: './assets/tmp',
+
+    })
 
     engine.on('ready', () => {
       const file = findVideoFile(engine);
