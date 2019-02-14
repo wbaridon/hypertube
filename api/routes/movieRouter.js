@@ -13,7 +13,10 @@ movieRouter
       MovieManager.getMovie(req.body.id).then(result => {
         getSeenStatus(token, result).then(myMovie => {
           getSubtitles.launcher(myMovie.imdbId).then(subtitles => {
-            myMovie.subtitles = subtitles
+            myMovie.subtitles = {
+              'en': subtitles.en
+              'fr': subtitles.fr
+            }
             res.status(200).send(myMovie);
           }).catch(err => res.status(404).send({error:'getSubtitles.notAvailable'}))
         }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
