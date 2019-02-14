@@ -9,6 +9,7 @@ const ffmpeg = require('fluent-ffmpeg');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 const mimeTypes = require('../utils/mimeTypes.js');
+const getSubtitles = require('../utils/getSubtitles')
 
 const MovieManager = require('../models/movieManager');
 
@@ -64,16 +65,15 @@ torrentRouter
       videoHash,
       id,
     } = req.query;
-    let crashCounter = 0;
+    // getSubtitles.launcher(id)
     const hash = videoHash;
     let downloaded = false;
-    console.log(crashCounter++);
     const torrentMagnet = getMagnet(hash);
-    console.log(crashCounter++);
     const engine = torrentStream(torrentMagnet, {
       // Trouver un repertoire tmp qui bug pas
       tmp: './assets/tmp',
-    });
+    })
+
     engine.on('ready', () => {
       const file = findVideoFile(engine);
       if (!file) {
@@ -88,12 +88,9 @@ torrentRouter
       if (alreadyDownloaded(hash, id, file) === true) {
         downloaded = true;
         stream = fs.createReadStream(`./assets/torrents/${file.name}`);
-    console.log('0', crashCounter++);
   } else {
         stream = file.createReadStream();
-    console.log('0', crashCounter++);
   }
-    console.log('1', crashCounter++);
     const converter = ffmpeg()
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
@@ -110,7 +107,6 @@ torrentRouter
         .on('error', (err, stdout, stderr) => {
           console.log('ffmpeg, file:', file.path, ' Error:', '\nErr:', err, '\nStdOut:', stdout, '\nStdErr:', stderr);
         });
-        console.log('2', crashCounter++);
 
       converter.inputFormat(getExtention(file.name).substr(1))
         .audioCodec('aac')
@@ -119,14 +115,10 @@ torrentRouter
 
       let writeStream = null;
       if (!downloaded) {
-        console.log('3', crashCounter++);
         writeStream = fs.createWriteStream(`./assets/torrents/${file.name}`);
-        console.log('4', crashCounter++);
         stream.pipe(writeStream);
       }
-      console.log('3', crashCounter++);
       res.pipe(converter);
-      console.log('4', crashCounter++);
 
       res.on('close', () => {
         console.log('page closes, all processes killed');
