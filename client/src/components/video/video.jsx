@@ -16,7 +16,7 @@ class Video extends React.Component {
     const {
       hash,
     } = this.props;
-    console.log(hash.hash);
+    console.log(hash);
   }
 
   componentDidMount() {
@@ -26,17 +26,24 @@ class Video extends React.Component {
   render() {
     const {
       hash,
+      subtitles,
       idMovie,
     } = this.props;
-    console.log(idMovie);
+    console.log(subtitles);
     return (
       <React.Fragment>
-        <video id="videoPlayer" crossorigin="anonymous" controls muted preload="auto"style={{ margin: 'auto', width: '100%' }} >
-          { <source src={`http://localhost:3000/video?videoHash=${hash.hash}&id=${idMovie}`} /> }
-          // Tester si le fichier est accessible pour mettre le lien la ou pas // Et traduire label suivant langue
-        {  <track label="French" kind="subtitles" srcLang="fr" src={`http://localhost:3000/subtitles/${idMovie}-fr.vtt`} /> }
-          {  <track label="English" kind="subtitles" srcLang="en" src={`http://localhost:3000/subtitles/${idMovie}-en.vtt`} /> }
-          // <track kind="captions" default />
+        <video id="videoPlayer" crossOrigin="anonymous" controls muted preload="auto" style={{ margin: 'auto', width: '100%' }} >
+          {<source src={`http://localhost:3000/video?videoHash=${hash}&id=${idMovie}`} /> }
+          {/* Tester si le fichier est accessible pour mettre le lien la ou pas Et traduire label suivant langue */}
+          {subtitles.length !== 0 ? (
+            <div>
+              <track label="French" kind="subtitles" srcLang="fr" src={`http://localhost:3000/subtitles/${idMovie}-fr.vtt`} />
+              <track label="English" kind="subtitles" srcLang="en" src={`http://localhost:3000/subtitles/${idMovie}-en.vtt`} />
+              <track kind="captions" default />
+            </div>
+          ) : (
+            null
+          )}
         </video>
       </React.Fragment>
     );
@@ -50,6 +57,7 @@ Video.propTypes = {
   location: PropTypes.shape({
     search: PropTypes.string.isRequired,
   }).isRequired,
+  subtitles: PropTypes.shape([]).isRequired,
 };
 
 const mapStateToProps = state => ({

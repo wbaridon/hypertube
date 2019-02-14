@@ -53,6 +53,7 @@ export default function watchList(state = defaultWatchListState, action) {
       return {
         loading: false,
         success: true,
+        data: action.result,
       };
     case DELETE_WATCHLIST_ERROR:
       return {
