@@ -123,7 +123,7 @@ class Movies extends Component {
     };
     this.observer = new IntersectionObserver(this.handleTopSpan, options);
     this.observer.observe(document.getElementById('top'));
-    // window.addEventListener('scroll', this.scrollListener, false);
+    window.addEventListener('scroll', this.scrollListener, false);
   }
 
   componentWillUnmount() {
