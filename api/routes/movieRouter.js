@@ -2,6 +2,7 @@ const express = require('express');
 const movieRouter = express.Router();
 const axios = require('axios');
 const tokenManager = require('../utils/token');
+const getSubtitles = require('../utils/getSubtitles')
 
 const MovieManager = require('../models/movieManager');
 const UserManager = require('../models/userManager');
@@ -11,7 +12,11 @@ movieRouter
     tokenManager.decode(req.headers.authorization).then(token => {
       MovieManager.getMovie(req.body.id).then(result => {
         getSeenStatus(token, result).then(myMovie => {
-          res.status(200).send(myMovie);
+          getSubtitles.launcher(myMovie.imdbId).then(subtitles => {
+            myMovie.subtitles = subtitles
+            console.log(myMovie)
+            res.status(200).send(myMovie);
+          }).catch(err => res.status(404).send({error:'getSubtitles.notAvailable'}))
         }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
       }).catch(error => res.status(404).send({error:'errorInTheDb'}))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
