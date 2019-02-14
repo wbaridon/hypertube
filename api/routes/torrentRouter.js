@@ -8,56 +8,8 @@ const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
-const mimeTypes = require('../utils/mimeTypes.js');
-const getSubtitles = require('../utils/getSubtitles')
 
-const MovieManager = require('../models/movieManager');
-
-function getExtention(fileName) {
-  return fileName.substring(fileName.lastIndexOf('.'));
-}
-
-function getMagnet(hash) {
-  const magnet = 'magnet:?xt=urn:btih:';
-  console.log(magnet.concat(hash));
-  return magnet.concat(hash);
-}
-
-function isVideo(mime) {
-  return mimeTypes[mime] !== undefined;
-}
-
-function findVideoFile(engine) {
-  let file;
-  engine.files.forEach((current) => {
-    const mime = getExtention(current.name);
-    if (!isVideo(mime)) {
-      return;
-    }
-    if (file && current.length < file.length) {
-      return;
-    }
-    file = current;
-  });
-  return file;
-}
-
-function alreadyDownloaded(hash, id, file) {
-  if (fs.existsSync(`./assets/torrents/${file.name}`)) {
-    console.log('Movie already exists');
-    const data = { lastSeen: Date.now() };
-    MovieManager.update(id, data);
-    return true;
-  }
-
-  const data = {
-    lastSeen: Date.now(),
-    movieOnServer: true,
-    file: `./assets/torrents/${file.name}`,
-  };
-  MovieManager.update(id, data);
-  return false;
-}
+const TorrentManager = require('../models/torrentManager');
 
 torrentRouter
   .get('/', async (req, res) => {
@@ -68,14 +20,14 @@ torrentRouter
     // getSubtitles.launcher(id)
     const hash = videoHash;
     let downloaded = false;
-    const torrentMagnet = getMagnet(hash);
+    const torrentMagnet = await TorrentManager.getMagnet(hash);
     const engine = torrentStream(torrentMagnet, {
       // Trouver un repertoire tmp qui bug pas
       tmp: './assets/tmp',
     })
 
-    engine.on('ready', () => {
-      const file = findVideoFile(engine);
+    engine.on('ready', async () => {
+      const file = await TorrentManager.findVideoFile(engine);
       if (!file) {
         engine.removeAllListeners();
         engine.destroy();
@@ -85,17 +37,18 @@ torrentRouter
       file.select();
 
       let stream = null;
-      if (alreadyDownloaded(hash, id, file) === true) {
+      const extension = await TorrentManager.getExtention(file.name);
+      const realExtension = extension.substr(1);
+      if (await TorrentManager.alreadyDownloaded(id, file) === true) {
         downloaded = true;
         stream = fs.createReadStream(`./assets/torrents/${file.name}`);
-  } else {
+      } else {
         stream = file.createReadStream();
-  }
-    const converter = ffmpeg()
+      }
+      const converter = ffmpeg()
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
         .outputFormat('mp4')
-        .output(res)
         .on('codecData', (codecData) => {
           console.log('fluent-ffmpeg: CodecData:', codecData);
         })
@@ -106,19 +59,18 @@ torrentRouter
         })
         .on('error', (err, stdout, stderr) => {
           console.log('ffmpeg, file:', file.path, ' Error:', '\nErr:', err, '\nStdOut:', stdout, '\nStdErr:', stderr);
-        });
-
-      converter.inputFormat(getExtention(file.name).substr(1))
+        })
+        .inputFormat(realExtension)
         .audioCodec('aac')
         .videoCodec('libx264')
-        .run();
+        .pipe(res);
+
 
       let writeStream = null;
       if (!downloaded) {
         writeStream = fs.createWriteStream(`./assets/torrents/${file.name}`);
         stream.pipe(writeStream);
       }
-      res.pipe(converter);
 
       res.on('close', () => {
         console.log('page closes, all processes killed');
