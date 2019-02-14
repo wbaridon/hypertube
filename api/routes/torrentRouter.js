@@ -9,6 +9,7 @@ const ffmpeg = require('fluent-ffmpeg');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 const mimeTypes = require('../utils/mimeTypes.js');
+const getSubtitles = require('../utils/getSubtitles')
 
 const MovieManager = require('../models/movieManager');
 
@@ -42,7 +43,7 @@ function findVideoFile(engine) {
 }
 
 function alreadyDownloaded(hash, id, file) {
-  if (fs.existsSync(`assets/torrents/${file.name}`)) {
+  if (fs.existsSync(`./assets/torrents/${file.name}`)) {
     console.log('Movie already exists');
     const data = { lastSeen: Date.now() };
     MovieManager.update(id, data);
@@ -52,7 +53,7 @@ function alreadyDownloaded(hash, id, file) {
   const data = {
     lastSeen: Date.now(),
     movieOnServer: true,
-    file: `assets/torrents/${file.name}`,
+    file: `./assets/torrents/${file.name}`,
   };
   MovieManager.update(id, data);
   return false;
@@ -64,14 +65,13 @@ torrentRouter
       videoHash,
       id,
     } = req.query;
+    // getSubtitles.launcher(id)
     const hash = videoHash;
-    console.log(hash)
     let downloaded = false;
     const torrentMagnet = getMagnet(hash);
     const engine = torrentStream(torrentMagnet, {
       // Trouver un repertoire tmp qui bug pas
       tmp: './assets/tmp',
-
     })
 
     engine.on('ready', () => {
@@ -87,11 +87,11 @@ torrentRouter
       let stream = null;
       if (alreadyDownloaded(hash, id, file) === true) {
         downloaded = true;
-        stream = fs.createReadStream(`assets/torrents/${file.name}`);
-      } else {
+        stream = fs.createReadStream(`./assets/torrents/${file.name}`);
+  } else {
         stream = file.createReadStream();
-      }
-      const converter = ffmpeg()
+  }
+    const converter = ffmpeg()
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
         .outputFormat('mp4')
@@ -115,7 +115,7 @@ torrentRouter
 
       let writeStream = null;
       if (!downloaded) {
-        writeStream = fs.createWriteStream(`assets/torrents/${file.name}`);
+        writeStream = fs.createWriteStream(`./assets/torrents/${file.name}`);
         stream.pipe(writeStream);
       }
       res.pipe(converter);
