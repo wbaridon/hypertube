@@ -23,7 +23,7 @@ async function getAllPages(pages) {
     try {
       await getPage(i);
     } catch(e) {
-      console.log(e)
+      console.log('Yts.serviceUnaivailable')
     }
   }
 }
@@ -37,7 +37,7 @@ function getPage(page) {
           checkMovie(response.data.data.movies[i]);
         }
       }
-      setTimeout(resolve, 2500)
+      setTimeout(resolve, 3000)
     }).catch(error => { reject(error); })
   })
 }
@@ -46,10 +46,28 @@ function checkMovie(data) {
   MovieManager.exist(data.imdb_code)
   .then(status => {
     if (!status) { formatMovieData(data) }
+    else { updateMovie(data) }
   })
 }
 
+function updateMovie(data) {
+  if (data.torrents && data.torrents[0]) {
+    let movie = {
+      seeds: data.torrents[0].seeds,
+      torrents: {
+        hash: data.torrents[0].hash,
+        quality: data.torrents[0].quality,
+        seeds: data.torrents[0].seeds,
+        peers: data.torrents[0].peers
+      }
+    }
+    MovieManager.update(data.imdb_code, movie)
+    .then(update => { }).catch(err => console.log('yts.updateImpossible'))
+  }
+}
+
 function formatMovieData(data) {
+  if (data.torrents && data.torrents[0]) {
     let movie = {
       type: 'movie',
       imdbId: data.imdb_code,
@@ -74,6 +92,7 @@ function formatMovieData(data) {
         delete movie.cover
         getExtraData(movie)
       })
+  }
 }
 
 function checkCover(url) {
@@ -99,7 +118,7 @@ function getExtraData(movie) {
         movie.synopsis = $('.summary_text').text().trim();
         movie.runtime = $('#titleDetails').find('time').text().split(' ')[0].trim();
         addMovie(movie)
-  }).catch(error => console.log(error + 'getExtraData.getExtraDataUnaivailable'))
+  }).catch(error => console.log('YTS.getExtraData.getExtraDataUnaivailable'))
 }
 
 function addMovie(movie) {

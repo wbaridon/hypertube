@@ -25,6 +25,11 @@ const yts = require('./utils/getMoviesFromYTS');
 const eztv = require('./utils/getMoviesFromEZTV');
 const torrentStorage = require('./utils/torrentStorage');
 
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
 app.use(express.static('assets'))
 app.use('/user', userRouter);
 app.use('/library', libraryRouter);
@@ -36,8 +41,8 @@ app.use('/watchList', watchListRouter);
 
 app.listen(port, function () {
   console.log(`Server running at http://${hostname}:${port}/`);
-  yts.launcher()
-  eztv.launcher()
+//  yts.launcher()
+//  eztv.launcher()
 });
 
 var getNewMovies = schedule.scheduleJob('0 0 * * *', function(){

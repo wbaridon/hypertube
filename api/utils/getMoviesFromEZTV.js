@@ -23,7 +23,7 @@ async function getAllPages(pages) {
       try {
         await getPage(i);
       } catch(e) {
-        console.log(e)
+        console.log('Eztv.serviceUnaivailable')
       }
   }
 }
@@ -44,8 +44,25 @@ function checkMovie(data) {
   MovieManager.exist(`tt${data.imdb_id}`)
   .then(status => {
     if (!status) { formatMovieData(data) }
+    else { updateMovie(data) }
   })
 }
+
+function updateMovie(data) {
+  if (data.imdb_id) {
+    let movie = {
+      seeds: data.seeds,
+      torrents: {
+        hash: data.hash,
+        seeds: data.seeds,
+        peers: data.peers
+      }
+    }
+    MovieManager.update('tt'+data.imdb_id, movie)
+    .then(update => { }).catch(err => console.log('eztv.updateImpossible'))
+  }
+}
+
 
 function formatMovieData(data) {
   if (data.imdb_id) {
@@ -89,7 +106,7 @@ function getExtraData(movie) {
         movie.runtime = $('#titleDetails').find('time').text().split(' ')[0].trim();
         if (!movie.cover) { movie.cover = 'https://www.quantabiodesign.com/wp-content/uploads/No-Photo-Available.jpg' }
        addMovie(movie)
-  }).catch(error => console.log(error + 'getExtraData.getExtraDataUnaivailable'))
+  }).catch(error => console.log('EZTV.getExtraData.getExtraDataUnaivailable'))
 }
 
 function addMovie(movie) {

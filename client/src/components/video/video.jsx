@@ -31,9 +31,12 @@ class Video extends React.Component {
     console.log(idMovie);
     return (
       <React.Fragment>
-        <video id="videoPlayer" controls muted preload="auto"style={{ margin: 'auto', width: '100%' }} >
+        <video id="videoPlayer" crossorigin="anonymous" controls muted preload="auto"style={{ margin: 'auto', width: '100%' }} >
           { <source src={`http://localhost:3000/video?videoHash=${hash.hash}&id=${idMovie}`} /> }
-          <track kind="captions" default />
+          // Tester si le fichier est accessible pour mettre le lien la ou pas // Et traduire label suivant langue
+        {  <track label="French" kind="subtitles" srcLang="fr" src={`http://localhost:3000/subtitles/${idMovie}-fr.vtt`} /> }
+          {  <track label="English" kind="subtitles" srcLang="en" src={`http://localhost:3000/subtitles/${idMovie}-en.vtt`} /> }
+          // <track kind="captions" default />
         </video>
       </React.Fragment>
     );

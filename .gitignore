@@ -2,6 +2,8 @@ api/node_modules
 api/package-lock.json
 api/assets/images
 api/assets/torrents
+api/assets/subtitles
+api/assets/tmp
 client/node_modules
 client/package-lock.json
 .DS_Store
