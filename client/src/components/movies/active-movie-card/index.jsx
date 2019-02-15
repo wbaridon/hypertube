@@ -11,6 +11,7 @@ import {
   Chip,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 class ActiveMovieCard extends React.Component {
   constructor() {
@@ -27,15 +28,6 @@ class ActiveMovieCard extends React.Component {
     this.mountStyle = this.mountStyle.bind(this);
   }
 
-  mountStyle() {
-    this.setState({
-      style: {
-        opacity: 1,
-        transition: 'all 0.5s ease-out',
-      },
-    })
-  }
-
   componentDidMount() {
     this.animation = setTimeout(this.mountStyle, 10) // call the into animation
   }
@@ -49,6 +41,14 @@ class ActiveMovieCard extends React.Component {
     this.setState({ image: false });
   }
 
+  mountStyle() {
+    this.setState({
+      style: {
+        opacity: 1,
+        transition: 'all 0.5s ease-out',
+      },
+    });
+  }
   handleAddWatchList(token, imdbId, bool) {
     let { movie } = this.props;
     const { addWatchList, deleteWatchList } = this.props;
@@ -148,20 +148,19 @@ class ActiveMovieCard extends React.Component {
                   <Button>
                     {movie.watchList === 'false' ? (
                       <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'true'); }}>
-                        + to list
+                        <FormattedMessage id="movies.addList" />
                       </Typography>
                     ) : (
                       <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'false'); }}>
-                          - to list
+                        <FormattedMessage id="movie.deleteList" />
                       </Typography>
                     )}
-
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button component={Link} to={{ pathname: `/movie/${imdbId}`, state: { movieName: title } }} style={{ width: '100%' }}>
                     <Typography variant="button" noWrap style={{ width: '100%' }}>
-                      watch now
+                      <FormattedMessage id="movies.watch" />
                     </Typography>
                   </Button>
                 </Grid>

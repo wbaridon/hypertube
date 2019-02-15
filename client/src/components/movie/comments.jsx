@@ -132,7 +132,7 @@ class Comments extends React.Component {
                   style={{ margin: '10px' }}
                 />
                 <Button variant="contained" color="primary" fullWidth type="submit" style={{ marginBottom: '20px' }}>
-                  Submit
+                  <FormattedMessage id="movie.submit" />
                 </Button>
               </FormControl>
             </form>

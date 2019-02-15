@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getMovieDataA, seenA, unseenA } from 'Actions';
+import { getMovieDataA, seenA, unseenA, emptyMovieDataA } from 'Actions';
 import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -16,6 +16,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import { injectIntl, intlShape } from 'react-intl';
 import Comments from './comments';
 import Video from '../video/video';
 import GrowShrink from '../grow-shrink';
@@ -30,6 +31,7 @@ const styles = {
   },
 };
 
+
 class Movie extends React.Component {
   componentWillMount() {
     const {
@@ -38,6 +40,11 @@ class Movie extends React.Component {
       match,
     } = this.props;
     getMovie(match.params.id_movie, token);
+  }
+
+  componentWillUnmount = () => {
+    const { emptyMovieData } = this.props;
+    emptyMovieData();
   }
 
   handleSeen(token, idMovie, bool) {
@@ -49,9 +56,7 @@ class Movie extends React.Component {
   }
 
   render() {
-    const { classes, movie, token, location } = this.props;
-    console.log(location)
-    // console.log(movie);
+    const { classes, movie, token, intl, location } = this.props;
     return (
       movie ? (
         <Grid
@@ -62,33 +67,34 @@ class Movie extends React.Component {
           alignItems="center"
         >
           <Card>
+            <Grid>
+              <IconButton component={Link} to="/movies" onClick={() => emptyMovieData()}>
+                <ArrowBack />
+              </IconButton>
+              {movie.seen ? (
+                <IconButton onClick={() => this.handleSeen(token, movie.imdbId, false)} style={{ float: 'right', marginRight: '10px' }}>
+                  <Typography><FormattedMessage id="movie.markUnseen" /></Typography>
+                  <CloseIcon />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => this.handleSeen(token, movie.imdbId, true)} style={{ float: 'right', marginRight: '10px' }}>
+                  <DoneIcon />
+                  <Typography><FormattedMessage id="movie.markSeen" /></Typography>
+                </IconButton>
+              )}
+            </Grid>
             <Grid container>
               <Grid item xs={12} sm={6}>
-                <IconButton component={Link} to="/movies">
-                  <ArrowBack />
-                </IconButton>
-                {movie.seen ? (
-                  <IconButton onClick={() => this.handleSeen(token, movie.imdbId, false)} style={{ float: 'right' }}>
-                    <FormattedMessage id="markUnseen" />
-                    <CloseIcon />
-                  </IconButton>
-                ) : (
-                  <IconButton onClick={() => this.handleSeen(token, movie.imdbId, true)} style={{ float: 'right' }}>
-                    <DoneIcon />
-                    <FormattedMessage id="markSeen" />
-                  </IconButton>
-                )}
                 <CardMedia
                   style={
                     {
                       margin: 'auto', width: '70%', maxWidth: '500px', marginBottom: '20px'
                     }
                   }
-                  title="movie cover"
+                  title={`${movie.title} image`}
                   component="img"
                   image={movie.cover}
                 />
-                
               </Grid>
               <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
                 <CardContent style={{ margin: 'auto' }}>
@@ -108,7 +114,7 @@ class Movie extends React.Component {
                        <div>
                          <br />
                          <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
-                         <Typography inline variant="subtitle1">{`${movie.genre}' '`}</Typography>
+                         <Typography inline variant="subtitle1">{`${movie.genre}`}</Typography>
                        </div>
                      ) : (null)
                   }
@@ -126,7 +132,7 @@ class Movie extends React.Component {
                       <div>
                         <br />
                         <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
-                        <Typography inline variant="subtitle1">{`${movie.actors}' '`}</Typography>
+                        <Typography inline variant="subtitle1">{`${movie.actors}`}</Typography>
                       </div>
                     ) : (null)
                   }
@@ -159,6 +165,7 @@ const mapDispatchToProps = dispatch => ({
   getMovie: (idMovie, token) => dispatch(getMovieDataA(idMovie, token)),
   seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
   unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
+  emptyMovieData: () => dispatch(emptyMovieDataA()),
 });
 
 const mapStateToProps = state => ({
@@ -177,7 +184,9 @@ Movie.propTypes = {
   getMovie: PropTypes.func.isRequired,
   seen: PropTypes.func.isRequired,
   unseen: PropTypes.func.isRequired,
+  emptyMovieData: PropTypes.func.isRequired,
   movie: PropTypes.shape({}),
+  intl: intlShape.isRequired,
 };
 
 Movie.defaultProps = {
@@ -185,4 +194,4 @@ Movie.defaultProps = {
 };
 
 Movie.url = '/movie/:id_movie';
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter((Movie))));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter((Movie)))));

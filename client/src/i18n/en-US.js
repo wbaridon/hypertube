@@ -6,7 +6,13 @@ const enUS = {
   searchBar: {
     sortBy: 'Sort',
   },
+  movies: {
+    watch: 'watch now',
+    addList: '+ to list',
+    deleteList: '- to list',
+  },
   movie: {
+    title: 'movie image',
     year: 'Year: ',
     runtime: 'Runtime: ',
     genre: 'Genre: ',
@@ -15,10 +21,13 @@ const enUS = {
     awards: 'Awards: ',
     rating: 'Rating: ',
     comments: 'Comments',
+    submit: 'submit',
     noComments: 'There is not comments yet !',
     commentInput: 'Say something',
     at: ' at ',
     the: ' the ',
+    markSeen: 'mark as seen',
+    markUnseen: 'mark as unseen',
   },
   resetPassword: {
     title: 'Hi, if you\'ve forgotten your password, enter your email below!',
