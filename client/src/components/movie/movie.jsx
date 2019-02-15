@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getMovieDataA, seenA, unseenA } from 'Actions';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import {
   Typography,
@@ -18,6 +18,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Comments from './comments';
 import Video from '../video/video';
+import GrowShrink from '../grow-shrink';
 
 const styles = {
   movie_info: {
@@ -48,7 +49,8 @@ class Movie extends React.Component {
   }
 
   render() {
-    const { classes, movie, token } = this.props;
+    const { classes, movie, token, location } = this.props;
+    console.log(location)
     // console.log(movie);
     return (
       movie ? (
@@ -140,14 +142,14 @@ class Movie extends React.Component {
                 </CardContent>
               </Grid>
             </Grid>
-            <Grid>
+            {/* <Grid>
               <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
-            </Grid>
+            </Grid> */}
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
-        null
+        <GrowShrink movieName={location.state.movieName} />
       )
     );
   }
@@ -183,4 +185,4 @@ Movie.defaultProps = {
 };
 
 Movie.url = '/movie/:id_movie';
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Movie));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter((Movie))));

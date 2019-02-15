@@ -1,0 +1,10 @@
+@keyframes changeScale {
+  from {
+    font-size: 12;
+  }
+
+  to {
+    font-size: 32;
+  }
+}
+

@@ -159,7 +159,7 @@ class ActiveMovieCard extends React.Component {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button component={Link} to={`/movie/${imdbId}`} style={{ width: '100%' }}>
+                  <Button component={Link} to={{ pathname: `/movie/${imdbId}`, state: { movieName: title } }} style={{ width: '100%' }}>
                     <Typography variant="button" noWrap style={{ width: '100%' }}>
                       watch now
                     </Typography>
