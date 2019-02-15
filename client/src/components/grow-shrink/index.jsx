@@ -6,28 +6,22 @@ import {
 import styled, { keyframes } from 'styled-components';
 
 const growShrinkAnimation = keyframes`
-0% {
+from {
+  opacity: 0.1;
   font-size: 24px;
   margin-top: 0px;
   color: #fff
-  transform: rotate(-360deg)
 }
-50% {
+to {
+  opacity: 1;
   margin-top: 300px;
-  font-size: 48px;
+  font-size: 52px;
   color: #fff;
-  transform: rotate(0deg)
-}
-100% {
-  margin-top: 0px;
-  font-size: 24px;
-  color: #fff;
-  transform: rotate(360deg)
 }
 `;
 
 const growShrink = styled.p`
-  animation: ${growShrinkAnimation} 1s ease infinite;
+  animation: ${growShrinkAnimation} 3s ease;
 `;
 
 function GrowShrink({
