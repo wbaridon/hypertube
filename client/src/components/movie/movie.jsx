@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getMovieDataA, seenA, unseenA, emptyMovieDataA } from 'Actions';
+import {
+  getMovieDataA,
+  seenA,
+  unseenA,
+  emptyMovieDataA,
+} from 'Actions';
 import { Link, withRouter } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
 import {
   Typography,
   Grid,
@@ -16,9 +20,13 @@ import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { injectIntl, intlShape } from 'react-intl';
+import {
+  injectIntl,
+  intlShape,
+  FormattedMessage,
+} from 'react-intl';
 import Comments from './comments';
-import Video from '../video/video';
+// import Video from '../video/video';
 import GrowShrink from '../grow-shrink';
 
 const styles = {
