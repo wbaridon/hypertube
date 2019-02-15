@@ -9,27 +9,19 @@ const OpenSubtitles = new OS({
 
 function getSubtitles(id) {
   return new Promise ((resolve, reject) => {
-    let subtitles = []
+    let subtitles = {
+      'en': true,
+      'fr': true,
+    }
     if (!fs.existsSync('./assets/subtitles')) { fs.mkdirSync('./assets/subtitles'); }
-      searchSubtitle(id, 'eng').then(done => {
-        subtitles.en = true
-        searchSubtitle(id, 'fre').then(alsoDone => {
-          subtitles.fr = true
-          resolve(subtitles)
-        }).catch(err => {
-          subtitles.fr = false
-          resolve(subtitles)
-        })
-      }).catch(err => {
-        subtitles.en = false
-        searchSubtitle(id, 'fre').then(alsoDone => {
-          subtitles.fr = true
-          resolve(subtitles)
-        }).catch(err => {
-          subtitles.fr = false
-          resolve(subtitles)
-        })
-      })
+    Promise.all([
+      searchSubtitle(id, 'eng').catch(error => {  }),
+      searchSubtitle(id, 'fre').catch(error => {  }),
+    ]).then(data => {
+      if (!data[0]) { subtitles.en = false }
+      if (!data[1]) { subtitles.fr = false }
+      resolve(subtitles)
+    }).catch(error => { reject('getSubtitles.notAvailable')})
   })
 }
 
@@ -40,23 +32,29 @@ function searchSubtitle(imdbId, lang) {
       extensions: ['srt', 'vtt'],
       imdbid: imdbId,
     }).then(subtitles => {
-      if (subtitles.fr && subtitles.fr.vtt) {
-        download(subtitles.fr.vtt, imdbId, 'fr', '.vtt').then(done => {resolve()})
-        .catch(err => {
-          if (subtitles.fr.utf8) {
-            convert(subtitles.fr.utf8, imdbId, 'fr', '.srt').then(done => { resolve()}).catch(err => reject('Subtitle.EnNotAvailable'))
-          } else {
-          reject('Subtitle.ToolNotAvailable') }
-        })
-      }
-      else if (subtitles.en && subtitles.en.vtt) {
-        download(subtitles.en.vtt, imdbId, 'en', '.vtt').then(done => resolve())
-        .catch(err => {
-          if (subtitles.en.utf8) {
-            convert(subtitles.en.utf8, imdbId, 'en', '.srt').then(done => resolve()).catch(err => reject('Subtitle.EnNotAvailable'))
+      switch (lang) {
+        case 'fre':
+          if (subtitles.fr && subtitles.fr.vtt) {
+            download(subtitles.fr.vtt, imdbId, 'fr', '.vtt').then(done => {resolve(true)})
+            .catch(err => {
+              if (subtitles.fr.utf8) {
+                convert(subtitles.fr.utf8, imdbId, 'fr', '.srt').then(done => { resolve(true)}).catch(err => reject('Subtitle.EnNotAvailable'))
+              } else {
+              reject('Subtitle.ToolNotAvailable') }
+            })
+          }
+          break;
+        case 'eng':
+          if (subtitles.en && subtitles.en.vtt) {
+            download(subtitles.en.vtt, imdbId, 'en', '.vtt').then(done => resolve(true))
+            .catch(err => {
+              if (subtitles.en.utf8) {
+                convert(subtitles.en.utf8, imdbId, 'en', '.srt').then(done => resolve(true)).catch(err => reject('Subtitle.EnNotAvailable'))
+              } else { reject('Subtitle.ToolNotAvailable') }
+            })
           } else { reject('Subtitle.ToolNotAvailable') }
-        })
-      } else { reject('Subtitle.ToolNotAvailable') }
+          break;
+      }
     }).catch(err => { reject('Subtitle.ToolNotAvailable')})
   })
 }

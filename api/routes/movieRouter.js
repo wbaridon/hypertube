@@ -17,6 +17,7 @@ movieRouter
               'en': subtitles.en,
               'fr': subtitles.fr
             }
+            console.log(myMovie.subtitles)
             res.status(200).send(myMovie);
           }).catch(err => res.status(404).send({error:'getSubtitles.notAvailable'}))
         }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
