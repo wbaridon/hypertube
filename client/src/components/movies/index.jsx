@@ -463,7 +463,7 @@ Movies.propTypes = {
   getMoviePageHandle: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
-  mobile: PropTypes.string.isRequired,
+  mobile: PropTypes.bool.isRequired,
 };
 
 Movies.defaultProps = {

@@ -151,16 +151,16 @@ class ActiveMovieCard extends React.Component {
                         + to list
                       </Typography>
                     ) : (
-                        <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'false'); }}>
+                      <Typography variant="button" noWrap onClick={() => { this.handleAddWatchList(token, imdbId, 'false'); }}>
                           - to list
                       </Typography>
-                      )}
+                    )}
 
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button component={Link} to={`/movie/${imdbId}`}>
-                    <Typography variant="button" noWrap>
+                  <Button component={Link} to={`/movie/${imdbId}`} style={{ width: '100%' }}>
+                    <Typography variant="button" noWrap style={{ width: '100%' }}>
                       watch now
                     </Typography>
                   </Button>
@@ -185,7 +185,7 @@ ActiveMovieCard.propTypes = {
     height: PropTypes.number.isRequired,
   }).isRequired,
   closeMovie: PropTypes.func,
-  imdbRating: PropTypes.number.isRequired,
+  imdbRating: PropTypes.number,
   addWatchList: PropTypes.func.isRequired,
   deleteWatchList: PropTypes.func.isRequired,
   movie: PropTypes.shape({}).isRequired,
@@ -194,6 +194,7 @@ ActiveMovieCard.propTypes = {
 ActiveMovieCard.defaultProps = {
   closeMovie: () => { },
   year: 1914,
+  imdbRating: 0,
   synopsis: 'No summary available',
 };
 

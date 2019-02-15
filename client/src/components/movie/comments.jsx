@@ -128,7 +128,7 @@ class Comments extends React.Component {
                   name="newcomment"
                   type="string"
                   id="component-outlined"
-                  labelWidth={400}
+                  labelWidth={200}
                   style={{ margin: '10px' }}
                 />
                 <Button variant="contained" color="primary" fullWidth type="submit" style={{ marginBottom: '20px' }}>
