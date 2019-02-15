@@ -67,13 +67,13 @@ class Movie extends React.Component {
                 </IconButton>
                 {movie.seen ? (
                   <IconButton onClick={() => this.handleSeen(token, movie.imdbId, false)} style={{ float: 'right' }}>
-                    mark as unseen
+                    <FormattedMessage id="markUnseen" />
                     <CloseIcon />
                   </IconButton>
                 ) : (
                   <IconButton onClick={() => this.handleSeen(token, movie.imdbId, true)} style={{ float: 'right' }}>
                     <DoneIcon />
-                    Mark as seen
+                    <FormattedMessage id="markSeen" />
                   </IconButton>
                 )}
                 <CardMedia
@@ -141,7 +141,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
+              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
