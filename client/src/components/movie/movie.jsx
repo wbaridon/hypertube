@@ -66,8 +66,7 @@ class Movie extends React.Component {
           alignItems="center"
         >
           <Card>
-            <Grid >
-              {/* <IconButton component={Link} to="/movies" > */}
+            <Grid>
               <IconButton component={Link} to="/movies" onClick={() => emptyMovieData()}>
                 <ArrowBack />
               </IconButton>
@@ -149,7 +148,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
+              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
