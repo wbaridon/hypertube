@@ -3,35 +3,31 @@ import PropTypes from 'prop-types';
 import {
   Typography, Grid,
 } from '@material-ui/core';
-import './growShrink';
 import styled, { keyframes } from 'styled-components';
 
 const growShrinkAnimation = keyframes`
 0% {
   font-size: 24px;
+  margin-top: 0px;
   color: #fff
-  transform: rotate(90)
-}
-25% {
-  font-size: 32px;
-  color: #ccc
+  transform: rotate(0deg)
 }
 50% {
+  margin-top: 500px;
   font-size: 48px;
   color: #fff;
-}
-75% {
-  font-size: 32px;
-  color: #ccc
+  transform: rotate(360deg)
 }
 100% {
+  margin-top: 0px;
   font-size: 24px;
   color: #fff;
+  transform: rotate(0deg)
 }
 `;
 
 const growShrink = styled.p`
-  animation: ${growShrinkAnimation} 2s linear infinite;
+  animation: ${growShrinkAnimation} 2s ease infinite;
 `;
 
 function GrowShrink({
