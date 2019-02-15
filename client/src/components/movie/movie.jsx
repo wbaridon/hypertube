@@ -67,8 +67,7 @@ class Movie extends React.Component {
     const { classes, movie, token, intl, location } = this.props;
     console.log(movie);
     return (
-      
-      movie && movie !== 'error' ? (
+      movie ? (
         <Grid
           container
           className={classes.movie_info}
@@ -76,104 +75,103 @@ class Movie extends React.Component {
           justify="center"
           alignItems="center"
         >
-          <Card>
-            <Grid>
-              <IconButton component={Link} to="/movies">
-                <ArrowBack />
-              </IconButton>
-              {movie.seen ? (
-                <IconButton onClick={() => this.handleSeen(token, movie.imdbId, false)} style={{ float: 'right', marginRight: '10px' }}>
-                  <Typography><FormattedMessage id="movie.markUnseen" /></Typography>
-                  <CloseIcon />
-                </IconButton>
-              ) : (
-                <IconButton onClick={() => this.handleSeen(token, movie.imdbId, true)} style={{ float: 'right', marginRight: '10px' }}>
-                  <DoneIcon />
-                  <Typography><FormattedMessage id="movie.markSeen" /></Typography>
-                </IconButton>
-              )}
-            </Grid>
-            <Grid container>
-              <Grid item xs={12} sm={6}>
-                <CardMedia
-                  style={
-                    {
-                      margin: 'auto', width: '70%', maxWidth: '500px', marginBottom: '20px'
-                    }
-                  }
-                  title={`${movie.title} image`}
-                  component="img"
-                  image={movie.cover}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
-                <CardContent style={{ margin: 'auto' }}>
-                  <Typography variant="h5">{movie.title}</Typography>
-                  <Typography variant="subtitle1">{movie.synopsis}</Typography>
-                  {
-                    movie.year ? (
-                      <div>
-                        <br />
-                        <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
-                        <Typography inline variant="subtitle1">{movie.year}</Typography>
-                      </div>
-                    ) : (null)
-                  }
-                  {
-                    movie.length > 0 ? (
-                      <div>
-                        <br />
-                        <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
-                        <Typography inline variant="subtitle1">{`${movie.genre}`}</Typography>
-                      </div>
-                    ) : (null)
-                  }
-                  {
-                    movie.director ? (
-                      <div>
-                        <br />
-                        <Typography inline variant="h5"><FormattedMessage id="movie.director" /></Typography>
-                        <Typography inline variant="subtitle1">{movie.director}</Typography>
-                      </div>
-                    ) : (null)
-                  }
-                  {
-                    movie.actors.length > 0 ? (
-                      <div>
-                        <br />
-                        <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
-                        <Typography inline variant="subtitle1">{`${movie.actors}`}</Typography>
-                      </div>
-                    ) : (null)
-                  }
-                  {
-                    movie.imdbRating ? (
-                      <div>
-                        <br />
-                        <Typography inline variant="h5"><FormattedMessage id="movie.rating" /></Typography>
-                        <Typography inline variant="subtitle1">{movie.imdbRating}</Typography>
-                      </div>
-                    ) : (null)
-                  }
-                </CardContent>
-              </Grid>
-            </Grid>
-            <Grid>
-              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
-            </Grid>
-          </Card>
-          <Comments comments={movie.comments} idMovie={movie.imdbId} />
+          {movie.error ? (
+            <Typography variant="h3"><FormattedMessage id="movie.error" /></Typography>
+          ) : (
+            <div>
+              <Card>
+                <Grid>
+                  <IconButton component={Link} to="/movies">
+                    <ArrowBack />
+                  </IconButton>
+                  {movie.seen ? (
+                    <IconButton onClick={() => this.handleSeen(token, movie.imdbId, false)} style={{ float: 'right', marginRight: '10px' }}>
+                      <Typography><FormattedMessage id="movie.markUnseen" /></Typography>
+                      <CloseIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={() => this.handleSeen(token, movie.imdbId, true)} style={{ float: 'right', marginRight: '10px' }}>
+                      <DoneIcon />
+                      <Typography><FormattedMessage id="movie.markSeen" /></Typography>
+                    </IconButton>
+                  )}
+                </Grid>
+                <Grid container>
+                  <Grid item xs={12} sm={6}>
+                    <CardMedia
+                      style={
+                        {
+                          margin: 'auto', width: '70%', maxWidth: '500px', marginBottom: '20px'
+                        }
+                      }
+                      title={`${movie.title} image`}
+                      component="img"
+                      image={movie.cover}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
+                    <CardContent style={{ margin: 'auto' }}>
+                      <Typography variant="h5">{movie.title}</Typography>
+                      <Typography variant="subtitle1">{movie.synopsis}</Typography>
+                      {
+                        movie.year ? (
+                          <div>
+                            <br />
+                            <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
+                            <Typography inline variant="subtitle1">{movie.year}</Typography>
+                          </div>
+                        ) : (null)
+                      }
+                      {
+                        movie.genre > 0 ? (
+                          <div>
+                            <br />
+                            <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
+                            <Typography inline variant="subtitle1">{`${movie.genre}`}</Typography>
+                          </div>
+                        ) : (null)
+                      }
+                      {
+                        movie.director ? (
+                          <div>
+                            <br />
+                            <Typography inline variant="h5"><FormattedMessage id="movie.director" /></Typography>
+                            <Typography inline variant="subtitle1">{movie.director}</Typography>
+                          </div>
+                        ) : (null)
+                      }
+                      {
+                        movie.actors ? (
+                          <div>
+                            <br />
+                            <Typography inline variant="h5"><FormattedMessage id="movie.actors" /></Typography>
+                            <Typography inline variant="subtitle1">{`${movie.actors}`}</Typography>
+                          </div>
+                        ) : (null)
+                      }
+                      {
+                        movie.imdbRating ? (
+                          <div>
+                            <br />
+                            <Typography inline variant="h5"><FormattedMessage id="movie.rating" /></Typography>
+                            <Typography inline variant="subtitle1">{movie.imdbRating}</Typography>
+                          </div>
+                        ) : (null)
+                      }
+                    </CardContent>
+                  </Grid>
+                </Grid>
+                <Grid>
+                  {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
+                </Grid>
+              </Card>
+              <Comments comments={movie.comments} idMovie={movie.imdbId} />
+            </div>
+          )}
         </Grid>
       ) : (
         <GrowShrink movieName={location.state ? location.state.movieName : intl.formatMessage({ id: 'movie.noMovie' })} />
       )
-      // movie === 'error' ? (
-      //   <Grid container style={{ justifyContent: 'center' }}>
-      //     <Typography variant="h3"><FormattedMessage id="movie.error" /></Typography>
-      //   </Grid>
-      // ) : (
-      //   null
-      // )
     );
   }
 }

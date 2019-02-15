@@ -32,7 +32,7 @@ export default function movie(state = defaultGetMovieState, action) {
       return {
         loading: false,
         success: false,
-        data: 'error',
+        data: { error: true },
       };
     default:
       return state;
