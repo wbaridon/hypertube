@@ -44,8 +44,9 @@ function searchSubtitle(imdbId, lang) {
         download(subtitles.fr.vtt, imdbId, 'fr', '.vtt').then(done => {resolve()})
         .catch(err => {
           if (subtitles.fr.utf8) {
-            convert(subtitles.fr.utf8, imdbId, 'en', '.srt').then(done => { resolve()}).catch(err => reject('Subtitle.EnNotAvailable'))
-          } else { reject('Subtitle.ToolNotAvailable') }
+            convert(subtitles.fr.utf8, imdbId, 'fr', '.srt').then(done => { resolve()}).catch(err => reject('Subtitle.EnNotAvailable'))
+          } else {
+          reject('Subtitle.ToolNotAvailable') }
         })
       }
       else if (subtitles.en && subtitles.en.vtt) {
