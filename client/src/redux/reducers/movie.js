@@ -29,7 +29,11 @@ export default function movie(state = defaultGetMovieState, action) {
         data: action.movie,
       };
     case GET_MOVIE_DATA_ERROR:
-      return defaultGetMovieState;
+      return {
+        loading: false,
+        success: false,
+        data: 'error',
+      };
     default:
       return state;
   }

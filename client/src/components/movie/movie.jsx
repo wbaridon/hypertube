@@ -65,8 +65,10 @@ class Movie extends React.Component {
 
   render() {
     const { classes, movie, token, intl, location } = this.props;
+    console.log(movie);
     return (
-      movie ? (
+      
+      movie && movie !== 'error' ? (
         <Grid
           container
           className={classes.movie_info}
@@ -109,22 +111,22 @@ class Movie extends React.Component {
                   <Typography variant="h5">{movie.title}</Typography>
                   <Typography variant="subtitle1">{movie.synopsis}</Typography>
                   {
-                     movie.year ? (
-                       <div>
-                         <br />
-                         <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
-                         <Typography inline variant="subtitle1">{movie.year}</Typography>
-                       </div>
-                     ) : (null)
+                    movie.year ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.year" /></Typography>
+                        <Typography inline variant="subtitle1">{movie.year}</Typography>
+                      </div>
+                    ) : (null)
                   }
                   {
-                     movie.length > 0 ? (
-                       <div>
-                         <br />
-                         <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
-                         <Typography inline variant="subtitle1">{`${movie.genre}`}</Typography>
-                       </div>
-                     ) : (null)
+                    movie.length > 0 ? (
+                      <div>
+                        <br />
+                        <Typography inline variant="h5"><FormattedMessage id="movie.genre" /></Typography>
+                        <Typography inline variant="subtitle1">{`${movie.genre}`}</Typography>
+                      </div>
+                    ) : (null)
                   }
                   {
                     movie.director ? (
@@ -164,6 +166,13 @@ class Movie extends React.Component {
         </Grid>
       ) : (
         <GrowShrink movieName={location.state ? location.state.movieName : intl.formatMessage({ id: 'movie.noMovie' })} />
+      ),
+      movie === 'error' ? (
+        <Grid container style={{ justifyContent: 'center' }}>
+          <Typography variant="h2"><FormattedMessage id="movie.error" /></Typography>
+        </Grid>
+      ) : (
+        null
       )
     );
   }
