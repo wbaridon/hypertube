@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getMovieDataA, seenA, unseenA, emptyMovieDataA } from 'Actions';
-import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import {
+  getMovieDataA,
+  seenA,
+  unseenA,
+  emptyMovieDataA,
+} from 'Actions';
+import { Link, withRouter } from 'react-router-dom';
 import {
   Typography,
   Grid,
@@ -16,9 +20,14 @@ import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { injectIntl, intlShape } from 'react-intl';
+import {
+  injectIntl,
+  intlShape,
+  FormattedMessage,
+} from 'react-intl';
 import Comments from './comments';
-import Video from '../video/video';
+// import Video from '../video/video';
+import GrowShrink from '../grow-shrink';
 
 const styles = {
   movie_info: {
@@ -55,7 +64,7 @@ class Movie extends React.Component {
   }
 
   render() {
-    const { classes, movie, token, intl,  } = this.props;
+    const { classes, movie, token, intl, location } = this.props;
     return (
       movie ? (
         <Grid
@@ -67,7 +76,7 @@ class Movie extends React.Component {
         >
           <Card>
             <Grid>
-              <IconButton component={Link} to="/movies" onClick={() => emptyMovieData()}>
+              <IconButton component={Link} to="/movies">
                 <ArrowBack />
               </IconButton>
               {movie.seen ? (
@@ -148,13 +157,13 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
+              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
-        null
+        <GrowShrink movieName={location.state ? location.state.movieName : intl.formatMessage({ id: 'movie.noMovie' })} />
       )
     );
   }
@@ -193,4 +202,4 @@ Movie.defaultProps = {
 };
 
 Movie.url = '/movie/:id_movie';
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Movie)));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter((Movie)))));

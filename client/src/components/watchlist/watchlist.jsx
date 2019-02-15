@@ -45,13 +45,15 @@ class WatchList extends React.Component {
     console.log(watchList);
     return (
       <Paper>
-        <Typography variant="h5">
-          Watchlist
-        </Typography>
-        <br />
-        <Typography variant="subtitle1">
-          Quels films dois tu regarder ?
-        </Typography>
+        <Grid style={{ margin: '15px' }}>
+          <Typography variant="h5">
+            Watchlist
+          </Typography>
+          <br />
+          <Typography variant="subtitle1">
+            Quels films dois tu regarder ?
+          </Typography>
+        </Grid>
         <Grid container direction="column" style={{ flexFlow: 'column' }}>
           {
             watchList.length !== 0 ? (
