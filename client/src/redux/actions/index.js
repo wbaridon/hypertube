@@ -50,6 +50,7 @@ import { deleteWatchListA } from './delete-watch-list';
 import { getWatchListA } from './get-watch-list';
 import { seenA } from './seen';
 import { unseenA } from './unseen';
+import { emptyMovieDataA } from './empty-movie'
 
 export const setMoviePageStateA = currentState => ({
   type: SET_MOVIE_PAGE_STATE,
@@ -137,4 +138,5 @@ export {
   sendHashA,
   seenA,
   unseenA,
+  emptyMovieDataA,
 };
