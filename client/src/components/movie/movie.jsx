@@ -166,14 +166,14 @@ class Movie extends React.Component {
         </Grid>
       ) : (
         <GrowShrink movieName={location.state ? location.state.movieName : intl.formatMessage({ id: 'movie.noMovie' })} />
-      ),
-      movie === 'error' ? (
-        <Grid container style={{ justifyContent: 'center' }}>
-          <Typography variant="h2"><FormattedMessage id="movie.error" /></Typography>
-        </Grid>
-      ) : (
-        null
       )
+      // movie === 'error' ? (
+      //   <Grid container style={{ justifyContent: 'center' }}>
+      //     <Typography variant="h3"><FormattedMessage id="movie.error" /></Typography>
+      //   </Grid>
+      // ) : (
+      //   null
+      // )
     );
   }
 }
