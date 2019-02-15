@@ -2,6 +2,7 @@ import {
   GET_MOVIE_DATA,
   GET_MOVIE_DATA_SUCCESS,
   GET_MOVIE_DATA_ERROR,
+  EMPTY_MOVIE_DATA,
 } from 'Actions/action-types';
 
 const defaultGetMovieState = {
@@ -12,6 +13,10 @@ const defaultGetMovieState = {
 
 export default function movie(state = defaultGetMovieState, action) {
   switch (action.type) {
+    case EMPTY_MOVIE_DATA:
+      return {
+        data: null,
+      }
     case GET_MOVIE_DATA:
       return {
         ...state,

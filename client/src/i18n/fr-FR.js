@@ -3,6 +3,11 @@ const flatten = require('flat');
 
 
 const frFR = {
+  movies: {
+    watch: 'Regarder',
+    addList: '+ ma liste',
+    deleteList: '- ma liste',
+  },
   movie: {
     year: 'Année: ',
     runtime: 'Durée: ',
@@ -12,10 +17,14 @@ const frFR = {
     awards: 'Prix: ',
     rating: 'Note: ',
     comments: 'Commentaires',
-    noComments: 'Pas encore de commantaires :(',
+    submit: 'Envoyer',
+    noComments: 'Pas encore de commentaires :(',
     commentInput: 'Commenter',
     worte: 'a ecrit',
-    at: 'Le ',
+    at: 'à ',
+    the: ' le ',
+    markSeen: ' marquer comme deja vu',
+    markUnseen: 'marquer comme jamais vu',
   },
   login: {
     userName: 'Nom d\'Utilisateur',
