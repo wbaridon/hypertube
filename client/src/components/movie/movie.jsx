@@ -163,7 +163,7 @@ class Movie extends React.Component {
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
       ) : (
-        <GrowShrink movieName={location.state.movieName} />
+        <GrowShrink movieName={location.state ? location.state.movieName : intl.formatMessage({ id: 'movie.noMovie' })} />
       )
     );
   }

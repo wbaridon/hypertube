@@ -10,29 +10,28 @@ const growShrinkAnimation = keyframes`
   font-size: 24px;
   margin-top: 0px;
   color: #fff
-  transform: rotate(0deg)
+  transform: rotate(-360deg)
 }
 50% {
-  margin-top: 500px;
+  margin-top: 300px;
   font-size: 48px;
   color: #fff;
-  transform: rotate(360deg)
+  transform: rotate(0deg)
 }
 100% {
   margin-top: 0px;
   font-size: 24px;
   color: #fff;
-  transform: rotate(0deg)
+  transform: rotate(360deg)
 }
 `;
 
 const growShrink = styled.p`
-  animation: ${growShrinkAnimation} 2s ease infinite;
+  animation: ${growShrinkAnimation} 1s ease infinite;
 `;
 
 function GrowShrink({
   movieName,
-  classes,
 }) {
   return (
     <Grid container alignItems="center" justify="center">
