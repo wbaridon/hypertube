@@ -76,7 +76,7 @@ class Movie extends React.Component {
         >
           <Card>
             <Grid>
-              <IconButton component={Link} to="/movies" onClick={() => emptyMovieData()}>
+              <IconButton component={Link} to="/movies">
                 <ArrowBack />
               </IconButton>
               {movie.seen ? (
@@ -156,9 +156,9 @@ class Movie extends React.Component {
                 </CardContent>
               </Grid>
             </Grid>
-            {/* <Grid>
-              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
-            </Grid> */}
+            <Grid>
+              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
+            </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
         </Grid>
