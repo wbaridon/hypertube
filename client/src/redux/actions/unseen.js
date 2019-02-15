@@ -28,7 +28,7 @@ export const unseenA = (token, idMovie) => {
           dispatch(unseenSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA(error.response.data));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(unseenError());
         },
       );

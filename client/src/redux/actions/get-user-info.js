@@ -31,7 +31,7 @@ export const getUserInfoA = (token, userName, dispatch) => new Promise((resolve,
         resolve();
       },
       (error) => {
-        dispatch(setErrorA(error.message));
+        dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
         dispatch(getUserInfoError(userName));
         reject();
       },

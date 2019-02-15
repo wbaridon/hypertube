@@ -28,7 +28,7 @@ export const getMovieDataA = (idMovie, token) => {
           dispatch(getMovieSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA('error'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(getMovieError());
         },
       );

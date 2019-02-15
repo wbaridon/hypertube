@@ -44,7 +44,7 @@ export const oAuthUserA = (provider, code) => {
         },
         (error) => {
           dispatch(oAuthUserError(error));
-          dispatch(setErrorA(error.message));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
         },
       );
   };

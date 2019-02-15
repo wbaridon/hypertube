@@ -2,12 +2,8 @@ import {
   EMPTY_MOVIE_DATA,
 } from './action-types';
 
-export const emptyMovieStart = () => ({
+const emptyMovieDataA = () => ({
   type: EMPTY_MOVIE_DATA,
 });
 
-export const emptyMovieDataA = () => {
-  return (dispatch) => {
-    dispatch(emptyMovieStart());
-  };
-};
+export default emptyMovieDataA;

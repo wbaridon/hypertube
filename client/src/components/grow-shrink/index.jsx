@@ -7,12 +7,14 @@ import styled, { keyframes } from 'styled-components';
 
 const growShrinkAnimation = keyframes`
 from {
+  visibility:hidden;
   opacity: 0.1;
   font-size: 24px;
   margin-top: 0px;
   color: #fff
 }
 to {
+  visibility: visible;
   opacity: 1;
   margin-top: 300px;
   font-size: 52px;
