@@ -48,8 +48,8 @@ import { deleteCommentA } from './delete-comment';
 import { addWatchListA } from './add-watch-list';
 import { deleteWatchListA } from './delete-watch-list';
 import { getWatchListA } from './get-watch-list';
-import { seenA } from './seen';
-import { unseenA } from './unseen';
+import { movieSeenA } from './movie-seen';
+import { movieUnseenA } from './movie-unseen';
 import { emptyMovieDataA } from './empty-movie'
 
 export const setMoviePageStateA = currentState => ({
@@ -136,7 +136,7 @@ export {
   deleteWatchListA,
   getWatchListA,
   sendHashA,
-  seenA,
-  unseenA,
+  movieSeenA,
+  movieUnseenA,
   emptyMovieDataA,
 };

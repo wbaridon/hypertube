@@ -26,6 +26,7 @@ const frFR = {
     markSeen: ' marquer comme deja vu',
     markUnseen: 'marquer comme jamais vu',
     error: 'Oups, on dirait que votre film n\'existe pas',
+    loading: 'loading',
   },
   login: {
     userName: 'Nom d\'Utilisateur',

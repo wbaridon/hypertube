@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-export default function seenAPI(token, idMovie) {
+export default function movieSeenAPI(token, idMovie) {
   return Axios({
     method: 'post',
     url: 'http://localhost:3000/movie/seen',

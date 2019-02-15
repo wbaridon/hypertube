@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { newCommentA, deleteCommentA } from 'Actions';
 import Close from '@material-ui/icons/Close';
 // import { handleSubmit } from '../register/event-handlers';
+import debounce from 'lodash.debounce';
 
 class Comments extends React.Component {
   constructor() {
@@ -23,8 +24,33 @@ class Comments extends React.Component {
     this.state = {
       newComment: '',
     };
-
+    this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.scrollListener = this.scrollListener.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.scrollListener, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.scrollListener);
+  }
+
+  scrollListener() {
+    this.debounceScrolling();
+    window.clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
+  }
+
+  handleScrollToTop() {
+    document.getElementById('top').scrollIntoView();
+    this.setState({ scrolling: true });
+  }
+
+  handleScrollToBottom() {
+    document.getElementById('bottom').scrollIntoView();
+    this.setState({ scrolling: true });
   }
 
   handleSubmit(e) {
@@ -72,16 +98,34 @@ class Comments extends React.Component {
     } = this.props;
     const { newComment } = this.state;
     let displayedComments;
-    actualComments ? (
-      displayedComments = actualComments
-    ) : (
-      displayedComments = comments
-    );
+    actualComments ? displayedComments = actualComments : displayedComments = comments
+    displayedComments = displayedComments.reverse();
     // console.log(displayedComments);
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>
           <Typography variant="h6" style={{ marginBottom: '10px' }}><FormattedMessage id="movie.comments" /></Typography>
+          <Paper>
+            <form onSubmit={e => this.handleSubmit(e)} style={{ textAlign: 'center' }}>
+              <FormControl variant="outlined">
+                <InputLabel style={{ marginTop: '20px' }}>
+                  <FormattedMessage id="movie.commentInput" />
+                </InputLabel>
+                <OutlinedInput
+                  value={newComment}
+                  onChange={e => this.handleFieldChange(e.target.value)}
+                  name="newcomment"
+                  type="string"
+                  id="component-outlined"
+                  labelWidth={200}
+                  style={{ margin: '10px' }}
+                />
+                <Button variant="contained" color="primary" fullWidth type="submit" style={{ marginBottom: '20px' }}>
+                  <FormattedMessage id="movie.submit" />
+                </Button>
+              </FormControl>
+            </form>
+          </Paper>
           {displayedComments.length !== 0 ? displayedComments.map(comment => (
             <Paper key={comment._id} style={{ padding: '10px' }}>
               <Grid container wrap="nowrap" spacing={16}>
@@ -116,27 +160,6 @@ class Comments extends React.Component {
               <Typography variant="subtitle1" style={{ margin: '20px' }}><FormattedMessage id="movie.noComments" /></Typography>
             )
           }
-          <Paper>
-            <form onSubmit={e => this.handleSubmit(e)} style={{ textAlign: 'center' }}>
-              <FormControl variant="outlined">
-                <InputLabel style={{ marginTop: '20px' }}>
-                  <FormattedMessage id="movie.commentInput" />
-                </InputLabel>
-                <OutlinedInput
-                  value={newComment}
-                  onChange={e => this.handleFieldChange(e.target.value)}
-                  name="newcomment"
-                  type="string"
-                  id="component-outlined"
-                  labelWidth={200}
-                  style={{ margin: '10px' }}
-                />
-                <Button variant="contained" color="primary" fullWidth type="submit" style={{ marginBottom: '20px' }}>
-                  <FormattedMessage id="movie.submit" />
-                </Button>
-              </FormControl>
-            </form>
-          </Paper>
         </Paper>
       </div>
     );

@@ -29,6 +29,8 @@ const enUS = {
     markSeen: 'mark as seen',
     markUnseen: 'mark as unseen',
     error: 'Oops, seems like the movie you\'re searching for doesnt exist',
+    loading: 'loading',
+
   },
   resetPassword: {
     title: 'Hi, if you\'ve forgotten your password, enter your email below!',
