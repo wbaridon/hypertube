@@ -56,7 +56,7 @@ export const updateUserFieldA = (token, field, value) => {
           }
         },
         (error) => {
-          dispatch(setErrorA(error.message));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(updateUserFieldError());
         },
       );

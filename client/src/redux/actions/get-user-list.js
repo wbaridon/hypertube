@@ -28,7 +28,7 @@ export const getUserListA = (token) => {
           dispatch(getUserListSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA(error.message));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(getUserListError());
         },
       );

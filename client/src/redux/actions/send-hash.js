@@ -28,7 +28,7 @@ export const sendHashA = (hash) => {
           dispatch(sendHashSuccess(response));
         },
         (error) => {
-          dispatch(setErrorA(error.response.data));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(sendHashError());
         },
       );

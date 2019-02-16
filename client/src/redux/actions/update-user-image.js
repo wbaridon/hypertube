@@ -40,7 +40,7 @@ export const updateUserImageA = (token, form) => {
           dispatch(updateUserImageSuccess(result));
         },
         (error) => {
-          dispatch(setErrorA(error.message));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(updateUserImageError());
         },
       );

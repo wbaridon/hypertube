@@ -1,5 +1,5 @@
 import logoutUserAPI from 'API/logout-user';
-import { deleteUserFromCookieThunkA, clearUserA } from './index';
+import { deleteUserFromCookieThunkA, clearUserA, setErrorA } from './index';
 import {
   LOGOUT,
   LOGOUT_SUCCESS,
@@ -28,7 +28,7 @@ export const logoutUserA = (token) => {
     return logoutUserAPI(token)
       .then(
         result => dispatch(logoutUserSuccess(result)),
-        error => dispatch(logoutUserError(error)),
+        error => dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb')),
       );
   };
 };

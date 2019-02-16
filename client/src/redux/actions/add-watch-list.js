@@ -28,7 +28,7 @@ export const addWatchListA = (token, idMovie) => {
           dispatch(addWatchListSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA(error.response.data.error));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(addWatchListError());
         },
       );
