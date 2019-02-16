@@ -30,7 +30,7 @@ const enUS = {
     markUnseen: 'mark as unseen',
     error: 'Oops, seems like the movie you\'re searching for doesnt exist',
     loading: 'loading',
-
+    deleteList: '- to list',
   },
   resetPassword: {
     title: 'Hi, if you\'ve forgotten your password, enter your email below!',

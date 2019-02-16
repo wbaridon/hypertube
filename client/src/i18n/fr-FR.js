@@ -27,6 +27,7 @@ const frFR = {
     markUnseen: 'marquer comme jamais vu',
     error: 'Oups, on dirait que votre film n\'existe pas',
     loading: 'loading',
+    deleteList: '- ma liste',
   },
   login: {
     userName: 'Nom d\'Utilisateur',

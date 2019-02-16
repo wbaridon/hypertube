@@ -26,32 +26,32 @@ class Comments extends React.Component {
     };
     this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.scrollListener = this.scrollListener.bind(this);
+    // this.scrollListener = this.scrollListener.bind(this);
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.scrollListener, false);
-  }
+  // componentDidMount() {
+  //   window.addEventListener('scroll', this.scrollListener, false);
+  // }
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.scrollListener);
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('scroll', this.scrollListener);
+  // }
 
-  scrollListener() {
-    this.debounceScrolling();
-    window.clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
-  }
+  // scrollListener() {
+  //   this.debounceScrolling();
+  //   window.clearTimeout(this.timeout);
+  //   this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
+  // }
 
-  handleScrollToTop() {
-    document.getElementById('top').scrollIntoView();
-    this.setState({ scrolling: true });
-  }
+  // handleScrollToTop() {
+  //   document.getElementById('top').scrollIntoView();
+  //   this.setState({ scrolling: true });
+  // }
 
-  handleScrollToBottom() {
-    document.getElementById('bottom').scrollIntoView();
-    this.setState({ scrolling: true });
-  }
+  // handleScrollToBottom() {
+  //   document.getElementById('bottom').scrollIntoView();
+  //   this.setState({ scrolling: true });
+  // }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -83,8 +83,8 @@ class Comments extends React.Component {
   }
 
   formatDate(n) {
-    var m = new Date(n).getMinutes().toString();
-    var h = new Date(n).getHours().toString();
+    let m = new Date(n).getMinutes().toString();
+    let h = new Date(n).getHours().toString();
     h < 10 ? (h = '0' + h) : (null);
     m < 10 ? (m = '0' + m) : (null);
     return (h + ':' + m) 
@@ -99,8 +99,14 @@ class Comments extends React.Component {
     const { newComment } = this.state;
     let displayedComments;
     actualComments ? displayedComments = actualComments : displayedComments = comments
-    displayedComments = displayedComments.reverse();
-    // console.log(displayedComments);
+    displayedComments.sort((a, b) => {
+      if (a.postedOn > b.postedOn) {
+        return -1; }
+      if (a.postedOn < b.postedOn) {
+        return 1; }
+      return 0;
+    });
+    console.log(displayedComments);
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>
@@ -127,7 +133,7 @@ class Comments extends React.Component {
             </form>
           </Paper>
           {displayedComments.length !== 0 ? displayedComments.map(comment => (
-            <Paper key={comment._id} style={{ padding: '10px' }}>
+            <Paper key={comment._id} style={{ padding: '10px', marginBottom: '10px' }}>
               <Grid container wrap="nowrap" spacing={16}>
                 <Grid item>
                   <Avatar alt="profilpic" src={comment.picture} />
@@ -166,15 +172,6 @@ class Comments extends React.Component {
   }
 }
 
-Comments.propTypes = {
-  idMovie: PropTypes.string.isRequired,
-  comments: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  token: PropTypes.string.isRequired,
-  handleNewComment: PropTypes.func.isRequired,
-  handleDeleteComment: PropTypes.func.isRequired,
-  userName: PropTypes.string.isRequired,
-};
-
 const mapDispatchToProps = dispatch => ({
   handleNewComment: (token, newComment, idMovie) => dispatch(newCommentA(token, newComment, idMovie)),
   handleDeleteComment: (idMovie, idComment, comment, token) => dispatch(deleteCommentA(idMovie, idComment, comment, token)),
@@ -186,5 +183,19 @@ const mapStateToProps = state => ({
   success: state.comment.success,
   actualComments: state.comment.data,
 });
+
+Comments.propTypes = {
+  idMovie: PropTypes.string.isRequired,
+  comments: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  token: PropTypes.string.isRequired,
+  handleNewComment: PropTypes.func.isRequired,
+  handleDeleteComment: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired,
+  actualComments: PropTypes.arrayOf(PropTypes.shape({})),
+};
+
+Comments.defaultProps = {
+  actualComments: null,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);
