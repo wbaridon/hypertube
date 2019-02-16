@@ -39,7 +39,8 @@ export const registerUserA = (form) => {
           dispatch(registerUserSuccess(result));
         },
         (error) => {
-          dispatch(setErrorA(error.message));
+          console.log(error, error.response);
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(registerUserError());
         },
       );
