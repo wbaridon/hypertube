@@ -10,11 +10,9 @@ const UserManager = require('../models/userManager');
 movieRouter
   .post('/getMovie' , function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
-      MovieManager.getMovie(req.body.id).then(result => {
-        additionalMovieData(token, result).then(data => {
+        getMovieData(token.user, req.body.id).then(data => {
           res.status(200).send(data);
-        }).catch(err => res.status(404).send({error:'getAdditionalMovieData.notAvailable'}))
-      }).catch(error => res.status(404).send({error:'errorInTheDb'}))
+        }).catch(err => res.status(404).send({error:'getMovieData.notAvailable'}))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/list', function(req,res) {
@@ -97,13 +95,10 @@ movieRouter
     callback(myArray)
   }
 
-  function getSeenStatus(token, data) {
+  function getSeenStatus(user, id) {
     return new Promise ((resolve, reject) => {
-      UserManager.getSeenStatus(token.user, data.imdbId).then(history => {
-        const myMovie = data.toObject();
-        if (history) { myMovie.seen = true }
-        else { myMovie.seen = false }
-        resolve(myMovie)
+      UserManager.getSeenStatus(user, id).then(history => {
+        resolve(history ? true : false)
       }).catch(err => reject(err))
     })
   }
@@ -119,16 +114,19 @@ movieRouter
     })
   }
 
-  function additionalMovieData(token, movieData) {
+  function getMovieData(user, imdbId) {
     return new Promise ((resolve, reject) => {
       Promise.all([
-        getSeenStatus(token, movieData).catch(err => {  }),
-        getSubtitles.launcher(movieData.imdbId).catch(err => {  }),
+        MovieManager.getMovie(imdbId).catch(err => { }),
+        getSeenStatus(user, imdbId).catch(err => { }),
+        getSubtitles.launcher(imdbId).catch(err => { }),
       ]).then(data => {
-        data[0].subtitles = data[1]
-        resolve(data[0])
+        const movie = data[0].toObject();
+        movie.seen = data[1]
+        movie.subtitles = data[2]
+        resolve(movie)
       }).catch(err => { reject() } )
     })
   }
-  
+
 module.exports = movieRouter;
