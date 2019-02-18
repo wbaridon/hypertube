@@ -14,8 +14,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
   buttonToggle: {
-    height: '309px',
-    width: '320px',
+    height: '320px',
+    width: '100%',
   },
   ButtonSubmit: {
     minWidth: '326px',
@@ -48,20 +48,16 @@ function ChangePasswordDumb({
 }) {
   if (!toggled) {
     return (
-      <Grid container spacing={0} direction="column" alignContent="center" justify="center" wrap="nowrap">
-        <Grid item>
-          <Button variant="contained" className={classes.buttonToggle} onClick={handleToggle}>
-            Change Password
-          </Button>
-        </Grid>
-      </Grid>
+      <Button variant="contained" className={classes.buttonToggle} onClick={handleToggle}>
+        Change Password
+      </Button>
     );
   }
   return (
     <form onSubmit={e => handleSubmit(e)}>
       <Card>
         <CardContent>
-          <Grid container spacing={8} direction="column">
+          <Grid container spacing={16} direction="column">
             <Grid item>
               <Grid container direction="row" justify="space-between" alignItems="center" alignContent="center" wrap="nowrap">
                 <Grid item>

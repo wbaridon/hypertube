@@ -12,11 +12,20 @@ import { dataURItoBlob } from '../image-changer/image-handle-functions';
 import DumbSettings from './dumb';
 import ChangePassword from '../change-password';
 
-const styles = {
+const styles = theme => ({
   content: {
-    minWidth: '305px',
+    minWidth: '640px',
+    maxWidth: '640px',
+    [theme.breakpoints.only('xs')]: {
+      minWidth: '320px',
+      maxWidth: '320px',
+    },
   },
-};
+  container: {
+    width: '100%',
+    margin: 0,
+  },
+});
 
 class Settings extends Component {
   constructor(props) {
@@ -86,7 +95,7 @@ class Settings extends Component {
     const { picture, user, anchorEl } = this.state;
     const { classes } = this.props;
     return (
-      <Grid container spacing={0} direction="column" alignItems="center" justify="center" alignContent="center">
+      <Grid container className={classes.container} spacing={40} direction="row" alignItems="center" justify="center" alignContent="center" wrap>
         <Grid item className={classes.content}>
           <ImageChanger imageUrl={picture && picture.rawData ? picture.rawData : picture} handleImageChange={this.handleImageChange} />
         </Grid>
