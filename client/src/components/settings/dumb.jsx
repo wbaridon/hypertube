@@ -13,6 +13,25 @@ import {
   CardContent,
 } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
+import styled, { keyframes } from 'styled-components';
+
+const animated = keyframes`
+10%, 90% {
+  transform: translate3d(-1px, 0, 0);
+}
+
+20%, 80% {
+  transform: translate3d(2px, 0, 0);
+}
+
+30%, 50%, 70% {
+  transform: translate3d(-4px, 0, 0);
+}
+
+40%, 60% {
+  transform: translate3d(4px, 0, 0);
+}
+`;
 
 const styles = {
   myPaper: {
@@ -29,6 +48,9 @@ const styles = {
     marginRight: '10px',
   },
 };
+const erroredP = styled.div`
+  animation: ${animated} 1s 1;
+`;
 
 function DumbSettings({
   userName,
@@ -40,6 +62,7 @@ function DumbSettings({
   handleFieldChange,
   handleMenuOpen,
   handleMenuClose,
+  erroredField,
   anchorEl,
   classes,
 }) {
@@ -50,10 +73,10 @@ function DumbSettings({
           <Grid item>
             <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
               <Grid item className={classes.text}>
-                <Typography><FormattedMessage id="settings.userName" /></Typography>
+                <Typography component={erroredField.field === 'userName' ? erroredP : 'div'}><FormattedMessage id="settings.userName" /></Typography>
               </Grid>
               <Grid item className={classes.field}>
-                <TextField fullWidth value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
+                <TextField id="userName" component={erroredField.field === 'userName' ? erroredP : 'div'} fullWidth value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
               </Grid>
             </Grid>
           </Grid>
@@ -63,7 +86,7 @@ function DumbSettings({
                 <Typography><FormattedMessage id="settings.firstName" /></Typography>
               </Grid>
               <Grid item className={classes.field}>
-                <TextField fullWidth value={firstName} onChange={e => handleFieldChange('firstName', e.target.value)} />
+                <TextField id="firstName" fullWidth value={firstName} onChange={e => handleFieldChange('firstName', e.target.value)} />
               </Grid>
             </Grid>
           </Grid>
@@ -73,7 +96,7 @@ function DumbSettings({
                 <Typography><FormattedMessage id="settings.lastName" /></Typography>
               </Grid>
               <Grid item className={classes.field}>
-                <TextField fullWidth value={lastName} onChange={e => handleFieldChange('lastName', e.target.value)} />
+                <TextField id="lastName" fullWidth value={lastName} onChange={e => handleFieldChange('lastName', e.target.value)} />
               </Grid>
             </Grid>
           </Grid>
@@ -83,7 +106,7 @@ function DumbSettings({
                 <Typography><FormattedMessage id="settings.email" /></Typography>
               </Grid>
               <Grid item className={classes.field}>
-                <TextField fullWidth value={email} onChange={e => handleFieldChange('email', e.target.value)} />
+                <TextField id="email" fullWidth value={email} onChange={e => handleFieldChange('email', e.target.value)} />
               </Grid>
             </Grid>
           </Grid>

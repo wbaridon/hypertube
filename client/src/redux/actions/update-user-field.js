@@ -11,6 +11,7 @@ import {
   updateUserTokenA,
 } from '.';
 
+
 function createCookie(name, value, days) {
   let expires;
   if (days) {
@@ -30,13 +31,16 @@ export const updateUserFieldSuccess = result => ({
   result,
 });
 
-export const updateUserFieldError = () => ({
+export const updateUserFieldError = (field, value) => ({
   type: UPDATE_USER_FIELD_ERROR,
+  field,
+  value,
 });
 
 export const updateUserFieldA = (token, field, value) => {
   return (dispatch) => {
     dispatch(updateUserFieldStart());
+    dispatch(changeUserValueA(field, value));
     return updateUserFieldAPI(token, field, value)
       .then(
         (result) => {
@@ -56,8 +60,10 @@ export const updateUserFieldA = (token, field, value) => {
           }
         },
         (error) => {
+          console.log(error.response);
           dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
-          dispatch(updateUserFieldError());
+          dispatch(changeUserValueA(error.response.data.field, error.response.data.value));
+          dispatch(updateUserFieldError(error.response.data.field, error.response.data.value));
         },
       );
   };

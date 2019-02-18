@@ -7,6 +7,8 @@ import {
 const defaultUpdateUserState = {
   loading: false,
   success: false,
+  field: null,
+  value: null,
 };
 
 export default function updateUser(state = defaultUpdateUserState, action) {
@@ -25,6 +27,8 @@ export default function updateUser(state = defaultUpdateUserState, action) {
       return {
         loading: false,
         success: false,
+        field: action.field,
+        value: action.value,
       };
     default:
       return state;

@@ -21,10 +21,10 @@ const styles = theme => ({
       maxWidth: '320px',
     },
   },
-  container: {
-    width: '100%',
-    margin: 0,
-  },
+  // container: {
+  //   width: '100%',
+  //   margin: 0,
+  // },
 });
 
 class Settings extends Component {
@@ -32,15 +32,15 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      picture: props.user.picture,
+      picture: props.picture,
       user: {
-        userName: props.user.userName,
-        email: props.user.email,
-        firstName: props.user.firstName,
-        lastName: props.user.lastName,
-        locale: props.user.locale,
-        oauth: props.user.oauth,
-        darkTheme: props.user.darkTheme,
+        userName: props.userName,
+        email: props.email,
+        firstName: props.firstName,
+        lastName: props.lastName,
+        locale: props.locale,
+        oauth: props.oauth,
+        darkTheme: props.darkTheme,
       },
       anchorEl: null,
     };
@@ -93,14 +93,20 @@ class Settings extends Component {
 
   render() {
     const { picture, user, anchorEl } = this.state;
-    const { classes } = this.props;
+    const { classes, field, value, userName, firstName, lastName, email } = this.props;
+    const dbValues = {
+      userName,
+      firstName,
+      lastName,
+      email,
+    };
     return (
       <Grid container className={classes.container} spacing={40} direction="row" alignItems="center" justify="center" alignContent="center" wrap>
         <Grid item className={classes.content}>
           <ImageChanger imageUrl={picture && picture.rawData ? picture.rawData : picture} handleImageChange={this.handleImageChange} />
         </Grid>
         <Grid item className={classes.content}>
-          <DumbSettings {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
+          <DumbSettings erroredField={{ field, value }} dbValues={dbValues} {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
         </Grid>
         {
           !user.oauth
@@ -126,8 +132,10 @@ Settings.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  ...state.user.data,
   token: state.user.token ? state.user.token : '',
-  user: state.user.data,
+  field: state.updateUser.field || '',
+  value: state.updateUser.value || '',
 });
 
 const mapDispatchToProps = dispatch => ({
