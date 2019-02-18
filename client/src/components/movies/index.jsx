@@ -391,7 +391,7 @@ class Movies extends Component {
     const smallScreenDimensions = {};
     if (width === 'xs') {
       smallScreenDimensions.width = dimensions.width * 2;
-      smallScreenDimensions.height = dimensions.height * 2;
+      smallScreenDimensions.height = dimensions.height * 1.3;
     }
     if (movies.length === 0) {
       return (<div>No movies yet</div>);
