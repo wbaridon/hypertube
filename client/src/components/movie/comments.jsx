@@ -10,11 +10,14 @@ import {
   IconButton,
   OutlinedInput,
   Button,
+  Fab,
 } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { newCommentA, deleteCommentA } from 'Actions';
 import Close from '@material-ui/icons/Close';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
 // import { handleSubmit } from '../register/event-handlers';
 import debounce from 'lodash.debounce';
 
@@ -23,35 +26,42 @@ class Comments extends React.Component {
     super();
     this.state = {
       newComment: '',
+      page: 1,
     };
-    this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
+    // this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.scrollListener = this.scrollListener.bind(this);
+    this.scrollListener = this.scrollListener.bind(this);
   }
 
-  // componentDidMount() {
-  //   window.addEventListener('scroll', this.scrollListener, false);
-  // }
+  componentDidMount() {
+    window.addEventListener('scroll', this.scrollListener, false);
+  }
 
-  // componentWillUnmount() {
-  //   window.removeEventListener('scroll', this.scrollListener);
-  // }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.scrollListener);
+  }
 
-  // scrollListener() {
-  //   this.debounceScrolling();
-  //   window.clearTimeout(this.timeout);
-  //   this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
-  // }
+  scrollListener() {
+    const { page } = this.state;
+    let scrollmax = document.getElementsByTagName("html")[0].scrollHeight;
+    let scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
+    // console.log("scrollpos=" + scrollPos);
+    // console.log("doubidouba=" + (scrollmax - screenheight));
+    if (scrollPos > scrollmax - screen.height) {
+      this.setState({ page: page + 1 });
+    }
+  
+  }
 
-  // handleScrollToTop() {
-  //   document.getElementById('top').scrollIntoView();
-  //   this.setState({ scrolling: true });
-  // }
+  handleScrollToTop() {
+    document.getElementById('top').scrollIntoView();
+    // this.setState({ scrolling: true });
+  }
 
-  // handleScrollToBottom() {
-  //   document.getElementById('bottom').scrollIntoView();
-  //   this.setState({ scrolling: true });
-  // }
+  handleScrollToBottom() {
+    document.getElementById('bottom').scrollIntoView();
+    // this.setState({ scrolling: true });
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -96,7 +106,10 @@ class Comments extends React.Component {
       actualComments,
       userName,
     } = this.props;
-    const { newComment } = this.state;
+    const {
+      newComment,
+      page,
+    } = this.state;
     let displayedComments;
     actualComments ? displayedComments = actualComments : displayedComments = comments
     displayedComments.sort((a, b) => {
@@ -106,7 +119,7 @@ class Comments extends React.Component {
         return 1; }
       return 0;
     });
-    console.log(displayedComments);
+    displayedComments= displayedComments.slice(0, page * 5);
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
         <Paper style={{ padding: '20px' }}>
@@ -167,6 +180,18 @@ class Comments extends React.Component {
             )
           }
         </Paper>
+        <Fab
+          style={{right: '20px', bottom: '70px', zIndex: '100', position: 'fixed'}}
+          onClick={this.handleScrollToTop}
+        >
+          <ArrowUpward />
+        </Fab>
+        <Fab
+          style={{right: '80px', bottom: '70px', zIndex: '100', position: 'fixed'}}
+          onClick={this.handleScrollToBottom}
+        >
+          <ArrowDownward />
+        </Fab>
       </div>
     );
   }
