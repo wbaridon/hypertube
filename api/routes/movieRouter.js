@@ -12,7 +12,14 @@ movieRouter
     tokenManager.decode(req.headers.authorization).then(token => {
         getMovieData(token.user, req.body.id).then(data => {
           res.status(200).send(data);
-        }).catch(err => res.status(404).send({error:'getMovieData.notAvailable'}))
+        }).catch(err => res.status(400).send({error:'getMovieData.notAvailable'}))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+  })
+  .post('/getSubtitles' , function(req, res) {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      subtitles(req.body.imdbId).then(data => {
+        res.status(200).send(data);
+      }).catch(err => res.status(400).send({error:'getSubtitles.notAvailable'}))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/list', function(req,res) {
@@ -119,14 +126,19 @@ movieRouter
       Promise.all([
         MovieManager.getMovie(imdbId).catch(err => { }),
         getSeenStatus(user, imdbId).catch(err => { }),
-      //  getSubtitles.launcher(imdbId).catch(err => { }),
       ]).then(data => {
         const movie = data[0].toObject();
         movie.seen = data[1]
-      //  movie.subtitles = data[2]
         resolve(movie)
       }).catch(err => { reject() } )
     })
   }
 
+  function subtitles(id) {
+    return new Promise ((resolve, reject) => {
+      getSubtitles.launcher(id).then(data => {
+        resolve(data)
+      }).catch(err => reject(err))
+    })
+  }
 module.exports = movieRouter;
