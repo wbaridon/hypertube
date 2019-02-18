@@ -119,11 +119,11 @@ movieRouter
       Promise.all([
         MovieManager.getMovie(imdbId).catch(err => { }),
         getSeenStatus(user, imdbId).catch(err => { }),
-        getSubtitles.launcher(imdbId).catch(err => { }),
+      //  getSubtitles.launcher(imdbId).catch(err => { }),
       ]).then(data => {
         const movie = data[0].toObject();
         movie.seen = data[1]
-        movie.subtitles = data[2]
+      //  movie.subtitles = data[2]
         resolve(movie)
       }).catch(err => { reject() } )
     })

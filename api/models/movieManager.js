@@ -86,7 +86,7 @@ module.exports.deleteComment = function (movieId, commentId) {
 
 module.exports.getComment = function (movieId, commentId) {
   return new Promise ((resolve, reject) => {
-    Movie.findOne({ imdbId: movieId }).sort({ postedOn: -1}).then(movie => {
+    Movie.findOne({ imdbId: movieId }).then(movie => {
       resolve(movie.comments.id(commentId))
     }).catch(error => reject(error))
   })
