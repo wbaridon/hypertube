@@ -27,7 +27,7 @@ function getSubtitles(id) {
 
 function searchSubtitle(imdbId, lang) {
   return new Promise ((resolve, reject) => {
-    if (!fs.existsSync('./assets/subtitles/'+imdbId+'-'+lang+'.vtt') {
+    if (!fs.existsSync('./assets/subtitles/'+imdbId+'-'+lang+'.vtt')) {
       OpenSubtitles.search({
         sublanguageid: lang,
         extensions: ['srt', 'vtt'],
