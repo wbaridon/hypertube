@@ -97,6 +97,7 @@ class Movie extends React.Component {
           justify="center"
           alignItems="center"
         >
+          <span id="top" style={{ position: 'absolute', top: '0px' }} />
           <Card>
             <Grid>
               <IconButton disableRipple={false} component={Link} to="/movies">
@@ -180,10 +181,11 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
+              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
+          <span id="bottom" style={{ }} />
         </Grid>
       ) : (
         <GrowShrink movieName={location.state ? location.state.movieName : intl.formatMessage({ id: 'movie.loading' })} />

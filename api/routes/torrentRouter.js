@@ -10,6 +10,7 @@ const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const TorrentManager = require('../models/torrentManager');
+const DownloadMovie = require('../utils/downloadMovie.js');
 
 torrentRouter
   .get('/', async (req, res) => {
@@ -44,41 +45,33 @@ torrentRouter
         stream = fs.createReadStream(`./assets/torrents/${file.name}`);
       } else {
         stream = file.createReadStream();
+        DownloadMovie.downloadMovie(file);
       }
       const converter = ffmpeg()
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
         .outputFormat('mp4')
-        .on('codecData', (codecData) => {
-          console.log('fluent-ffmpeg: CodecData:', codecData);
-        })
-        .on('start', (cmd) => { console.log('fluent-ffmpeg: Started:', cmd); })
         .on('progress', (progress) => { console.log('fluent-ffmpeg: Progress:', progress.timemark, 'converted'); })
         .on('end', () => {
           console.log('Finished processing');
         })
-        .on('error', (err, stdout, stderr) => {
-          console.log('ffmpeg, file:', file.path, ' Error:', '\nErr:', err, '\nStdOut:', stdout, '\nStdErr:', stderr);
+        .on('error', (err) => {
+          console.log('=========== ffmpeg notice: ===========\n', err.message);
         })
         .inputFormat(realExtension)
         .audioCodec('aac')
         .videoCodec('libx264')
         .pipe(res);
 
-
-      let writeStream = null;
-      if (!downloaded) {
-        writeStream = fs.createWriteStream(`./assets/torrents/${file.name}`);
-        stream.pipe(writeStream);
-      }
+      // let writeStream = null;
+      // if (!downloaded) {
+      //   writeStream = fs.createWriteStream(`./assets/torrents/${file.name}`);
+      //   stream.pipe(writeStream);
+      // }
 
       res.on('close', () => {
         console.log('page closes, all processes killed');
-        converter.kill();
         stream.destroy();
-        if (!downloaded) {
-          writeStream.destroy();
-        }
       });
       return null;
     });
