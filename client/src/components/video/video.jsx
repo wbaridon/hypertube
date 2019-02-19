@@ -29,7 +29,8 @@ class Video extends React.Component {
       subtitles,
       idMovie,
     } = this.props;
-    console.log(subtitles);
+    console.log(subtitles.fr);
+    console.log(subtitles.en);
     return (
       <React.Fragment>
         <video id="videoPlayer" crossOrigin="anonymous" controls muted preload="auto" style={{ margin: 'auto', width: '100%' }} >

@@ -78,6 +78,7 @@ class Movie extends React.Component {
       token,
       intl,
       location,
+      subtitles,
     } = this.props;
     const { seen } = this.state;
     // console.log(seen);
@@ -184,7 +185,10 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
+              {subtitles ? 
+              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={subtitles} />
+              : null
+              }
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
@@ -208,6 +212,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   movie: state.movie.data,
   token: state.user.token,
+  subtitles: state.movie.subtitles,
 });
 
 Movie.propTypes = {
