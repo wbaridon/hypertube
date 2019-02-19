@@ -26,7 +26,7 @@ import {
   FormattedMessage,
 } from 'react-intl';
 import Comments from './comments';
-// import Video from '../video/video';
+import Video from '../video/video';
 import GrowShrink from '../grow-shrink';
 
 const styles = {
@@ -157,7 +157,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
+              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
