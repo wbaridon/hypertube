@@ -30,7 +30,7 @@ export const getUserInfoPrivateA = (token, dispatch) => {
           resolve();
         },
         (error) => {
-          dispatch(setErrorA(error.response ? error.response.error : 'cantConnectToDb'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(protectedRouteFinishedA());
           dispatch(getUserInfoPrivateError());
           reject();

@@ -20,8 +20,8 @@ class ActiveMovieCard extends React.Component {
       image: true,
       style: {
         opacity: 0.5,
-        transition: 'all 0.5s ease-in'
-      }
+        transition: 'all 0.5s ease-in',
+      },
     };
 
     this.setImageFalse = this.setImageFalse.bind(this);
@@ -83,9 +83,8 @@ class ActiveMovieCard extends React.Component {
             height: dimensions.height,
             padding: 5,
           }}
-          id="active-card"
         >
-
+          <span style={{ position: 'absolute', top: dimensions.height / 2 - 35, left: dimensions.width / 2 }} id="active-card" />
           {dimensions.width <= 175 && title.length > 16 ? null : (
             <Paper
               elevation={0}

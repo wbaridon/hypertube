@@ -10,18 +10,16 @@ const UserManager = require('../models/userManager');
 movieRouter
   .post('/getMovie' , function(req, res) {
     tokenManager.decode(req.headers.authorization).then(token => {
-      MovieManager.getMovie(req.body.id).then(result => {
-        getSeenStatus(token, result).then(myMovie => {
-          getSubtitles.launcher(myMovie.imdbId).then(subtitles => {
-            myMovie.subtitles = {
-              'en': subtitles.en,
-              'fr': subtitles.fr
-            }
-            console.log(myMovie.subtitles)
-            res.status(200).send(myMovie);
-          }).catch(err => res.status(404).send({error:'getSubtitles.notAvailable'}))
-        }).catch(err => res.status(404).send({error:'getSeenStatus.notAvailable'}))
-      }).catch(error => res.status(404).send({error:'errorInTheDb'}))
+        getMovieData(token.user, req.body.id).then(data => {
+          res.status(200).send(data);
+        }).catch(err => res.status(400).send({error:'getMovieData.notAvailable'}))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+  })
+  .post('/getSubtitles' , function(req, res) {
+    tokenManager.decode(req.headers.authorization).then(token => {
+      subtitles(req.body.imdbId).then(data => {
+        res.status(200).send(data);
+      }).catch(err => res.status(400).send({error:'getSubtitles.notAvailable'}))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/list', function(req,res) {
@@ -104,13 +102,10 @@ movieRouter
     callback(myArray)
   }
 
-  function getSeenStatus(token, data) {
+  function getSeenStatus(user, id) {
     return new Promise ((resolve, reject) => {
-      UserManager.getSeenStatus(token.user, data.imdbId).then(history => {
-        const myMovie = data.toObject();
-        if (history) { myMovie.seen = true }
-        else { myMovie.seen = false }
-        resolve(myMovie)
+      UserManager.getSeenStatus(user, id).then(history => {
+        resolve(history ? true : false)
       }).catch(err => reject(err))
     })
   }
@@ -122,6 +117,27 @@ movieRouter
         if (history) { myMovie.seen = true }
         else { myMovie.seen = false }
         resolve(myMovie)
+      }).catch(err => reject(err))
+    })
+  }
+
+  function getMovieData(user, imdbId) {
+    return new Promise ((resolve, reject) => {
+      Promise.all([
+        MovieManager.getMovie(imdbId).catch(err => { }),
+        getSeenStatus(user, imdbId).catch(err => { }),
+      ]).then(data => {
+        const movie = data[0].toObject();
+        movie.seen = data[1]
+        resolve(movie)
+      }).catch(err => { reject() } )
+    })
+  }
+
+  function subtitles(id) {
+    return new Promise ((resolve, reject) => {
+      getSubtitles.launcher(id).then(data => {
+        resolve(data)
       }).catch(err => reject(err))
     })
   }

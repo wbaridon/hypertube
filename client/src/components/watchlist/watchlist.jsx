@@ -9,8 +9,8 @@ import {
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  seenA,
-  unseenA,
+  movieSeenA,
+  movieUnseenA,
   getWatchListA,
   deleteWatchListA,
 } from 'Actions';
@@ -24,16 +24,12 @@ class WatchList extends React.Component {
     getWatchList(token);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   console.log(prevProps);
-  // }
-
   handleSeen(token, idMovie, n, bool) {
     let { watchList } = this.props;
-    const { seen, unseen } = this.props;
+    const { movieSeen, movieUnseen } = this.props;
     watchList[n].seen = bool;
     this.setState({ watchList });
-    bool ? seen(token, idMovie) : unseen(token, idMovie) ;
+    bool ? movieSeen(token, idMovie) : movieUnseen(token, idMovie) ;
   } 
 
   render() {
@@ -116,8 +112,8 @@ class WatchList extends React.Component {
 const mapDispatchToProps = dispatch => ({
   getWatchList: token => dispatch(getWatchListA(token)),
   deleteWatchList: (token, idMovie) => dispatch(deleteWatchListA(token, idMovie)),
-  seen: (token, idMovie) => dispatch(seenA(token, idMovie)),
-  unseen: (token, idMovie) => dispatch(unseenA(token, idMovie)),
+  movieSeen: (token, idMovie) => dispatch(movieSeenA(token, idMovie)),
+  movieUnseen: (token, idMovie) => dispatch(movieUnseenA(token, idMovie)),
 
 });
 
@@ -128,8 +124,8 @@ const mapStateToProps = state => ({
 });
 
 WatchList.propTypes = {
-  seen: PropTypes.func.isRequired,
-  unseen: PropTypes.func.isRequired,
+  movieSeen: PropTypes.func.isRequired,
+  movieUnseen: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   getWatchList: PropTypes.func.isRequired,
   deleteWatchList: PropTypes.func.isRequired,

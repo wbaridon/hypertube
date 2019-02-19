@@ -8,6 +8,7 @@ import {
 const defaultGetMovieState = {
   loading: false,
   success: false,
+  seen: false,
   data: null,
 };
 
@@ -15,6 +16,7 @@ export default function movie(state = defaultGetMovieState, action) {
   switch (action.type) {
     case EMPTY_MOVIE_DATA:
       return {
+        ...state,
         data: null,
       }
     case GET_MOVIE_DATA:
@@ -24,12 +26,23 @@ export default function movie(state = defaultGetMovieState, action) {
       };
     case GET_MOVIE_DATA_SUCCESS:
       return {
+        ...state,
         loading: false,
         success: true,
         data: action.movie,
       };
+    // case MOVIE_SEEN_SUCCESS:
+    //   return {
+    //     ...state,
+    //     seen: action.seen,
+    //   };
     case GET_MOVIE_DATA_ERROR:
-      return defaultGetMovieState;
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        data: { error: true },
+      };
     default:
       return state;
   }
