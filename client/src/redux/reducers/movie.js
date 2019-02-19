@@ -3,6 +3,9 @@ import {
   GET_MOVIE_DATA_SUCCESS,
   GET_MOVIE_DATA_ERROR,
   EMPTY_MOVIE_DATA,
+  GET_MOVIE_SUBTITLES,
+  GET_MOVIE_SUBTITLES_SUCCESS,
+  GET_MOVIE_SUBTITLES_ERROR,
 } from 'Actions/action-types';
 
 const defaultGetMovieState = {
@@ -18,7 +21,7 @@ export default function movie(state = defaultGetMovieState, action) {
       return {
         ...state,
         data: null,
-      }
+      };
     case GET_MOVIE_DATA:
       return {
         ...state,
@@ -31,17 +34,31 @@ export default function movie(state = defaultGetMovieState, action) {
         success: true,
         data: action.movie,
       };
-    // case MOVIE_SEEN_SUCCESS:
-    //   return {
-    //     ...state,
-    //     seen: action.seen,
-    //   };
     case GET_MOVIE_DATA_ERROR:
       return {
         ...state,
         loading: false,
         success: false,
         data: { error: true },
+      };
+    case GET_MOVIE_SUBTITLES:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_MOVIE_SUBTITLES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        subtitles: action.movie,
+      };
+    case GET_MOVIE_SUBTITLES_ERROR:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        subtitles: null,
       };
     default:
       return state;
