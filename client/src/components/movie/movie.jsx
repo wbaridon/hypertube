@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   getMovieDataA,
+  getSubtitlesA,
   movieSeenA,
   movieUnseenA,
   emptyMovieDataA,
@@ -53,8 +54,10 @@ class Movie extends React.Component {
       token,
       getMovie,
       match,
+      getSubtitles,
     } = this.props;
     getMovie(match.params.id_movie, token);
+    getSubtitles(match.params.id_movie, token);
   }
 
   componentWillUnmount = () => {
@@ -181,7 +184,7 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              {/* <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/> */}
+              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={movie.subtitles}/>
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
@@ -199,6 +202,7 @@ const mapDispatchToProps = dispatch => ({
   movieSeen: (token, idMovie) => dispatch(movieSeenA(token, idMovie)),
   movieUnseen: (token, idMovie) => dispatch(movieUnseenA(token, idMovie)),
   emptyMovieData: () => dispatch(emptyMovieDataA()),
+  getSubtitles: (idMovie, token) => dispatch(getSubtitlesA(idMovie, token)),
 });
 
 const mapStateToProps = state => ({
@@ -218,6 +222,7 @@ Movie.propTypes = {
   movieSeen: PropTypes.func.isRequired,
   movieUnseen: PropTypes.func.isRequired,
   emptyMovieData: PropTypes.func.isRequired,
+  getSubtitles: PropTypes.func.isRequired,
   movie: PropTypes.shape({}),
   intl: intlShape.isRequired,
 };
