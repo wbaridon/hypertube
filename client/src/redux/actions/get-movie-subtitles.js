@@ -20,7 +20,6 @@ export const getSubtitlesError = () => ({
 });
 
 export const getSubtitlesA = (idMovie, token) => {
-  console.log(idMovie, token);
   return (dispatch) => {
     dispatch(getSubtitlesStart());
     return getSubtitlesAPI(idMovie, token)

@@ -25,7 +25,7 @@ torrentRouter
     const engine = torrentStream(torrentMagnet, {
       // Trouver un repertoire tmp qui bug pas
       tmp: './assets/tmp',
-    })
+    });
 
     engine.on('ready', async () => {
       const file = await TorrentManager.findVideoFile(engine);
