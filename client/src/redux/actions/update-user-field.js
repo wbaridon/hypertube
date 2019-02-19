@@ -3,6 +3,7 @@ import {
   UPDATE_USER_FIELD,
   UPDATE_USER_FIELD_SUCCESS,
   UPDATE_USER_FIELD_ERROR,
+  CLEAR_USER_FIELD_ERROR,
 } from './action-types';
 import {
   setErrorA,
@@ -22,6 +23,10 @@ function createCookie(name, value, days) {
   document.cookie = `${name}=${value}${expires}; path=/`;
 }
 
+export const clearUserFieldErrorA = () => ({
+  type: CLEAR_USER_FIELD_ERROR,
+});
+
 export const updateUserFieldStart = () => ({
   type: UPDATE_USER_FIELD,
 });
@@ -31,8 +36,9 @@ export const updateUserFieldSuccess = result => ({
   result,
 });
 
-export const updateUserFieldError = (field, value) => ({
+export const updateUserFieldError = (errorMessage, field, value) => ({
   type: UPDATE_USER_FIELD_ERROR,
+  errorMessage,
   field,
   value,
 });
@@ -61,9 +67,9 @@ export const updateUserFieldA = (token, field, value) => {
         },
         (error) => {
           console.log(error.response);
-          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          // dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
           dispatch(changeUserValueA(error.response.data.field, error.response.data.value));
-          dispatch(updateUserFieldError(error.response.data.field, error.response.data.value));
+          dispatch(updateUserFieldError(error.response ? error.response.data.error : 'cantConnectToDb', error.response.data.field, error.response.data.value));
         },
       );
   };

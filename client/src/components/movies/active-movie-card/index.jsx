@@ -18,37 +18,17 @@ class ActiveMovieCard extends React.Component {
     super();
     this.state = {
       image: true,
-      style: {
-        opacity: 0.5,
-        transition: 'all 0.5s ease-in',
-      },
     };
 
     this.setImageFalse = this.setImageFalse.bind(this);
-    this.mountStyle = this.mountStyle.bind(this);
   }
 
-  componentDidMount() {
-    this.animation = setTimeout(this.mountStyle, 10) // call the into animation
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.animation);
-  }
 
   setImageFalse() {
     // console.log('worked');
     this.setState({ image: false });
   }
 
-  mountStyle() {
-    this.setState({
-      style: {
-        opacity: 1,
-        transition: 'all 0.5s ease-out',
-      },
-    });
-  }
   handleAddWatchList(token, imdbId, bool) {
     let { movie } = this.props;
     const { addWatchList, deleteWatchList } = this.props;
@@ -72,12 +52,10 @@ class ActiveMovieCard extends React.Component {
       movie,
     } = this.props;
     const { image } = this.state;
-    const { style } = this.state;
     if (image && cover) {
       return (
         <Card
           style={{
-            ...style,
             position: 'relative',
             width: dimensions.width,
             height: dimensions.height,

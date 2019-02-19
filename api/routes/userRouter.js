@@ -43,7 +43,7 @@ userRouter
           UserManager.userExist(user.email, user.userName).then(userExist => {
             if (userExist) { res.status(400).send({ error: 'registration.userAlreadyRegistered' }) }
             else {
-              UserManager.createUser(user, callback => {
+              UserManager.createUser(user, (callback) => {
                 res.status(200).send({ userName: user.userName, success: 'registration.success' })
               })
             }
@@ -61,19 +61,19 @@ userRouter
     }
     if (user.userName && user.password) {
       UserManager.getUser(user.userName).then(getResult => {
-          argon2.verify(getResult.password, user.password).then(match => {
-            if (match) {
-              tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
-            } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
-          }).catch(err => console.log(err))
+        argon2.verify(getResult.password, user.password).then(match => {
+          if (match) {
+            tokenManager.set(user).then(token => { res.send({ token, locale: getResult.locale }); })
+          } else { res.status(400).send({ error: 'login.invalidPasswordOrLogin' }) }
+        }).catch(err => console.log(err))
       }, noSuchUser => {
         res.status(400).send({ error: 'login.noUser' })
-      }).catch(err => res.status(400).send({error: 'login.oAuthAccount'}))
+      }).catch(err => res.status(400).send({ error: 'login.oAuthAccount' }))
     } else { res.status(400).send({ error: 'login.emptyPasswordOrLogin' }) }
   })
   .post('/logout', (req, res) => {
-    BlackListManager.add(req.body, callback => {
-      res.status(200).send({success: 'logout.tokenDestroy'})
+    BlackListManager.add(req.body, (callback) => {
+      res.status(200).send({ success: 'logout.tokenDestroy' })
     })
   })
   .post('/getAllUsers', (req, res) => {
@@ -85,7 +85,7 @@ userRouter
   })
   .post('/getUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
-    // Reçoit un login et retourne les infos public de ce dernier
+      // Reçoit un login et retourne les infos public de ce dernier
       let userName = req.body.userName;
       UserManager.getUser(userName).then(getResult => {
         const user = {
@@ -97,7 +97,7 @@ userRouter
         }
         res.send(user)
       },
-      (error) => res.status(404).json(error))
+        (error) => res.status(404).json(error))
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
   .post('/getUserPrivate', (req, res) => {
@@ -114,13 +114,13 @@ userRouter
   })
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
-        data = {
-          field: req.body.field,
-          value: typeof req.body.value === 'string' ? req.body.value.trim() : req.body.value,
-        }
-        checkUserInput(data, token.user)
+      data = {
+        field: req.body.field,
+        value: typeof req.body.value === 'string' ? req.body.value.trim() : req.body.value,
+      }
+      checkUserInput(data, token.user)
         .then(sucess => {
-          if (data.field === 'userName') { token.user = data.value}
+          if (data.field === 'userName') { token.user = data.value }
           CheckProfilIsFill(token.user).then(check => {
             if (check === true) { sucess.profilIsFill = true }
             res.status(200).send(sucess);
@@ -129,17 +129,18 @@ userRouter
           UserManager.getUser(token.user).then(status => {
             let reply = {
               error: error,
-              value: status[req.body.field]
+              field: req.body.field,
+              value: status[req.body.field],
             }
             res.status(400).send(reply);
-          }).catch(err =>   res.status(400).send({error: 'getUser.impossible'}))
+          }).catch(err => res.status(400).send({ error: 'getUser.impossible' }))
         }).catch(err => console.log(err))
-      }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
+    }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       let user = token.user
-      let oldPic =  './assets/images/' + req.body.oldImageUrl
+      let oldPic = './assets/images/' + req.body.oldImageUrl
       if (req.file) {
         // Si l'image existe on la supprime
         if (fs.existsSync(oldPic)) {
@@ -147,14 +148,14 @@ userRouter
             if (err) throw err;
           })
         }
-        UserManager.updateUserField({'userName': user}, {'picture': racine + 'images/' + req.file.filename})
-        .then((updated) => {
-          CheckProfilIsFill(token.user).then(check => {
-            if (check === true) { profilIsFill = true }
-            else { profilIsFill = false }
-            res.status(200).send({picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', profilIsFill })
+        UserManager.updateUserField({ 'userName': user }, { 'picture': racine + 'images/' + req.file.filename })
+          .then((updated) => {
+            CheckProfilIsFill(token.user).then(check => {
+              if (check === true) { profilIsFill = true }
+              else { profilIsFill = false }
+              res.status(200).send({ picture: racine + 'images/' + req.file.filename, user: token.user, success: 'picture.Updated', profilIsFill })
+            })
           })
-        })
       }
     }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
   })
@@ -179,13 +180,20 @@ function checkForm(user) {
   return new Promise((resolve, error) => {
     if (user.email && user.userName && user.lastName && user.firstName && user.password) {
       if (user.password.length < 6) { error('registration.passwordTooShort') }
-      else if (user.password.match('^[a-zA-z]+$')) { error('registration.passwordMissDigit')}
+      else if (user.password.match('^[a-zA-z]+$')) { error('registration.passwordMissDigit') }
       else {
         // Manque le check picture
-        resolve('registration.correctForm')
+        resolve('registration.correctForm');
       }
-    } else { error('registration.emptyFields') }
+    } else { error('registration.emptyFields'); }
   })
+}
+
+function updateField(field, value, user, callback) {
+  UserManager.updateUserField({ userName: user }, { [field]: value })
+    .then((updated) => {
+      callback({ [field]: value, user, success: `settings.update.${field}` });
+    }).catch(err => console.log(err));
 }
 
 function checkUserInput(data, user) {
@@ -193,91 +201,90 @@ function checkUserInput(data, user) {
     switch (data.field) {
       case 'darkTheme':
         if (data.value === true || data.value === false) {
-          updateField(data.field, data.value, user, callback => {
-            resolve(callback) });
-        } else { reject('update.badValue')}
+          updateField(data.field, data.value, user, (callback) => {
+            resolve(callback);
+          });
+        } else { reject('settings.update.badValue'); }
         break;
-        case 'locale':
-          updateField(data.field, data.value, user, callback => {
-            resolve(callback) });
-          break;
-        case 'userName':
-          if (data.value) {
-            UserManager.getUser(data.value).then(res => {
-             reject('update.userAlreadyExist')
-            }, noUser => {
-              newUser = {
-                userName: data.value
-              }
-              tokenManager.set(newUser).then(token => {
-                updateField(data.field, data.value, user, callback => {
-                  resolve(token, callback)
-                });
-              })
+      case 'locale':
+        updateField(data.field, data.value, user, (callback) => {
+          resolve(callback);
+        });
+        break;
+      case 'userName':
+        if (data.value) {
+          UserManager.getUser(data.value).then((res) => {
+            reject('settings.update.userAlreadyExist');
+          }, (noUser) => {
+            const newUser = {
+              userName: data.value,
+            };
+            tokenManager.set(newUser).then((token) => {
+              updateField(data.field, data.value, user, (callback) => {
+                resolve(token, callback);
+              });
             })
-          } else { reject('update.emptyUsername')}
-          break;
-        case 'firstName':
-          if (data.value) {
-            updateField(data.field, data.value.trim(), user, callback => {
-              resolve(callback) });
-          } else { reject('update.emptyFirstName')}
-          break;
-        case 'lastName':
-          if (data.value) {
-        updateField(data.field, data.value.trim(), user, callback => {
-          resolve(callback) });
-        } else { reject('update.emptyLastName')}
-          break;
-        case 'email':
-          if (validator.validate(data.value)) {
-            UserManager.getUserByMail(data.value).then(res => {
-             reject('update.emailAlreadyExist')
-            }, noMail => {
-                updateField(data.field, data.value, user, callback => {
-                  resolve(callback) });
-            })
+          })
+        } else { reject('settings.update.emptyUsername'); }
+        break;
+      case 'firstName':
+        if (data.value) {
+          updateField(data.field, data.value.trim(), user, (callback) => {
+            resolve(callback)
+          });
+        } else { reject('settings.update.emptyFirstName'); }
+        break;
+      case 'lastName':
+        if (data.value) {
+          updateField(data.field, data.value.trim(), user, (callback) => {
+            resolve(callback)
+          });
+        } else { reject('settings.update.emptyLastName'); }
+        break;
+      case 'email':
+        if (validator.validate(data.value)) {
+          UserManager.getUserByMail(data.value).then((res) => {
+            reject('settings.update.emailAlreadyExist');
+          }, (noMail) => {
+            updateField(data.field, data.value, user, (callback) => {
+              resolve(callback)
+            });
+          })
+        } else {
+          reject('settings.update.badValue')
+        }
+        break;
+      case 'password':
+        if (data.pass1 === data.pass2) {
+          if (data.pass1.length < 6 || data.pass1.match('^[a-zA-z]+$')) {
+            reject('settings.update.passwordIncorrectFormat');
           } else {
-            reject('update.badValue')}
-          break;
-        case 'password':
-          if (data.pass1 == data.pass2) {
-            if (data.pass1.length < 6 || data.pass1.match('^[a-zA-z]+$'))
-            {
-              reject('update.passwordIncorrectFormat');
-            } else {
-              UserManager.getUser(user).then(userData => {
-                argon2.verify(userData.password, data.currentPassword).then(match => {
-                  if (match) {
-                    argon2.hash(data.pass1).then(hash => {
-                    UserManager.updateUserField({'userName': user}, {'password': hash})
-                      resolve({'user': user, 'success': 'password.updated'})
-                    })
-                  } else { reject('update.badPassword') }
-                })
+            UserManager.getUser(user).then((userData) => {
+              argon2.verify(userData.password, data.currentPassword).then((match) => {
+                if (match) {
+                  argon2.hash(data.pass1).then((hash) => {
+                    UserManager.updateUserField({ userName: user }, { password: hash })
+                    resolve({ user, success: 'password.updated' });
+                  })
+                } else { reject('settings.update.badPassword'); }
               })
-            }
-          } else { reject('update.newPasswordnoMatch') }
-          break;
-      default: reject('update.badField')
+            })
+          }
+        } else { reject('settings.update.newPasswordnoMatch'); }
+        break;
+      default: reject('settings.update.badField');
     }
   })
 }
 
-function updateField(field, value, user, callback) {
-  UserManager.updateUserField({'userName': user}, {[field]: value})
-    .then(updated => {
-      callback({[field]: value, 'user': user, 'success': [field]+'.updated'});
-    }).catch(err => console.log(err))
-}
 
 function CheckProfilIsFill(login) {
-  return new Promise ((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     UserManager.getUser(login).then(user => {
       if (user.profilIsFill === false) {
         if (user.userName && user.firstName && user.lastName && user.email && user.picture) {
-          UserManager.updateUserField({'userName': login},{'profilIsFill': true})
-          .then(isFill => { resolve(true) }).catch(error => { console.log(error)})
+          UserManager.updateUserField({ 'userName': login }, { 'profilIsFill': true })
+            .then(isFill => { resolve(true) }).catch(error => { console.log(error) })
         } else { resolve(false); }
       } else { resolve(true) }
     })

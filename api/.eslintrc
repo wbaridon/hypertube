@@ -47,7 +47,8 @@
       "arrow-body-style": "off",
       "no-plusplus": "off",
       "no-underscore-dangle": "off",
-      "brace-style": "off"
+      "brace-style": "off",
+      "prefer-promise-reject-errors": "off",
     },
     "settings": {
       "import/resolver": {

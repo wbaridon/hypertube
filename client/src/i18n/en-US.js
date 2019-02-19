@@ -32,6 +32,7 @@ const enUS = {
     loading: 'loading',
     deleteList: '- to list',
   },
+
   resetPassword: {
     title: 'Hi, if you\'ve forgotten your password, enter your email below!',
     resetForEmail: 'Hi {email}, Enter your new password twice below!',
@@ -57,6 +58,15 @@ const enUS = {
   spaces: 'Cannot contain spaces',
   notEqual: 'Passwords do not match',
   settings: {
+    update: {
+      emptyUsername: 'You cannot have an empty username',
+      emptyFirstName: 'You cannot have an empty first name',
+      emptyLastName: 'You cannot have an empty last name',
+      emptyEmail: 'You cannot have an empty email',
+      userAlreadyExists: 'That username is taken',
+      emailAlreadyExist: 'That email is already in use',
+      badValue: 'Tried to set boolean to other than true/false',
+    },
     userName: 'Username:',
     firstName: 'First Name:',
     lastName: 'Last Name:',

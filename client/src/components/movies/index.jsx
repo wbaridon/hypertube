@@ -94,6 +94,8 @@ class Movies extends Component {
     super(props);
     this.state = {
       ...props.moviePageState,
+      scrolling: false,
+      scrollToTop: false,
       anchorEl: null,
     };
     this.state.valuePickerValues.handleValueChange = this.handleValueChangeDebounced.bind(this);
@@ -108,10 +110,16 @@ class Movies extends Component {
     this.handleMenuClose = this.handleMenuClose.bind(this);
     this.handleTopSpan = this.handleTopSpan.bind(this);
     this.handleScrollToTop = this.handleScrollToTop.bind(this);
-    this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
-    this.scrollListener = this.scrollListener.bind(this);
     this.toggleReverseSort = this.toggleReverseSort.bind(this);
     this.clearState = this.clearState.bind(this);
+    this.scrollListener = this.scrollListener.bind(this);
+    this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
+  }
+
+  scrollListener() {
+    this.debounceScrolling();
+    window.clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
   }
 
   componentDidMount() {
@@ -126,15 +134,15 @@ class Movies extends Component {
     this.observer.observe(document.getElementById('top'));
     window.addEventListener('scroll', this.scrollListener, false);
     if (currentMovie !== null) {
-      document.getElementById('active-card').scrollIntoView({ block: 'center' });
       this.setState({ scrolling: true });
+      this.waitForScroll = setTimeout(() => {
+        document.getElementById('active-card').scrollIntoView({ block: 'center' });
+      }, 100);
     }
   }
 
   componentWillUnmount() {
     const { setMoviePageStateHandler } = this.props;
-    window.removeEventListener('scroll', this.scrollListener);
-    window.clearTimeout(this.timeout);
     this.observer.unobserve(document.getElementById('top'));
     setMoviePageStateHandler(this.state);
   }
@@ -154,12 +162,6 @@ class Movies extends Component {
     }
   }
 
-  scrollListener() {
-    this.debounceScrolling();
-    window.clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
-  }
-
   clearState() {
     this.setState({
       searchString: '',
@@ -176,12 +178,15 @@ class Movies extends Component {
   }
 
   handleTopSpan(entries) {
-    this.setState({ top: entries[0].isIntersecting, scrolling: false });
+    const { scrollToTop } = this.state;
+    if (scrollToTop) {
+      this.setState({ top: entries[0].isIntersecting, scrolling: false, scrollToTop: false });
+    }
   }
 
   handleScrollToTop() {
     document.getElementById('top').scrollIntoView();
-    this.setState({ scrolling: true });
+    this.setState({ scrolling: true, scrollToTop: true });
   }
 
   loadMoreItems() {

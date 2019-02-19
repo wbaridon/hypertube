@@ -29,32 +29,6 @@ const breakpoints = createBreakpoints({});
 const theme = createMuiTheme({
   breakpoints,
   overrides: {
-    // MuiTypography: {
-    //   body2: {
-    //     fontSize: pxToRem(12),
-    //     [breakpoints.up('sm')]: {
-    //       fontSize: pxToRem(12),
-    //     },
-    //     [breakpoints.up('md')]: {
-    //       fontSize: pxToRem(14),
-    //     },
-    //     [breakpoints.up('lg')]: {
-    //       fontSize: pxToRem(16),
-    //     },
-    //   },
-    //   button: {
-    //     fontSize: pxToRem(12),
-    //     [breakpoints.up('sm')]: {
-    //       fontSize: pxToRem(12),
-    //     },
-    //     [breakpoints.up('md')]: {
-    //       fontSize: pxToRem(14),
-    //     },
-    //     [breakpoints.up('lg')]: {
-    //       fontSize: pxToRem(16),
-    //     },
-    //   },
-    // },
   },
   palette: {
     primary: {
@@ -81,32 +55,6 @@ const theme = createMuiTheme({
 const darkTheme = createMuiTheme({
   breakpoints,
   overrides: {
-    MuiTypography: {
-      body2: {
-        fontSize: pxToRem(10),
-        [breakpoints.up('sm')]: {
-          fontSize: pxToRem(12),
-        },
-        [breakpoints.up('md')]: {
-          fontSize: pxToRem(14),
-        },
-        [breakpoints.up('lg')]: {
-          fontSize: pxToRem(16),
-        },
-      },
-      button: {
-        fontSize: pxToRem(10),
-        [breakpoints.up('sm')]: {
-          fontSize: pxToRem(12),
-        },
-        [breakpoints.up('md')]: {
-          fontSize: pxToRem(14),
-        },
-        [breakpoints.up('lg')]: {
-          fontSize: pxToRem(16),
-        },
-      },
-    },
   },
   palette: {
     type: 'dark',

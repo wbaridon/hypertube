@@ -18,19 +18,19 @@ import styled, { keyframes } from 'styled-components';
 
 const animated = keyframes`
 10%, 90% {
-  transform: translate3d(-1px, 0, 0);
+  transform: translate3d(-2px, 0, 0);
 }
 
 20%, 80% {
-  transform: translate3d(2px, 0, 0);
+  transform: translate3d(3px, 0, 0);
 }
 
 30%, 50%, 70% {
-  transform: translate3d(-4px, 0, 0);
+  transform: translate3d(-5px, 0, 0);
 }
 
 40%, 60% {
-  transform: translate3d(4px, 0, 0);
+  transform: translate3d(5px, 0, 0);
 }
 `;
 
@@ -50,7 +50,7 @@ const styles = {
   },
 };
 const erroredP = styled.div`
-  animation: ${animated} 1s 1;
+  animation: ${animated} 0.7s 1;
 `;
 
 function DumbSettings({
@@ -71,14 +71,15 @@ function DumbSettings({
     <Card>
       <CardHeader title={<Typography variant="h6"><FormattedMessage id="settings.valuesChangeTitle" /></Typography>} />
       <CardContent>
+        {erroredField ? <Typography component={erroredP}><FormattedMessage id={erroredField.errorMessage} /></Typography> : <div style={{ height: '21px' }} />}
         <Grid container direction="column" justify="center">
           <Grid item>
             <Grid container direction="row" wrap="nowrap" alignItems="center" justify="space-between">
               <Grid item className={classes.text}>
-                <Typography component={erroredField.field === 'userName' ? erroredP : 'div'}><FormattedMessage id="settings.userName" /></Typography>
+                <Typography><FormattedMessage id="settings.userName" /></Typography>
               </Grid>
               <Grid item className={classes.field}>
-                <TextField id="userName" component={erroredField.field === 'userName' ? erroredP : 'div'} fullWidth value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
+                <TextField id="userName" fullWidth value={userName} onChange={e => handleFieldChange('userName', e.target.value)} />
               </Grid>
             </Grid>
           </Grid>

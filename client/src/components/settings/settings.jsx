@@ -5,12 +5,13 @@ import {
   updateUserFieldA,
   updateUserImageA,
 } from 'Actions/';
-import { Grid, withStyles, Typography } from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import debounce from 'lodash.debounce';
 import ImageChanger from '../image-changer';
 import { dataURItoBlob } from '../image-changer/image-handle-functions';
 import DumbSettings from './dumb';
 import ChangePassword from '../change-password';
+import { clearUserFieldErrorA } from '../../redux/actions/update-user-field';
 
 const styles = theme => ({
   content: {
@@ -30,7 +31,6 @@ const styles = theme => ({
 class Settings extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       picture: props.picture,
       userName: props.userName,
@@ -56,6 +56,31 @@ class Settings extends Component {
       darkTheme: (token, field, value) => props.updateFieldHandle(token, field, value),
       image: debounce((token, form) => props.updateImageHandle(token, form), 1000),
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.field !== prevProps.field) {
+      const { clearUserFieldErrorHandle } = this.props;
+        this.timeoutClearError = setTimeout(() => clearUserFieldErrorHandle(), 2500);
+    }
+  }
+
+  componentWillUnmount() {
+
+  }
+
+
+  static getDerivedStateFromProps(props, state) {
+    const {
+      field,
+      value,
+    } = props;
+    if (field && value && state[field] !== value) {
+      return ({
+        [field]: value,
+      });
+    }
+    return null;
   }
 
   handleFieldChange(field, value) {
@@ -88,18 +113,22 @@ class Settings extends Component {
   }
 
   render() {
-    const { picture, anchorEl } = this.state;
     const {
+      picture,
+      anchorEl,
       userName,
       firstName,
       lastName,
       email,
+    } = this.state;
+    const {
       locale,
       darkTheme,
       classes,
       field,
       value,
       oauth,
+      errorMessage,
     } = this.props;
     const dbValues = {
       userName,
@@ -116,11 +145,11 @@ class Settings extends Component {
           <DumbSettings
             userName={userName}
             firstName={firstName}
-            lastName={userName}
+            lastName={lastName}
             email={email}
             darkTheme={darkTheme}
             locale={locale}
-            erroredField={{ field, value }}
+            erroredField={field ? { errorMessage, field, value } : null}
             dbValues={dbValues}
             handleFieldChange={this.handleFieldChange}
             handleMenuClose={this.handleMenuClose}
@@ -145,8 +174,9 @@ class Settings extends Component {
 Settings.url = '/settings';
 Settings.propTypes = {
   classes: PropTypes.shape({}).isRequired,
-  field: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  field: PropTypes.string,
+  value: PropTypes.string,
+  errorMessage: PropTypes.string,
   userName: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
@@ -157,7 +187,14 @@ Settings.propTypes = {
   picture: PropTypes.string.isRequired,
   updateFieldHandle: PropTypes.func.isRequired,
   updateImageHandle: PropTypes.func.isRequired,
+  clearUserFieldErrorHandle: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+};
+
+Settings.defaultProps = {
+  field: null,
+  value: null,
+  errorMessage: null,
 };
 
 const mapStateToProps = state => ({
@@ -170,13 +207,15 @@ const mapStateToProps = state => ({
   oauth: state.user.data.oauth,
   picture: state.user.data.picture,
   token: state.user.token ? state.user.token : '',
-  field: state.updateUser.field || '',
-  value: state.updateUser.value || '',
+  field: state.updateUser.field,
+  value: state.updateUser.value,
+  errorMessage: state.updateUser.errorMessage,
 });
 
 const mapDispatchToProps = dispatch => ({
   updateFieldHandle: (token, field, value) => dispatch(updateUserFieldA(token, field, value)),
   updateImageHandle: (token, form) => dispatch(updateUserImageA(token, form)),
+  clearUserFieldErrorHandle: () => dispatch(clearUserFieldErrorA()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Settings)));
