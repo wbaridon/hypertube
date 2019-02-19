@@ -63,6 +63,8 @@ const enUS = {
     email: 'Email:',
     darkTheme: 'Dark Theme:',
     locale: 'Locale:',
+    imageChangeTitle: 'Modify your image',
+    valuesChangeTitle: 'Update your information',
   },
   navigation: {
     error: {

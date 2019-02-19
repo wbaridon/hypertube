@@ -5,7 +5,7 @@ import {
   updateUserFieldA,
   updateUserImageA,
 } from 'Actions/';
-import { Grid, withStyles } from '@material-ui/core';
+import { Grid, withStyles, Typography } from '@material-ui/core';
 import debounce from 'lodash.debounce';
 import ImageChanger from '../image-changer';
 import { dataURItoBlob } from '../image-changer/image-handle-functions';
@@ -21,10 +21,10 @@ const styles = theme => ({
       maxWidth: '320px',
     },
   },
-  // container: {
-  //   width: '100%',
-  //   margin: 0,
-  // },
+  container: {
+    width: '100%',
+    margin: 0,
+  },
 });
 
 class Settings extends Component {
@@ -33,15 +33,13 @@ class Settings extends Component {
 
     this.state = {
       picture: props.picture,
-      user: {
-        userName: props.userName,
-        email: props.email,
-        firstName: props.firstName,
-        lastName: props.lastName,
-        locale: props.locale,
-        oauth: props.oauth,
-        darkTheme: props.darkTheme,
-      },
+      userName: props.userName,
+      email: props.email,
+      firstName: props.firstName,
+      lastName: props.lastName,
+      locale: props.locale,
+      oauth: props.oauth,
+      darkTheme: props.darkTheme,
       anchorEl: null,
     };
 
@@ -63,9 +61,7 @@ class Settings extends Component {
   handleFieldChange(field, value) {
     console.log(this.state, field, value);
     const { token } = this.props;
-    const { user } = this.state;
-    user[field] = value;
-    this.setState({ user });
+    this.setState({ [field]: value });
     this.debounced[field](token, field, value);
   }
 
@@ -82,7 +78,7 @@ class Settings extends Component {
 
   handleImageChange(image) {
     const { picture } = this.state;
-    const { updateImageHandle, token } = this.props;
+    const { token } = this.props;
     const form = new FormData();
     const img = dataURItoBlob(image.rawData);
     form.append('image', img);
@@ -92,8 +88,19 @@ class Settings extends Component {
   }
 
   render() {
-    const { picture, user, anchorEl } = this.state;
-    const { classes, field, value, userName, firstName, lastName, email } = this.props;
+    const { picture, anchorEl } = this.state;
+    const {
+      userName,
+      firstName,
+      lastName,
+      email,
+      locale,
+      darkTheme,
+      classes,
+      field,
+      value,
+      oauth,
+    } = this.props;
     const dbValues = {
       userName,
       firstName,
@@ -101,15 +108,28 @@ class Settings extends Component {
       email,
     };
     return (
-      <Grid container className={classes.container} spacing={40} direction="row" alignItems="center" justify="center" alignContent="center" wrap>
+      <Grid container className={classes.container} spacing={40} direction="row" alignItems="center" justify="center" alignContent="center" wrap="wrap">
         <Grid item className={classes.content}>
           <ImageChanger imageUrl={picture && picture.rawData ? picture.rawData : picture} handleImageChange={this.handleImageChange} />
         </Grid>
         <Grid item className={classes.content}>
-          <DumbSettings erroredField={{ field, value }} dbValues={dbValues} {...user} handleFieldChange={this.handleFieldChange} handleMenuClose={this.handleMenuClose} handleMenuOpen={this.handleMenuOpen} anchorEl={anchorEl} />
+          <DumbSettings
+            userName={userName}
+            firstName={firstName}
+            lastName={userName}
+            email={email}
+            darkTheme={darkTheme}
+            locale={locale}
+            erroredField={{ field, value }}
+            dbValues={dbValues}
+            handleFieldChange={this.handleFieldChange}
+            handleMenuClose={this.handleMenuClose}
+            handleMenuOpen={this.handleMenuOpen}
+            anchorEl={anchorEl}
+          />
         </Grid>
         {
-          !user.oauth
+          !oauth
             ? (
               <Grid item className={classes.content}>
                 <ChangePassword />
@@ -124,15 +144,31 @@ class Settings extends Component {
 
 Settings.url = '/settings';
 Settings.propTypes = {
-  user: PropTypes.shape({
-  }).isRequired,
+  classes: PropTypes.shape({}).isRequired,
+  field: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  darkTheme: PropTypes.bool.isRequired,
+  locale: PropTypes.string.isRequired,
+  oauth: PropTypes.bool.isRequired,
+  picture: PropTypes.string.isRequired,
   updateFieldHandle: PropTypes.func.isRequired,
   updateImageHandle: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  ...state.user.data,
+  userName: state.user.data.userName,
+  firstName: state.user.data.firstName,
+  lastName: state.user.data.lastName,
+  email: state.user.data.email,
+  darkTheme: state.user.data.darkTheme,
+  locale: state.user.data.locale,
+  oauth: state.user.data.oauth,
+  picture: state.user.data.picture,
   token: state.user.token ? state.user.token : '',
   field: state.updateUser.field || '',
   value: state.updateUser.value || '',

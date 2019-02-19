@@ -11,6 +11,7 @@ import {
   Grid,
   Card,
   CardContent,
+  CardHeader,
 } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
 import styled, { keyframes } from 'styled-components';
@@ -68,6 +69,7 @@ function DumbSettings({
 }) {
   return (
     <Card>
+      <CardHeader title={<Typography variant="h6"><FormattedMessage id="settings.valuesChangeTitle" /></Typography>} />
       <CardContent>
         <Grid container direction="column" justify="center">
           <Grid item>

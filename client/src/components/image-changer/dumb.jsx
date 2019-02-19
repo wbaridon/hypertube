@@ -8,6 +8,7 @@ import {
   Typography,
   IconButton,
   Button,
+  CardHeader,
 } from '@material-ui/core';
 import AddPhotoAlternate from '@material-ui/icons/AddPhotoAlternate';
 import RotateRight from '@material-ui/icons/RotateRight';
@@ -15,7 +16,7 @@ import RotateLeft from '@material-ui/icons/RotateLeft';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
-import { intlShape, injectIntl } from 'react-intl';
+import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import styles from './styles';
 
 function ImageChangerDumb({
@@ -29,6 +30,7 @@ function ImageChangerDumb({
 }) {
   return (
     <Card>
+      <CardHeader title={<Typography variant="h6"><FormattedMessage id="settings.imageChangeTitle" /></Typography>} />
       <CardMedia image="squelchImageMessage">
         {
           image.rawData
