@@ -29,7 +29,7 @@ export const sendEmailA = (form) => {
           dispatch(sendEmailSuccess(result));
         },
         (error) => {
-          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(sendEmailError());
         },
       );

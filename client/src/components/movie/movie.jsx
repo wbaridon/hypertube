@@ -33,6 +33,8 @@ import GrowShrink from '../grow-shrink';
 const styles = {
   movie_info: {
     margin: 'auto',
+    width: '100%',
+    padding: 0,
   },
   info_container: {
     display: 'flex',

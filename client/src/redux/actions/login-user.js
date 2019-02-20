@@ -35,7 +35,7 @@ export const loginUserErrorAction = () => ({
 
 export const loginUserError = (error) => {
   return (dispatch) => {
-    dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+    dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
     return dispatch(loginUserErrorAction());
   };
 };

@@ -26,7 +26,7 @@ export const resetPasswordA = (key, newPassword, newPasswordRepeat, email) => {
       .then(
         result => dispatch(resetPasswordSuccess(result)),
         (error) => {
-          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(resetPasswordError());
         },
       );

@@ -28,7 +28,7 @@ export const changeUserPasswordA = (token, currentPassword, newPassword, newPass
           dispatch(changeUserPasswordSuccess(result));
         },
         (error) => {
-          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(changeUserPasswordError());
         },
       );
