@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const path = require('path');
 const ffmpeg = require('fluent-ffmpeg');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
@@ -26,7 +27,8 @@ module.exports.downloadMovie = async (file) => {
   return new Promise((resolve) => {
     console.log('Background download has stated...');
     const stream = file.createReadStream();
-    const writeStream = fs.createWriteStream(`./assets/torrents/${file.name}`);
+    console.log(__dirname)
+    const writeStream = fs.createWriteStream(`${path.resolve(__dirname, '../assets/torrents/')}/${file.name}`);
     pipeVideo(stream, writeStream);
     resolve();
   }).catch((e) => {

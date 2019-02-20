@@ -139,11 +139,13 @@ class Movies extends Component {
         document.getElementById('active-card').scrollIntoView({ block: 'center' });
       }, 100);
     }
+    setTimeout(this.scrollListener, 200);
   }
 
   componentWillUnmount() {
     const { setMoviePageStateHandler } = this.props;
     this.observer.unobserve(document.getElementById('top'));
+    window.removeEventListener('scroll', this.scrollListener);
     setMoviePageStateHandler(this.state);
   }
 
