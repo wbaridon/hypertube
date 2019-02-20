@@ -57,7 +57,7 @@ class Movie extends React.Component {
       getSubtitles,
     } = this.props;
     getMovie(match.params.id_movie, token);
-    getSubtitles(match.params.id_movie, token);
+    // getSubtitles(match.params.id_movie, token);
   }
 
   componentWillUnmount = () => {
@@ -185,10 +185,11 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              {subtitles ? 
-              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={subtitles} />
-              : null
-              }
+              {subtitles ? (
+                <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={subtitles} />
+              ) : (
+                null
+              )}
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
