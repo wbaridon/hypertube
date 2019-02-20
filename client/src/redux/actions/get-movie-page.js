@@ -28,7 +28,7 @@ export const getMoviePageA = (token, request) => {
           dispatch(getMoviePageSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(getMoviePageError());
         },
       );

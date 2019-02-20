@@ -42,6 +42,7 @@ const frFR = {
     error: {
       login: 'Erreur de connection',
       'Network Error': 'Impossible de se connecter a l\'API',
+      cantConnectToDb: 'Impossible de se connecter a l\'API...',
     },
   },
   logout: {

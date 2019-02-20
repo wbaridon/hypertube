@@ -67,9 +67,9 @@ export const updateUserFieldA = (token, field, value) => {
         },
         (error) => {
           console.log(error.response);
-          // dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          // dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(changeUserValueA(error.response.data.field, error.response.data.value));
-          dispatch(updateUserFieldError(error.response ? error.response.data.error : 'cantConnectToDb', error.response.data.field, error.response.data.value));
+          dispatch(updateUserFieldError(error.response ? error.response.data.error : 'api.error.cantConnectToDb', error.response.data.field, error.response.data.value));
         },
       );
   };

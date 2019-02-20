@@ -28,7 +28,7 @@ export const logoutUserA = (token) => {
     return logoutUserAPI(token)
       .then(
         result => dispatch(logoutUserSuccess(result)),
-        error => dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb')),
+        error => dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb')),
       );
   };
 };

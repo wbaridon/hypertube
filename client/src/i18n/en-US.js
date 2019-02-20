@@ -105,6 +105,7 @@ const enUS = {
     error: {
       login: 'Login error',
       'Network Error': 'Failed to connect to API',
+      cantConnectToDb: 'Cant reach the API...',
     },
   },
   register: {

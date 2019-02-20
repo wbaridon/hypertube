@@ -28,7 +28,7 @@ export const getSubtitlesA = (idMovie, token) => {
           dispatch(getSubtitlesSuccess(response.data));
         },
         (error) => {
-          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(getSubtitlesError());
         },
       );

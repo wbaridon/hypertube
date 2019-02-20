@@ -29,7 +29,7 @@ export const deleteCommentA = (idMovie, idComment, comment, token) => {
           dispatch(deleteCommentSuccess(result.data));
         },
         (error) => {
-          dispatch(setErrorA(error.response ? error.response.data.error : 'cantConnectToDb'));
+          dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(deleteCommentError());
         },
       );

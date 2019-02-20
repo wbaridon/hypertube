@@ -114,7 +114,7 @@ class ActiveMovieCard extends React.Component {
                 minWidth: 0,
               }}
             >
-              <Typography style={{ minHeight: 0, overflowY: 'hidden' }}>
+              <Typography style={{ minHeight: 0, overflowY: 'scroll' }}>
                 {synopsis}
               </Typography>
             </Grid>

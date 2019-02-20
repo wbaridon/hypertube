@@ -405,7 +405,7 @@ class Movies extends Component {
       return (
         <Grid
           item
-          style={{ height: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.height : dimensions.height, width: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
+          style={{ height: width === 'xs' && mobile && currentMovie === movie._id ? movie.synopsis.length / 40 * 12 : dimensions.height, width: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
           onBlur={mobile ? null : () => { this.onHoverMovie(null); }}
           onClick={mobile ? (e) => { this.onHoverMovie(movie._id, true, true, e); } : null}
           onMouseLeave={!mobile ? () => { this.onHoverMovie(null); } : null}
