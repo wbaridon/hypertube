@@ -3,6 +3,14 @@ const flatten = require('flat');
 
 
 const frFR = {
+  watchList: {
+    title: 'Ma liste',
+    subtitle: 'Quels films regarder ?',
+    remove: 'Supprimer',
+    watchnow: 'Regarder',
+    markseen: 'jamais vu',
+    markunseen: 'deja vu',
+  },
   movies: {
     watch: 'Regarder',
     addList: '+ ma liste',

@@ -6,6 +6,10 @@ import {
   Typography,
   Paper,
 } from '@material-ui/core';
+import {
+  FormattedMessage,
+  injectIntl,
+} from 'react-intl';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -16,6 +20,7 @@ import {
 } from 'Actions';
 
 class WatchList extends React.Component {
+
   componentWillMount() {
     const {
       getWatchList,
@@ -30,7 +35,7 @@ class WatchList extends React.Component {
     watchList[n].seen = bool;
     this.setState({ watchList });
     bool ? movieSeen(token, idMovie) : movieUnseen(token, idMovie) ;
-  } 
+  }
 
   render() {
     const {
@@ -38,62 +43,68 @@ class WatchList extends React.Component {
       watchList,
       deleteWatchList,
     } = this.props;
-    console.log(watchList);
     return (
       <Paper>
-        <Grid style={{ margin: '15px' }}>
+        <Grid style={{ padding: '15px' }}>
           <Typography variant="h5">
-            Watchlist
+            <FormattedMessage id="watchList.title" />
           </Typography>
           <br />
           <Typography variant="subtitle1">
-            Quels films dois tu regarder ?
+            <FormattedMessage id="watchList.subtitle" />
           </Typography>
         </Grid>
         <Grid container direction="column" style={{ flexFlow: 'column' }}>
           {
             watchList.length !== 0 ? (
               watchList.map(movie => (
-                <Paper key={movie.imdbId} style={{ margin: '15px' }}>
+                <Paper key={movie.imdbId} style={{ margin: '10px', borderRadius: '6px' }}>
                   <Grid item container direction="row" style={{ flexFlow: 'row' }}>
-                    <img
-                      alt="moviepic"
-                      style={{
-                        maxHeight: '140px',
-                        width: 'auto',
-                        height: 'auto',
-                        marginRight: '15px',
-                      }}
-                      src={movie.cover}
-                    />
-                    <Grid item container direction="row" alignItems="center" justify="space-evenly" key={movie.imdbId}>
-                      {/* <Grid item>
-                        <Typography variant="subtitle1" noWrap>{movie.title}</Typography>
-                      </Grid > */}
-                      <Grid item>
-                        {movie.seen ? (
-                          <Button onClick={() => this.handleSeen(token, movie.imdbId, watchList.indexOf(movie), false)}>
-                            <Typography variant="button" noWrap>mark as unseen</Typography>
+                    <Link to={`/movie/${movie.imdbId}`} style={{ paddingRight: '15px'}}>
+                      <img
+                        alt="moviepic"
+                        style={{
+                          maxHeight: '140px',
+                          width: 'auto',
+                          height: 'auto',
+                          borderRadius: '6px',
+                        }}
+                        src={movie.cover}
+                      />
+                    </Link>
+                    <Grid item container direction="column" justify="space-evenly">
+                      <Typography variant="h6" component={Link} to={`/movie/${movie.imdbId}`} style={{ marginLeft: '14px', textDecoration: 'none' }}>
+                        {movie.title}
+                      </Typography>
+                      <Grid item container direction="row" alignItems="center" justify="space-evenly" key={movie.imdbId}>
+                        {/* <Grid item>
+                          <Typography variant="subtitle1" noWrap>{movie.title}</Typography>
+                        </Grid > */}
+                        <Grid item>
+                          {movie.seen ? (
+                            <Button variant="contained" color="primary" onClick={() => this.handleSeen(token, movie.imdbId, watchList.indexOf(movie), false)}>
+                              <Typography variant="button" noWrap><FormattedMessage id="watchList.markunseen" /></Typography>
+                            </Button>
+                          ) : (
+                            <Button variant="contained" color="primary" onClick={() => this.handleSeen(token, movie.imdbId, watchList.indexOf(movie), true)}>
+                              <Typography variant="button" noWrap><FormattedMessage id="watchList.markseen" /></Typography>
+                            </Button>
+                          )}
+                        </Grid>
+                        {/* <Grid item>
+                          <Button variant="contained" color="primary" component={Link} to={`/movie/${movie.imdbId}`}>
+                            <Typography variant="button" noWrap>
+                              <FormattedMessage id="watchList.watchnow" />
+                            </Typography>
                           </Button>
-                        ) : (
-                          <Button onClick={() => this.handleSeen(token, movie.imdbId, watchList.indexOf(movie), true)}>
-                            <Typography variant="button" noWrap>mark as seen</Typography>
+                        </Grid> */}
+                        <Grid item>
+                          <Button variant="contained" color="primary" onClick={() => deleteWatchList(token, movie.imdbId)}>
+                            <Typography variant="button" noWrap>
+                              <FormattedMessage id="watchList.remove" />
+                            </Typography>
                           </Button>
-                        )}
-                      </Grid>
-                      <Grid item>
-                        <Button component={Link} to={`/movie/${movie.imdbId}`}>
-                          <Typography variant="button" noWrap>
-                            watch now
-                          </Typography>
-                        </Button>
-                      </Grid>
-                      <Grid item>
-                        <Button onClick={() => deleteWatchList(token, movie.imdbId)}>
-                          <Typography variant="button" noWrap>
-                            Remove from list
-                          </Typography>
-                        </Button>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -137,4 +148,4 @@ WatchList.defaultProps = {
 };
 
 WatchList.url = '/watchlist';
-export default connect(mapStateToProps, mapDispatchToProps)(WatchList);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(WatchList));
