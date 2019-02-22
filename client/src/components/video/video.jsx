@@ -21,13 +21,21 @@ class Video extends React.Component {
 
   componentDidMount() {
     const { movieSeen, idMovie, token } = this.props;
-    document.getElementById('videoPlayer').play();
+    const vid = document.getElementById('videoPlayer');
+    vid.oncanplay = () => {
+      vid.play();
+    };
     const videoListener = document.getElementById('videoPlayer');
     videoListener.onended = () => {
       console.log('merdassssse');
       movieSeen(token, idMovie);
     };
   }
+
+  componentWillUnmount() {
+    document.getElementById('videoPlayer').pause();
+  }
+
 
   render() {
     const {
@@ -39,7 +47,7 @@ class Video extends React.Component {
     // console.log(subtitles.en);
     return (
       <React.Fragment>
-        <video id="videoPlayer" crossOrigin="anonymous" controls muted preload="auto" style={{ margin: 'auto', width: '100%' }} >
+        <video id="videoPlayer" crossOrigin="anonymous" controls muted preload="auto" style={{ margin: 'auto', width: '100%' }}>
         {<source src={`http://localhost:3000/video?videoHash=${hash}&id=${idMovie}`} /> }
           {/* Tester si le fichier est accessible pour mettre le lien la ou pas Et traduire label suivant langue */}
           {subtitles.fr ? <track label="French" kind="subtitles" srcLang="fr" src={`http://localhost:3000/subtitles/${idMovie}-fr.vtt`} /> : null}
