@@ -3,6 +3,14 @@ const flatten = require('flat');
 
 
 const enUS = {
+  watchList: {
+    title: 'Watchlist',
+    subtitle: 'What are you gonna watch today ?',
+    remove: 'remove from list',
+    watchnow: 'watch now',
+    markseen: 'mark as seen',
+    markunseen: 'mark as unseen',
+  },
   searchBar: {
     sortBy: 'Sort',
   },

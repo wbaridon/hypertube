@@ -192,6 +192,7 @@ class Comments extends React.Component {
         >
           <ArrowDownward />
         </Fab>
+        <span id="bottom" style={{ float: 'left' }} />
       </div>
     );
   }

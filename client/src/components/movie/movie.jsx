@@ -75,6 +75,7 @@ class Movie extends React.Component {
 
   render() {
     const {
+      movieSeen,
       classes,
       movie,
       token,
@@ -187,14 +188,14 @@ class Movie extends React.Component {
               </Grid>
             </Grid>
             <Grid>
-              {subtitles ? 
-              <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={subtitles} />
-              : null
-              }
+              {subtitles ? (
+                <Video hash={movie.torrents[0].hash} idMovie={movie.imdbId} subtitles={subtitles} movieSeen={movieSeen} />
+              ) : (
+                null
+              )}
             </Grid>
           </Card>
           <Comments comments={movie.comments} idMovie={movie.imdbId} />
-          <span id="bottom" style={{ }} />
         </Grid>
       ) : (
         <GrowShrink movieName={location.state ? location.state.movieName : intl.formatMessage({ id: 'movie.loading' })} />
