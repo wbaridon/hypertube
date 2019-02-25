@@ -9,19 +9,31 @@ const OpenSubtitles = new OS({
 
 function getSubtitles(id) {
   return new Promise ((resolve, reject) => {
-    let subtitles = {
-      'en': true,
-      'fr': true,
-    }
+
+    let subtitles = { }
     if (!fs.existsSync('./assets/subtitles')) { fs.mkdirSync('./assets/subtitles'); }
-    Promise.all([
-      searchSubtitle(id, 'eng').catch(error => {  }),
-      searchSubtitle(id, 'fre').catch(error => {  }),
-    ]).then(data => {
-      if (!data[0]) { subtitles.en = false }
-      if (!data[1]) { subtitles.fr = false }
-      resolve(subtitles)
-    }).catch(error => { reject('getSubtitles.notAvailable')})
+    initStatus(id, 'en').then(english => {
+      subtitles.en = english
+      initStatus(id, 'fr').then(french => {
+        var englishSub = searchSubtitle(id, 'eng')
+        var frenchSub = searchSubtitle(id, 'fre')
+        if (english === true && french === true) { resolve(subtitles) }
+        else {
+          Promise.all([englishSub, frenchSub]).then(data => {
+            if (!data[0]) { subtitles.en = false }
+            if (!data[1]) { subtitles.fr = false }
+            resolve(subtitles)
+          }).catch(error => { reject('getSubtitles.notAvailable')})
+        }
+      })
+    })
+  })
+}
+
+function initStatus(id, lang) {
+  return new Promise ((resolve, reject) => {
+    if (!fs.existsSync('./assets/subtitles/'+id+'-'+lang+'.vtt')) { resolve(false) }
+    else { resolve(true) }
   })
 }
 
