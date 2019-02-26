@@ -43,17 +43,17 @@ torrentRouter
         stream = fs.createReadStream(`./assets/torrents/${file.name}`);
       } else {
         stream = file.createReadStream();
-        DownloadMovie.downloadMovie(file);
+        DownloadMovie.downloadMovie(file, id);
       }
       const converter = ffmpeg()
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
         .outputFormat('mp4')
         .on('end', () => {
-          console.log('Finished processing');
+          // console.log('Finished processing');
         })
         .on('error', (err) => {
-          console.log('=========== ffmpeg notice: ===========\n', err.message);
+          // console.log('=========== ffmpeg notice: ===========\n', err.message);
         })
         .inputFormat(realExtension)
         .audioCodec('aac')
@@ -67,7 +67,7 @@ torrentRouter
       // }
 
       res.on('close', () => {
-        console.log('page closes, all processes killed');
+        // console.log('page closes, all processes killed');
         stream.destroy();
       });
       return null;
