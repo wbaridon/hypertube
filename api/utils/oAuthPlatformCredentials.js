@@ -4,6 +4,8 @@ const { twitterId, twitterSecret,
         gitlabId, gitlabSecret,
         linkedinId, linkedinSecret,
         instagramId, instagramSecret,
+        googleId, googleSecret,
+        fortytwoId, fortytwoSecret,
         facebookId, facebookSecret } = require('../config/env')
 
 function facebookCredentials() {
@@ -99,8 +101,8 @@ function googleCredentials() {
   return new Promise ((resolve, reject) => {
     const credentials = {
       client: {
-        id: '796040540786-mcs3ojd9c07558mkatt5m1j185pol941.apps.googleusercontent.com',
-        secret: 'S5_yCT_BnFVr5v9qM9Av9g6m'
+        id: googleId,
+        secret: googleSecret
       },
       auth: {
        tokenHost: 'https://www.googleapis.com',
@@ -118,8 +120,8 @@ function fortytwoCredentials() {
   return new Promise ((resolve, reject) => {
    const credentials = {
      client: {
-       id: '5c2c11c20bea09a8590b502f86b0c5cf6a64faada97ce1bc7f13dabd64a128cd',
-       secret: 'a8d824a530c12a814fa79c5427feacdb37e58e9b6d740d443833dd94db3e1fac'
+       id: fortytwoId,
+       secret: fortytwoSecret
       },
       auth: {
        tokenHost: 'https://api.intra.42.fr',
