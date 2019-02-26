@@ -40,12 +40,12 @@ client.get('*', (request, response) => {
 
 client.listen(clientPort);
 console.log(`server started on clientPort ${clientPort}`);
-client.all('/', function(req, res, next) {
+app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
  });
-// client.use(express.static('assets'));
+app.use(express.static('assets'));
 app.use('/user', userRouter);
 app.use('/library', libraryRouter);
 app.use('/oAuth', oAuthRouter);

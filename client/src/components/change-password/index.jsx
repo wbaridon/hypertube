@@ -61,7 +61,6 @@ class ChangePassword extends Component {
     if (newPassword !== newPasswordRepeat) {
       errors.push('password.notMatch');
     }
-    console.log(errors, errorsRepeat);
     this.setState({ newPasswordError: errors, newPasswordRepeatError: errorsRepeat });
     if (errors.length === 0 && errorsRepeat.length === 0) {
       return (true);
