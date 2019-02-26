@@ -20,7 +20,6 @@ torrentRouter
     } = req.query;
     // getSubtitles.launcher(id)
     const hash = videoHash;
-    let downloaded = false;
     const torrentMagnet = await TorrentManager.getMagnet(hash);
     const engine = torrentStream(torrentMagnet, {
       // Trouver un repertoire tmp qui bug pas
@@ -41,22 +40,20 @@ torrentRouter
       const extension = await TorrentManager.getExtention(file.name);
       const realExtension = extension.substr(1);
       if (await TorrentManager.alreadyDownloaded(id, file) === true) {
-        downloaded = true;
         stream = fs.createReadStream(`./assets/torrents/${file.name}`);
       } else {
         stream = file.createReadStream();
-        DownloadMovie.downloadMovie(file);
+        DownloadMovie.downloadMovie(file, id);
       }
       const converter = ffmpeg()
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
         .outputFormat('mp4')
-        .on('progress', (progress) => { console.log('fluent-ffmpeg: Progress:', progress.timemark, 'converted'); })
         .on('end', () => {
-          console.log('Finished processing');
+          // console.log('Finished processing');
         })
         .on('error', (err) => {
-          console.log('=========== ffmpeg notice: ===========\n', err.message);
+          // console.log('=========== ffmpeg notice: ===========\n', err.message);
         })
         .inputFormat(realExtension)
         .audioCodec('aac')
@@ -70,7 +67,7 @@ torrentRouter
       // }
 
       res.on('close', () => {
-        console.log('page closes, all processes killed');
+        // console.log('page closes, all processes killed');
         stream.destroy();
       });
       return null;
