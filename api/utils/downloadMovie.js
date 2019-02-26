@@ -36,6 +36,7 @@ function pipeVideo(stream, writeStream, file) {
         file: `./assets/torrents/${file.name}`,
       };
       MovieManager.update(id, data);
+      stream.emit("end");
       resolve();
     }
     stream.on('error', () => {
