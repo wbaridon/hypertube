@@ -26,25 +26,25 @@ const eztv = require('./utils/getMoviesFromEZTV');
 const torrentStorage = require('./utils/torrentStorage');
 const db = require('./config/db');
 
-// const clientPort = 8080;
-// const client = express();
+const clientPort = 8080;
+const client = express();
 
-// // serve static assets normally
-// client.use(express.static(path.resolve(__dirname, 'distribution')));
+// serve static assets normally
+client.use(express.static(path.resolve(__dirname, 'distribution')));
 
-// // handle every other route with index.html, which will contain
-// // a script tag to your clientlication's JavaScript file(s).
-// client.get('*', (request, response) => {
-//   response.sendFile(path.resolve(__dirname, 'distribution', 'index.html'));
-// });
+// handle every other route with index.html, which will contain
+// a script tag to your clientlication's JavaScript file(s).
+client.get('*', (request, response) => {
+  response.sendFile(path.resolve(__dirname, 'distribution', 'index.html'));
+});
 
-// client.listen(clientPort);
-// console.log(`server started on clientPort ${clientPort}`);
-// client.all('/', function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//   next();
-//  });
+client.listen(clientPort);
+console.log(`server started on clientPort ${clientPort}`);
+client.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
 // client.use(express.static('assets'));
 app.use('/user', userRouter);
 app.use('/library', libraryRouter);
