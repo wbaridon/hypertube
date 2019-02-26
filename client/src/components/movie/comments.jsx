@@ -45,8 +45,6 @@ class Comments extends React.Component {
     const { page } = this.state;
     let scrollmax = document.getElementsByTagName("html")[0].scrollHeight;
     let scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
-    // console.log("scrollpos=" + scrollPos);
-    // console.log("doubidouba=" + (scrollmax - screenheight));
     if (scrollPos > scrollmax - screen.height) {
       this.setState({ page: page + 1 });
     }
@@ -55,12 +53,10 @@ class Comments extends React.Component {
 
   handleScrollToTop() {
     document.getElementById('top').scrollIntoView();
-    // this.setState({ scrolling: true });
   }
 
   handleScrollToBottom() {
     document.getElementById('bottom').scrollIntoView();
-    // this.setState({ scrolling: true });
   }
 
   handleSubmit(e) {

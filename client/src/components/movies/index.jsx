@@ -213,7 +213,6 @@ class Movies extends Component {
       min: !valuePickerValues.isAlphabet ? parseFloat(valuePickerValues.currentLowValue) : valuePickerValues.currentLowValue,
       max: !valuePickerValues.isAlphabet ? parseFloat(valuePickerValues.currentHighValue) : valuePickerValues.currentHighValue,
     };
-    console.log(request);
     getMoviePageHandle(token, request);
   }
 
@@ -268,7 +267,6 @@ class Movies extends Component {
       isAlphabet,
       isFloat,
     } = valuePickerValues;
-    console.log(value);
     let myValue = value;
     if (valuePickerValues.isAlphabet) {
       myValue = toggleLetterToNumber(myValue, true);
@@ -284,7 +282,6 @@ class Movies extends Component {
     }
     currentLowValue = typeof currentLowValue === 'number' ? currentLowValue : toggleLetterToNumber(currentLowValue, true);
     currentHighValue = typeof currentHighValue === 'number' ? currentHighValue : toggleLetterToNumber(currentHighValue, true);
-    console.log(typeof currentLowValue, typeof currentHighValue, typeof myValue);
     if (whichOne === 'low') {
       if (myValue > currentHighValue) {
         currentLowValue = currentHighValue;

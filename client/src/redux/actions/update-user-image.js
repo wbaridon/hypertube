@@ -32,7 +32,6 @@ export const updateUserImageA = (token, form) => {
       .then(
         (result) => {
           dispatch(changeUserValueA('picture', result.data.picture));
-          console.log(result.data);
           dispatch(changeUserValueA('profilIsFill', result.data.profilIsFill));
           dispatch(setSuccessA('register.profileIsFilled'));
           dispatch(deleteUserFromUserListA(result.data.user));
