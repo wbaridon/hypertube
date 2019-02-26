@@ -20,7 +20,6 @@ torrentRouter
     } = req.query;
     // getSubtitles.launcher(id)
     const hash = videoHash;
-    let downloaded = false;
     const torrentMagnet = await TorrentManager.getMagnet(hash);
     const engine = torrentStream(torrentMagnet, {
       // Trouver un repertoire tmp qui bug pas
@@ -41,7 +40,6 @@ torrentRouter
       const extension = await TorrentManager.getExtention(file.name);
       const realExtension = extension.substr(1);
       if (await TorrentManager.alreadyDownloaded(id, file) === true) {
-        downloaded = true;
         stream = fs.createReadStream(`./assets/torrents/${file.name}`);
       } else {
         stream = file.createReadStream();
@@ -51,7 +49,6 @@ torrentRouter
         .input(stream)
         .outputOptions('-movflags frag_keyframe+empty_moov')
         .outputFormat('mp4')
-        .on('progress', (progress) => { console.log('fluent-ffmpeg: Progress:', progress.timemark, 'converted'); })
         .on('end', () => {
           console.log('Finished processing');
         })
