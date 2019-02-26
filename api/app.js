@@ -1,10 +1,10 @@
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
-const db = require('./config/db');
-const fs = require('fs');
-var schedule = require('node-schedule');
+const path = require('path');
+const schedule = require('node-schedule');
 const app = express();
 const hostname = 'localhost';
 const port = 3000;
@@ -24,13 +24,28 @@ const torrentRouter = require('./routes/torrentRouter');
 const yts = require('./utils/getMoviesFromYTS');
 const eztv = require('./utils/getMoviesFromEZTV');
 const torrentStorage = require('./utils/torrentStorage');
+const db = require('./config/db');
 
-app.all('/', function(req, res, next) {
+const clientPort = 8080;
+const client = express();
+
+// serve static assets normally
+client.use(express.static(path.resolve(__dirname, 'distribution')));
+
+// handle every other route with index.html, which will contain
+// a script tag to your clientlication's JavaScript file(s).
+client.get('*', (request, response) => {
+  response.sendFile(path.resolve(__dirname, 'distribution', 'index.html'));
+});
+
+client.listen(clientPort);
+console.log(`server started on clientPort ${clientPort}`);
+client.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
  });
-app.use(express.static('assets'))
+// client.use(express.static('assets'));
 app.use('/user', userRouter);
 app.use('/library', libraryRouter);
 app.use('/oAuth', oAuthRouter);
