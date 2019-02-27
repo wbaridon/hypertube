@@ -12,7 +12,6 @@ import {
 } from '@material-ui/core';
 import {
   closeSidebarA,
-  logoutUserA,
 } from 'Actions';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -38,26 +37,25 @@ const styles = theme => ({
       maxWidth: '1600px',
     },
   },
+  list: {
+    paddingTop: 0,
+  },
 });
 
 function Sidebar({
   open,
   handleClose,
   loggedIn,
-  handleLogout,
   classes,
 }) {
   return (
     <Drawer classes={{ paper: classes.root }} anchor="right" open={open} onClose={handleClose}>
-      <Button fullWidth onClick={handleClose}>
+      <Button fullWidth onClick={handleClose} style={{ minHeight: '36px' }}>
         <Close />
       </Button>
       {loggedIn
         ? (
           <React.Fragment>
-            <Button onClick={handleLogout}>
-              LOGOUTTEMP
-            </Button>
             <IconButton component={Link} to="/users" onClick={handleClose}>
               <People />
             </IconButton>
@@ -67,13 +65,11 @@ function Sidebar({
             <IconButton component={Link} to="/watchlist" onClick={handleClose}>
               <Listicon />
             </IconButton>
-            {/* <Login /> */}
-            {/* <Settings /> */}
           </React.Fragment>
         )
         : (
           <React.Fragment>
-            <List>
+            <List className={classes.list}>
               <ListItem>
                 <Providers />
               </ListItem>
@@ -102,7 +98,6 @@ Sidebar.propTypes = {
   classes: PropTypes.shape({}).isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  handleLogout: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
 };
 
@@ -113,7 +108,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   handleClose: () => dispatch(closeSidebarA()),
-  handleLogout: () => dispatch(logoutUserA()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Sidebar)));

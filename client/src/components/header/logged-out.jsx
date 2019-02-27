@@ -26,9 +26,11 @@ function LoggedOut({
           </Typography>
         </IconButton>
       </Tooltip>
-      <IconButton onClick={handleSideBarOpen}>
-        <Add color="primary" />
-      </IconButton>
+      <Tooltip title={intl.formatMessage({ id: 'login.registerTab' })}>
+        <IconButton onClick={handleSideBarOpen}>
+          <Add color="primary" />
+        </IconButton>
+      </Tooltip>
     </React.Fragment>
   );
 }

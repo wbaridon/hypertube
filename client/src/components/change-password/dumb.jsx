@@ -10,6 +10,7 @@ import {
   Divider,
   Tooltip,
 } from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
@@ -49,7 +50,7 @@ function ChangePasswordDumb({
   if (!toggled) {
     return (
       <Button variant="contained" className={classes.buttonToggle} onClick={handleToggle}>
-        Change Password
+        <FormattedMessage id="settings.changePassword"/>
       </Button>
     );
   }
@@ -62,7 +63,7 @@ function ChangePasswordDumb({
               <Grid container direction="row" justify="space-between" alignItems="center" alignContent="center" wrap="nowrap">
                 <Grid item>
                   <Typography inline variant="caption">
-                    Current Password
+                    <FormattedMessage id="settings.currentPassword"/>
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -79,7 +80,7 @@ function ChangePasswordDumb({
               <Grid container direction="row" justify="space-between" alignItems="center" alignContent="center" wrap="nowrap">
                 <Grid item>
                   <Typography inline variant="caption">
-                    New Password
+                  <FormattedMessage id="settings.newPassword"/>
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -93,7 +94,7 @@ function ChangePasswordDumb({
               <Grid container direction="row" justify="space-between" alignItems="center" alignContent="center" wrap="nowrap">
                 <Grid item>
                   <Typography inline variant="caption">
-                    Repeat New Password
+                  <FormattedMessage id="settings.repeatNewPassword"/>
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -107,12 +108,12 @@ function ChangePasswordDumb({
               <Grid container direction="row" justify="space-between" alignItems="center" alignContent="center" wrap="nowrap">
                 <Grid item xs={6}>
                   <Button fullWidth onClick={handleToggle}>
-                    Cancel
+                    <FormattedMessage id="settings.cancelChangePassword"/>
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
                   <Button fullWidth className={classes.buttonSubmit} type="submit" onClick={handleSubmit}>
-                    Submit
+                    <FormattedMessage id="settings.submit"/>
                   </Button>
                 </Grid>
               </Grid>

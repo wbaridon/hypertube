@@ -12,7 +12,7 @@ class MovieCard extends React.Component {
     this.setImageFalse = this.setImageFalse.bind(this);
   }
 
-  setImageFalse(event) {
+  setImageFalse() {
     this.setState({ image: false });
   }
 

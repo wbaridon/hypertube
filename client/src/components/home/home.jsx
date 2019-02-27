@@ -9,18 +9,6 @@ import {
   setWarningA,
 } from '../../redux/actions';
 
-const myStyles = theme => ({
-  poster: {
-    maxWidth: '200px',
-    [theme.breakpoints.down(700)]: {
-      maxWidth: '150px',
-    },
-    [theme.breakpoints.down(400)]: {
-      maxWidth: '75px',
-    },
-  },
-});
-
 const mapDispatchToProps = dispatch => ({
   setErrorHandler: routeUrl => dispatch(setWarningA('navigation.error.notAuthed', `: ${routeUrl}`)),
 });
@@ -145,4 +133,4 @@ Home.propTypes = {
 };
 
 Home.url = '/';
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(myStyles)(Home)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

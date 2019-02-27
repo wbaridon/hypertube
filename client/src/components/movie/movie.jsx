@@ -84,7 +84,6 @@ class Movie extends React.Component {
       subtitles,
     } = this.props;
     const { seen } = this.state;
-    // console.log(seen);
     if (movie && movie.error === true) {
       return (
         <Grid>

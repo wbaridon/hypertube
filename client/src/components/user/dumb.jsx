@@ -39,8 +39,8 @@ function UserDumb({
           transform: 'translate(-50%, -50%)',
           zIndex: '3',
         }}
-      component={Link}
-      to="/users"
+        component={Link}
+        to="/users"
       >
         Back
       </Button>
@@ -53,7 +53,7 @@ function UserDumb({
                 {userName}
               </Typography>
               <Typography>
-                {`This user is called ${firstName} and their last name is ${lastName}, They probably like rowboats, hunting for doughnuts, and other such activities.`}
+                {`${firstName} ${lastName}`}
               </Typography>
             </CardContent>
           </Card>

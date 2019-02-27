@@ -10,6 +10,7 @@ import {
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Waypoint from 'react-waypoint';
 import debounce from 'lodash.debounce';
+import { FormattedMessage } from 'react-intl';
 import {
   getMoviePageA,
   clearMoviesA,
@@ -398,7 +399,7 @@ class Movies extends Component {
       smallScreenDimensions.height = dimensions.height * 1.3;
     }
     if (movies.length === 0) {
-      return (<div>No movies yet</div>);
+      return (<div><FormattedMessage id="movies.noMoviesYet" /></div>);
     }
     return movies.map((movie) => {
       return (

@@ -18,7 +18,7 @@ import {
 import LoggedIn from './logged-in';
 import LoggedOut from './logged-out';
 
-const theme = createMuiTheme({
+const headerTheme = createMuiTheme({
   palette: {
     primary: {
       light: '#ffffff',
@@ -54,13 +54,31 @@ const mapStateToProps = state => ({
   dataFetched: state.user.dataFetched,
 });
 
-const styles = {
+
+const styles = theme => ({
   appBar: {
+    [theme.breakpoints.only('xs')]: {
+      height: 40,
+      maxHeight: 40,
+      minHeight: 40,
+    },
+    top: 'auto',
+    bottom: 0,
+  },
+  toolbar: {
+    [theme.breakpoints.only('xs')]: {
+      height: 40,
+      maxHeight: 40,
+      minHeight: 40,
+    },
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   spacer: {
     flexGrow: 1,
   },
-};
+});
+
 
 function Header({
   classes,
@@ -68,8 +86,8 @@ function Header({
 }) {
   return (
     <AppBar position="sticky" className={classes.appBar}>
-      <MuiThemeProvider theme={theme}>
-        <Toolbar>
+      <MuiThemeProvider theme={headerTheme}>
+        <Toolbar className={classes.toolbar}>
           <IconButton component={Link} to="/" color="primary">
             <Home />
           </IconButton>

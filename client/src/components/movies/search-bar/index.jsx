@@ -17,12 +17,16 @@ import { withStyles } from '@material-ui/core/styles';
 import { injectIntl, intlShape } from 'react-intl';
 import ValuePicker from './value-picker';
 
-const styles = {
+const styles = theme => ({
   searchBar: {
     width: '90%',
     marginBottom: '25px',
     marginLeft: '5%',
     position: 'fixed',
+    [theme.breakpoints.only('xs')]:
+    {
+      top: '40px',
+    },
     top: '70px',
     zIndex: 1,
   },
@@ -37,7 +41,7 @@ const styles = {
   root: {
     paddingRight: '0px !important',
   },
-};
+});
 
 function SearchBar({
   searchString,

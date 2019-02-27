@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const footerTheme = createMuiTheme({
   palette: {
     primary: {
       light: '#ffffff',
@@ -34,22 +34,33 @@ const theme = createMuiTheme({
   },
 });
 
-const styles = {
+const styles = theme => ({
   appBar: {
+    [theme.breakpoints.only('xs')]: {
+      height: 40,
+      maxHeight: 40,
+      minHeight: 40,
+    },
     top: 'auto',
     bottom: 0,
-    // minWidth: 500,
   },
   toolbar: {
+    [theme.breakpoints.only('xs')]: {
+      height: 40,
+      maxHeight: 40,
+      minHeight: 40,
+    },
+    paddingLeft: 0,
+    paddingRight: 0,
   },
-};
+});
 
 function Footer({
   classes,
 }) {
   return (
     <AppBar position="fixed" className={classes.appBar}>
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={footerTheme}>
         <Toolbar className={classes.toolbar}>
           <Grid container spacing={0} wrap="nowrap" justify="space-between" alignContent="center" alignItems="center">
             <Grid item>
