@@ -25,7 +25,6 @@ export const deleteCommentA = (idMovie, idComment, comment, token) => {
     return deleteCommentAPI(idMovie, idComment, comment, token)
       .then(
         (result) => {
-          console.log(result.data);
           dispatch(deleteCommentSuccess(result.data));
         },
         (error) => {

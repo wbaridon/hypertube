@@ -15,6 +15,7 @@ function getSubtitles(id) {
     initStatus(id, 'en').then(english => {
       subtitles.en = english
       initStatus(id, 'fr').then(french => {
+        subtitles.fr = french
         var englishSub = searchSubtitle(id, 'eng')
         var frenchSub = searchSubtitle(id, 'fre')
         if (english === true && french === true) { resolve(subtitles) }
@@ -23,7 +24,7 @@ function getSubtitles(id) {
             if (!data[0]) { subtitles.en = false }
             if (!data[1]) { subtitles.fr = false }
             resolve(subtitles)
-          }).catch(error => { reject('getSubtitles.notAvailable')})
+          }).catch(error => { resolve(subtitles) })
         }
       })
     })

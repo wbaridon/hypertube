@@ -25,7 +25,6 @@ class ActiveMovieCard extends React.Component {
 
 
   setImageFalse() {
-    // console.log('worked');
     this.setState({ image: false });
   }
 
@@ -35,7 +34,6 @@ class ActiveMovieCard extends React.Component {
     movie.watchList = bool;
     this.setState({ movie });
     bool == 'true' ? addWatchList(token, imdbId) : deleteWatchList(token, imdbId);
-    // console.log(movie);
   }
 
   render() {

@@ -148,7 +148,6 @@ export function handleSubmit(e) {
     locale,
     darkTheme,
   };
-  console.log(formData);
   const form = new FormData();
   Object.keys(formData).forEach((key) => {
     form.append(key, formData[key]);

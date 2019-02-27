@@ -20,7 +20,6 @@ export const addCommentError = () => ({
 });
 
 export const newCommentA = (token, comment, idMovie) => {
-  // console.log(token, comment, idMovie);
   return (dispatch) => {
     dispatch(addCommentStart());
     return addCommentAPI(token, comment, idMovie)
