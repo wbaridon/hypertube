@@ -117,4 +117,4 @@ const mapStateToProps = state => ({
   resetPasswordLoading: state.forgotPassword.loading,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(injectIntl(ResetPassword)));
+export default injectIntl(connect(mapStateToProps)(withStyles(styles)(ResetPassword)));

@@ -140,4 +140,4 @@ const mapDispatchToProps = dispatch => ({
   handleChangeUserPassword: (token, currentPassword, newPassword, newPasswordRepeat) => dispatch(changeUserPasswordA(token, currentPassword, newPassword, newPasswordRepeat)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ChangePassword));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ChangePassword));

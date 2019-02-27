@@ -15,8 +15,8 @@ import {
 
 const defaultUserState = {
   data: {
-    locale: 'en',
-    darkTheme: false,
+    locale: null,
+    darkTheme: null,
   },
   tokenFetched: false,
   tokenValid: false,

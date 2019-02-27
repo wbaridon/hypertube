@@ -28,7 +28,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  locale: state.user.data.locale,
+  locale: state.user.data.locale || state.locale,
 });
 
 function AppWrapper({ locale, classes }) {
@@ -42,7 +42,7 @@ function AppWrapper({ locale, classes }) {
       variantInfo: classes.info,
     }}
     >
-      <IntlProvider locale={locale} messages={messages}>
+      <IntlProvider key={locale} locale={locale} messages={messages}>
         <App />
       </IntlProvider>
     </SnackbarProvider>

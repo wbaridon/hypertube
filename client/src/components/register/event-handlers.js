@@ -71,24 +71,27 @@ export function handleClickShowPassword() {
 
 export function toggleLocale() {
   let { locale } = this.state;
+  const { handleSetLocale } = this.props;
 
   if (locale === 'en') {
     locale = 'fr';
   } else {
     locale = 'en';
   }
-  this.setState({ locale });
+
+  this.setState({ locale }, () => handleSetLocale(locale));
 }
 
 export function toggleTheme() {
   let { darkTheme } = this.state;
+  const { handleToggleDarkTheme } = this.props;
 
   if (darkTheme) {
     darkTheme = false;
   } else {
     darkTheme = true;
   }
-  this.setState({ darkTheme });
+  this.setState({ darkTheme }, () => handleToggleDarkTheme());
 }
 
 export function handleSubmit(e) {

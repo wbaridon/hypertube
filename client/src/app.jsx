@@ -136,8 +136,7 @@ const darkTheme = createMuiTheme({
 
 function mapStateToProps(state) {
   return {
-    locale: state.user.data.locale,
-    darkThemeBool: state.user.data.darkTheme,
+    darkThemeBool: state.user.data.darkTheme || state.darkTheme,
     user: state.user,
     error: state.notifications.error,
     success: state.notifications.success,
@@ -242,4 +241,4 @@ App.defaultProps = {
   warning: '',
 };
 
-export default withSnackbar(connect(mapStateToProps, mapDispatchToProps)(injectIntl(App)));
+export default injectIntl(withSnackbar(connect(mapStateToProps, mapDispatchToProps)(App)));

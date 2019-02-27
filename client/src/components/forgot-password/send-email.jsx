@@ -86,4 +86,4 @@ const mapStateToProps = state => ({
   sendEmailLoading: state.forgotPassword.loading,
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(injectIntl(SendEmail)));
+export default injectIntl(connect(mapStateToProps)(withStyles(styles)(SendEmail)));

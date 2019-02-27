@@ -8,6 +8,8 @@ import {
   setErrorA,
   clearRegisterDataA,
   loginUserA,
+  toggleDarkThemeA,
+  setLocaleA,
 } from 'Actions';
 import handlers, {
   handleSubmit,
@@ -38,6 +40,8 @@ const mapDispatchToProps = (dispatch) => {
     loginUserHandler: user => dispatch(loginUserA(user)),
     clearRegisterDataHandler: () => dispatch(clearRegisterDataA()),
     setErrorHandler: error => dispatch(setErrorA(error)),
+    handleToggleDarkTheme: () => dispatch(toggleDarkThemeA()),
+    handleSetLocale: locale => dispatch(setLocaleA(locale)),
   });
 };
 
@@ -154,6 +158,8 @@ class RegisterCard extends React.Component {
 RegisterCard.propTypes = {
   registerUserHandler: PropTypes.func.isRequired, // eslint-disable-line
   setErrorHandler: PropTypes.func.isRequired, // eslint-disable-line
+  handleSetLocale: PropTypes.func.isRequired, // eslint-disable-line
+  handleToggleDarkTheme: PropTypes.func.isRequired, // eslint-disable-line
   loginUserHandler: PropTypes.func.isRequired,
   registerData: PropTypes.shape({}).isRequired,
   loading: PropTypes.bool.isRequired,

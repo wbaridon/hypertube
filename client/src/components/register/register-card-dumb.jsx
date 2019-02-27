@@ -10,6 +10,7 @@ import {
   Typography,
   Switch,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -24,6 +25,11 @@ import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
+
+const mapStateToProps = state => ({
+  locale: state.locale,
+  darkTheme: state.darkTheme,
+});
 
 class RegisterCardDumb extends React.Component {
   constructor(props) {
@@ -238,8 +244,8 @@ class RegisterCardDumb extends React.Component {
 
 RegisterCardDumb.propTypes = {
   image: PropTypes.shape({}),
-  locale: PropTypes.string,
-  darkTheme: PropTypes.bool,
+  locale: PropTypes.string.isRequired,
+  darkTheme: PropTypes.bool.isRequired,
   userName: PropTypes.string,
   userNameError: PropTypes.arrayOf(PropTypes.string),
   firstName: PropTypes.string,
@@ -274,8 +280,6 @@ RegisterCardDumb.defaultProps = {
     orientation: 1,
     error: '',
   },
-  locale: 'en',
-  darkTheme: false,
   userName: '',
   userNameError: [],
   firstName: '',
@@ -289,4 +293,4 @@ RegisterCardDumb.defaultProps = {
   showPassword: false,
 };
 
-export default injectIntl(withStyles(styles)(RegisterCardDumb));
+export default injectIntl(connect(mapStateToProps)(withStyles(styles)(RegisterCardDumb)));
