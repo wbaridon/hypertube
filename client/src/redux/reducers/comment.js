@@ -5,6 +5,7 @@ import {
   DELETE_COMMENT,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
+  EMPTY_MOVIE_DATA,
 } from 'Actions/action-types';
 
 const defaultaddCommentState = {
@@ -14,6 +15,11 @@ const defaultaddCommentState = {
 
 export default function comment(state = defaultaddCommentState, action) {
   switch (action.type) {
+    case EMPTY_MOVIE_DATA:
+      return {
+        ...state,
+        data: null,
+      };
     case ADD_COMMENT:
       return {
         ...state,
