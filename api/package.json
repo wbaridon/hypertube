@@ -57,7 +57,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js && node client.js"
   },
   "author": "wbaridon, frahaing",
   "license": "ISC"
