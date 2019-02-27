@@ -174,6 +174,7 @@ DumbSettings.propTypes = {
   handleMenuOpen: PropTypes.func.isRequired,
   handleMenuClose: PropTypes.func.isRequired,
   anchorEl: PropTypes.shape({}),
+  erroredField: PropTypes.shape({}).isRequired,
   classes: PropTypes.shape({}).isRequired,
 };
 

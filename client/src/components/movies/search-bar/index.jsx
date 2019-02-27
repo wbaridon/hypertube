@@ -66,7 +66,7 @@ function SearchBar({
             <InputAdornment position="start">
               <Button onClick={e => openMenu(e)}>
                 <br />
-                <Typography variant="caption">{sortSelection}</Typography>
+                <Typography variant="caption">{intl.formatMessage({ id: `searchbar.selected.${sortSelection}` })}</Typography>
               </Button>
               { sortSelection !== 'popular' && sortSelection !== 'alphabetical' ? <ValuePicker {...valuePickerValues} /> : null}
               <Menu
@@ -76,10 +76,10 @@ function SearchBar({
                 open={Boolean(anchorEl)}
                 onClose={() => closeMenu()}
               >
-                <MenuItem onClick={() => closeMenu('popular')}>Popular</MenuItem>
-                <MenuItem onClick={() => closeMenu('alphabetical')}>Alphabetical</MenuItem>
-                <MenuItem onClick={() => closeMenu('date')}>Date</MenuItem>
-                <MenuItem onClick={() => closeMenu('rating')}>Rating</MenuItem>
+                <MenuItem onClick={() => closeMenu('popular')}>{intl.formatMessage({ id: 'searchbar.popular' })}</MenuItem>
+                <MenuItem onClick={() => closeMenu('alphabetical')}>{intl.formatMessage({ id: 'searchbar.alphabetical' })}</MenuItem>
+                <MenuItem onClick={() => closeMenu('date')}>{intl.formatMessage({ id: 'searchbar.date' })}</MenuItem>
+                <MenuItem onClick={() => closeMenu('rating')}>{intl.formatMessage({ id: 'searchbar.rating' })}</MenuItem>
               </Menu>
             </InputAdornment>
           ),

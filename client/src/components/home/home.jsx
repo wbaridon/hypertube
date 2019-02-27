@@ -4,7 +4,6 @@ import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
 import {
   setWarningA,
 } from '../../redux/actions';
@@ -121,7 +120,6 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
   location: PropTypes.shape({
     state: PropTypes.shape({
       from: PropTypes.string,

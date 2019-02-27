@@ -119,33 +119,34 @@ class RegisterCard extends React.Component {
     if (loading) {
       return (<CircularProgress />);
     }
-    return (<RegisterCardDumb
-      image={image}
-      userName={userName}
-      userNameError={userNameError}
-      firstName={firstName}
-      firstNameError={firstNameError}
-      lastName={lastName}
-      lastNameError={lastNameError}
-      email={email}
-      emailError={emailError}
-      password={password}
-      passwordError={passwordError}
-      locale={locale}
-      darkTheme={darkTheme}
-      showPassword={showPassword}
-      handleChange={this.handleChange}
-      handleClickShowPassword={this.handleClickShowPassword}
-      handleSubmit={this.handleSubmit}
-      toggleLocale={this.toggleLocale}
-      toggleTheme={this.toggleTheme}
-      handleImageAddWrapper={this.handleImageAddWrapper}
-      handleImageAdd={this.handleImageAdd}
-      flip={this.flip}
-      rotateClockwise={this.rotateClockwise}
-      rotateCounterClockwise={this.rotateCounterClockwise}
-      offsetY={this.offsetY}
-    />
+    return (
+      <RegisterCardDumb
+        image={image}
+        userName={userName}
+        userNameError={userNameError}
+        firstName={firstName}
+        firstNameError={firstNameError}
+        lastName={lastName}
+        lastNameError={lastNameError}
+        email={email}
+        emailError={emailError}
+        password={password}
+        passwordError={passwordError}
+        locale={locale}
+        darkTheme={darkTheme}
+        showPassword={showPassword}
+        handleChange={this.handleChange}
+        handleClickShowPassword={this.handleClickShowPassword}
+        handleSubmit={this.handleSubmit}
+        toggleLocale={this.toggleLocale}
+        toggleTheme={this.toggleTheme}
+        handleImageAddWrapper={this.handleImageAddWrapper}
+        handleImageAdd={this.handleImageAdd}
+        flip={this.flip}
+        rotateClockwise={this.rotateClockwise}
+        rotateCounterClockwise={this.rotateCounterClockwise}
+        offsetY={this.offsetY}
+      />
     );
   }
 }

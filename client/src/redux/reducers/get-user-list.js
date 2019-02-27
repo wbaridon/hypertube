@@ -40,10 +40,6 @@ export default function getUserList(state = defaultGetUserListState, action) {
         success: false,
         userList: null,
       };
-
-
-
-      
     case GET_USER_INFO:
       return {
         ...state,
@@ -72,9 +68,6 @@ export default function getUserList(state = defaultGetUserListState, action) {
           [action.userName]: null,
         },
       };
-
-
-
     case DELETE_USER_FROM_USER_LIST:
       return {
         ...state,

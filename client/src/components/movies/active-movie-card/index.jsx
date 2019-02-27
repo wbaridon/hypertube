@@ -29,11 +29,14 @@ class ActiveMovieCard extends React.Component {
   }
 
   handleAddWatchList(token, imdbId, bool) {
-    let { movie } = this.props;
-    const { addWatchList, deleteWatchList } = this.props;
+    const { addWatchList, deleteWatchList, movie } = this.props;
     movie.watchList = bool;
-    this.setState({ movie });
-    bool == 'true' ? addWatchList(token, imdbId) : deleteWatchList(token, imdbId);
+    this.forceUpdate();
+    if (bool) {
+      addWatchList(token, imdbId);
+    } else {
+      deleteWatchList(token, imdbId);
+    }
   }
 
   render() {
@@ -112,7 +115,7 @@ class ActiveMovieCard extends React.Component {
                 minWidth: 0,
               }}
             >
-              <Typography style={{ minHeight: 0, overflowY: 'scroll' }}>
+              <Typography style={{ minHeight: 0, overflowY: 'auto' }}>
                 {synopsis}
               </Typography>
             </Grid>
@@ -160,6 +163,7 @@ ActiveMovieCard.propTypes = {
   }).isRequired,
   closeMovie: PropTypes.func,
   imdbRating: PropTypes.number,
+  imdbId: PropTypes.string.isRequired,
   addWatchList: PropTypes.func.isRequired,
   deleteWatchList: PropTypes.func.isRequired,
   movie: PropTypes.shape({}).isRequired,

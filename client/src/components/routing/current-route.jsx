@@ -3,8 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setErrorA } from 'Actions';
 import Home from '../home/home';
-import Register from '../register/register';
-import Video from '../video/video';
 import Movie from '../movie/movie';
 import Settings from '../settings/settings';
 import ForgotPassword from '../forgot-password';
@@ -36,15 +34,16 @@ const PublicOnlyRoute = connect(mapStateToProps, mapDispatchToProps)(({
   profilIsFill,
   dataFetched,
   ...rest
-}) => (<Route
-  {...rest}
-  render={(props) => {
-    if (authed === true) {
-      return (<Redirect to="/" />);
-    }
-    return (<Component {...props} />);
-  }}
-/>
+}) => (
+  <Route
+    {...rest}
+    render={(props) => {
+      if (authed === true) {
+        return (<Redirect to="/" />);
+      }
+      return (<Component {...props} />);
+    }}
+  />
 ));
 
 const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
@@ -56,21 +55,22 @@ const PrivateRoute = connect(mapStateToProps, mapDispatchToProps)(({
   profilIsFill,
   dataFetched,
   ...rest
-}) => (<Route
-  {...rest}
-  render={(props) => {
-    if (protectedRouteLoading) {
-      return (<LoadingDots />);
-    }
-    if (!protectedRouteLoading && authed !== true) {
-      return (<Redirect to={{ pathname: '/', state: { from: props.location.pathname } }} />); // eslint-disable-line
-    }
-    if (!protectedRouteLoading && authed && dataFetched && !profilIsFill && props.location.pathname !== '/settings') {
-      return (<Redirect to="/settings" />);
-    }
-    return (<Component {...props} />);
-  }}
-/>
+}) => (
+  <Route
+    {...rest}
+    render={(props) => {
+      if (protectedRouteLoading) {
+        return (<LoadingDots />);
+      }
+      if (!protectedRouteLoading && authed !== true) {
+        return (<Redirect to={{ pathname: '/', state: { from: props.location.pathname } }} />); // eslint-disable-line
+      }
+      if (!protectedRouteLoading && authed && dataFetched && !profilIsFill && props.location.pathname !== '/settings') {
+        return (<Redirect to="/settings" />);
+      }
+      return (<Component {...props} />);
+    }}
+  />
 ));
 
 function CurrentRoute() {
@@ -78,15 +78,13 @@ function CurrentRoute() {
     <div style={{ marginBottom: 70, marginTop: 15 }}>
       <Switch>
         <PublicOnlyRoute path={Oauth.url} component={Oauth} />
-        <PrivateRoute path={Video.url} component={Video} />
+        <PublicOnlyRoute path={ForgotPassword.url} component={ForgotPassword} />
         <PrivateRoute path={Movies.url} component={Movies} />
         <PrivateRoute path={User.url} component={User} />
         <PrivateRoute path={Users.url} component={Users} />
         <PrivateRoute path={Settings.url} component={Settings} />
         <PrivateRoute path={WatchList.url} component={WatchList} />
         <PrivateRoute path={Movie.url} component={Movie} />
-        <Route path={ForgotPassword.url} component={ForgotPassword} />
-        <Route path={Register.url} component={Register} />
         <Route exact path={Home.url} component={Home} />
         <Redirect path="*" to={Home.url} />
         <Route component={Home} />

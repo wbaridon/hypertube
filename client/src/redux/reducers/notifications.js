@@ -3,8 +3,9 @@ import {
   SET_SUCCESS,
   CLEAR_ERROR,
   CLEAR_SUCCESS,
+  SET_WARNING,
+  CLEAR_WARNING,
 } from 'Actions/action-types';
-import { SET_WARNING, CLEAR_WARNING } from '../actions/action-types';
 
 
 const defaultNotificationState = {

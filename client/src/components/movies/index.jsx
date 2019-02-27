@@ -77,17 +77,18 @@ function toggleLetterToNumber(numberOrLetter, toNumber = true) {
   const az = /^[a-z]$/;
   const AZ = /^[A-Z]$/;
   const zeroTen = /^[0-9]+$/;
-  numberOrLetter = typeof numberOrLetter === 'string' ? numberOrLetter : numberOrLetter.toString();
-  if (numberOrLetter.match(az) && toNumber) {
-    return (numberOrLetter.charCodeAt() - 97).toString();
+  let myNumOrLetter = numberOrLetter;
+  myNumOrLetter = typeof myNumOrLetter === 'string' ? myNumOrLetter : myNumOrLetter.toString();
+  if (myNumOrLetter.match(az) && toNumber) {
+    return (myNumOrLetter.charCodeAt() - 97).toString();
   }
-  if (numberOrLetter.match(AZ) && toNumber) {
-    return (numberOrLetter.charCodeAt() - 65).toString();
+  if (myNumOrLetter.match(AZ) && toNumber) {
+    return (myNumOrLetter.charCodeAt() - 65).toString();
   }
-  if (numberOrLetter.match(zeroTen) && !toNumber) {
-    return String.fromCharCode(parseInt(numberOrLetter, 10) + 97);
+  if (myNumOrLetter.match(zeroTen) && !toNumber) {
+    return String.fromCharCode(parseInt(myNumOrLetter, 10) + 97);
   }
-  return numberOrLetter;
+  return myNumOrLetter;
 }
 
 class Movies extends Component {
@@ -99,7 +100,7 @@ class Movies extends Component {
       scrollToTop: false,
       anchorEl: null,
     };
-    this.state.valuePickerValues.handleValueChange = this.handleValueChangeDebounced.bind(this);
+    this.state.valuePickerValues.handleValueChange = this.handleValueChangeDebounced.bind(this); // eslint-disable-line
     this.handleValueChange = debounce(this.handleValueChange, 800, { leading: false, trailing: true });
     this.renderMovies = this.renderMovies.bind(this);
     this.renderWaypoint = this.renderWaypoint.bind(this);
@@ -109,7 +110,6 @@ class Movies extends Component {
     this.onHoverMovie = this.onHoverMovie.bind(this);
     this.handleMenuOpen = this.handleMenuOpen.bind(this);
     this.handleMenuClose = this.handleMenuClose.bind(this);
-    this.handleTopSpan = this.handleTopSpan.bind(this);
     this.handleScrollToTop = this.handleScrollToTop.bind(this);
     this.toggleReverseSort = this.toggleReverseSort.bind(this);
     this.clearState = this.clearState.bind(this);
@@ -117,22 +117,10 @@ class Movies extends Component {
     this.debounceScrolling = debounce(() => this.setState({ scrolling: true }), 500, { leading: true, trailing: false }).bind(this);
   }
 
-  scrollListener() {
-    this.debounceScrolling();
-    window.clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
-  }
 
   componentDidMount() {
     const { currentMovie } = this.state;
     document.getElementById('searchBar').focus();
-    const options = {
-      root: document.querySelector('#scrollArea'),
-      rootMargin: '0px',
-      threshold: 1.0,
-    };
-    this.observer = new IntersectionObserver(this.handleTopSpan, options);
-    this.observer.observe(document.getElementById('top'));
     window.addEventListener('scroll', this.scrollListener, false);
     if (currentMovie !== null) {
       this.setState({ scrolling: true });
@@ -145,7 +133,6 @@ class Movies extends Component {
 
   componentWillUnmount() {
     const { setMoviePageStateHandler } = this.props;
-    this.observer.unobserve(document.getElementById('top'));
     window.removeEventListener('scroll', this.scrollListener);
     setMoviePageStateHandler(this.state);
   }
@@ -180,12 +167,12 @@ class Movies extends Component {
     });
   }
 
-  handleTopSpan(entries) {
-    const { scrollToTop } = this.state;
-    if (scrollToTop) {
-      this.setState({ top: entries[0].isIntersecting, scrolling: false, scrollToTop: false });
-    }
+  scrollListener() {
+    this.debounceScrolling();
+    window.clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ scrolling: false }), 500);
   }
+
 
   handleScrollToTop() {
     document.getElementById('top').scrollIntoView();
@@ -230,10 +217,10 @@ class Movies extends Component {
 
   handleValueChangeDebounced(whichOne, value) {
     const { valuePickerValues } = this.state;
+    const { isAlphabet } = valuePickerValues;
     let {
       currentLowValue,
       currentHighValue,
-      isAlphabet,
     } = valuePickerValues;
     if (whichOne === 'low') {
       currentLowValue = value;
@@ -248,11 +235,12 @@ class Movies extends Component {
         currentHighValue: isAlphabet ? toggleLetterToNumber(currentHighValue, false) : currentHighValue,
       },
     }, () => {
+      const newValuePickerValues = this.state.valuePickerValues; //eslint-disable-line
       let v;
       if (whichOne === 'low') {
-        v = this.state.valuePickerValues.currentLowValue;
+        v = newValuePickerValues.currentLowValue;
       } else {
-        v = this.state.valuePickerValues.currentHighValue;
+        v = newValuePickerValues.currentHighValue;
       }
       this.handleValueChange(whichOne, v);
     });
@@ -263,6 +251,8 @@ class Movies extends Component {
     let {
       currentLowValue,
       currentHighValue,
+    } = valuePickerValues;
+    const {
       minValue,
       maxValue,
       isAlphabet,
@@ -273,7 +263,7 @@ class Movies extends Component {
       myValue = toggleLetterToNumber(myValue, true);
     }
     myValue = !isFloat ? parseInt(myValue, 10) : parseFloat(parseFloat(myValue).toFixed(1));
-    if (isNaN(myValue)) {
+    if (Number.isNaN(myValue)) {
       myValue = whichOne === 'low' ? minValue : maxValue;
     }
     if (myValue > maxValue) {
@@ -329,17 +319,7 @@ class Movies extends Component {
   handleMenuClose(chosenValue = null) {
     if (chosenValue) {
       let { valuePickerValues } = this.state;
-      if (chosenValue === 'alphabetical') {
-        valuePickerValues = {
-          ...valuePickerValues,
-          minValue: 0,
-          maxValue: 25,
-          currentLowValue: 'a',
-          currentHighValue: 'z',
-          isFloat: false,
-          isAlphabet: true,
-        };
-      } else if (chosenValue === 'rating') {
+      if (chosenValue === 'rating') {
         valuePickerValues = {
           ...valuePickerValues,
           minValue: 0.0,
@@ -405,7 +385,7 @@ class Movies extends Component {
       return (
         <Grid
           item
-          style={{ height: width === 'xs' && mobile && currentMovie === movie._id ? movie.synopsis.length / 40 * 12 : dimensions.height, width: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
+          style={{ height: width === 'xs' && mobile && currentMovie === movie._id ? 300 : dimensions.height, width: width === 'xs' && mobile && currentMovie === movie._id ? smallScreenDimensions.width : dimensions.width }}
           onBlur={mobile ? null : () => { this.onHoverMovie(null); }}
           onClick={mobile ? (e) => { this.onHoverMovie(movie._id, true, true, e); } : null}
           onMouseLeave={!mobile ? () => { this.onHoverMovie(null); } : null}
@@ -468,7 +448,29 @@ Movies.propTypes = {
   getMoviePageHandle: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
-  mobile: PropTypes.bool.isRequired,
+  mobile: PropTypes.oneOfType([
+    PropTypes.bool.isRequired,
+    PropTypes.string.isRequired,
+  ]).isRequired,
+  addWatchList: PropTypes.func.isRequired,
+  deleteWatchList: PropTypes.func.isRequired,
+  moviePageState: PropTypes.shape({
+    searchString: PropTypes.string.isRequired,
+    sortSelection: PropTypes.string.isRequired,
+    valuePickerValues: PropTypes.shape({
+      minValue: PropTypes.number.isRequired,
+      maxValue: PropTypes.number.isRequired,
+      currentLowValue: PropTypes.string.isRequired,
+      currentHighValue: PropTypes.string.isRequired,
+      isFloat: PropTypes.bool.isRequired,
+      isAlphabet: PropTypes.bool.isRequired,
+    }).isRequired,
+  }).isRequired,
+  clearMoviesHandle: PropTypes.func.isRequired,
+  setMoviePageStateHandler: PropTypes.func.isRequired,
+  noMoreMovies: PropTypes.bool.isRequired,
+  width: PropTypes.number.isRequired,
+  classes: PropTypes.shape({}).isRequired,
 };
 
 Movies.defaultProps = {

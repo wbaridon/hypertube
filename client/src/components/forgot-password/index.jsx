@@ -140,7 +140,8 @@ class ForgotPassword extends Component {
                 handleFieldChange={this.handleFieldChange}
                 handleSubmit={this.handleResetPasswordSubmit}
                 clearAll={this.clearAll}
-              />)
+              />
+            )
         }
       </div>
     );

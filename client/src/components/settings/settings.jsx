@@ -59,9 +59,10 @@ class Settings extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.field !== prevProps.field) {
+    const { field } = this.props;
+    if (field !== prevProps.field) {
       const { clearUserFieldErrorHandle } = this.props;
-        this.timeoutClearError = setTimeout(() => clearUserFieldErrorHandle(), 2500);
+      this.timeoutClearError = setTimeout(() => clearUserFieldErrorHandle(), 2500);
     }
   }
 

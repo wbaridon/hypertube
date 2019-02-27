@@ -61,7 +61,7 @@ Oauth.url = '/oauth';
 const mapStateToProps = state => ({
   success: state.loginUser.success,
   errored: state.loginUser.errored,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   handleoAuthUser: (provider, code) => dispatch(oAuthUserA(provider, code)),

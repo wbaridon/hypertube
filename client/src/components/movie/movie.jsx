@@ -67,10 +67,14 @@ class Movie extends React.Component {
     emptyMovieData();
   }
 
-  handleSeen(token, idMovie, bool) {
+  handleSeen(token, idMovie, isSeen) {
     const { movieSeen, movieUnseen } = this.props;
-    this.setState({ seen: bool });
-    bool ? movieSeen(token, idMovie) : movieUnseen(token, idMovie); 
+    this.setState({ seen: isSeen });
+    if (isSeen) {
+      movieSeen(token, idMovie);
+    } else {
+      movieUnseen(token, idMovie);
+    }
   }
 
   render() {
@@ -103,7 +107,6 @@ class Movie extends React.Component {
           justify="center"
           alignItems="center"
         >
-          <span id="top" style={{ position: 'absolute', top: '0px' }} />
           <Card>
             <Grid>
               <IconButton disableRipple={false} component={Link} to="/movies">
@@ -224,6 +227,8 @@ Movie.propTypes = {
       id_movie: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  location: PropTypes.shape({}).isRequired,
+  subtitles: PropTypes.shape({}),
   classes: PropTypes.shape({}).isRequired,
   getMovie: PropTypes.func.isRequired,
   movieSeen: PropTypes.func.isRequired,
@@ -236,6 +241,7 @@ Movie.propTypes = {
 
 Movie.defaultProps = {
   movie: null,
+  subtitles: null,
 };
 
 Movie.url = '/movie/:id_movie';

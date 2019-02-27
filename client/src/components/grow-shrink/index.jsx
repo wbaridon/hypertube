@@ -42,7 +42,6 @@ function GrowShrink({
 
 GrowShrink.propTypes = {
   movieName: PropTypes.string.isRequired,
-  classes: PropTypes.shape({}).isRequired,
 };
 
 export default (GrowShrink);

@@ -20,7 +20,6 @@ import {
 } from 'Actions';
 
 class WatchList extends React.Component {
-
   componentWillMount() {
     const {
       getWatchList,
@@ -30,11 +29,16 @@ class WatchList extends React.Component {
   }
 
   handleSeen(token, idMovie, n, bool) {
-    let { watchList } = this.props;
+    const { watchList } = this.props;
     const { movieSeen, movieUnseen } = this.props;
     watchList[n].seen = bool;
-    this.setState({ watchList });
-    bool ? movieSeen(token, idMovie) : movieUnseen(token, idMovie) ;
+    // this.setState({ watchList });
+    this.forceUpdate();
+    if (bool) {
+      movieSeen(token, idMovie);
+    } else {
+      movieUnseen(token, idMovie);
+    }
   }
 
   render() {
@@ -60,7 +64,7 @@ class WatchList extends React.Component {
               watchList.map(movie => (
                 <Paper key={movie.imdbId} style={{ margin: '10px', borderRadius: '6px' }}>
                   <Grid item container direction="row" style={{ flexFlow: 'row' }}>
-                    <Link to={`/movie/${movie.imdbId}`} style={{ paddingRight: '15px'}}>
+                    <Link to={`/movie/${movie.imdbId}`} style={{ paddingRight: '15px' }}>
                       <img
                         alt="moviepic"
                         style={{
@@ -77,9 +81,6 @@ class WatchList extends React.Component {
                         {movie.title}
                       </Typography>
                       <Grid item container direction="row" alignItems="center" justify="space-evenly" key={movie.imdbId}>
-                        {/* <Grid item>
-                          <Typography variant="subtitle1" noWrap>{movie.title}</Typography>
-                        </Grid > */}
                         <Grid item>
                           {movie.seen ? (
                             <Button variant="contained" color="primary" onClick={() => this.handleSeen(token, movie.imdbId, watchList.indexOf(movie), false)}>
@@ -91,13 +92,6 @@ class WatchList extends React.Component {
                             </Button>
                           )}
                         </Grid>
-                        {/* <Grid item>
-                          <Button variant="contained" color="primary" component={Link} to={`/movie/${movie.imdbId}`}>
-                            <Typography variant="button" noWrap>
-                              <FormattedMessage id="watchList.watchnow" />
-                            </Typography>
-                          </Button>
-                        </Grid> */}
                         <Grid item>
                           <Button variant="contained" color="primary" onClick={() => deleteWatchList(token, movie.imdbId)}>
                             <Typography variant="button" style={{ color: 'white' }} noWrap>
