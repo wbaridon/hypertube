@@ -10,16 +10,24 @@ import {
   IconButton,
   OutlinedInput,
   Button,
-  Fab,
 } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { newCommentA, deleteCommentA } from 'Actions';
 import Close from '@material-ui/icons/Close';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-// import { handleSubmit } from '../register/event-handlers';
-import debounce from 'lodash.debounce';
+
+function formatDate(n) {
+  let m = new Date(n).getMinutes().toString();
+  let h = new Date(n).getHours().toString();
+  if (h < 10) {
+    h = `0${h}`;
+  }
+  if (m < 10) {
+    (m = `0${m}`);
+  }
+  return (`${h}:${m}`);
+}
+
 
 class Comments extends React.Component {
   constructor() {
@@ -38,30 +46,20 @@ class Comments extends React.Component {
   }
 
   componentWillUnmount() {
+    // const { emptyMovieData } = this.props;
+    // emptyCommentData();
     window.removeEventListener('scroll', this.scrollListener);
   }
 
   scrollListener() {
     const { page } = this.state;
-    let scrollmax = document.getElementsByTagName("html")[0].scrollHeight;
-    let scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
-    // console.log("scrollpos=" + scrollPos);
-    // console.log("doubidouba=" + (scrollmax - screenheight));
-    if (scrollPos > scrollmax - screen.height) {
+    const scrollmax = document.getElementsByTagName('html')[0].scrollHeight;
+    const scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName('html')[0].scrollTop;
+    if (scrollPos > scrollmax - screen.height) { //eslint-disable-line
       this.setState({ page: page + 1 });
     }
-  
   }
 
-  handleScrollToTop() {
-    document.getElementById('top').scrollIntoView();
-    // this.setState({ scrolling: true });
-  }
-
-  handleScrollToBottom() {
-    document.getElementById('bottom').scrollIntoView();
-    // this.setState({ scrolling: true });
-  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -92,14 +90,6 @@ class Comments extends React.Component {
     handleDeleteComment(idMovie, idComment, comment, token);
   }
 
-  formatDate(n) {
-    let m = new Date(n).getMinutes().toString();
-    let h = new Date(n).getHours().toString();
-    h < 10 ? (h = '0' + h) : (null);
-    m < 10 ? (m = '0' + m) : (null);
-    return (h + ':' + m) 
-  }
-
   render() {
     const {
       comments,
@@ -110,18 +100,23 @@ class Comments extends React.Component {
       newComment,
       page,
     } = this.state;
-    let displayedComments;
-    actualComments ? displayedComments = actualComments : displayedComments = comments
+    let displayedComments = actualComments;
+    if (!displayedComments) {
+      displayedComments = comments;
+    }
     displayedComments.sort((a, b) => {
       if (a.postedOn > b.postedOn) {
-        return -1; }
+        return -1;
+      }
       if (a.postedOn < b.postedOn) {
-        return 1; }
+        return 1;
+      }
       return 0;
     });
-    displayedComments= displayedComments.slice(0, page * 5);
+    displayedComments = displayedComments.slice(0, page * 5);
     return (
       <div style={{ minWidth: '90%', margin: 'auto', marginTop: '40px' }}>
+        <span id="top" style={{ position: 'absolute', top: '0px' }} />
         <Paper style={{ padding: '20px' }}>
           <Typography variant="h6" style={{ marginBottom: '10px' }}><FormattedMessage id="movie.comments" /></Typography>
           <Paper>
@@ -155,9 +150,9 @@ class Comments extends React.Component {
                   <Typography variant="subtitle1">
                     {comment.userName}
                     <FormattedMessage id="movie.the" />
-                    { new Date(comment.postedOn).toLocaleDateString('fr-FR') }
+                    {new Date(comment.postedOn).toLocaleDateString('fr-FR')}
                     <FormattedMessage id="movie.at" />
-                    { this.formatDate(comment.postedOn).toString() }
+                    {formatDate(comment.postedOn).toString()}
                   </Typography>
                   <br />
                   <Typography variant="subtitle2">
@@ -180,19 +175,6 @@ class Comments extends React.Component {
             )
           }
         </Paper>
-        <Fab
-          style={{right: '20px', bottom: '70px', zIndex: '100', position: 'fixed'}}
-          onClick={this.handleScrollToTop}
-        >
-          <ArrowUpward />
-        </Fab>
-        <Fab
-          style={{right: '80px', bottom: '70px', zIndex: '100', position: 'fixed'}}
-          onClick={this.handleScrollToBottom}
-        >
-          <ArrowDownward />
-        </Fab>
-        <span id="bottom" style={{ float: 'left' }} />
       </div>
     );
   }
