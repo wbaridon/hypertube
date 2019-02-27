@@ -120,7 +120,6 @@ function handleImageAdd(rawImage, event = null) {
   const reader = new FileReader();
   const { image } = this.state;
   image.inputFile = rawImage;
-  this.setState({ image });
   let { orientation } = image;
   const { verticalOffset } = image;
 
@@ -143,7 +142,6 @@ function handleImageAdd(rawImage, event = null) {
       orientation = orientation || exif['0th'][piexif.ImageIFD.Orientation];
       image.orientation = orientation;
       image.isLandscape = img.width >= img.height;
-      this.setState({ image });
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
@@ -212,7 +210,7 @@ function handleImageAdd(rawImage, event = null) {
       const dataURL = canvas.toDataURL('image/jpeg', 1.0);
       image.rawData = dataURL;
       image.verticalOffset = verticalOffset;
-      this.setState({ image });
+      this.setState({ image, imageChanged: Math.random() });
     };
     img.src = e.target.result;
   };

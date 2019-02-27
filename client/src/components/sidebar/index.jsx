@@ -9,6 +9,7 @@ import {
   ListItem,
   Divider,
   IconButton,
+  Grid,
 } from '@material-ui/core';
 import {
   closeSidebarA,
@@ -16,12 +17,12 @@ import {
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import People from '@material-ui/icons/People';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import Settings from '@material-ui/icons/Settings';
 import Listicon from '@material-ui/icons/List';
 import Close from '@material-ui/icons/Close';
-import Register from '../register/register';
+import RegisterCard from '../register/register-card';
 import Providers from '../providers';
 
 const styles = theme => ({
@@ -83,7 +84,11 @@ function Sidebar({
               </ListItem>
               <Divider />
               <ListItem>
-                <Register />
+                <Grid container direction="column" justify="center" alignItems="center" alignContent="center" wrap="nowrap">
+                  <Grid item>
+                    <RegisterCard />
+                  </Grid>
+                </Grid>
               </ListItem>
             </List>
           </React.Fragment>
@@ -109,4 +114,4 @@ const mapDispatchToProps = dispatch => ({
   handleClose: () => dispatch(closeSidebarA()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Sidebar)));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((Sidebar))));

@@ -10,7 +10,6 @@ import {
   Typography,
   Switch,
 } from '@material-ui/core';
-import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -25,11 +24,6 @@ import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Flip from '@material-ui/icons/Flip';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
-
-const mapStateToProps = state => ({
-  locale: state.locale,
-  darkTheme: state.darkTheme,
-});
 
 class RegisterCardDumb extends React.Component {
   constructor(props) {
@@ -74,7 +68,7 @@ class RegisterCardDumb extends React.Component {
       offsetY,
     } = this.props;
     return (
-      <Card className={classes.card}>
+      <Card key={image && locale} className={classes.card}>
         <CardMedia src="squelch" id="dragAndDrop">
           {
             image.rawData
@@ -243,20 +237,20 @@ class RegisterCardDumb extends React.Component {
 }
 
 RegisterCardDumb.propTypes = {
-  image: PropTypes.shape({}),
+  image: PropTypes.shape({}).isRequired,
   locale: PropTypes.string.isRequired,
   darkTheme: PropTypes.bool.isRequired,
-  userName: PropTypes.string,
-  userNameError: PropTypes.arrayOf(PropTypes.string),
-  firstName: PropTypes.string,
-  firstNameError: PropTypes.arrayOf(PropTypes.string),
-  lastName: PropTypes.string,
-  lastNameError: PropTypes.arrayOf(PropTypes.string),
-  email: PropTypes.string,
-  emailError: PropTypes.arrayOf(PropTypes.string),
-  password: PropTypes.string,
-  passwordError: PropTypes.arrayOf(PropTypes.string),
-  showPassword: PropTypes.bool,
+  userName: PropTypes.string.isRequired,
+  userNameError: PropTypes.arrayOf(PropTypes.string).isRequired,
+  firstName: PropTypes.string.isRequired,
+  firstNameError: PropTypes.arrayOf(PropTypes.string).isRequired,
+  lastName: PropTypes.string.isRequired,
+  lastNameError: PropTypes.arrayOf(PropTypes.string).isRequired,
+  email: PropTypes.string.isRequired,
+  emailError: PropTypes.arrayOf(PropTypes.string).isRequired,
+  password: PropTypes.string.isRequired,
+  passwordError: PropTypes.arrayOf(PropTypes.string).isRequired,
+  showPassword: PropTypes.bool.isRequired,
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
   handleImageAdd: PropTypes.func.isRequired,
@@ -271,26 +265,4 @@ RegisterCardDumb.propTypes = {
   offsetY: PropTypes.func.isRequired,
 };
 
-RegisterCardDumb.defaultProps = {
-  image: {
-    rawData: null,
-    inputFile: null,
-    verticalOffset: 0,
-    isLandscape: true,
-    orientation: 1,
-    error: '',
-  },
-  userName: '',
-  userNameError: [],
-  firstName: '',
-  firstNameError: [],
-  lastName: '',
-  lastNameError: [],
-  email: '',
-  emailError: [],
-  password: '',
-  passwordError: [],
-  showPassword: false,
-};
-
-export default injectIntl(connect(mapStateToProps)(withStyles(styles)(RegisterCardDumb)));
+export default injectIntl((withStyles(styles)(RegisterCardDumb)));

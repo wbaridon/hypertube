@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 import {
   registerUserA,
   setErrorA,
@@ -31,6 +32,8 @@ const mapStateToProps = (state) => {
     registerData: state.registerUser.registerData,
     loading: state.registerUser.loading,
     success: state.registerUser.success,
+    locale: state.locale,
+    darkTheme: state.darkTheme,
   });
 };
 
@@ -57,8 +60,6 @@ class RegisterCard extends React.Component {
         orientation: 1,
         error: '',
       },
-      locale: 'en',
-      darkTheme: false,
       userName: '',
       userNameError: [],
       firstName: '',
@@ -85,6 +86,10 @@ class RegisterCard extends React.Component {
     this.toggleTheme = toggleTheme.bind(this);
   }
 
+  shouldComponentUpdate() {
+    return true;
+  }
+
   componentDidUpdate() {
     const {
       success,
@@ -108,17 +113,17 @@ class RegisterCard extends React.Component {
 
   render() {
     const {
-      image,
+      image, imageChanged,
       userName, userNameError,
       firstName, firstNameError,
       lastName, lastNameError,
       email, emailError,
       password, passwordError, showPassword,
-      locale,
-      darkTheme,
     } = this.state;
     const {
       loading,
+      locale,
+      darkTheme,
     } = this.props;
     if (loading) {
       return (<CircularProgress />);
@@ -126,6 +131,7 @@ class RegisterCard extends React.Component {
     return (
       <RegisterCardDumb
         image={image}
+        imageChanged={imageChanged}
         userName={userName}
         userNameError={userNameError}
         firstName={firstName}
@@ -160,11 +166,12 @@ RegisterCard.propTypes = {
   setErrorHandler: PropTypes.func.isRequired, // eslint-disable-line
   handleSetLocale: PropTypes.func.isRequired, // eslint-disable-line
   handleToggleDarkTheme: PropTypes.func.isRequired, // eslint-disable-line
+  locale: PropTypes.string.isRequired,
+  darkTheme: PropTypes.bool.isRequired,
   loginUserHandler: PropTypes.func.isRequired,
   registerData: PropTypes.shape({}).isRequired,
   loading: PropTypes.bool.isRequired,
   success: PropTypes.bool.isRequired,
-  history: PropTypes.shape({}).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RegisterCard));
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterCard);

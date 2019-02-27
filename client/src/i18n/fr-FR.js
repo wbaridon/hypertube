@@ -157,6 +157,7 @@ const frFR = {
     lastName: 'Nom',
     password: 'Mot de Passe',
     submit: 'Envoyer',
+    success: 'Vous êtes inscrit!',
     profilePicture: 'Changer photo',
     addImage: 'Rajouter photo',
     provider: {

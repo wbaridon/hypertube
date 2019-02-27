@@ -42,7 +42,7 @@ function AppWrapper({ locale, classes }) {
       variantInfo: classes.info,
     }}
     >
-      <IntlProvider key={locale} locale={locale} messages={messages}>
+      <IntlProvider locale={locale} messages={messages}>
         <App />
       </IntlProvider>
     </SnackbarProvider>

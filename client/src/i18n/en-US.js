@@ -159,6 +159,7 @@ const enUS = {
     submit: 'Submit',
     profilePicture: 'Change photo',
     addImage: 'Add Photo',
+    success: 'Successfully registered!',
     provider: {
       google: 'Register with Google',
       github: 'Register with GitHub',

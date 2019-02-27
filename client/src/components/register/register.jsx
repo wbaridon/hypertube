@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import {
   Grid,
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import RegisterCard from './register-card';
 import './autocomplete-fix.css';
 
-const styles = {};
 
 function Register() {
   return (
@@ -30,4 +27,4 @@ Register.propTypes = {
 };
 
 Register.url = '/register';
-export default injectIntl(withRouter((Register)));
+export default withRouter((Register));

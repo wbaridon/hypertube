@@ -70,7 +70,7 @@ export function handleClickShowPassword() {
 }
 
 export function toggleLocale() {
-  let { locale } = this.state;
+  let { locale } = this.props;
   const { handleSetLocale } = this.props;
 
   if (locale === 'en') {
@@ -78,12 +78,11 @@ export function toggleLocale() {
   } else {
     locale = 'en';
   }
-
-  this.setState({ locale }, () => handleSetLocale(locale));
+  handleSetLocale(locale);
 }
 
 export function toggleTheme() {
-  let { darkTheme } = this.state;
+  let { darkTheme } = this.props;
   const { handleToggleDarkTheme } = this.props;
 
   if (darkTheme) {
@@ -91,7 +90,7 @@ export function toggleTheme() {
   } else {
     darkTheme = true;
   }
-  this.setState({ darkTheme }, () => handleToggleDarkTheme());
+  handleToggleDarkTheme();
 }
 
 export function handleSubmit(e) {
@@ -103,13 +102,13 @@ export function handleSubmit(e) {
     lastName, lastNameError,
     email, emailError,
     password, passwordError,
-    locale,
-    darkTheme,
     image,
   } = this.state;
   const {
     registerUserHandler,
     setErrorHandler,
+    locale,
+    darkTheme,
   } = this.props;
 
   if (userName === '' && userNameError.length === 0) {
