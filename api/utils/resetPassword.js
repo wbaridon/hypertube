@@ -9,7 +9,7 @@ function resetPassword(req, res) {
     if (req.body.email && req.body.key && req.body.pass1 && req.body.pass2) { // AFTER MAIL
       if (req.body.pass1 === req.body.pass2) {
         afterMail(req.body.email, req.body.key, req.body.pass1, res)
-      } else { resolve({status: 0, error: 'password.notCorresponding'}) }
+      } else { resolve({status: 0, error: 'resetPassword.notCorresponding'}) }
     } else if (req.body.email) { // BEFORE MAIL
         beforeMail(res, req.body.email)
     }
@@ -58,7 +58,7 @@ function afterMail(email, key, newPW, client) {
             })
           }
           else
-            client.status(400).send({error:'reset.HashAndKeyNotCorresponding'})
+            client.status(400).send({error:'resetPassword.hashAndKeyNotCorresponding'})
           })
     }).catch(err => { client.status(400).send({error:"resetPassword.noPasswordChangedAvailable"}) })
 }
@@ -68,7 +68,7 @@ beforeMail = (client, email) => {
       if (!res)
         client.status(400).send({error:'resetPassword.noUser'})
       else {
-        if (res.oauth) { client.status(400).send({error:'resetPassword.notAvailableforOAuthAccount'})}
+        if (res.oauth) { client.status(400).send({error:'resetPassword.notAvailableForOAuthAccount'})}
         else {
           sendMail({
             email: email,

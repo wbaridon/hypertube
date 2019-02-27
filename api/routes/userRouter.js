@@ -41,10 +41,10 @@ userRouter
         hashPassword(user.password).then(hash => {
           user.password = hash;
           UserManager.userExist(user.email, user.userName).then(userExist => {
-            if (userExist) { res.status(400).send({ error: 'registration.userAlreadyRegistered' }) }
+            if (userExist) { res.status(400).send({ error: 'register.userAlreadyRegistered' }) }
             else {
               UserManager.createUser(user, (callback) => {
-                res.status(200).send({ userName: user.userName, success: 'registration.success' })
+                res.status(200).send({ userName: user.userName, success: 'register.success' })
               })
             }
           })
@@ -52,7 +52,7 @@ userRouter
       }).catch(error => {
         res.status(400).send({ 'error': error })
       })
-    } else { res.status(400).send({ error: 'registration.undefinedPictureIssue' }) }
+    } else { res.status(400).send({ error: 'register.undefinedPictureIssue' }) }
   })
   .post('/login', (req, res) => {
     const user = {
@@ -81,7 +81,7 @@ userRouter
       UserManager.getAllId().then(result => {
         res.status(200).send(result)
       })
-    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }));
   })
   .post('/getUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
@@ -98,7 +98,7 @@ userRouter
         res.send(user)
       },
         (error) => res.status(404).json(error))
-    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }));
   })
   .post('/getUserPrivate', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
@@ -110,13 +110,21 @@ userRouter
         delete newUser.password
         res.send(newUser)
       }).catch(err => res.status(400).json({ error: 'getUser.noUsername' }))
-    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }));
   })
   .post('/updateUser', (req, res) => {
     tokenManager.decode(req.headers.authorization).then(token => {
       data = {
         field: req.body.field,
         value: typeof req.body.value === 'string' ? req.body.value.trim() : req.body.value,
+      }
+      if (data.field === 'password') {
+        data = {
+          ...data,
+          currentPassword: req.body.currentPassword,
+          pass1: req.body.pass1,
+          pass2: req.body.pass2,
+        }
       }
       checkUserInput(data, token.user)
         .then(sucess => {
@@ -126,6 +134,7 @@ userRouter
             res.status(200).send(sucess);
           })
         }, error => {
+          console.log(error);
           UserManager.getUser(token.user).then(status => {
             let reply = {
               error: error,
@@ -135,7 +144,7 @@ userRouter
             res.status(400).send(reply);
           }).catch(err => res.status(400).send({ error: 'getUser.impossible' }))
         }).catch(err => console.log(err))
-    }).catch(err => res.status(400).send({ error: 'token.invalidToken' }))
+    }).catch(err => res.status(400).send({ error: 'token.invalidToken' }));
   })
   .post('/updatePicture', upload.single('image'), (req, res, next) => {
     tokenManager.decode(req.headers.authorization).then(token => {
@@ -157,7 +166,7 @@ userRouter
             })
           })
       }
-    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }))
+    }).catch(err => res.status(400).json({ error: 'token.invalidToken' }));
   })
   .post('/resetPassword', (req, res) => {
     resetPassword.reset(req, res).then(ret => {
@@ -179,14 +188,14 @@ function hashPassword(pwd) {
 function checkForm(user) {
   return new Promise((resolve, error) => {
     if (user.email && user.userName && user.lastName && user.firstName && user.password) {
-      if (user.password.length < 6) { error('registration.passwordTooShort') }
-      else if (user.password.match('^[a-zA-z]+$')) { error('registration.passwordMissDigit') }
+      if (user.password.length < 6) { error('register.passwordTooShort') }
+      else if (user.password.match('^[a-zA-z]+$')) { error('register.passwordMissDigit') }
       else {
         // Manque le check picture
-        resolve('registration.correctForm');
+        resolve('register.correctForm');
       }
-    } else { error('registration.emptyFields'); }
-  })
+    } else { error('register.emptyFields'); }
+  });
 }
 
 function updateField(field, value, user, callback) {
@@ -263,18 +272,18 @@ function checkUserInput(data, user) {
               argon2.verify(userData.password, data.currentPassword).then((match) => {
                 if (match) {
                   argon2.hash(data.pass1).then((hash) => {
-                    UserManager.updateUserField({ userName: user }, { password: hash })
+                    UserManager.updateUserField({ userName: user }, { password: hash });
                     resolve({ user, success: 'password.updated' });
-                  })
+                  });
                 } else { reject('settings.update.badPassword'); }
-              })
-            })
+              });
+            });
           }
         } else { reject('settings.update.newPasswordnoMatch'); }
         break;
       default: reject('settings.update.badField');
     }
-  })
+  });
 }
 
 
