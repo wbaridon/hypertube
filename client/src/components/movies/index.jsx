@@ -6,6 +6,7 @@ import {
   withWidth,
   Fab,
   withStyles,
+  Typography,
 } from '@material-ui/core';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Waypoint from 'react-waypoint';
@@ -379,7 +380,7 @@ class Movies extends Component {
       smallScreenDimensions.height = dimensions.height * 1.3;
     }
     if (movies.length === 0) {
-      return (<div><FormattedMessage id="movies.noMoviesYet" /></div>);
+      return (<Typography><FormattedMessage id="movies.noMoviesYet" /></Typography>);
     }
     return movies.map((movie) => {
       return (
@@ -469,7 +470,7 @@ Movies.propTypes = {
   clearMoviesHandle: PropTypes.func.isRequired,
   setMoviePageStateHandler: PropTypes.func.isRequired,
   noMoreMovies: PropTypes.bool.isRequired,
-  width: PropTypes.number.isRequired,
+  width: PropTypes.string.isRequired,
   classes: PropTypes.shape({}).isRequired,
 };
 

@@ -183,7 +183,7 @@ Settings.propTypes = {
   email: PropTypes.string.isRequired,
   darkTheme: PropTypes.bool.isRequired,
   locale: PropTypes.string.isRequired,
-  oauth: PropTypes.bool.isRequired,
+  oauth: PropTypes.bool,
   picture: PropTypes.string.isRequired,
   updateFieldHandle: PropTypes.func.isRequired,
   updateImageHandle: PropTypes.func.isRequired,
@@ -195,6 +195,7 @@ Settings.defaultProps = {
   field: null,
   value: null,
   errorMessage: null,
+  oauth: false,
 };
 
 const mapStateToProps = state => ({

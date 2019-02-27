@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Grid,
+  Grid, Typography,
 } from '@material-ui/core';
+import { FormattedMessage } from 'react-intl';
 import { getUserListA } from 'Actions';
 import LoadingDots from '../loading-dots';
 import PersonCard from './person-card';
@@ -19,7 +20,7 @@ class Users extends Component {
   render() {
     const { userList } = this.props;
     if (!userList) {
-      return (<div>No Users</div>);
+      return (<Typography><FormattedMessage id="users.noUsers" /></Typography>);
     }
     return (
       <Grid container spacing={8} justify="center" alignItems="center">

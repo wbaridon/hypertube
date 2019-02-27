@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
 const styles = {
   card: {
@@ -42,7 +43,7 @@ function UserDumb({
         component={Link}
         to="/users"
       >
-        Back
+        <FormattedMessage id="user.back" />
       </Button>
       <Grid container direction="column" alignItems="center">
         <Grid item>

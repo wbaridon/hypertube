@@ -4,7 +4,7 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
 } from './action-types';
-import { setErrorA } from '.';
+import { setErrorA, setSuccessA } from '.';
 
 export const resetPasswordStart = () => ({
   type: RESET_PASSWORD,
@@ -24,7 +24,10 @@ export const resetPasswordA = (key, newPassword, newPasswordRepeat, email) => {
     dispatch(resetPasswordStart());
     return resetPasswordAPI(key, newPassword, newPasswordRepeat, email)
       .then(
-        result => dispatch(resetPasswordSuccess(result)),
+        (result) => {
+          dispatch(setSuccessA('resetPassword.success'));
+          dispatch(resetPasswordSuccess(result));
+        },
         (error) => {
           dispatch(setErrorA(error.response ? error.response.data.error : 'api.error.cantConnectToDb'));
           dispatch(resetPasswordError());

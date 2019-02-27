@@ -25,30 +25,11 @@ import Flip from '@material-ui/icons/Flip';
 import { intlShape, injectIntl } from 'react-intl';
 import styles from './styles';
 
-function handleDragOver(evt) {
-  evt.stopPropagation();
-  evt.preventDefault();
-}
-
 class RegisterCardDumb extends React.Component {
   constructor(props) {
     super(props);
 
     this.mergeErrors = this.mergeErrors.bind(this);
-  }
-
-  componentDidMount() {
-    const {
-      handleImageAddWrapper,
-    } = this.props;
-    this.dropZone = document.getElementById('root');
-    this.dropZone.addEventListener('dragover', handleDragOver, false);
-    this.dropZone.addEventListener('drop', event => handleImageAddWrapper(event), false);
-  }
-
-  componentWillUnmount = () => {
-    this.dropZone.removeEventListener('dragover', handleDragOver);
-    this.dropZone.removeEventListener('drop', event => this.handleImageAddWrapper(event));
   }
 
   mergeErrors(errors) {
@@ -272,7 +253,6 @@ RegisterCardDumb.propTypes = {
   showPassword: PropTypes.bool,
   classes: PropTypes.shape({}).isRequired,
   intl: intlShape.isRequired,
-  handleImageAddWrapper: PropTypes.func.isRequired,
   handleImageAdd: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleClickShowPassword: PropTypes.func.isRequired,

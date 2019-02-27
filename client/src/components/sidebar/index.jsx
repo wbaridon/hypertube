@@ -28,7 +28,6 @@ const styles = theme => ({
   root: {
     [theme.breakpoints.down('md')]: {
       maxWidth: '320px',
-      width: '320px',
     },
     [theme.breakpoints.up('md')]: {
       maxWidth: '1200px',

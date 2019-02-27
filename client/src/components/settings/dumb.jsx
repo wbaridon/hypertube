@@ -174,12 +174,13 @@ DumbSettings.propTypes = {
   handleMenuOpen: PropTypes.func.isRequired,
   handleMenuClose: PropTypes.func.isRequired,
   anchorEl: PropTypes.shape({}),
-  erroredField: PropTypes.shape({}).isRequired,
+  erroredField: PropTypes.shape({}),
   classes: PropTypes.shape({}).isRequired,
 };
 
 DumbSettings.defaultProps = {
   anchorEl: null,
+  erroredField: null,
 };
 
 export default withStyles(styles)(DumbSettings);
