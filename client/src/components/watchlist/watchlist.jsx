@@ -83,11 +83,11 @@ class WatchList extends React.Component {
                         <Grid item>
                           {movie.seen ? (
                             <Button variant="contained" color="primary" onClick={() => this.handleSeen(token, movie.imdbId, watchList.indexOf(movie), false)}>
-                              <Typography variant="button" noWrap><FormattedMessage id="watchList.markunseen" /></Typography>
+                              <Typography variant="button" style={{ color: 'white' }} noWrap><FormattedMessage id="watchList.markunseen" /></Typography>
                             </Button>
                           ) : (
                             <Button variant="contained" color="primary" onClick={() => this.handleSeen(token, movie.imdbId, watchList.indexOf(movie), true)}>
-                              <Typography variant="button" noWrap><FormattedMessage id="watchList.markseen" /></Typography>
+                              <Typography variant="button" style={{ color: 'white' }} noWrap><FormattedMessage id="watchList.markseen" /></Typography>
                             </Button>
                           )}
                         </Grid>
@@ -100,7 +100,7 @@ class WatchList extends React.Component {
                         </Grid> */}
                         <Grid item>
                           <Button variant="contained" color="primary" onClick={() => deleteWatchList(token, movie.imdbId)}>
-                            <Typography variant="button" noWrap>
+                            <Typography variant="button" style={{ color: 'white' }} noWrap>
                               <FormattedMessage id="watchList.remove" />
                             </Typography>
                           </Button>
