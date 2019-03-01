@@ -60,6 +60,7 @@ module.exports.findVideoFile = async (engine) => {
 
 module.exports.alreadyDownloaded = (id, file) => {
   return new Promise(async (resolve) => {
+    if (!fs.existsSync('./assets/torrents')) { fs.mkdirSync('./assets/torrents'); }
     if (fs.existsSync(`./assets/torrents/${file.name}`) && await DownloadMovie.getFileSizeInBytes(`./assets/torrents/${file.name}`) === file.length) {
       // console.log('Movie already exists');
       const data = { lastSeen: Date.now() };
