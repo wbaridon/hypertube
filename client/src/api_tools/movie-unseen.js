@@ -3,7 +3,7 @@ import Axios from 'axios';
 export default function movieUnseenAPI(token, idMovie) {
   return Axios({
     method: 'post',
-    url: 'http://localhost:3000/movie/unseen',
+    url: `${API}:3000/movie/unseen`,
     data: {
       movieId: idMovie,
     },

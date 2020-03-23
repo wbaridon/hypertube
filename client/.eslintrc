@@ -30,6 +30,7 @@
       "AUTHGITHUB": true,
       "AUTHGOOGLE": true,
       "AUTHFACEBOOK": true,
+      "API": true,
       "AUTHGITLAB": true,
       "AUTHREDDIT": true,
       "AUTHLINKEDIN": true,

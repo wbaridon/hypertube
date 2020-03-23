@@ -3,7 +3,7 @@ import Axios from 'axios';
 export default function addWatchListAPI(token, idMovie) {
   return Axios({
     method: 'post',
-    url: 'http://localhost:3000/watchList/add',
+    url: `${API}:3000/watchList/add`,
     data: {
       movieId: idMovie,
     },

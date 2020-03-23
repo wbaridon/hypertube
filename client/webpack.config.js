@@ -75,6 +75,8 @@ module.exports = {
       AUTHINSTAGRAM: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).oAuth.instagram),
       BACKEND: JSON.stringify(require(path.resolve(__dirname, srcDir, 'content.json')).BACKEND),
       TIMEOUT_API: 10000,
+      API: 'http://35.180.152.132',
+      
     }),
     new HtmlWebPackPlugin({
       template: path.resolve(srcDir, 'index.html'),

@@ -3,7 +3,7 @@ import Axios from 'axios';
 export default function deleteWatchListAPI(token, idMovie) {
   return Axios({
     method: 'post',
-    url: 'http://localhost:3000/watchList/delete',
+    url: `${API}:3000/watchList/delete`,
     data: {
       idMovie,
     },

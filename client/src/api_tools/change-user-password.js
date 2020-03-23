@@ -3,7 +3,7 @@ import Axios from 'axios';
 export default function changeUserPasswordAPI(token, field, currentPassword, newPassword, newPasswordRepeat) {
   return Axios({
     method: 'post',
-    url: 'http://localhost:3000/user/updateUser',
+    url: `${API}:3000/user/updateUser`,
     data: {
       field,
       currentPassword,

@@ -31,6 +31,7 @@
       "AUTHGOOGLE": true,
       "AUTHFACEBOOK": true,
       "AUTHGITLAB": true,
+      "API": true,
       "AUTHREDDIT": true,
       "AUTHLINKEDIN": true,
       "AUTHINSTAGRAM": true,

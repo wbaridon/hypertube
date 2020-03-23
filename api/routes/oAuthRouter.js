@@ -70,7 +70,7 @@ function getToken(provider, path, clientCode, credentials) {
       const oauth2 = require('simple-oauth2').create(credentials);
       const tokenConfig = {
         code: clientCode,
-        redirect_uri: `http://localhost:8080${path}/${provider}`,
+        redirect_uri: `http://${API}:8080/${path}/${provider}`,
       };
       if (provider === 'google') {
         tokenConfig.grant_type = 'authorization_code';
